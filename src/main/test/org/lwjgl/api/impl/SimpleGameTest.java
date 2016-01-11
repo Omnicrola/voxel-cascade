@@ -1,7 +1,11 @@
-package org.lwjgl.api;
+package org.lwjgl.api.impl;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.lwjgl.api.IGameContainer;
+import org.lwjgl.api.IGameRenderer;
+import org.lwjgl.api.IGameState;
+import org.lwjgl.api.impl.SimpleGame;
 import org.mockito.InOrder;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;

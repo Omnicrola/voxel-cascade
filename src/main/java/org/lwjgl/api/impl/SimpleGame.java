@@ -1,4 +1,6 @@
-package org.lwjgl.api;
+package org.lwjgl.api.impl;
+
+import org.lwjgl.api.*;
 
 import java.util.ArrayList;
 
