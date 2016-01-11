@@ -7,6 +7,4 @@ public interface IGameContainer {
     public float delta();
     public IGameInput getInput();
     public IResourceLoader getResourceLoader();
-    public void addEventListener(IEventListener eventListener);
-    public void registerEvent(IGameEvent gameEvent);
 }

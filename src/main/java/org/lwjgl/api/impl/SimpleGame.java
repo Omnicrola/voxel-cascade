@@ -9,37 +9,11 @@ import java.util.ArrayList;
  */
 public abstract class SimpleGame {
     private final ArrayList<IGameState> states;
-    private final IGameContainer gameContainer;
+    private  IGameContainer gameContainer;
     private boolean isRunning;
 
     public SimpleGame() {
         this.states = new ArrayList<>();
-        this.gameContainer = new IGameContainer() {
-            @Override
-            public float delta() {
-                return 0;
-            }
-
-            @Override
-            public IGameInput getInput() {
-                return null;
-            }
-
-            @Override
-            public IResourceLoader getResourceLoader() {
-                return null;
-            }
-
-            @Override
-            public void addEventListener(IEventListener eventListener) {
-
-            }
-
-            @Override
-            public void registerEvent(IGameEvent gameEvent) {
-
-            }
-        };
     }
 
     public void addState(IGameState state) {
@@ -47,6 +21,8 @@ public abstract class SimpleGame {
     }
 
     public void start() {
+        GLContextHandler glContext = GLContextBuilder.build();
+        this.gameContainer = GameContainerBuilder.build(glContext);
         initializeStates();
         this.isRunning = true;
         loadStates();
@@ -86,7 +62,6 @@ public abstract class SimpleGame {
             state.render(null);
         }
     }
-
 
     public void stop() {
         this.isRunning = false;
