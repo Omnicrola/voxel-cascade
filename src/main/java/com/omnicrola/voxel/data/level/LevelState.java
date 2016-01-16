@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 
+import com.jme3.light.Light;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.engine.input.WorldCursor;
 
@@ -9,17 +10,24 @@ import com.omnicrola.voxel.engine.input.WorldCursor;
  */
 public class LevelState {
     private Node terrain;
+    private Node lights;
     private WorldCursor worldCursor;
     private String levelName;
     private float resources;
     private float timeElapsed;
+    private Light sun;
 
-    public LevelState(Node terrain, WorldCursor worldCursor, String levelName) {
+    public LevelState(Node terrain, Light sun, WorldCursor worldCursor, String levelName) {
         this.terrain = terrain;
+        this.sun = sun;
         this.worldCursor = worldCursor;
         this.levelName = levelName;
         this.resources = 0;
         this.timeElapsed = 0;
+    }
+
+    public Node getLights() {
+        return lights;
     }
 
     public void setResources(float resources) {
@@ -48,5 +56,9 @@ public class LevelState {
 
     public WorldCursor getWorldCursor() {
         return worldCursor;
+    }
+
+    public Light getSun() {
+        return this.sun;
     }
 }

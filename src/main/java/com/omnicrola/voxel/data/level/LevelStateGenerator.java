@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.data.level;
 
+import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
@@ -19,6 +21,10 @@ public class LevelStateGenerator {
         Geometry cursorCube = gameContainer.world().build().cube(0.25f, ColorRGBA.Blue);
         worldCursor.attachChild(cursorCube);
 
-        return new LevelState(terrain, worldCursor, "Default Level");
+        DirectionalLight sun = new DirectionalLight();
+        sun.setColor(ColorRGBA.White);
+        sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
+
+        return new LevelState(terrain, sun, worldCursor, "Default Level");
     }
 }

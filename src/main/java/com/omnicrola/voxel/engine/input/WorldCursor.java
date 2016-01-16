@@ -44,4 +44,13 @@ public class WorldCursor extends Node {
                 .normalizeLocal();
         return new Ray(cursor3d, direction);
     }
+
+    public void setVisible(boolean visible) {
+        if (visible) {
+            this.setCullHint(CullHint.Inherit);
+        } else {
+            this.setCullHint(CullHint.Always);
+
+        }
+    }
 }
