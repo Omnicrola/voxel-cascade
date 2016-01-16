@@ -18,7 +18,7 @@ public class VoxelTerrainGenerator {
         IGeometryBuilder geometryBuilder = gameContainer.world().build();
         IGamePhysics gamePhysics = gameContainer.physics();
 
-        Node terrainRoot = new Node();
+        Node terrainRoot = new Node("Terrain");
         Vec3iRead size = levelData.getTerrainSize();
         Vec3iRead offset = levelData.getTerrainOffset();
         int xSize = size.getX() / 2;
@@ -28,6 +28,7 @@ public class VoxelTerrainGenerator {
             for (int y = -ySize; y < ySize; y++) {
                 for (int z = -zSize; z < zSize; z++) {
                     Geometry cube = geometryBuilder.cube(0.5f, ColorRGBA.randomColor());
+                    cube.setName("voxel");
                     cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
                     RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
                     cube.addControl(rigidBodyControl);

@@ -8,6 +8,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.engine.input.GameInputAction;
+import com.omnicrola.voxel.engine.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 
@@ -16,6 +17,7 @@ import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
  * Created by omnic on 1/15/2016.
  */
 public class ActivePlayState extends VoxelGameState {
+
 
 
     private class ReloadListener implements ActionListener {
@@ -54,6 +56,7 @@ public class ActivePlayState extends VoxelGameState {
     }
 
     private IGameContainer gameContainer;
+    private WorldCursor worldCursor;
 
     public ActivePlayState() {
         super("Active Play");
@@ -70,7 +73,13 @@ public class ActivePlayState extends VoxelGameState {
     public void loadLevel(LevelData levelData) {
         this.stateRootNode.detachAllChildren();
         Node terrain = VoxelTerrainGenerator.load(levelData, this.gameContainer);
+
+        this.worldCursor = this.gameContainer.world().createCursor(terrain);
+        Geometry cursorCube = this.gameContainer.world().build().cube(0.25f, ColorRGBA.Blue);
+        this.worldCursor.attachChild(cursorCube);
+
         this.stateRootNode.attachChild(terrain);
+        this.stateRootNode.attachChild(worldCursor);
     }
 
     @Override
