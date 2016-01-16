@@ -37,4 +37,10 @@ public class JmeGuiWrapper implements IGameGui {
         flyByCamera.setEnabled(isGrabbed);
     }
 
+    @Override
+    public void toggleMouseGrabbed() {
+        boolean isGrabbed = this.game.getInputManager().isCursorVisible();
+        setMouseGrabbed(!isGrabbed);
+    }
+
 }

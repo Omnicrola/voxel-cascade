@@ -4,7 +4,7 @@ package com.omnicrola.voxel.engine.input;
  * Created by omnic on 1/15/2016.
  */
 public enum GameAction implements IActionCode {
-    SELECT;
+    SELECT, RELOAD_LEVEL, TOGGLE_MOUSE_GRAB;
 
     @Override
     public String trigger() {

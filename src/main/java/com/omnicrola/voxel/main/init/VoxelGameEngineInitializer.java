@@ -34,5 +34,7 @@ public class VoxelGameEngineInitializer {
     private static void createInputMappings(AppStateManager stateManager) {
         InputManager inputManager = stateManager.getApplication().getInputManager();
         inputManager.addMapping(GameAction.SELECT.trigger(), new KeyTrigger(KeyInput.KEY_RETURN));
+        inputManager.addMapping(GameAction.RELOAD_LEVEL.trigger(), new KeyTrigger(KeyInput.KEY_R));
+        inputManager.addMapping(GameAction.TOGGLE_MOUSE_GRAB.trigger(), new KeyTrigger(KeyInput.KEY_TAB));
     }
 }

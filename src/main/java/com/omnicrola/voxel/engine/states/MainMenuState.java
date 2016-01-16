@@ -4,10 +4,13 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.InputListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.engine.input.GameAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.GLabel;
 import org.lwjgl.input.Keyboard;
+
+import javax.swing.*;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -20,7 +23,7 @@ public class MainMenuState extends VoxelGameState {
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             gameContainer.disableState(MainMenuState.class);
-            activePlayState.loadLevel(null);
+            activePlayState.loadLevel(new LevelData());
             gameContainer.enableState(ActivePlayState.class);
         }
     }
