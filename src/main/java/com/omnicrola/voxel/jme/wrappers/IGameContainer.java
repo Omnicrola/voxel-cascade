@@ -14,7 +14,7 @@ import com.omnicrola.voxel.ui.GLabel;
 public interface IGameContainer {
 
     IGameGui gui();
-    IGameWorld getWorld();
+    IGameWorld world();
 
     void enableState(Class<? extends VoxelGameState> stateClass);
     void disableState(Class<? extends VoxelGameState> stateClass);

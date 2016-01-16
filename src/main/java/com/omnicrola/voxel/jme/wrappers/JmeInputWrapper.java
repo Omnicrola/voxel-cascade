@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.input.FlyByCamera;
 import com.jme3.input.controls.InputListener;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.input.IActionCode;
@@ -23,4 +24,24 @@ public class JmeInputWrapper implements IGameInput {
     public void unbind(InputListener inputListener) {
         game.getInputManager().removeListener(inputListener);
     }
+
+    @Override
+    public void toggleMouseGrabbed() {
+        boolean isGrabbed = this.game.getInputManager().isCursorVisible();
+        setMouseGrabbed(!isGrabbed);
+    }
+
+    @Override
+    public void setMouseGrabbed(boolean isGrabbed) {
+        this.game.getInputManager().setCursorVisible(isGrabbed);
+        FlyByCamera flyByCamera = this.game.getFlyByCamera();
+        flyByCamera.setDragToRotate(!isGrabbed);
+        flyByCamera.setEnabled(isGrabbed);
+    }
+
+    @Override
+    public void setCameraMoveSpeed(float speed) {
+        this.game.getFlyByCamera().setMoveSpeed(speed);
+    }
+
 }

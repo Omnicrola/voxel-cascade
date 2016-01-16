@@ -29,18 +29,7 @@ public class JmeGuiWrapper implements IGameGui {
         this.game.getGuiNode().detachChild(node);
     }
 
-    @Override
-    public void setMouseGrabbed(boolean isGrabbed) {
-        this.game.getInputManager().setCursorVisible(isGrabbed);
-        FlyByCamera flyByCamera = this.game.getFlyByCamera();
-        flyByCamera.setDragToRotate(!isGrabbed);
-        flyByCamera.setEnabled(isGrabbed);
-    }
 
-    @Override
-    public void toggleMouseGrabbed() {
-        boolean isGrabbed = this.game.getInputManager().isCursorVisible();
-        setMouseGrabbed(!isGrabbed);
-    }
+
 
 }

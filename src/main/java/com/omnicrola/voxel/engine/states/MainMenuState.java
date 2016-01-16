@@ -1,16 +1,12 @@
 package com.omnicrola.voxel.engine.states;
 
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.InputListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
-import com.omnicrola.voxel.engine.input.GameAction;
+import com.omnicrola.voxel.engine.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.GLabel;
-import org.lwjgl.input.Keyboard;
-
-import javax.swing.*;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -33,6 +29,7 @@ public class MainMenuState extends VoxelGameState {
     private StartGameListener startGameListener;
 
     public MainMenuState(ActivePlayState activePlayState) {
+        super("Main Menu");
         this.activePlayState = activePlayState;
     }
 
@@ -50,7 +47,7 @@ public class MainMenuState extends VoxelGameState {
     @Override
     protected void voxelEnable(IGameContainer gameContainer) {
         this.gameContainer.gui().attach(this.stateRoot);
-        this.gameContainer.input().bind(GameAction.SELECT, this.startGameListener);
+        this.gameContainer.input().bind(GameInputAction.SELECT, this.startGameListener);
     }
 
     @Override

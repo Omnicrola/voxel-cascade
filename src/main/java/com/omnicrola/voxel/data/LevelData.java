@@ -14,11 +14,11 @@ public class LevelData {
 
     }
 
-    public Vec3i getTerrainOffset() {
+    public Vec3iRead getTerrainOffset() {
         return terrainOffset;
     }
 
-    public Vec3i getTerrainSize() {
+    public Vec3iRead getTerrainSize() {
         return terrainSize;
     }
 }

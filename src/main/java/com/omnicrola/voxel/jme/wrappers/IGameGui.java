@@ -12,7 +12,4 @@ public interface IGameGui {
 
     void remove(Spatial node);
 
-    void setMouseGrabbed(boolean isGrabbed);
-
-    void toggleMouseGrabbed();
 }

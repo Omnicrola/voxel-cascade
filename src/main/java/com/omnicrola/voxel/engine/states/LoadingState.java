@@ -14,6 +14,10 @@ public class LoadingState extends VoxelGameState {
     private IGameContainer gameContainer;
     private float timeElapsed;
 
+    public LoadingState() {
+        super("Loading");
+    }
+
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
@@ -30,7 +34,7 @@ public class LoadingState extends VoxelGameState {
     protected void voxelEnable(IGameContainer gameContainer) {
         this.timeElapsed = 0;
         this.gameContainer
-                .gui()
+                .input()
                 .setMouseGrabbed(false);
         this.gameContainer
                 .gui()
