@@ -4,6 +4,8 @@ import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.engine.states.MainMenuState;
+import com.omnicrola.voxel.engine.states.VoxelGameState;
 import com.omnicrola.voxel.ui.GLabel;
 
 /**
@@ -11,15 +13,9 @@ import com.omnicrola.voxel.ui.GLabel;
  */
 public interface IGameContainer {
 
-    void attachToWorld(Spatial node);
+    IGameGui gui();
+    IGameWorld world();
 
-    void removeFromWorld(Spatial node);
-
-    GuiBuilder guiBuilder();
-
-    void attachToGui(Spatial node);
-
-    void removeFromGui(Spatial node);
-
-    void setMouseGrabbed(boolean isGrabbed);
+    void enableState(Class<? extends VoxelGameState> stateClass);
+    void disableState(Class<? extends VoxelGameState> stateClass);
 }

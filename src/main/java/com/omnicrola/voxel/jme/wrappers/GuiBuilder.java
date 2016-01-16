@@ -15,7 +15,7 @@ public class GuiBuilder {
         this.guiFont = game.getGuiFont();
     }
 
-    public GLabel buildLabel(String displayText, ColorRGBA fontColor) {
+    public GLabel label(String displayText, ColorRGBA fontColor) {
         return new GLabel(displayText, this.guiFont, fontColor);
     }
 }
