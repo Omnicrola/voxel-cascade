@@ -1,11 +1,13 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.data.Vec3iRead;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
 
 /**
@@ -13,7 +15,9 @@ import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
  */
 public class VoxelTerrainGenerator {
     public static Node load(LevelData levelData, IGameContainer gameContainer) {
-        IGeometryBuilder geometryBuilder = gameContainer.world().getBuilder();
+        IGeometryBuilder geometryBuilder = gameContainer.world().build();
+        IGamePhysics gamePhysics = gameContainer.physics();
+
         Node terrainRoot = new Node();
         Vec3iRead size = levelData.getTerrainSize();
         Vec3iRead offset = levelData.getTerrainOffset();
@@ -25,6 +29,9 @@ public class VoxelTerrainGenerator {
                 for (int z = -zSize; z < zSize; z++) {
                     Geometry cube = geometryBuilder.cube(0.5f, ColorRGBA.randomColor());
                     cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
+                    RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
+                    cube.addControl(rigidBodyControl);
+                    gamePhysics.addControl(rigidBodyControl);
                     terrainRoot.attachChild(cube);
                 }
             }

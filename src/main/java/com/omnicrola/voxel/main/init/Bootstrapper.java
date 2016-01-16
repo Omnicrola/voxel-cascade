@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.main.init;
 
+import com.jme3.bullet.BulletAppState;
 import com.jme3.system.AppSettings;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 
@@ -8,7 +9,8 @@ import com.omnicrola.voxel.engine.VoxelGameEngine;
  */
 public class Bootstrapper {
     public static VoxelGameLauncher bootstrap() {
-        VoxelGameEngine gameEngine = new VoxelGameEngine();
+        BulletAppState bulletAppState = new BulletAppState();
+        VoxelGameEngine gameEngine = new VoxelGameEngine(bulletAppState);
 
         AppSettings appSettings = new AppSettings(true);
         appSettings.setResolution(1024, 768);

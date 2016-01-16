@@ -1,7 +1,5 @@
 package com.omnicrola.voxel.jme.wrappers;
 
-import com.jme3.input.FlyByCamera;
-import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.VoxelGameState;
 
@@ -13,12 +11,14 @@ public class JmeApplicationWrapper implements IGameContainer {
     private final JmeGuiWrapper guiWrapper;
     private final JmeWorldWrapper worldWrapper;
     private final JmeInputWrapper inputWrapper;
+    private final JmePhysicsWrapper physicsWrapper;
 
     public JmeApplicationWrapper(VoxelGameEngine game) {
         this.game = game;
         this.guiWrapper = new JmeGuiWrapper(game);
         this.worldWrapper = new JmeWorldWrapper(game);
         this.inputWrapper = new JmeInputWrapper(game);
+        this.physicsWrapper = new JmePhysicsWrapper(game);
     }
 
     @Override
@@ -34,6 +34,11 @@ public class JmeApplicationWrapper implements IGameContainer {
     @Override
     public IGameInput input() {
         return this.inputWrapper;
+    }
+
+    @Override
+    public IGamePhysics physics() {
+        return this.physicsWrapper;
     }
 
     @Override

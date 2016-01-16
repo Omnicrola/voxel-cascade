@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.engine;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.bullet.BulletAppState;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
 import com.jme3.renderer.RenderManager;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
@@ -9,8 +11,16 @@ import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
  * Created by omnic on 1/15/2016.
  */
 public class VoxelGameEngine extends SimpleApplication {
+
+    private BulletAppState bulletAppState;
+
+    public VoxelGameEngine(BulletAppState bulletAppState) {
+        this.bulletAppState = bulletAppState;
+    }
+
     @Override
     public void simpleInitApp() {
+        this.stateManager.attach(this.bulletAppState);
         VoxelGameEngineInitializer.initializeGame(this.stateManager);
     }
 
@@ -26,5 +36,9 @@ public class VoxelGameEngine extends SimpleApplication {
 
     public BitmapFont getGuiFont() {
         return guiFont;
+    }
+
+    public PhysicsSpace getPhysicsSpace() {
+        return this.bulletAppState.getPhysicsSpace();
     }
 }

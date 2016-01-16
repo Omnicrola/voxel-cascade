@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.world.GeometryBuilder;
@@ -27,7 +28,12 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     @Override
-    public IGeometryBuilder getBuilder() {
+    public IGeometryBuilder build() {
         return this.geometryBuilder;
+    }
+
+    @Override
+    public Vector3f getCameraPosition() {
+        return this.game.getCamera().getLocation();
     }
 }

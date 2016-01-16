@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 /**
@@ -11,5 +12,7 @@ public interface IGameWorld {
 
     void remove(Spatial node);
 
-    IGeometryBuilder getBuilder();
+    IGeometryBuilder build();
+
+    Vector3f getCameraPosition();
 }
