@@ -11,11 +11,15 @@ public class Bootstrapper {
     public static VoxelGameLauncher bootstrap() {
         BulletAppState bulletAppState = new BulletAppState();
         VoxelGameEngine gameEngine = new VoxelGameEngine(bulletAppState);
+        gameEngine.setShowSettings(false);
 
         AppSettings appSettings = new AppSettings(true);
+        appSettings.setSettingsDialogImage("Textures/splash.jpg");
         appSettings.setResolution(1024, 768);
         appSettings.setBitsPerPixel(32);
         appSettings.setFrequency(60);
+        appSettings.put("Samples", 4);
+
         appSettings.setTitle("Voxel Cascade");
 
         gameEngine.setSettings(appSettings);
