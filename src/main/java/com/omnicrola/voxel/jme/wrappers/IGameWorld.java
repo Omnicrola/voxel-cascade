@@ -11,5 +11,5 @@ public interface IGameWorld {
 
     void remove(Spatial node);
 
-    IGeometryBuilder build();
+    IGeometryBuilder getBuilder();
 }

@@ -27,7 +27,7 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     @Override
-    public IGeometryBuilder build() {
+    public IGeometryBuilder getBuilder() {
         return this.geometryBuilder;
     }
 }

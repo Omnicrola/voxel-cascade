@@ -27,7 +27,7 @@ public class JmeApplicationWrapper implements IGameContainer {
     }
 
     @Override
-    public IGameWorld world() {
+    public IGameWorld getWorld() {
         return this.worldWrapper;
     }
 

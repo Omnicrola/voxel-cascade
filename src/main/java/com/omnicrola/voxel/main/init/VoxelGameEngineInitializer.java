@@ -22,8 +22,8 @@ public class VoxelGameEngineInitializer {
     private static void createStates(AppStateManager stateManager) {
         BulletAppState bulletAppState = new BulletAppState();
         LoadingState loadingState = new LoadingState();
-        MainMenuState mainMenuState = new MainMenuState();
         ActivePlayState playState = new ActivePlayState();
+        MainMenuState mainMenuState = new MainMenuState(playState);
 
         stateManager.attach(loadingState);
         stateManager.attach(bulletAppState);

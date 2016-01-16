@@ -13,18 +13,25 @@ import org.lwjgl.input.Keyboard;
  * Created by omnic on 1/15/2016.
  */
 public class MainMenuState extends VoxelGameState {
+    private ActivePlayState activePlayState;
+
     private class StartGameListener implements ActionListener {
 
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
-            gameContainer.enableState(ActivePlayState.class);
             gameContainer.disableState(MainMenuState.class);
+            activePlayState.loadLevel(null);
+            gameContainer.enableState(ActivePlayState.class);
         }
     }
 
     private IGameContainer gameContainer;
     private Node stateRoot;
     private StartGameListener startGameListener;
+
+    public MainMenuState(ActivePlayState activePlayState) {
+        this.activePlayState = activePlayState;
+    }
 
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
