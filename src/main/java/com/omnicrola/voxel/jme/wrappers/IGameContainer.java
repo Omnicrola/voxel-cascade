@@ -18,4 +18,6 @@ public interface IGameContainer {
 
     void enableState(Class<? extends VoxelGameState> stateClass);
     void disableState(Class<? extends VoxelGameState> stateClass);
+
+    IGameInput input();
 }

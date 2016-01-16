@@ -12,11 +12,13 @@ public class JmeApplicationWrapper implements IGameContainer {
     private final VoxelGameEngine game;
     private final JmeGuiWrapper guiWrapper;
     private final JmeWorldWrapper worldWrapper;
+    private final JmeInputWrapper inputWrapper;
 
     public JmeApplicationWrapper(VoxelGameEngine game) {
         this.game = game;
         this.guiWrapper = new JmeGuiWrapper(game);
         this.worldWrapper = new JmeWorldWrapper(game);
+        this.inputWrapper = new JmeInputWrapper(game);
     }
 
     @Override
@@ -27,6 +29,11 @@ public class JmeApplicationWrapper implements IGameContainer {
     @Override
     public IGameWorld world() {
         return this.worldWrapper;
+    }
+
+    @Override
+    public IGameInput input() {
+        return this.inputWrapper;
     }
 
     @Override
