@@ -2,25 +2,32 @@ package com.omnicrola.voxel.jme.wrappers;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.world.GeometryBuilder;
 
 /**
  * Created by omnic on 1/15/2016.
  */
-public class JmeWorldWrapper implements IGameWorld{
+public class JmeWorldWrapper implements IGameWorld {
+    private final GeometryBuilder geometryBuilder;
     private VoxelGameEngine game;
 
     public JmeWorldWrapper(VoxelGameEngine game) {
         this.game = game;
+        this.geometryBuilder = new GeometryBuilder(game.getAssetManager());
     }
 
     @Override
-    public void attachToWorld(Spatial node) {
+    public void attach(Spatial node) {
         this.game.getRootNode().attachChild(node);
     }
 
     @Override
-    public void removeFromWorld(Spatial node) {
+    public void remove(Spatial node) {
         this.game.getRootNode().detachChild(node);
     }
 
+    @Override
+    public IGeometryBuilder build() {
+        return this.geometryBuilder;
+    }
 }

@@ -7,8 +7,9 @@ import com.jme3.scene.Spatial;
  */
 public interface IGameWorld {
 
-    void attachToWorld(Spatial node);
+    void attach(Spatial node);
 
-    void removeFromWorld(Spatial node);
+    void remove(Spatial node);
 
+    IGeometryBuilder build();
 }
