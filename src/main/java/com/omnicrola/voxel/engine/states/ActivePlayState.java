@@ -5,12 +5,12 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.data.level.LevelStateGenerator;
 import com.omnicrola.voxel.engine.input.GameInputAction;
 import com.omnicrola.voxel.engine.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 
 
 /**
@@ -56,6 +56,7 @@ public class ActivePlayState extends VoxelGameState {
     }
 
     private IGameContainer gameContainer;
+    private LevelState currentLevelState;
     private WorldCursor worldCursor;
 
     public ActivePlayState() {
@@ -72,14 +73,9 @@ public class ActivePlayState extends VoxelGameState {
 
     public void loadLevel(LevelData levelData) {
         this.stateRootNode.detachAllChildren();
-        Node terrain = VoxelTerrainGenerator.load(levelData, this.gameContainer);
-
-        this.worldCursor = this.gameContainer.world().createCursor(terrain);
-        Geometry cursorCube = this.gameContainer.world().build().cube(0.25f, ColorRGBA.Blue);
-        this.worldCursor.attachChild(cursorCube);
-
-        this.stateRootNode.attachChild(terrain);
-        this.stateRootNode.attachChild(worldCursor);
+        this.currentLevelState = LevelStateGenerator.create(levelData, this.gameContainer);
+        this.stateRootNode.attachChild(this.currentLevelState.getTerrain());
+        this.stateRootNode.attachChild(this.currentLevelState.getWorldCursor());
     }
 
     @Override
