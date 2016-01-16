@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.engine.input;
 
+import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.input.InputManager;
 import com.jme3.math.Ray;
@@ -7,6 +8,8 @@ import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
+
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -52,5 +55,18 @@ public class WorldCursor extends Node {
             this.setCullHint(CullHint.Always);
 
         }
+    }
+
+    public Optional<CollisionResult> getEntityUnderCursor(Node targetNode) {
+        CollisionResults results = new CollisionResults();
+        Ray pickRay = getPickRay();
+        targetNode.collideWith(pickRay, results);
+        if (results.size() > 0) {
+            Vector3f contactPoint = results.getClosestCollision().getContactPoint();
+            CollisionResult closestCollision = results.getClosestCollision();
+            return Optional.of(closestCollision);
+        }
+
+        return Optional.empty();
     }
 }

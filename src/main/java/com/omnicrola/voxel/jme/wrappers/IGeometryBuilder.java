@@ -8,4 +8,8 @@ import com.jme3.scene.Geometry;
  */
 public interface IGeometryBuilder {
     Geometry cube(float size, ColorRGBA color);
+
+    Geometry cylinder(float radius, float height, ColorRGBA color);
+
+    Geometry sphere(float radius, ColorRGBA colorRGBA);
 }

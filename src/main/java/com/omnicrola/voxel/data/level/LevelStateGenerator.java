@@ -16,15 +16,24 @@ import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 public class LevelStateGenerator {
     public static LevelState create(LevelData levelData, IGameContainer gameContainer) {
         Node terrain = VoxelTerrainGenerator.load(levelData, gameContainer);
+        WorldCursor worldCursor = createWorldCursor(gameContainer, terrain);
+        Node entities = LevelEntityGenerator.create(levelData, gameContainer);
+        DirectionalLight sun = createLights();
 
+        return new LevelState(terrain, sun, entities, worldCursor, "Default Level");
+    }
+
+    private static WorldCursor createWorldCursor(IGameContainer gameContainer, Node terrain) {
         WorldCursor worldCursor = gameContainer.world().createCursor(terrain);
         Geometry cursorCube = gameContainer.world().build().cube(0.25f, ColorRGBA.Blue);
         worldCursor.attachChild(cursorCube);
+        return worldCursor;
+    }
 
+    private static DirectionalLight createLights() {
         DirectionalLight sun = new DirectionalLight();
         sun.setColor(ColorRGBA.White);
         sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
-
-        return new LevelState(terrain, sun, worldCursor, "Default Level");
+        return sun;
     }
 }

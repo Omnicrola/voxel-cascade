@@ -11,19 +11,25 @@ import com.omnicrola.voxel.engine.input.WorldCursor;
 public class LevelState {
     private Node terrain;
     private Node lights;
+    private Node entities;
     private WorldCursor worldCursor;
     private String levelName;
     private float resources;
     private float timeElapsed;
     private Light sun;
 
-    public LevelState(Node terrain, Light sun, WorldCursor worldCursor, String levelName) {
+    public LevelState(Node terrain, Light sun, Node entities, WorldCursor worldCursor, String levelName) {
         this.terrain = terrain;
         this.sun = sun;
+        this.entities = entities;
         this.worldCursor = worldCursor;
         this.levelName = levelName;
         this.resources = 0;
         this.timeElapsed = 0;
+    }
+
+    public Node getEntities() {
+        return entities;
     }
 
     public Node getLights() {
