@@ -13,6 +13,16 @@ import java.util.stream.Stream;
  */
 public abstract class TestTools {
 
+    public static <T> T assertIsOfType(Class<T> targetClass, Object actual) {
+        if (actual == null) {
+            throw new AssertionFailedError("Object was null, instead of class '" + targetClass.getName() + "'.");
+        }
+        if (actual.getClass().equals(targetClass)) {
+            return (T) actual;
+        }
+        throw new AssertionFailedError("Class was not of type '" + targetClass.getName() + "', was instead '" + actual.getClass().getName() + "'");
+    }
+
     public static <T> T verifyDependency(Class<T> dependancyClass, String dependancyName, Object targetObject) {
         Field field = findDependencyField(dependancyName, targetObject.getClass());
         Object value = getFieldValue(targetObject, field);

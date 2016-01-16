@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.Optional;
 import java.util.stream.Stream;
 
-import static com.omnicrola.util.TestUtil.assertIsOfType;
 
 /**
  * Created by omnic on 1/15/2016.

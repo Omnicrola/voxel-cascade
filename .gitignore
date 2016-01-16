@@ -2,6 +2,9 @@
 .idea
 *.iml
 target/
+OpenAL64.dll
+bulletjme64.dll
+lwjgl64.dll
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/
