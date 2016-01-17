@@ -3,13 +3,13 @@ package com.omnicrola.util;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class Tuple<L,R> {
+public class Tuple<L, R> {
     private L left;
     private R right;
 
-    public Tuple(L left, R right){
+    public Tuple(L left, R right) {
         this.left = left;
-        this.right =right;
+        this.right = right;
     }
 
     public L getLeft() {
@@ -29,7 +29,6 @@ public class Tuple<L,R> {
 
         if (!left.equals(tuple.left)) return false;
         return right.equals(tuple.right);
-
     }
 
     @Override

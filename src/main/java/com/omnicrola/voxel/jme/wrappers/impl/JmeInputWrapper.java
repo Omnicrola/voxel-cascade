@@ -44,5 +44,4 @@ public class JmeInputWrapper implements IGameInput {
     public void setCameraMoveSpeed(float speed) {
         this.game.getFlyByCamera().setMoveSpeed(speed);
     }
-
 }

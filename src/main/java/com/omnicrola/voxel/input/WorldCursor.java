@@ -53,7 +53,6 @@ public class WorldCursor extends Node {
             this.setCullHint(CullHint.Inherit);
         } else {
             this.setCullHint(CullHint.Always);
-
         }
     }
 

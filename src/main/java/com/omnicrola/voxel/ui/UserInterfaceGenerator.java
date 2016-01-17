@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.ui;
 
 import com.jme3.math.ColorRGBA;
-import com.omnicrola.voxel.jme.wrappers.impl.GuiBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.impl.GuiBuilder;
 
 /**
  * Created by omnic on 1/16/2016.

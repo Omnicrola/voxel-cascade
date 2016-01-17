@@ -14,12 +14,10 @@ import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
 import com.omnicrola.voxel.ui.UserInterfaceGenerator;
 
-
 /**
  * Created by omnic on 1/15/2016.
  */
 public class ActivePlayState extends VoxelGameState {
-
 
     private class DebugReloadListener implements ActionListener {
 
@@ -39,7 +37,6 @@ public class ActivePlayState extends VoxelGameState {
             gameContainer.input().setMouseGrabbed(isPressed);
         }
     }
-
 
     private UserInteractionHandler userInteractionHandler;
     private IGameContainer gameContainer;

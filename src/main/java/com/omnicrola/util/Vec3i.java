@@ -18,7 +18,6 @@ public class Vec3i implements Vec3iRead {
         this.z = z;
     }
 
-
     @Override
     public int getX() {
         return x;

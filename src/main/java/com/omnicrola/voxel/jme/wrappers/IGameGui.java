@@ -18,5 +18,4 @@ public interface IGameGui {
     void setCameraRotation(Quaternion rotation);
 
     void setCameraPosition(Vector3f vector3f);
-
 }

@@ -39,8 +39,5 @@ public class JmeGuiWrapper implements IGameGui {
     @Override
     public void setCameraPosition(Vector3f position) {
         this.game.getCamera().setLocation(position);
-
     }
-
-
 }

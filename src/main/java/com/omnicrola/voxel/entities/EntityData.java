@@ -43,7 +43,6 @@ public class EntityData implements Savable {
         return this.isTerrain;
     }
 
-
     @Override
     public void write(JmeExporter ex) throws IOException {
 

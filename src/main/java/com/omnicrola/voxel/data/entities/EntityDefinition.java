@@ -14,7 +14,6 @@ public class EntityDefinition {
     private String modelGeometry;
     private int hitpoints;
 
-
     public EntityDefinition() {
     }
 

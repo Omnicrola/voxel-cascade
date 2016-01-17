@@ -8,9 +8,11 @@ import com.omnicrola.voxel.engine.states.VoxelGameState;
 public interface IGameContainer {
 
     IGameGui gui();
+
     IGameWorld world();
 
     void enableState(Class<? extends VoxelGameState> stateClass);
+
     void disableState(Class<? extends VoxelGameState> stateClass);
 
     IGameInput input();

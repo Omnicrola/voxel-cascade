@@ -28,5 +28,4 @@ public abstract class AbstractVoxelControl extends AbstractControl {
     }
 
     protected abstract void voxelRender(RenderManager rm, ViewPort vp);
-
 }

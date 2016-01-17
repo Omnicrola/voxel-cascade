@@ -58,7 +58,6 @@ public class EntityAiController extends AbstractVoxelControl {
         }
     }
 
-
     private void updateAttackTarget(EntityData entityData) {
     }
 
@@ -87,5 +86,4 @@ public class EntityAiController extends AbstractVoxelControl {
     private void setGoal(Goal goal) {
         this.currentGoal = goal;
     }
-
 }

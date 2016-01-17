@@ -29,7 +29,6 @@ public class MotionGovernorControl extends AbstractControl {
         this.masterSteering.z += steering.z;
     }
 
-
     public boolean seekAndArriveAtRange(Vector3f targetPosition, float slowRadius, float minimumRange) {
         PhysicsRigidBody physicsControl = getPhysicsControl();
         Vector3f worldTranslation = this.spatial.getWorldTranslation();
@@ -69,7 +68,6 @@ public class MotionGovernorControl extends AbstractControl {
         subject.y *= scalar.y;
         subject.z *= scalar.z;
     }
-
 
     @Override
     protected void controlUpdate(float tpf) {

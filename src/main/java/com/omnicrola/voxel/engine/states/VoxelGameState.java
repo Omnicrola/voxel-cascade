@@ -7,13 +7,13 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.InputListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
+import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
 import com.omnicrola.voxel.ui.GLabel;
-import com.omnicrola.util.Tuple;
 
 import java.util.ArrayList;
 
@@ -21,7 +21,6 @@ import java.util.ArrayList;
  * Created by omnic on 1/15/2016.
  */
 public abstract class VoxelGameState extends AbstractAppState {
-
 
     private final String stateName;
     protected final Node stateRootNode;
@@ -48,7 +47,6 @@ public abstract class VoxelGameState extends AbstractAppState {
         this.stateRootUiNode.attachChild(stateLabel);
     }
 
-
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
@@ -64,7 +62,6 @@ public abstract class VoxelGameState extends AbstractAppState {
             voxelDisable(this.jmeApplicationWrapper);
         }
     }
-
 
     private void bindInput() {
         IGameInput gameInput = this.jmeApplicationWrapper.input();
@@ -84,7 +81,6 @@ public abstract class VoxelGameState extends AbstractAppState {
     final public void stateAttached(AppStateManager stateManager) {
     }
 
-
     @Override
     final public void stateDetached(AppStateManager stateManager) {
     }
@@ -93,11 +89,9 @@ public abstract class VoxelGameState extends AbstractAppState {
         this.stateInputBindings.add(new Tuple(inputToBind, inputListener));
     }
 
-
     protected abstract void voxelInitialize(IGameContainer gameContainer);
 
     protected abstract void voxelEnable(IGameContainer gameContainer);
 
     protected abstract void voxelDisable(IGameContainer gameContainer);
-
 }

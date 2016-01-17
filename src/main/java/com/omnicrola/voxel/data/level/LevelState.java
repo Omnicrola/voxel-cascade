@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.data.level;
 
-
 import com.jme3.light.Light;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.input.WorldCursor;

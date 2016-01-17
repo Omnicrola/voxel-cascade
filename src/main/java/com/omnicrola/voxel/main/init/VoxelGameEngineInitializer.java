@@ -6,10 +6,10 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.engine.states.LoadingState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
+import com.omnicrola.voxel.input.GameInputAction;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -46,14 +46,13 @@ public class VoxelGameEngineInitializer {
         addKeyMapping(inputManager, GameInputAction.DEBUG_BUILD_1, KeyInput.KEY_1);
         addKeyMapping(inputManager, GameInputAction.DEBUG_BUILD_2, KeyInput.KEY_2);
         addKeyMapping(inputManager, GameInputAction.DEBUG_APPLY_FORCE, KeyInput.KEY_3);
-
     }
 
     private static void addMouseMapping(InputManager inputManager, GameInputAction action, int buttonCode) {
         inputManager.addMapping(action.trigger(), new MouseButtonTrigger(buttonCode));
     }
 
-    private static void addKeyMapping(InputManager inputManager, GameInputAction action, int keyCode){
+    private static void addKeyMapping(InputManager inputManager, GameInputAction action, int keyCode) {
         inputManager.addMapping(action.trigger(), new KeyTrigger(keyCode));
     }
 }
