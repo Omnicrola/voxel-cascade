@@ -10,6 +10,7 @@ import com.omnicrola.voxel.data.entities.EntityDefinition;
 import com.omnicrola.voxel.data.level.LevelEntityGenerator;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.EntityData;
+import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
 
@@ -50,7 +51,7 @@ public class UserInteractionHandler {
 
     public void orderSelectionToMove() {
         if (hasSelection()) {
-            Optional<CollisionResult> entityUnderCursor = getWorldCursor().getEntityUnderCursor(this.sceneRoot);
+            Optional<CollisionResult> entityUnderCursor = getEntityUnderCursor();
             if (entityUnderCursor.isPresent()) {
                 Vector3f location = entityUnderCursor.get().getContactPoint();
                 getCurrentSelection().getEntityAi().moveToLocation(location);
@@ -66,8 +67,29 @@ public class UserInteractionHandler {
 
     public void orderSelectionToAttack() {
         if (hasSelection()) {
-            System.out.println("Not implemented");
+            Optional<CollisionResult> entityUnderCursor = getEntityUnderCursor();
+            if (entityUnderCursor.isPresent()) {
+                CollisionResult collisionResult = entityUnderCursor.get();
+                EntityAiController entityAi = getCurrentSelection().getEntityAi();
+                if (isTerrain(collisionResult)) {
+                    entityAi.attackLocation(collisionResult.getContactPoint());
+                } else {
+                    entityAi.attackEntity(collisionResult.getGeometry());
+                }
+            }
         }
+    }
+
+    private boolean isTerrain(CollisionResult collisionResult) {
+        EntityData entityData = collisionResult.getGeometry().getUserData(VoxelGlobals.ENTITY_DATA);
+        if (entityData == null) {
+            return false;
+        }
+        return entityData.isTerrain();
+    }
+
+    private Optional<CollisionResult> getEntityUnderCursor() {
+        return getWorldCursor().getEntityUnderCursor(this.sceneRoot);
     }
 
     public void clearSelection() {
@@ -83,7 +105,7 @@ public class UserInteractionHandler {
             this.sceneRoot.attachChild(entity);
             isBuilding = false;
         } else {
-            Optional<CollisionResult> entityUnderCursor = worldCursor.getEntityUnderCursor(this.sceneRoot);
+            Optional<CollisionResult> entityUnderCursor = getEntityUnderCursor();
             if (entityUnderCursor.isPresent()) {
                 EntityData entityData = entityUnderCursor.get().getGeometry().getUserData(VoxelGlobals.ENTITY_DATA);
                 if (entityData.isTerrain()) {

@@ -16,20 +16,26 @@ import java.io.IOException;
 public class EntityData implements Savable {
 
     public static EntityData terrain() {
-        return new EntityData(true);
+        return new EntityData(true, false);
+    }
+
+    public static EntityData projectile() {
+        return new EntityData(false, true);
     }
 
     public static EntityData entity(Geometry geometry, MotionGovernorControl motionGovernor, EntityAiController entityAi) {
         return new EntityData(geometry, motionGovernor, entityAi);
     }
 
-    private boolean isTerrain;
+    private final boolean isTerrain;
+    private final boolean isProjectile;
     private Geometry geometry;
     private MotionGovernorControl motionGovernor;
     private EntityAiController entityAi;
 
-    private EntityData(boolean isTerrain) {
+    private EntityData(boolean isTerrain, boolean isProjectile) {
         this.isTerrain = isTerrain;
+        this.isProjectile = isProjectile;
     }
 
     private EntityData(Geometry geometry, MotionGovernorControl motionGovernor, EntityAiController entityAi) {
@@ -37,10 +43,15 @@ public class EntityData implements Savable {
         this.motionGovernor = motionGovernor;
         this.entityAi = entityAi;
         this.isTerrain = false;
+        this.isProjectile = false;
     }
 
     public boolean isTerrain() {
         return this.isTerrain;
+    }
+
+    public boolean isProjectile() {
+        return this.isProjectile;
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.omnicrola.voxel.entities.control;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.entities.EntityData;
 
 /**
@@ -10,17 +11,23 @@ import com.omnicrola.voxel.entities.EntityData;
  */
 public class EntityAiController extends AbstractVoxelControl {
 
+    private WeaponsController weaponsController;
+
     private enum Goal {
         NONE,
         HOLD_POSITION,
         ATTACK_TARGET,
-        MOVE_TO_POSITION, STOP;
+        ATTACK_LOCATION,
+        MOVE_TO_POSITION,
+        STOP;
     }
 
     private Vector3f currentTargetLocation;
     private Goal currentGoal;
+    private Geometry currentTarget;
 
-    public EntityAiController() {
+    public EntityAiController(WeaponsController weaponsController) {
+        this.weaponsController = weaponsController;
         setGoal(Goal.NONE);
     }
 
@@ -35,6 +42,9 @@ public class EntityAiController extends AbstractVoxelControl {
                 break;
             case ATTACK_TARGET:
                 updateAttackTarget(entityData);
+                break;
+            case ATTACK_LOCATION:
+                updateAttackLocation(entityData);
                 break;
             case MOVE_TO_POSITION:
                 updateMoveToLocation(entityData);
@@ -59,6 +69,15 @@ public class EntityAiController extends AbstractVoxelControl {
     }
 
     private void updateAttackTarget(EntityData entityData) {
+        if (!this.weaponsController.isInRangeOfTarget(this.currentTarget)) {
+            Vector3f worldTranslation = this.currentTarget.getWorldTranslation();
+            float weaponRange = this.weaponsController.getRange();
+            entityData.getMotionGovernor().seekAndArriveAtRange(worldTranslation, 0, weaponRange * 0.9f);
+        }
+    }
+
+    private void updateAttackLocation(EntityData entityData) {
+        updateMoveToLocation(entityData);
     }
 
     private void updateHoldPosition(EntityData entityData) {
@@ -75,12 +94,31 @@ public class EntityAiController extends AbstractVoxelControl {
 
     public void moveToLocation(Vector3f location) {
         this.currentTargetLocation = location;
+        clearTarget();
         setGoal(Goal.MOVE_TO_POSITION);
     }
 
     public void stop() {
         this.currentTargetLocation = null;
+        clearTarget();
         setGoal(Goal.STOP);
+    }
+
+    public void attackLocation(Vector3f location) {
+        setGoal(Goal.ATTACK_LOCATION);
+        this.currentTargetLocation = location;
+        clearTarget();
+    }
+
+    public void attackEntity(Geometry targetEntity) {
+        setGoal(Goal.ATTACK_TARGET);
+        this.currentTarget = targetEntity;
+        this.weaponsController.setTarget(targetEntity);
+    }
+
+    private void clearTarget() {
+        this.currentTarget = null;
+        this.weaponsController.clearTarget();
     }
 
     private void setGoal(Goal goal) {

@@ -54,4 +54,5 @@ public class GeometryBuilder implements IGeometryBuilder {
         geometry.setMaterial(material);
         return geometry;
     }
+
 }

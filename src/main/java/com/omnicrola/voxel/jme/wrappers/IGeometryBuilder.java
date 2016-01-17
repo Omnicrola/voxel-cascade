@@ -12,4 +12,5 @@ public interface IGeometryBuilder {
     Geometry cylinder(float radius, float height, ColorRGBA color);
 
     Geometry sphere(float radius, ColorRGBA colorRGBA);
+
 }

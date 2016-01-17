@@ -8,6 +8,7 @@ import com.omnicrola.voxel.data.entities.EntityDefinition;
 import com.omnicrola.voxel.entities.EntityData;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.WeaponsController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
 
@@ -34,11 +35,13 @@ public class LevelEntityGenerator {
         gameContainer.physics().addControl(rigidBodyControl);
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl();
-        EntityAiController entityAi = new EntityAiController();
+        WeaponsController weaponsController = new WeaponsController(gameContainer);
+        EntityAiController entityAi = new EntityAiController(weaponsController);
         EntityData entityData = EntityData.entity(geometry, motionGovernor, entityAi);
 
-        geometry.addControl(motionGovernor);
         geometry.addControl(entityAi);
+        geometry.addControl(motionGovernor);
+        geometry.addControl(weaponsController);
         geometry.setUserData(VoxelGlobals.ENTITY_DATA, entityData);
 
         return geometry;
