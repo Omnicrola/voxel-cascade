@@ -5,12 +5,11 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
-import com.omnicrola.voxel.entities.EntityData;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.entities.control.WeaponsController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.settings.VoxelGlobals;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -36,13 +35,12 @@ public class LevelEntityGenerator {
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl();
         WeaponsController weaponsController = new WeaponsController(gameContainer);
-        EntityAiController entityAi = new EntityAiController(weaponsController);
-        EntityData entityData = EntityData.entity(geometry, motionGovernor, entityAi);
+        EntityAiController entityAi = new EntityAiController(motionGovernor, weaponsController);
 
         geometry.addControl(entityAi);
         geometry.addControl(motionGovernor);
         geometry.addControl(weaponsController);
-        geometry.setUserData(VoxelGlobals.ENTITY_DATA, entityData);
+        geometry.setUserData(EntityDataKeys.IS_SELECTABLE, true);
 
         return geometry;
     }

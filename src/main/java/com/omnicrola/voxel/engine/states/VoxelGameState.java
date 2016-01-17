@@ -4,7 +4,6 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.controls.ActionListener;
-import com.jme3.input.controls.InputListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Tuple;
@@ -85,8 +84,8 @@ public abstract class VoxelGameState extends AbstractAppState {
     final public void stateDetached(AppStateManager stateManager) {
     }
 
-    protected void addStateInput(GameInputAction inputToBind, InputListener inputListener) {
-        this.stateInputBindings.add(new Tuple(inputToBind, inputListener));
+    protected void addStateInput(GameInputAction inputToBind, ActionListener inputListener) {
+        this.stateInputBindings.add(new Tuple<>(inputToBind, inputListener));
     }
 
     protected abstract void voxelInitialize(IGameContainer gameContainer);

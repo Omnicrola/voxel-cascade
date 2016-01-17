@@ -5,15 +5,15 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
-import com.omnicrola.voxel.entities.EntityData;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.settings.VoxelGlobals;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
  * Created by omnic on 1/17/2016.
  */
-public class WeaponsController extends AbstractVoxelControl {
+public class WeaponsController extends AbstractControl {
 
     private float weaponCooldown = 1.0f;
     private float weaponRange = 3f;
@@ -34,7 +34,7 @@ public class WeaponsController extends AbstractVoxelControl {
     }
 
     @Override
-    protected void voxelUpdate(float tpf, EntityData entityData) {
+    public void controlUpdate(float tpf) {
         this.timeSinceLastShot += tpf;
         if (this.currentTarget != null) {
             if (isInRangeOfTarget(this.currentTarget)) {
@@ -59,7 +59,7 @@ public class WeaponsController extends AbstractVoxelControl {
         projectile.setLocalTranslation(ourLocation);
         this.gameContainer.world().attach(projectile);
 
-        projectile.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.projectile());
+        projectile.setUserData(EntityDataKeys.IS_PROJECTILE, true);
 
         LinearProjectileControl linearProjectileControl = new LinearProjectileControl(attackVector);
         projectile.addControl(linearProjectileControl);
@@ -69,7 +69,7 @@ public class WeaponsController extends AbstractVoxelControl {
     }
 
     @Override
-    protected void voxelRender(RenderManager rm, ViewPort vp) {
+    public void controlRender(RenderManager rm, ViewPort vp) {
 
     }
 

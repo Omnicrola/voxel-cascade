@@ -4,14 +4,13 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
-import com.omnicrola.voxel.entities.EntityData;
+import com.jme3.scene.control.AbstractControl;
 
 /**
  * Created by omnic on 1/17/2016.
  */
-public class EntityAiController extends AbstractVoxelControl {
+public class EntityAiController extends AbstractControl {
 
-    private WeaponsController weaponsController;
 
     private enum Goal {
         NONE,
@@ -25,71 +24,73 @@ public class EntityAiController extends AbstractVoxelControl {
     private Vector3f currentTargetLocation;
     private Goal currentGoal;
     private Geometry currentTarget;
+    private WeaponsController weaponsController;
+    private MotionGovernorControl motionGovernor;
 
-    public EntityAiController(WeaponsController weaponsController) {
+    public EntityAiController(MotionGovernorControl motionGovernor, WeaponsController weaponsController) {
+        this.motionGovernor = motionGovernor;
         this.weaponsController = weaponsController;
         setGoal(Goal.NONE);
     }
 
     @Override
-    protected void voxelUpdate(float tpf, EntityData entityData) {
+    protected void controlUpdate(float tpf) {
         switch (this.currentGoal) {
             case STOP:
-                updateStop(entityData);
+                updateStop();
                 break;
             case HOLD_POSITION:
-                updateHoldPosition(entityData);
+                updateHoldPosition();
                 break;
             case ATTACK_TARGET:
-                updateAttackTarget(entityData);
+                updateAttackTarget();
                 break;
             case ATTACK_LOCATION:
-                updateAttackLocation(entityData);
+                updateAttackLocation();
                 break;
             case MOVE_TO_POSITION:
-                updateMoveToLocation(entityData);
+                updateMoveToLocation();
                 break;
             case NONE:
             default:
         }
     }
 
-    private void updateStop(EntityData entityData) {
-        this.currentTargetLocation = entityData.getLocation();
+    private void updateStop() {
+        this.currentTargetLocation = this.spatial.getWorldTranslation();
         setGoal(Goal.HOLD_POSITION);
     }
 
-    private void updateMoveToLocation(EntityData entityData) {
-        MotionGovernorControl motionGovernor = entityData.getMotionGovernor();
-        boolean hasArrived = motionGovernor.seekAndArriveAtRange(this.currentTargetLocation, 3, 0);
+    private void updateMoveToLocation() {
+        boolean hasArrived = this.motionGovernor.seekAndArriveAtRange(this.currentTargetLocation, 3, 0);
         if (hasArrived) {
-            this.currentTargetLocation = entityData.getLocation();
+            this.currentTargetLocation = this.spatial.getWorldTranslation();
             setGoal(Goal.HOLD_POSITION);
         }
     }
 
-    private void updateAttackTarget(EntityData entityData) {
+    private void updateAttackTarget() {
         if (!this.weaponsController.isInRangeOfTarget(this.currentTarget)) {
             Vector3f worldTranslation = this.currentTarget.getWorldTranslation();
             float weaponRange = this.weaponsController.getRange();
-            entityData.getMotionGovernor().seekAndArriveAtRange(worldTranslation, 0, weaponRange * 0.9f);
+            this.motionGovernor.seekAndArriveAtRange(worldTranslation, 0, weaponRange * 0.9f);
         }
     }
 
-    private void updateAttackLocation(EntityData entityData) {
-        updateMoveToLocation(entityData);
+    private void updateAttackLocation() {
+        updateMoveToLocation();
     }
 
-    private void updateHoldPosition(EntityData entityData) {
-        Vector3f location = entityData.getLocation();
+    private void updateHoldPosition() {
+        Vector3f location = this.spatial.getWorldTranslation();
         float distanceFromTarget = this.currentTargetLocation.subtract(location).length();
         if (distanceFromTarget > 0.5f) {
-            entityData.getMotionGovernor().seekAndArriveAtRange(this.currentTargetLocation, 1.0f, 0);
+            this.motionGovernor.seekAndArriveAtRange(this.currentTargetLocation, 1.0f, 0);
         }
     }
 
     @Override
-    protected void voxelRender(RenderManager rm, ViewPort vp) {
+    protected void controlRender(RenderManager rm, ViewPort vp) {
     }
 
     public void moveToLocation(Vector3f location) {

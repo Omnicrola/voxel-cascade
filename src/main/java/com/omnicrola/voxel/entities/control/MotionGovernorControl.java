@@ -6,6 +6,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.util.VectorUtil;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -48,7 +49,7 @@ public class MotionGovernorControl extends AbstractControl {
         PhysicsRigidBody physicsControl = getPhysicsControl();
         final Vector3f desiredVelocity = targetPosition.subtract(physicsControl.getPhysicsLocation());
         desiredVelocity.normalize();
-        scale(desiredVelocity, MAX_VELOCITY);
+        VectorUtil.scale(desiredVelocity, MAX_VELOCITY);
         final Vector3f steering = desiredVelocity.subtract(physicsControl.getLinearVelocity());
         addSteering(steering);
     }
@@ -57,17 +58,6 @@ public class MotionGovernorControl extends AbstractControl {
         return this.spatial.getControl(RigidBodyControl.class);
     }
 
-    private void scale(Vector3f subject, float scalar) {
-        subject.x *= scalar;
-        subject.y *= scalar;
-        subject.z *= scalar;
-    }
-
-    private void scale(Vector3f subject, Vector3f scalar) {
-        subject.x *= scalar.x;
-        subject.y *= scalar.y;
-        subject.z *= scalar.z;
-    }
 
     @Override
     protected void controlUpdate(float tpf) {

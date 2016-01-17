@@ -2,12 +2,12 @@ package com.omnicrola.voxel.entities.control;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.omnicrola.voxel.entities.EntityData;
+import com.jme3.scene.control.AbstractControl;
 
 /**
  * Created by omnic on 1/17/2016.
  */
-public class SelfDestructControl extends AbstractVoxelControl {
+public class SelfDestructControl extends AbstractControl {
     private float elapsedTime;
     private float lifetime;
 
@@ -17,20 +17,19 @@ public class SelfDestructControl extends AbstractVoxelControl {
     }
 
     @Override
-    protected void voxelUpdate(float tpf, EntityData entityData) {
+    protected void controlUpdate(float tpf) {
         this.elapsedTime += tpf;
         if (elapsedTime >= lifetime) {
-            destroy(entityData);
+            destroy();
         }
     }
 
-    protected void destroy(EntityData entityData) {
-        System.out.println("self-destructed");
+    protected void destroy() {
         this.spatial.getParent().detachChild(this.spatial);
     }
 
     @Override
-    protected void voxelRender(RenderManager rm, ViewPort vp) {
+    protected void controlRender(RenderManager rm, ViewPort vp) {
 
     }
 }
