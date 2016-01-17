@@ -1,9 +1,10 @@
-package com.omnicrola.voxel.jme.wrappers;
+package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.controls.InputListener;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.input.IActionCode;
+import com.omnicrola.voxel.input.IActionCode;
+import com.omnicrola.voxel.jme.wrappers.IGameInput;
 
 /**
  * Created by omnic on 1/15/2016.

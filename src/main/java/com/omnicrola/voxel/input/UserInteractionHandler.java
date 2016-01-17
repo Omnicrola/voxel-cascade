@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.input;
+package com.omnicrola.voxel.input;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.math.ColorRGBA;
@@ -9,9 +9,9 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
 import com.omnicrola.voxel.data.level.LevelEntityGenerator;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.entities.EntityData;
-import com.omnicrola.voxel.engine.entities.commands.MoveToLocationCommand;
-import com.omnicrola.voxel.engine.entities.control.CommandQueueControl;
+import com.omnicrola.voxel.entities.EntityData;
+import com.omnicrola.voxel.entities.commands.MoveToLocationCommand;
+import com.omnicrola.voxel.entities.control.CommandQueueControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
 
@@ -52,7 +52,6 @@ public class UserInteractionHandler {
 
     public void activateSelection() {
         if (this.isBuilding) {
-            System.out.println("build");
             ColorRGBA color = this.buildType == 1 ? ColorRGBA.Orange : ColorRGBA.Green;
             Vector3f position = this.currentLevelState.getWorldCursor().getWorldTranslation();
             Spatial entity = LevelEntityGenerator.createEntity(new EntityDefinition(position, color), gameContainer);
@@ -66,11 +65,9 @@ public class UserInteractionHandler {
                     Vector3f cursorPosition = currentLevelState.getWorldCursor().getWorldTranslation();
                     CommandQueueControl control = this.currentlySelectedEntity.getControl(CommandQueueControl.class);
                     control.addCommand(new MoveToLocationCommand(new Vector3f(cursorPosition)));
-                    System.out.println("move to position");
                 } else {
                     Geometry geometry = entityUnderCursor.get().getGeometry();
                     setCurrentSelection(geometry);
-                    System.out.println("select: " + geometry.getName() + " -> " + entityUnderCursor.get().getContactPoint());
                 }
             }
         }

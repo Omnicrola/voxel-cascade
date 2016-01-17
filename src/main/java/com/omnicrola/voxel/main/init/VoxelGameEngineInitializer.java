@@ -6,7 +6,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.omnicrola.voxel.engine.input.GameInputAction;
+import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.engine.states.LoadingState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
@@ -33,13 +33,26 @@ public class VoxelGameEngineInitializer {
     private static void createInputMappings(AppStateManager stateManager) {
         InputManager inputManager = stateManager.getApplication().getInputManager();
 
-        inputManager.addMapping(GameInputAction.MOUSE_LOOK.trigger(), new MouseButtonTrigger(MouseInput.BUTTON_RIGHT));
-        inputManager.addMapping(GameInputAction.MOUSE_SELECT.trigger(), new MouseButtonTrigger(MouseInput.BUTTON_LEFT));
+        addMouseMapping(inputManager, GameInputAction.MOUSE_LOOK, MouseInput.BUTTON_RIGHT);
+        addMouseMapping(inputManager, GameInputAction.MOUSE_SELECT, MouseInput.BUTTON_LEFT);
 
-        inputManager.addMapping(GameInputAction.SELECT.trigger(), new KeyTrigger(KeyInput.KEY_RETURN));
-        inputManager.addMapping(GameInputAction.DEBUG_RELOAD_LEVEL.trigger(), new KeyTrigger(KeyInput.KEY_R));
-        inputManager.addMapping(GameInputAction.BUILD_1.trigger(), new KeyTrigger(KeyInput.KEY_1));
-        inputManager.addMapping(GameInputAction.BUILD_2.trigger(), new KeyTrigger(KeyInput.KEY_2));
-        inputManager.addMapping(GameInputAction.DEBUG_APPLY_FORCE.trigger(), new KeyTrigger(KeyInput.KEY_3));
+        addKeyMapping(inputManager, GameInputAction.SELECT, KeyInput.KEY_RETURN);
+        addKeyMapping(inputManager, GameInputAction.ORDER_ATTACK, KeyInput.KEY_NUMPAD7);
+        addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_NUMPAD8);
+        addKeyMapping(inputManager, GameInputAction.ORDER_STOP, KeyInput.KEY_NUMPAD9);
+
+        addKeyMapping(inputManager, GameInputAction.DEBUG_RELOAD_LEVEL, KeyInput.KEY_R);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_BUILD_1, KeyInput.KEY_1);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_BUILD_2, KeyInput.KEY_2);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_APPLY_FORCE, KeyInput.KEY_3);
+
+    }
+
+    private static void addMouseMapping(InputManager inputManager, GameInputAction action, int buttonCode) {
+        inputManager.addMapping(action.trigger(), new MouseButtonTrigger(buttonCode));
+    }
+
+    private static void addKeyMapping(InputManager inputManager, GameInputAction action, int keyCode){
+        inputManager.addMapping(action.trigger(), new KeyTrigger(keyCode));
     }
 }

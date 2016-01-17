@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data;
+package com.omnicrola.util;
 
 /**
  * Created by omnic on 1/16/2016.

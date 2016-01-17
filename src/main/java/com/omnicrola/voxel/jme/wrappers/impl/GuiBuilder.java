@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.jme.wrappers;
+package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.font.BitmapFont;
 import com.jme3.math.ColorRGBA;

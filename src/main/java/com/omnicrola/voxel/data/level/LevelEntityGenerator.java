@@ -4,11 +4,10 @@ import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
-import com.omnicrola.voxel.engine.entities.EntityData;
-import com.omnicrola.voxel.engine.entities.control.CommandQueueControl;
-import com.omnicrola.voxel.engine.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.entities.EntityData;
+import com.omnicrola.voxel.entities.control.CommandQueueControl;
+import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
 

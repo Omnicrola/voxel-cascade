@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers;
 
 import com.jme3.input.controls.InputListener;
-import com.omnicrola.voxel.engine.input.IActionCode;
+import com.omnicrola.voxel.input.IActionCode;
 
 /**
  * Created by omnic on 1/15/2016.

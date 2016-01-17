@@ -4,8 +4,7 @@ import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
-import com.omnicrola.voxel.data.LevelData;
-import com.omnicrola.voxel.engine.input.WorldCursor;
+import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 

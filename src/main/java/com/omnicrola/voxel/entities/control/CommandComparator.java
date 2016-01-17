@@ -1,6 +1,6 @@
-package com.omnicrola.voxel.engine.entities.control;
+package com.omnicrola.voxel.entities.control;
 
-import com.omnicrola.voxel.engine.entities.commands.IEntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
 
 import java.util.Comparator;
 

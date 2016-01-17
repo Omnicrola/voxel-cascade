@@ -1,9 +1,9 @@
-package com.omnicrola.voxel.engine.entities.control;
+package com.omnicrola.voxel.entities.control;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.engine.entities.commands.IEntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
 
 import java.util.PriorityQueue;
 

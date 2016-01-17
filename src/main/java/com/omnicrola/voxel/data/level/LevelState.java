@@ -3,7 +3,7 @@ package com.omnicrola.voxel.data.level;
 
 import com.jme3.light.Light;
 import com.jme3.scene.Node;
-import com.omnicrola.voxel.engine.input.WorldCursor;
+import com.omnicrola.voxel.input.WorldCursor;
 
 /**
  * Created by omnic on 1/16/2016.

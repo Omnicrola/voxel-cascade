@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.entities;
+package com.omnicrola.voxel.entities;
 
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;

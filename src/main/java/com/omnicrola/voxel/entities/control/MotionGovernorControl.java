@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.entities.control;
+package com.omnicrola.voxel.entities.control;
 
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.bullet.objects.PhysicsRigidBody;
@@ -36,7 +36,6 @@ public class MotionGovernorControl extends AbstractControl {
         Vector3f desiredVelocity = targetPosition.subtract(worldTranslation);
         final float distance = desiredVelocity.length();
         final float adjustedDistance = distance - this.floorOffset;
-        System.out.println("distanceToTarget: " + distance);
         if (adjustedDistance < DAMPENING + minimumRange) {
             physicsControl.setLinearVelocity(new Vector3f(0, 0, 0));
             return true;

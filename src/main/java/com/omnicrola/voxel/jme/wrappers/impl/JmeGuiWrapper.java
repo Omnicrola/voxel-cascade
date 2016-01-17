@@ -1,9 +1,10 @@
-package com.omnicrola.voxel.jme.wrappers;
+package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.jme.wrappers.IGameGui;
 
 /**
  * Created by omnic on 1/15/2016.

@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.ui;
 
 import com.jme3.scene.Geometry;
-import com.omnicrola.voxel.engine.input.IUserInteractionObserver;
+import com.omnicrola.voxel.input.IUserInteractionObserver;
 
 /**
  * Created by omnic on 1/16/2016.

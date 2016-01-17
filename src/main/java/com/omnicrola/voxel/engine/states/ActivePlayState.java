@@ -3,11 +3,11 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.data.LevelData;
+import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.level.LevelStateGenerator;
-import com.omnicrola.voxel.engine.input.GameInputAction;
-import com.omnicrola.voxel.engine.input.UserInteractionHandler;
+import com.omnicrola.voxel.input.GameInputAction;
+import com.omnicrola.voxel.input.UserInteractionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
@@ -85,8 +85,8 @@ public class ActivePlayState extends VoxelGameState {
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new ReloadListener());
         addStateInput(GameInputAction.MOUSE_LOOK, new MouseLookListener());
         addStateInput(GameInputAction.MOUSE_SELECT, new SelectionListener());
-        addStateInput(GameInputAction.BUILD_1, new SelectBuildEntity(1));
-        addStateInput(GameInputAction.BUILD_2, new SelectBuildEntity(2));
+        addStateInput(GameInputAction.DEBUG_BUILD_1, new SelectBuildEntity(1));
+        addStateInput(GameInputAction.DEBUG_BUILD_2, new SelectBuildEntity(2));
     }
 
     public void loadLevel(LevelData levelData) {

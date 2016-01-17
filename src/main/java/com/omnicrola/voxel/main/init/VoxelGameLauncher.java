@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.main.init;
 
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.util.Dependency;
+import com.omnicrola.util.Dependency;
 
 
 /**

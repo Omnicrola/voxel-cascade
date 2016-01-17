@@ -1,7 +1,8 @@
-package com.omnicrola.voxel.jme.wrappers;
+package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.VoxelGameState;
+import com.omnicrola.voxel.jme.wrappers.*;
 
 /**
  * Created by omnic on 1/15/2016.

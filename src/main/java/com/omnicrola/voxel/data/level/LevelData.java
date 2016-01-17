@@ -1,7 +1,9 @@
-package com.omnicrola.voxel.data;
+package com.omnicrola.voxel.data.level;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.omnicrola.util.Vec3i;
+import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
 
 import java.util.ArrayList;

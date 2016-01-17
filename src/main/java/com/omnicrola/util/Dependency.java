@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.util;
+package com.omnicrola.util;
 
 
 import java.lang.annotation.ElementType;

@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.input;
+package com.omnicrola.voxel.input;
 
 /**
  * Created by omnic on 1/15/2016.

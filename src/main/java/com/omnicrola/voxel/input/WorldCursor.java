@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.input;
+package com.omnicrola.voxel.input;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;

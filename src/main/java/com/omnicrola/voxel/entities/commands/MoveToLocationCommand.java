@@ -1,8 +1,8 @@
-package com.omnicrola.voxel.engine.entities.commands;
+package com.omnicrola.voxel.entities.commands;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.engine.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -18,7 +18,6 @@ public class MoveToLocationCommand implements IEntityCommand {
 
     @Override
     public void evaluate(Spatial parentEntity, float tpf) {
-        System.out.println("moving to " + targetPostion);
         MotionGovernorControl motionGovernor = parentEntity.getControl(MotionGovernorControl.class);
         this.isFinished = motionGovernor.seekAndArriveAtRange(this.targetPostion, 5f, 0f);
     }

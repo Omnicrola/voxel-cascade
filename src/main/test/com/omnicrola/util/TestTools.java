@@ -1,6 +1,5 @@
 package com.omnicrola.util;
 
-import com.omnicrola.voxel.util.Dependency;
 import junit.framework.AssertionFailedError;
 
 import java.lang.reflect.Field;

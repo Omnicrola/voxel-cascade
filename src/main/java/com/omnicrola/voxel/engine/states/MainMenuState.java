@@ -3,8 +3,8 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
-import com.omnicrola.voxel.data.LevelData;
-import com.omnicrola.voxel.engine.input.GameInputAction;
+import com.omnicrola.voxel.data.level.LevelData;
+import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.GLabel;
 

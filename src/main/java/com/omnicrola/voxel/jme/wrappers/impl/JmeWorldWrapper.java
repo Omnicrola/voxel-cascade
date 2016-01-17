@@ -1,10 +1,12 @@
-package com.omnicrola.voxel.jme.wrappers;
+package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.input.WorldCursor;
+import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
 import com.omnicrola.voxel.world.GeometryBuilder;
 
 /**

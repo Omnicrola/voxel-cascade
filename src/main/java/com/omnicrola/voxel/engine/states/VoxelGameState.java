@@ -8,12 +8,12 @@ import com.jme3.input.controls.InputListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.input.GameInputAction;
+import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
-import com.omnicrola.voxel.jme.wrappers.JmeApplicationWrapper;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
 import com.omnicrola.voxel.ui.GLabel;
-import com.omnicrola.voxel.util.Tuple;
+import com.omnicrola.util.Tuple;
 
 import java.util.ArrayList;
 
