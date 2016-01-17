@@ -6,8 +6,11 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
+import com.omnicrola.voxel.engine.entities.EntityData;
+import com.omnicrola.voxel.engine.entities.control.CommandQueueControl;
 import com.omnicrola.voxel.engine.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.settings.VoxelGlobals;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -32,6 +35,8 @@ public class LevelEntityGenerator {
         gameContainer.physics().addControl(rigidBodyControl);
 
         geometry.addControl(new MotionGovernorControl());
+        geometry.addControl(new CommandQueueControl());
+        geometry.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.entity());
 
         return geometry;
     }

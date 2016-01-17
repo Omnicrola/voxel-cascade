@@ -3,7 +3,6 @@ package com.omnicrola.voxel.data.level;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.engine.input.WorldCursor;
@@ -25,8 +24,6 @@ public class LevelStateGenerator {
 
     private static WorldCursor createWorldCursor(IGameContainer gameContainer, Node terrain) {
         WorldCursor worldCursor = gameContainer.world().createCursor(terrain);
-        Geometry cursorCube = gameContainer.world().build().cube(0.25f, ColorRGBA.Blue);
-        worldCursor.attachChild(cursorCube);
         return worldCursor;
     }
 

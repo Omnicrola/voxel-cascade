@@ -62,7 +62,6 @@ public class WorldCursor extends Node {
         Ray pickRay = getPickRay();
         targetNode.collideWith(pickRay, results);
         if (results.size() > 0) {
-            Vector3f contactPoint = results.getClosestCollision().getContactPoint();
             CollisionResult closestCollision = results.getClosestCollision();
             return Optional.of(closestCollision);
         }

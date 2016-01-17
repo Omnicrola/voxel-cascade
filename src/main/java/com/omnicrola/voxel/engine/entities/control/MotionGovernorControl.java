@@ -13,39 +13,38 @@ import com.jme3.scene.control.AbstractControl;
 public class MotionGovernorControl extends AbstractControl {
 
     public static final float DAMPENING = 0.0001f;
-    public static final Vector3f MAX_VELOCITY = new Vector3f(10, 10, 10);
+    public static final Vector3f MAX_VELOCITY = new Vector3f(2, 2, 2);
 
     private final Vector3f masterSteering;
     private final float floorOffset;
 
     public MotionGovernorControl() {
         this.masterSteering = new Vector3f();
-        this.floorOffset = 0f;
+        this.floorOffset = 0.5f;
     }
 
     private void addSteering(Vector3f steering) {
-        this.masterSteering.add(steering);
+        this.masterSteering.x += steering.x;
+        this.masterSteering.y += steering.y;
+        this.masterSteering.z += steering.z;
     }
 
-    public boolean seekAndArrive(Vector3f targetPosition, float slowRadius) {
-        return seekAndArriveAtRange(targetPosition, 5, 0.1f);
-    }
 
-    private boolean seekAndArriveAtRange(Vector3f targetPosition,
-                                         float slowRadius, float minimumRange) {
-
+    public boolean seekAndArriveAtRange(Vector3f targetPosition, float slowRadius, float minimumRange) {
         PhysicsRigidBody physicsControl = getPhysicsControl();
-        final Vector3f desiredVelocity = targetPosition.subtract(this.spatial.getWorldTranslation());
+        Vector3f worldTranslation = this.spatial.getWorldTranslation();
+        Vector3f desiredVelocity = targetPosition.subtract(worldTranslation);
         final float distance = desiredVelocity.length();
         final float adjustedDistance = distance - this.floorOffset;
+        System.out.println("distanceToTarget: " + distance);
         if (adjustedDistance < DAMPENING + minimumRange) {
             physicsControl.setLinearVelocity(new Vector3f(0, 0, 0));
             return true;
-        } else if (adjustedDistance < slowRadius + minimumRange) {
-            desiredVelocity.normalize();
-            scale(desiredVelocity, MAX_VELOCITY);
-            scale(desiredVelocity, distance / slowRadius);
-            addSteering(desiredVelocity.subtract(physicsControl.getLinearVelocity()));
+//        } else if (adjustedDistance < slowRadius + minimumRange) {
+//            desiredVelocity = desiredVelocity.normalize();
+//            scale(desiredVelocity, MAX_VELOCITY);
+//            scale(desiredVelocity, 0.5f);
+//            addSteering(desiredVelocity.subtract(physicsControl.getLinearVelocity()));
         } else {
             seek(targetPosition);
         }

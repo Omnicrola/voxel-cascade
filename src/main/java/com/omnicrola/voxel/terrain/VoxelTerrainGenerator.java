@@ -6,9 +6,11 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.data.Vec3iRead;
+import com.omnicrola.voxel.engine.entities.EntityData;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
+import com.omnicrola.voxel.settings.VoxelGlobals;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -29,6 +31,7 @@ public class VoxelTerrainGenerator {
                 for (int z = -zSize; z < zSize; z++) {
                     Geometry cube = geometryBuilder.cube(0.5f, ColorRGBA.randomColor());
                     cube.setName("voxel");
+                    cube.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.terrain());
                     cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
                     RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
                     cube.addControl(rigidBodyControl);

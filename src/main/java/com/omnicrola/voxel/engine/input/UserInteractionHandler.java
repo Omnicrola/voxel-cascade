@@ -9,9 +9,11 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
 import com.omnicrola.voxel.data.level.LevelEntityGenerator;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.engine.entities.EntityData;
 import com.omnicrola.voxel.engine.entities.commands.MoveToLocationCommand;
 import com.omnicrola.voxel.engine.entities.control.CommandQueueControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.settings.VoxelGlobals;
 
 import java.util.Optional;
 
@@ -42,7 +44,6 @@ public class UserInteractionHandler {
     }
 
     public void activateSelection() {
-        System.out.println("select");
         if (this.isBuilding) {
             System.out.println("build");
             ColorRGBA color = this.buildType == 1 ? ColorRGBA.Orange : ColorRGBA.Green;
@@ -53,14 +54,17 @@ public class UserInteractionHandler {
         } else {
             Optional<CollisionResult> entityUnderCursor = this.currentLevelState.getWorldCursor().getEntityUnderCursor(this.sceneRoot);
             if (entityUnderCursor.isPresent()) {
-                Geometry geometry = entityUnderCursor.get().getGeometry();
-                this.currentlySelectedEntity = geometry;
-                System.out.println(geometry.getName() + " -> " + entityUnderCursor.get().getContactPoint());
-            } else if (this.currentlySelectedEntity != null) {
-                Vector3f cursorPosition = currentLevelState.getWorldCursor().getWorldTranslation();
-                CommandQueueControl control = this.currentlySelectedEntity.getControl(CommandQueueControl.class);
-                control.addCommand(new MoveToLocationCommand(cursorPosition));
-                System.out.println("move to position");
+                EntityData entityData = entityUnderCursor.get().getGeometry().getUserData(VoxelGlobals.ENTITY_DATA);
+                if (entityData.isTerrain()) {
+                    Vector3f cursorPosition = currentLevelState.getWorldCursor().getWorldTranslation();
+                    CommandQueueControl control = this.currentlySelectedEntity.getControl(CommandQueueControl.class);
+                    control.addCommand(new MoveToLocationCommand(new Vector3f(cursorPosition)));
+                    System.out.println("move to position");
+                } else {
+                    Geometry geometry = entityUnderCursor.get().getGeometry();
+                    this.currentlySelectedEntity = geometry;
+                    System.out.println("select: " + geometry.getName() + " -> " + entityUnderCursor.get().getContactPoint());
+                }
             }
         }
 
