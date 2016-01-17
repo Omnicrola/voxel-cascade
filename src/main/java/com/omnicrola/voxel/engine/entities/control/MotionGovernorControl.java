@@ -40,11 +40,6 @@ public class MotionGovernorControl extends AbstractControl {
         if (adjustedDistance < DAMPENING + minimumRange) {
             physicsControl.setLinearVelocity(new Vector3f(0, 0, 0));
             return true;
-//        } else if (adjustedDistance < slowRadius + minimumRange) {
-//            desiredVelocity = desiredVelocity.normalize();
-//            scale(desiredVelocity, MAX_VELOCITY);
-//            scale(desiredVelocity, 0.5f);
-//            addSteering(desiredVelocity.subtract(physicsControl.getLinearVelocity()));
         } else {
             seek(targetPosition);
         }

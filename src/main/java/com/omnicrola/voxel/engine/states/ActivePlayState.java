@@ -3,13 +3,15 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.data.LevelData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.level.LevelStateGenerator;
 import com.omnicrola.voxel.engine.input.GameInputAction;
 import com.omnicrola.voxel.engine.input.UserInteractionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.ui.UiSelectionObserver;
+import com.omnicrola.voxel.ui.UserInterface;
+import com.omnicrola.voxel.ui.UserInterfaceGenerator;
 
 
 /**
@@ -66,9 +68,6 @@ public class ActivePlayState extends VoxelGameState {
     private UserInteractionHandler userInteractionHandler;
     private IGameContainer gameContainer;
     private LevelState currentLevelState;
-    private boolean isBuilding;
-    private int selectedBuildType;
-    private Geometry selectedEntity;
 
     public ActivePlayState() {
         super("Active Play");
@@ -77,7 +76,12 @@ public class ActivePlayState extends VoxelGameState {
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
+
         this.userInteractionHandler = new UserInteractionHandler(this.stateRootNode, gameContainer);
+        UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
+        this.stateRootUiNode.attachChild(userInterface);
+        userInteractionHandler.addSelectionListener(new UiSelectionObserver(userInterface));
+
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new ReloadListener());
         addStateInput(GameInputAction.MOUSE_LOOK, new MouseLookListener());
         addStateInput(GameInputAction.MOUSE_SELECT, new SelectionListener());

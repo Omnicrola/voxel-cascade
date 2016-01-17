@@ -15,6 +15,7 @@ import com.omnicrola.voxel.engine.entities.control.CommandQueueControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
 
+import java.util.ArrayList;
 import java.util.Optional;
 
 /**
@@ -22,6 +23,7 @@ import java.util.Optional;
  */
 public class UserInteractionHandler {
 
+    private final ArrayList<IUserInteractionObserver> observers;
     private LevelState currentLevelState;
     private int buildType;
     private Node sceneRoot;
@@ -32,6 +34,7 @@ public class UserInteractionHandler {
     public UserInteractionHandler(Node sceneRoot, IGameContainer gameContainer) {
         this.sceneRoot = sceneRoot;
         this.gameContainer = gameContainer;
+        this.observers = new ArrayList<>();
     }
 
     public void setLevel(LevelState level) {
@@ -41,6 +44,10 @@ public class UserInteractionHandler {
     public void setBuildMode(int buildMode) {
         this.buildType = buildMode;
         this.isBuilding = true;
+    }
+
+    public void addSelectionListener(IUserInteractionObserver interactionObserver) {
+        this.observers.add(interactionObserver);
     }
 
     public void activateSelection() {
@@ -62,11 +69,20 @@ public class UserInteractionHandler {
                     System.out.println("move to position");
                 } else {
                     Geometry geometry = entityUnderCursor.get().getGeometry();
-                    this.currentlySelectedEntity = geometry;
+                    setCurrentSelection(geometry);
                     System.out.println("select: " + geometry.getName() + " -> " + entityUnderCursor.get().getContactPoint());
                 }
             }
         }
 
     }
+
+    private void setCurrentSelection(Geometry geometry) {
+        this.currentlySelectedEntity = geometry;
+        for (IUserInteractionObserver observer : this.observers) {
+            observer.notifyNewSelection(geometry);
+        }
+    }
+
+
 }
