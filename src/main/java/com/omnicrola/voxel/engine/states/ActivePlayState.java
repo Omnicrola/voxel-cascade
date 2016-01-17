@@ -76,7 +76,7 @@ public class ActivePlayState extends VoxelGameState {
         this.stateRootNode.attachChild(this.currentLevelState.getTerrain());
         this.stateRootNode.attachChild(this.currentLevelState.getEntities());
         this.stateRootNode.attachChild(this.currentLevelState.getWorldCursor());
-        this.stateRootNode.addLight(this.currentLevelState.getSun());
+        this.gameContainer.world().addLight(this.currentLevelState.getSun());
     }
 
     @Override

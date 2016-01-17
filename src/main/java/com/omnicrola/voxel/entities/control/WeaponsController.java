@@ -1,10 +1,12 @@
 package com.omnicrola.voxel.entities.control;
 
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
+import com.omnicrola.util.VectorUtil;
 import com.omnicrola.voxel.entities.EntityData;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
@@ -52,11 +54,20 @@ public class WeaponsController extends AbstractVoxelControl {
         this.timeSinceLastShot = 0;
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
         Vector3f ourLocation = this.spatial.getWorldTranslation();
-        Vector3f attackVector = targetLocation.subtract(ourLocation).normalize();
+        Vector3f attackVector = VectorUtil.scale(targetLocation.subtract(ourLocation).normalize(), 5f);
 
-        Geometry projectile = this.gameContainer.world().build().sphere(0.125f, ColorRGBA.White);
-        projectile.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.projectile());
+        Geometry projectile = this.gameContainer.world().build().sphere(0.0125f, ColorRGBA.White);
+        projectile.setLocalTranslation(ourLocation);
         this.gameContainer.world().attach(projectile);
+
+        projectile.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.projectile());
+
+        RigidBodyControl physicsControl = new RigidBodyControl(0.0125f);
+        projectile.addControl(physicsControl);
+        this.gameContainer.physics().addControl(physicsControl);
+
+        System.out.println("spawn at: " + ourLocation);
+        physicsControl.setLinearVelocity(attackVector);
     }
 
     @Override

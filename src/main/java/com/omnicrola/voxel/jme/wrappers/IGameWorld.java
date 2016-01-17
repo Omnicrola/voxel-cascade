@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
-import com.jme3.math.Vector3f;
+import com.jme3.light.Light;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.input.WorldCursor;
@@ -16,7 +16,7 @@ public interface IGameWorld {
 
     IGeometryBuilder build();
 
-    Vector3f getCameraPosition();
-
     WorldCursor createCursor(Node terrain);
+
+    void addLight(Light light);
 }

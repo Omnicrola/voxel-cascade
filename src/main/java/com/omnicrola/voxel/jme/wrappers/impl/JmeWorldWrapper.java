@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
-import com.jme3.math.Vector3f;
+import com.jme3.light.Light;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
@@ -37,8 +37,8 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     @Override
-    public Vector3f getCameraPosition() {
-        return this.game.getCamera().getLocation();
+    public void addLight(Light light) {
+        this.game.getRootNode().addLight(light);
     }
 
     @Override
