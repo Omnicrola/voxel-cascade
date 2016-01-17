@@ -6,7 +6,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
 import com.omnicrola.voxel.entities.EntityData;
-import com.omnicrola.voxel.entities.control.CommandQueueControl;
+import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
@@ -33,9 +33,13 @@ public class LevelEntityGenerator {
         geometry.addControl(rigidBodyControl);
         gameContainer.physics().addControl(rigidBodyControl);
 
-        geometry.addControl(new MotionGovernorControl());
-        geometry.addControl(new CommandQueueControl());
-        geometry.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.entity());
+        MotionGovernorControl motionGovernor = new MotionGovernorControl();
+        EntityAiController entityAi = new EntityAiController();
+        EntityData entityData = EntityData.entity(motionGovernor, entityAi);
+
+        geometry.addControl(motionGovernor);
+        geometry.addControl(entityAi);
+        geometry.setUserData(VoxelGlobals.ENTITY_DATA, entityData);
 
         return geometry;
     }

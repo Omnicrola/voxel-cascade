@@ -10,8 +10,6 @@ import com.omnicrola.voxel.data.entities.EntityDefinition;
 import com.omnicrola.voxel.data.level.LevelEntityGenerator;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.EntityData;
-import com.omnicrola.voxel.entities.commands.MoveToLocationCommand;
-import com.omnicrola.voxel.entities.control.CommandQueueControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.VoxelGlobals;
 
@@ -51,20 +49,20 @@ public class UserInteractionHandler {
     }
 
     public void activateSelection() {
+        WorldCursor worldCursor = getWorldCursor();
         if (this.isBuilding) {
             ColorRGBA color = this.buildType == 1 ? ColorRGBA.Orange : ColorRGBA.Green;
-            Vector3f position = this.currentLevelState.getWorldCursor().getWorldTranslation();
+            Vector3f position = worldCursor.getWorldTranslation();
             Spatial entity = LevelEntityGenerator.createEntity(new EntityDefinition(position, color), gameContainer);
             this.sceneRoot.attachChild(entity);
             isBuilding = false;
         } else {
-            Optional<CollisionResult> entityUnderCursor = this.currentLevelState.getWorldCursor().getEntityUnderCursor(this.sceneRoot);
+            Optional<CollisionResult> entityUnderCursor = worldCursor.getEntityUnderCursor(this.sceneRoot);
             if (entityUnderCursor.isPresent()) {
                 EntityData entityData = entityUnderCursor.get().getGeometry().getUserData(VoxelGlobals.ENTITY_DATA);
                 if (entityData.isTerrain()) {
-                    Vector3f cursorPosition = currentLevelState.getWorldCursor().getWorldTranslation();
-                    CommandQueueControl control = this.currentlySelectedEntity.getControl(CommandQueueControl.class);
-                    control.addCommand(new MoveToLocationCommand(new Vector3f(cursorPosition)));
+                    Vector3f cursorPosition = worldCursor.getWorldTranslation();
+                    getCurrentSelection().getEntityAi().moveToLocation(new Vector3f(cursorPosition));
                 } else {
                     Geometry geometry = entityUnderCursor.get().getGeometry();
                     setCurrentSelection(geometry);
@@ -72,6 +70,15 @@ public class UserInteractionHandler {
             }
         }
 
+    }
+
+    private WorldCursor getWorldCursor() {
+        return this.currentLevelState.getWorldCursor();
+    }
+
+    private EntityData getCurrentSelection() {
+        EntityData entityData = this.currentlySelectedEntity.getUserData(VoxelGlobals.ENTITY_DATA);
+        return entityData;
     }
 
     private void setCurrentSelection(Geometry geometry) {
