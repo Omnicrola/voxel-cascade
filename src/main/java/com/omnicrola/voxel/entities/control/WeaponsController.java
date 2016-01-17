@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.entities.control;
 
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
@@ -62,12 +61,11 @@ public class WeaponsController extends AbstractVoxelControl {
 
         projectile.setUserData(VoxelGlobals.ENTITY_DATA, EntityData.projectile());
 
-        RigidBodyControl physicsControl = new RigidBodyControl(0.0125f);
-        projectile.addControl(physicsControl);
-        this.gameContainer.physics().addControl(physicsControl);
+        LinearProjectileControl linearProjectileControl = new LinearProjectileControl(attackVector);
+        projectile.addControl(linearProjectileControl);
+        this.gameContainer.physics().addControl(linearProjectileControl);
 
         System.out.println("spawn at: " + ourLocation);
-        physicsControl.setLinearVelocity(attackVector);
     }
 
     @Override
