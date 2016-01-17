@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 
 /**
@@ -11,5 +13,9 @@ public interface IGameGui {
     void attach(Spatial node);
 
     void remove(Spatial node);
+
+    void setCameraRotation(Quaternion rotation);
+
+    void setCameraPosition(Vector3f vector3f);
 
 }

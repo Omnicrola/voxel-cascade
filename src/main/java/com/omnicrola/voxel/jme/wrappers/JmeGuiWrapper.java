@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers;
 
-import com.jme3.input.FlyByCamera;
+import com.jme3.math.Quaternion;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 
@@ -29,7 +30,16 @@ public class JmeGuiWrapper implements IGameGui {
         this.game.getGuiNode().detachChild(node);
     }
 
+    @Override
+    public void setCameraRotation(Quaternion rotation) {
+        this.game.getCamera().setRotation(rotation);
+    }
 
+    @Override
+    public void setCameraPosition(Vector3f position) {
+        this.game.getCamera().setLocation(position);
+
+    }
 
 
 }
