@@ -3,6 +3,8 @@ package com.omnicrola.voxel.entities;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 
@@ -17,11 +19,12 @@ public class EntityData implements Savable {
         return new EntityData(true);
     }
 
-    public static EntityData entity(MotionGovernorControl motionGovernor, EntityAiController entityAi) {
-        return new EntityData(motionGovernor, entityAi);
+    public static EntityData entity(Geometry geometry, MotionGovernorControl motionGovernor, EntityAiController entityAi) {
+        return new EntityData(geometry, motionGovernor, entityAi);
     }
 
     private boolean isTerrain;
+    private Geometry geometry;
     private MotionGovernorControl motionGovernor;
     private EntityAiController entityAi;
 
@@ -29,7 +32,8 @@ public class EntityData implements Savable {
         this.isTerrain = isTerrain;
     }
 
-    private EntityData(MotionGovernorControl motionGovernor, EntityAiController entityAi) {
+    private EntityData(Geometry geometry, MotionGovernorControl motionGovernor, EntityAiController entityAi) {
+        this.geometry = geometry;
         this.motionGovernor = motionGovernor;
         this.entityAi = entityAi;
         this.isTerrain = false;
@@ -56,5 +60,9 @@ public class EntityData implements Savable {
 
     public EntityAiController getEntityAi() {
         return entityAi;
+    }
+
+    public Vector3f getLocation() {
+        return new Vector3f(this.geometry.getWorldTranslation());
     }
 }

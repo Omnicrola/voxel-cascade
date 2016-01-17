@@ -8,6 +8,7 @@ import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.level.LevelStateGenerator;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.UserInteractionHandler;
+import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
@@ -20,28 +21,12 @@ import com.omnicrola.voxel.ui.UserInterfaceGenerator;
 public class ActivePlayState extends VoxelGameState {
 
 
-    private class ReloadListener implements ActionListener {
+    private class DebugReloadListener implements ActionListener {
 
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             if (!isPressed) {
                 loadLevel(new LevelData());
-            }
-        }
-    }
-
-    private class SelectBuildEntity implements ActionListener {
-
-        private int entityType;
-
-        public SelectBuildEntity(int entityType) {
-            this.entityType = entityType;
-        }
-
-        @Override
-        public void onAction(String name, boolean isPressed, float tpf) {
-            if (!isPressed) {
-                userInteractionHandler.setBuildMode(this.entityType);
             }
         }
     }
@@ -55,15 +40,6 @@ public class ActivePlayState extends VoxelGameState {
         }
     }
 
-    private class SelectionListener implements ActionListener {
-
-        @Override
-        public void onAction(String name, boolean isPressed, float tpf) {
-            if (!isPressed) {
-                userInteractionHandler.activateSelection();
-            }
-        }
-    }
 
     private UserInteractionHandler userInteractionHandler;
     private IGameContainer gameContainer;
@@ -80,13 +56,19 @@ public class ActivePlayState extends VoxelGameState {
         this.userInteractionHandler = new UserInteractionHandler(this.stateRootNode, gameContainer);
         UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
         this.stateRootUiNode.attachChild(userInterface);
-        userInteractionHandler.addSelectionListener(new UiSelectionObserver(userInterface));
+        this.userInteractionHandler.addSelectionListener(new UiSelectionObserver(userInterface));
 
-        addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new ReloadListener());
+        addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
         addStateInput(GameInputAction.MOUSE_LOOK, new MouseLookListener());
-        addStateInput(GameInputAction.MOUSE_SELECT, new SelectionListener());
-        addStateInput(GameInputAction.DEBUG_BUILD_1, new SelectBuildEntity(1));
-        addStateInput(GameInputAction.DEBUG_BUILD_2, new SelectBuildEntity(2));
+        addStateInput(GameInputAction.MOUSE_SELECT, new UserSelectionListener(userInteractionHandler));
+        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(userInteractionHandler));
+
+        addStateInput(GameInputAction.ORDER_MOVE, new OrderMoveListener(userInteractionHandler));
+        addStateInput(GameInputAction.ORDER_STOP, new OrderStopListener(userInteractionHandler));
+        addStateInput(GameInputAction.ORDER_ATTACK, new OrderAttackListener(userInteractionHandler));
+
+        addStateInput(GameInputAction.DEBUG_BUILD_1, new SetBuildSelectionListener(1, userInteractionHandler));
+        addStateInput(GameInputAction.DEBUG_BUILD_2, new SetBuildSelectionListener(2, userInteractionHandler));
     }
 
     public void loadLevel(LevelData levelData) {

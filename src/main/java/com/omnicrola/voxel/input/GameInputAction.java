@@ -13,7 +13,7 @@ public enum GameInputAction implements IActionCode {
     ORDER_ATTACK,
     ORDER_STOP,
     MOUSE_LOOK,
-    MOUSE_SELECT;
+    MOUSE_SELECT, CLEAR_SELECTION;
 
     @Override
     public String trigger() {

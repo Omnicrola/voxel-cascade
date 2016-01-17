@@ -48,6 +48,32 @@ public class UserInteractionHandler {
         this.observers.add(interactionObserver);
     }
 
+    public void orderSelectionToMove() {
+        if (hasSelection()) {
+            Optional<CollisionResult> entityUnderCursor = getWorldCursor().getEntityUnderCursor(this.sceneRoot);
+            if (entityUnderCursor.isPresent()) {
+                Vector3f location = entityUnderCursor.get().getContactPoint();
+                getCurrentSelection().getEntityAi().moveToLocation(location);
+            }
+        }
+    }
+
+    public void orderSelectionToStop() {
+        if (hasSelection()) {
+            getCurrentSelection().getEntityAi().stop();
+        }
+    }
+
+    public void orderSelectionToAttack() {
+        if (hasSelection()) {
+            System.out.println("Not implemented");
+        }
+    }
+
+    public void clearSelection() {
+        setCurrentSelection(null);
+    }
+
     public void activateSelection() {
         WorldCursor worldCursor = getWorldCursor();
         if (this.isBuilding) {
@@ -61,15 +87,13 @@ public class UserInteractionHandler {
             if (entityUnderCursor.isPresent()) {
                 EntityData entityData = entityUnderCursor.get().getGeometry().getUserData(VoxelGlobals.ENTITY_DATA);
                 if (entityData.isTerrain()) {
-                    Vector3f cursorPosition = worldCursor.getWorldTranslation();
-                    getCurrentSelection().getEntityAi().moveToLocation(new Vector3f(cursorPosition));
+                    clearSelection();
                 } else {
                     Geometry geometry = entityUnderCursor.get().getGeometry();
                     setCurrentSelection(geometry);
                 }
             }
         }
-
     }
 
     private WorldCursor getWorldCursor() {
@@ -88,5 +112,7 @@ public class UserInteractionHandler {
         }
     }
 
-
+    private boolean hasSelection() {
+        return this.currentlySelectedEntity != null;
+    }
 }

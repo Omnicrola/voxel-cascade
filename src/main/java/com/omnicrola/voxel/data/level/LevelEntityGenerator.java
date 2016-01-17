@@ -35,7 +35,7 @@ public class LevelEntityGenerator {
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl();
         EntityAiController entityAi = new EntityAiController();
-        EntityData entityData = EntityData.entity(motionGovernor, entityAi);
+        EntityData entityData = EntityData.entity(geometry, motionGovernor, entityAi);
 
         geometry.addControl(motionGovernor);
         geometry.addControl(entityAi);

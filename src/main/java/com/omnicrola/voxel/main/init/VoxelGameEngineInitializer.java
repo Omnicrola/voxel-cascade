@@ -37,6 +37,7 @@ public class VoxelGameEngineInitializer {
         addMouseMapping(inputManager, GameInputAction.MOUSE_SELECT, MouseInput.BUTTON_LEFT);
 
         addKeyMapping(inputManager, GameInputAction.SELECT, KeyInput.KEY_RETURN);
+        addKeyMapping(inputManager, GameInputAction.CLEAR_SELECTION, KeyInput.KEY_ESCAPE);
         addKeyMapping(inputManager, GameInputAction.ORDER_ATTACK, KeyInput.KEY_NUMPAD7);
         addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_NUMPAD8);
         addKeyMapping(inputManager, GameInputAction.ORDER_STOP, KeyInput.KEY_NUMPAD9);

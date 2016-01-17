@@ -85,5 +85,4 @@ public class MotionGovernorControl extends AbstractControl {
     protected void controlRender(RenderManager rm, ViewPort vp) {
 
     }
-
 }
