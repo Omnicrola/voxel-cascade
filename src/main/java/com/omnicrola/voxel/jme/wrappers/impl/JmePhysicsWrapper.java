@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.bullet.control.PhysicsControl;
+import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 
@@ -17,5 +18,15 @@ public class JmePhysicsWrapper implements IGamePhysics {
     @Override
     public void addControl(PhysicsControl physicsControl) {
         this.game.getPhysicsSpace().add(physicsControl);
+    }
+
+    @Override
+    public void remove(Spatial spatial) {
+        this.game.getPhysicsSpace().remove(spatial);
+    }
+
+    @Override
+    public void add(Spatial spatial) {
+        this.game.getPhysicsSpace().add(spatial);
     }
 }

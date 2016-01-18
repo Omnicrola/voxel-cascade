@@ -29,6 +29,15 @@ public class GeometryBuilder implements IGeometryBuilder {
         return cube;
     }
 
+    @Override
+    public Geometry box(float width, float height, float depth, ColorRGBA color) {
+        Box box = new Box(width, height, depth);
+        Geometry cube = new Geometry("cube", box);
+        Material material = createMaterial(color);
+        cube.setMaterial(material);
+        return cube;
+    }
+
     private Material createMaterial(ColorRGBA color) {
         Material material = new Material(assetManager, LIGHTED_MATERIAL);
         material.setBoolean("UseMaterialColors", true);
@@ -54,5 +63,4 @@ public class GeometryBuilder implements IGeometryBuilder {
         geometry.setMaterial(material);
         return geometry;
     }
-
 }

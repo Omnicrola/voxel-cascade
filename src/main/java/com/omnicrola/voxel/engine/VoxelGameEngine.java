@@ -22,6 +22,8 @@ public class VoxelGameEngine extends SimpleApplication {
     public void simpleInitApp() {
         this.stateManager.attach(this.bulletAppState);
         VoxelGameEngineInitializer.initializeGame(this.stateManager);
+        this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
+//        bulletAppState.setDebugEnabled(true);
     }
 
     @Override

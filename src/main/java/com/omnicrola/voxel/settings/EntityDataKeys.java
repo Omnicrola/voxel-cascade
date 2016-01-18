@@ -8,5 +8,7 @@ public class EntityDataKeys {
     public static final String IS_TERRAIN= "is-terrain";
     public static final String IS_SELECTABLE= "is-selectable";
 
-
+    public static final String PROJECTILE_OWNER_SPATIAL = "projectile-owner";
+    public static final String PROJECTILE_DAMAGE = "projectile-damage";
+    public static final String HITPOINTS = "hitpoints";
 }

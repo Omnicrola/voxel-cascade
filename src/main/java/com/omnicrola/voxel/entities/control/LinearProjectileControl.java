@@ -7,11 +7,11 @@ import com.jme3.math.Vector3f;
 /**
  * Created by omnic on 1/17/2016.
  */
-public class LinearProjectileControl extends GhostControl{
+public class LinearProjectileControl extends GhostControl {
     private Vector3f velocity;
 
     public LinearProjectileControl(Vector3f velocity) {
-        super(new SphereCollisionShape(0.3f));
+        super(new SphereCollisionShape(0.0125f));
 
         this.velocity = velocity;
     }

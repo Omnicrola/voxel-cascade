@@ -7,6 +7,8 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
+import com.omnicrola.voxel.engine.physics.CollisionController;
+import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
@@ -60,12 +62,14 @@ public class WeaponsController extends AbstractControl {
         this.gameContainer.world().attach(projectile);
 
         projectile.setUserData(EntityDataKeys.IS_PROJECTILE, true);
+        projectile.setUserData(EntityDataKeys.PROJECTILE_OWNER_SPATIAL, this.spatial);
+        projectile.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, 1.0f);
 
         LinearProjectileControl linearProjectileControl = new LinearProjectileControl(attackVector);
         projectile.addControl(linearProjectileControl);
         this.gameContainer.physics().addControl(linearProjectileControl);
 
-        System.out.println("spawn at: " + ourLocation);
+        projectile.addControl(new CollisionController(new ProjectileCollisionHandler(projectile, this.gameContainer.physics())));
     }
 
     @Override

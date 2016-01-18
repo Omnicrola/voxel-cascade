@@ -5,6 +5,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.entities.EntityDefinition;
+import com.omnicrola.voxel.engine.physics.CollisionController;
+import com.omnicrola.voxel.engine.physics.EntityCollisionHandler;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.entities.control.WeaponsController;
@@ -37,9 +39,12 @@ public class LevelEntityGenerator {
         WeaponsController weaponsController = new WeaponsController(gameContainer);
         EntityAiController entityAi = new EntityAiController(motionGovernor, weaponsController);
 
+        CollisionController collisionController = new CollisionController(new EntityCollisionHandler(geometry, gameContainer.physics()));
+
         geometry.addControl(entityAi);
         geometry.addControl(motionGovernor);
         geometry.addControl(weaponsController);
+        geometry.addControl(collisionController);
         geometry.setUserData(EntityDataKeys.IS_SELECTABLE, true);
 
         return geometry;
