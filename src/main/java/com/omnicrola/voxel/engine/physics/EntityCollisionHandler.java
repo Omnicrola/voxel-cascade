@@ -3,14 +3,15 @@ package com.omnicrola.voxel.engine.physics;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
  * Created by omnic on 1/17/2016.
  */
 public class EntityCollisionHandler extends AbstractCollisionHandler {
-    public EntityCollisionHandler(Geometry geometry, IGamePhysics physicsSpace) {
-        super(geometry, physicsSpace);
+    public EntityCollisionHandler(Spatial spatial, IGameWorld physicsSpace) {
+        super(spatial, physicsSpace);
     }
 
     @Override

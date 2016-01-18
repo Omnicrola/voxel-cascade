@@ -1,10 +1,9 @@
 package com.omnicrola.voxel.engine.physics;
 
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.control.ISpatialCollisionHandler;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
@@ -12,12 +11,12 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
  */
 public abstract class AbstractCollisionHandler implements ISpatialCollisionHandler {
 
-    protected Geometry parentSpatial;
-    private IGamePhysics physicsSpace;
+    protected Spatial parentSpatial;
+    private IGameWorld gameWorld;
 
-    public AbstractCollisionHandler(Geometry parentSpatial, IGamePhysics physicsSpace) {
+    public AbstractCollisionHandler(Spatial parentSpatial, IGameWorld gameWorld) {
         this.parentSpatial = parentSpatial;
-        this.physicsSpace = physicsSpace;
+        this.gameWorld = gameWorld;
     }
 
     protected boolean isProjectile(Spatial otherObject) {
@@ -41,7 +40,7 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
         if (parent != null) {
             parent.detachChild(this.parentSpatial);
         }
-        physicsSpace.remove(this.parentSpatial);
+        gameWorld.remove(this.parentSpatial);
     }
 
     protected boolean getBoolean(String dataKey) {

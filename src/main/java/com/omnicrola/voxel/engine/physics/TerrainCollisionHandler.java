@@ -1,15 +1,14 @@
 package com.omnicrola.voxel.engine.physics;
 
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
 /**
  * Created by omnic on 1/17/2016.
  */
 public class TerrainCollisionHandler extends AbstractCollisionHandler {
-    public TerrainCollisionHandler(Geometry voxel, IGamePhysics physicsSpace) {
-        super(voxel, physicsSpace);
+    public TerrainCollisionHandler(Spatial voxel, IGameWorld gameWorld) {
+        super(voxel, gameWorld);
     }
 
     @Override

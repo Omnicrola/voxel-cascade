@@ -9,7 +9,7 @@ import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
@@ -18,15 +18,11 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
  */
 public class VoxelTerrainGenerator {
     public static Node load(LevelData levelData, IGameContainer gameContainer) {
-        IGeometryBuilder geometryBuilder = gameContainer.world().build();
-        IGamePhysics gamePhysics = gameContainer.physics();
+        IGameWorld gameWorld = gameContainer.world();
+        IGeometryBuilder geometryBuilder = gameWorld.build();
 
         Node terrainRoot = new Node("Terrain");
-        generateVoxels(levelData, geometryBuilder, gamePhysics, terrainRoot);
-        return terrainRoot;
-    }
 
-    private static void generateVoxels(LevelData levelData, IGeometryBuilder geometryBuilder, IGamePhysics gamePhysics, Node terrainRoot) {
         Vec3iRead size = levelData.getTerrainSize();
         Vec3iRead offset = levelData.getTerrainOffset();
         int xSize = size.getX() / 2;
@@ -41,11 +37,16 @@ public class VoxelTerrainGenerator {
                     cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
                     RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
                     cube.addControl(rigidBodyControl);
-                    gamePhysics.addControl(rigidBodyControl);
-                    cube.addControl(new CollisionController(new TerrainCollisionHandler(cube, gamePhysics)));
+                    cube.addControl(new CollisionController(new TerrainCollisionHandler(cube, gameWorld)));
                     terrainRoot.attachChild(cube);
                 }
             }
         }
+
+        return terrainRoot;
+    }
+
+    private static void generateVoxels(LevelData levelData, IGeometryBuilder geometryBuilder, Node terrainRoot) {
+
     }
 }

@@ -1,8 +1,7 @@
 package com.omnicrola.voxel.engine.physics;
 
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
@@ -10,8 +9,8 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
  */
 public class ProjectileCollisionHandler extends AbstractCollisionHandler {
 
-    public ProjectileCollisionHandler(Geometry projectile, IGamePhysics physicsSpace) {
-        super(projectile, physicsSpace);
+    public ProjectileCollisionHandler(Spatial projectile, IGameWorld gameWorld) {
+        super(projectile, gameWorld);
     }
 
     @Override

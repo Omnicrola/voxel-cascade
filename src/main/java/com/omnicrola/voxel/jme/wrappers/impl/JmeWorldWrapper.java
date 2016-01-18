@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
+import com.jme3.bullet.PhysicsSpace;
+import com.jme3.bullet.control.PhysicsControl;
 import com.jme3.light.Light;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -14,21 +16,51 @@ import com.omnicrola.voxel.world.GeometryBuilder;
  */
 public class JmeWorldWrapper implements IGameWorld {
     private final GeometryBuilder geometryBuilder;
+    private final PhysicsSpace physicsSpace;
     private VoxelGameEngine game;
 
     public JmeWorldWrapper(VoxelGameEngine game) {
         this.game = game;
-        this.geometryBuilder = new GeometryBuilder(game.getAssetManager());
+        this.physicsSpace = game.getPhysicsSpace();
+        this.geometryBuilder = new GeometryBuilder(game.getAssetManager(), this);
     }
 
     @Override
-    public void attach(Spatial node) {
-        this.game.getRootNode().attachChild(node);
+    public void attach(Spatial spatial) {
+        this.game.getRootNode().attachChild(spatial);
+        addChildrenToPhysicsSpace(spatial);
+    }
+
+    private void addChildrenToPhysicsSpace(Spatial spatial) {
+        PhysicsControl control = spatial.getControl(PhysicsControl.class);
+        if (control != null) {
+            this.physicsSpace.add(spatial);
+        }
+        if (spatial instanceof Node) {
+            ((Node) spatial)
+                    .getChildren()
+                    .stream()
+                    .forEach(child -> addChildrenToPhysicsSpace(child));
+        }
     }
 
     @Override
-    public void remove(Spatial node) {
-        this.game.getRootNode().detachChild(node);
+    public void remove(Spatial spatial) {
+        this.game.getRootNode().detachChild(spatial);
+        removeChildrenFromPhysicsSpace(spatial);
+    }
+
+    private void removeChildrenFromPhysicsSpace(Spatial spatial) {
+        PhysicsControl control = spatial.getControl(PhysicsControl.class);
+        if (control != null) {
+            this.physicsSpace.remove(spatial);
+        }
+        if (spatial instanceof Node) {
+            ((Node) spatial)
+                    .getChildren()
+                    .stream()
+                    .forEach(child -> removeChildrenFromPhysicsSpace(child));
+        }
     }
 
     @Override
