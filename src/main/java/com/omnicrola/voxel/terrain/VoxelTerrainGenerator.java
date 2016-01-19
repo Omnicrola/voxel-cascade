@@ -31,7 +31,7 @@ public class VoxelTerrainGenerator {
         for (int x = -xSize; x < xSize; x++) {
             for (int y = -ySize; y < ySize; y++) {
                 for (int z = -zSize; z < zSize; z++) {
-                    Geometry cube = geometryBuilder.cube(0.5f, ColorRGBA.randomColor());
+                    Geometry cube = geometryBuilder.terrainVoxel(0.5f, ColorRGBA.randomColor());
                     cube.setName("voxel");
                     cube.setUserData(EntityDataKeys.IS_TERRAIN, true);
                     cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());

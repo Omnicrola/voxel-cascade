@@ -7,7 +7,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
-import com.omnicrola.voxel.data.entities.ProjectileDefinition;
+import com.omnicrola.voxel.data.xml.ProjectileDefinition;
+import com.omnicrola.voxel.data.xml.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
@@ -16,16 +17,20 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
  */
 public class WeaponsController extends AbstractControl {
 
-    private float weaponCooldown = 1.0f;
-    private float weaponRange = 3f;
+    private static final float SIXTY_SECONDS = 60f;
+
     private float timeSinceLastShot = 0f;
     private Geometry currentTarget;
     private IGameWorld gameWorld;
     private Vector3f muzzleOffset = new Vector3f(0, 1, 0);
+    private WeaponDefinition weaponDefinition;
     private ProjectileDefinition projectileDefinition;
 
-    public WeaponsController(IGameWorld gameWorld, ProjectileDefinition projectileDefinition) {
+    public WeaponsController(IGameWorld gameWorld,
+                             WeaponDefinition weaponDefinition,
+                             ProjectileDefinition projectileDefinition) {
         this.gameWorld = gameWorld;
+        this.weaponDefinition = weaponDefinition;
         this.projectileDefinition = projectileDefinition;
     }
 
@@ -33,7 +38,7 @@ public class WeaponsController extends AbstractControl {
         Vector3f ourLocation = this.spatial.getWorldTranslation();
         Vector3f targetLocation = target.getWorldTranslation();
         float distanceToTarget = targetLocation.subtract(ourLocation).length();
-        return distanceToTarget <= this.weaponRange;
+        return distanceToTarget <= this.weaponDefinition.getRange();
     }
 
     @Override
@@ -49,7 +54,8 @@ public class WeaponsController extends AbstractControl {
     }
 
     private boolean weaponHasCooledDown() {
-        return this.timeSinceLastShot >= this.weaponCooldown;
+        float timeBetweenShots = SIXTY_SECONDS / this.weaponDefinition.getRoundsPerMinute();
+        return this.timeSinceLastShot >= timeBetweenShots;
     }
 
     private void fireWeapon() {
@@ -71,7 +77,7 @@ public class WeaponsController extends AbstractControl {
     }
 
     public float getRange() {
-        return weaponRange;
+        return this.weaponDefinition.getRange();
     }
 
     public void clearTarget() {

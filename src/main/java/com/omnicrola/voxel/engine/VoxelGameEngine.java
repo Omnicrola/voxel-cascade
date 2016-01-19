@@ -5,6 +5,7 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
 import com.jme3.renderer.RenderManager;
+import com.omnicrola.voxel.data.xml.EntityDefinitionXmlAssetLoader;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
 
 /**
@@ -21,6 +22,7 @@ public class VoxelGameEngine extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         this.stateManager.attach(this.bulletAppState);
+        this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, "def.xml");
         VoxelGameEngineInitializer.initializeGame(this.stateManager);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
 //        bulletAppState.setDebugEnabled(true);

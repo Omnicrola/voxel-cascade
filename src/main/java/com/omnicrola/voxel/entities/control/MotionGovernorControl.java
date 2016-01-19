@@ -7,6 +7,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
+import com.omnicrola.voxel.data.xml.MovementDefinition;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -18,8 +19,10 @@ public class MotionGovernorControl extends AbstractControl {
 
     private final Vector3f masterSteering;
     private final float floorOffset;
+    private MovementDefinition movementDefinition;
 
-    public MotionGovernorControl() {
+    public MotionGovernorControl(MovementDefinition movementDefinition) {
+        this.movementDefinition = movementDefinition;
         this.masterSteering = new Vector3f();
         this.floorOffset = 0.5f;
     }

@@ -9,7 +9,6 @@ import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
-import com.omnicrola.voxel.world.GeometryBuilder;
 
 /**
  * Created by omnic on 1/15/2016.

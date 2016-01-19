@@ -1,13 +1,10 @@
 package com.omnicrola.voxel.input;
 
 import com.jme3.collision.CollisionResult;
-import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.entities.EntityDefinition;
-import com.omnicrola.voxel.data.level.LevelEntityGenerator;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -98,11 +95,8 @@ public class UserInteractionHandler {
     }
 
     public void activateSelection() {
-        WorldCursor worldCursor = getWorldCursor();
         if (this.isBuilding) {
-            ColorRGBA color = this.buildType == 1 ? ColorRGBA.Orange : ColorRGBA.Green;
-            Vector3f position = worldCursor.getWorldTranslation();
-            Spatial entity = LevelEntityGenerator.createEntity(new EntityDefinition(position, color), gameContainer);
+            Spatial entity = this.gameContainer.world().build().unit(this.buildType);
             this.sceneRoot.attachChild(entity);
             isBuilding = false;
         } else {
