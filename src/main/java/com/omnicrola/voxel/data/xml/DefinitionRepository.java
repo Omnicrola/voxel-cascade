@@ -36,4 +36,7 @@ public class DefinitionRepository {
         }
     }
 
+    XmlGameDefinitions getGameDefinitions() {
+        return gameDefinitions;
+    }
 }

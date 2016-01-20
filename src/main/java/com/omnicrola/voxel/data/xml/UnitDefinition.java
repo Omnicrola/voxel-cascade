@@ -20,32 +20,32 @@ public class UnitDefinition {
     public static final UnitDefinition NONE = new UnitDefinition();
 
     @XmlAttribute(name = "global-id", required = true)
-    private int globalId = -1;
+    protected int globalId = -1;
 
     @XmlElement(name = "color", required = true)
-    private ColorRGBA color;
+    protected ColorRGBA color;
 
     @XmlElement(name = "texture")
-    private String modelTexture = "Textures/test.png";
+    protected String modelTexture;
 
     @XmlElement(name = "model")
-    private String modelGeometry = "Models/test.obj";
+    protected String modelGeometry;
 
     @XmlElement(name = "hitpoints", required = true)
-    private float hitpoints;
+    protected float hitpoints;
 
     @XmlElement(name = "mass", required = true)
-    private float mass;
+    protected float mass;
 
     @XmlElement(name = "weapon-id")
-    private int weaponId;
+    protected int weaponId;
 
     @XmlElement(name = "movement")
-    private MovementDefinition movementDefinition;
+    protected MovementDefinition movementDefinition;
 
     @XmlElementWrapper(name = "controls")
-    @XmlElement(name = "control")
-    private List<IControlFactory> controlFactories = new ArrayList<>();
+    @XmlAnyElement(lax = true)
+    protected List<IControlFactory> controlFactories = new ArrayList<>();
 
     public UnitDefinition() {
     }

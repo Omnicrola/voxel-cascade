@@ -9,6 +9,7 @@ import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 /**
  * Created by omnic on 1/17/2016.
  */
+
 public class EntityAiControlFactory implements IControlFactory {
 
     private WeaponDefinition weaponDefinition;

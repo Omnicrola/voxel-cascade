@@ -15,11 +15,7 @@ public class GameXmlDataParser {
     private JAXBContext jaxbContext;
 
     public GameXmlDataParser() {
-        try {
-            this.jaxbContext = JAXBContext.newInstance();
-        } catch (JAXBException e) {
-            e.printStackTrace();
-        }
+        this.jaxbContext = getJaxContext();
     }
 
     public DefinitionRepository loadDefinitions(InputStream inputStream) {
@@ -36,10 +32,19 @@ public class GameXmlDataParser {
     public void writeDefinitions(OutputStream stream, XmlGameDefinitions gameDefinitions) {
         try {
             Marshaller marshaller = this.jaxbContext.createMarshaller();
+            marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
             marshaller.marshal(gameDefinitions, stream);
         } catch (JAXBException e) {
             e.printStackTrace();
         }
     }
 
+    private static JAXBContext getJaxContext() {
+        try {
+            return JAXBContext.newInstance(XmlGameDefinitions.class);
+        } catch (JAXBException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

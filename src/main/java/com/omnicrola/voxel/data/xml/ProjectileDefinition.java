@@ -14,22 +14,22 @@ public class ProjectileDefinition {
     public static final ProjectileDefinition NONE = new ProjectileDefinition();
 
     @XmlAttribute(name = "global-id", required = true)
-    private int globalId;
+    protected int globalId;
 
     @XmlElement(name = "model", required = true)
-    private String model;
+    protected String model;
 
     @XmlElement(name = "texture")
-    private String texture;
+    protected String texture;
 
     @XmlElement(name = "damage")
-    private float damage;
+    protected float damage;
 
     @XmlElement(name = "speed")
-    private float muzzleVelocity;
+    protected float muzzleVelocity;
 
     @XmlAttribute(name = "obeys-gravity")
-    private boolean obeysGravity = false;
+    protected boolean obeysGravity = false;
 
     public ProjectileDefinition() {
     }
