@@ -8,7 +8,7 @@ import com.omnicrola.voxel.jme.wrappers.IGameContainer;
  * Created by omnic on 1/16/2016.
  */
 public class LevelEntityGenerator {
-    public static Node create(LevelData levelData, IGameContainer gameContainer) {
+    public static Node create(LevelDefinition levelData, IGameContainer gameContainer) {
         Node entitiesRootNode = new Node();
 
         for (UnitPlacement unitPlacement : levelData.getUnitPlacements()) {

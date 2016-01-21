@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<Level>
+    <name>Basic</name>
+    <terrain-dimensions x="40" y="5" z="40"/>
+    <terrain-offset x="0" y="-5" z="0"/>
+    <unit-placements>
+        <placement>
+            <unit-id>1</unit-id>
+            <location x="0.0" y="0.0" z="0.0"/>
+        </placement>
+    </unit-placements>
+</Level>

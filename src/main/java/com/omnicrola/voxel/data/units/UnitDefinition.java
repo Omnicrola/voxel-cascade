@@ -89,7 +89,7 @@ public class UnitDefinition {
         return modelTexture;
     }
 
-    public List<IControlFactory> getControlFactories(DefinitionRepository repository) {
+    public List<IControlFactory> getControlFactories(UnitDefinitionRepository repository) {
         WeaponDefinition weaponDefinition = repository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = repository.getProjectileDefinition(weaponDefinition.getProjectileId());
 

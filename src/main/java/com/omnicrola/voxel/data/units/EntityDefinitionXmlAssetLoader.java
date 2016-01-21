@@ -2,6 +2,7 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetLoader;
+import com.omnicrola.voxel.data.GameXmlDataParser;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -20,7 +21,7 @@ public class EntityDefinitionXmlAssetLoader implements AssetLoader {
     @Override
     public Object load(AssetInfo assetInfo) throws IOException {
         InputStream inputStream = assetInfo.openStream();
-        DefinitionRepository definitionLibrary = this.definitionLoader
+        UnitDefinitionRepository definitionLibrary = this.definitionLoader
                 .loadDefinitions(inputStream);
         return definitionLibrary;
     }

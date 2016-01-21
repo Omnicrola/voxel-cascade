@@ -3,7 +3,7 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.data.level.LevelData;
+import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.level.LevelStateGenerator;
 import com.omnicrola.voxel.input.GameInputAction;
@@ -24,7 +24,7 @@ public class ActivePlayState extends VoxelGameState {
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             if (!isPressed) {
-                loadLevel(new LevelData());
+                loadLevel(new LevelDefinition());
             }
         }
     }
@@ -68,7 +68,7 @@ public class ActivePlayState extends VoxelGameState {
         addStateInput(GameInputAction.DEBUG_BUILD_2, new SetBuildSelectionListener(2, userInteractionHandler));
     }
 
-    public void loadLevel(LevelData levelData) {
+    public void loadLevel(LevelDefinition levelData) {
         this.stateRootNode.detachAllChildren();
         this.currentLevelState = LevelStateGenerator.create(levelData, this.gameContainer);
         this.userInteractionHandler.setLevel(this.currentLevelState);

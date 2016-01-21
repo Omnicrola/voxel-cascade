@@ -7,10 +7,10 @@ import java.util.function.Predicate;
 /**
  * Created by Eric on 1/18/2016.
  */
-public class DefinitionRepository {
+public class UnitDefinitionRepository {
     private XmlGameDefinitions gameDefinitions;
 
-    public DefinitionRepository(XmlGameDefinitions gameDefinitions) {
+    public UnitDefinitionRepository(XmlGameDefinitions gameDefinitions) {
         this.gameDefinitions = gameDefinitions;
     }
 

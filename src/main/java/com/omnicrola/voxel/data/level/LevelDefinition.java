@@ -12,7 +12,7 @@ import java.util.List;
  * Created by omnic on 1/16/2016.
  */
 @XmlRootElement(name = "Level")
-public class LevelData {
+public class LevelDefinition {
 
     @XmlElement(name = "name", required = true)
     protected String name;
@@ -27,7 +27,7 @@ public class LevelData {
     @XmlElement(name = "placement")
     protected List<UnitPlacement> unitPlacements;
 
-    public LevelData() {
+    public LevelDefinition() {
     }
 
     public String getName() {

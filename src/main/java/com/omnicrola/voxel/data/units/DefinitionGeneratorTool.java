@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
+import com.omnicrola.voxel.data.GameXmlDataParser;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
@@ -8,7 +10,7 @@ import java.util.List;
 /**
  * Created by Eric on 1/20/2016.
  */
-public class DefinitionGenerator {
+public class DefinitionGeneratorTool {
 
     public static void main(String[] args) throws Exception {
         File outputFile = new File("src/assets/Data/core-definitions.def.units");

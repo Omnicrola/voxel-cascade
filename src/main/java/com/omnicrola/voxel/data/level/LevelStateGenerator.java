@@ -12,7 +12,7 @@ import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
  * Created by omnic on 1/16/2016.
  */
 public class LevelStateGenerator {
-    public static LevelState create(LevelData levelData, IGameContainer gameContainer) {
+    public static LevelState create(LevelDefinition levelData, IGameContainer gameContainer) {
         Node terrain = VoxelTerrainGenerator.load(levelData, gameContainer);
         WorldCursor worldCursor = createWorldCursor(gameContainer, terrain);
         Node entities = LevelEntityGenerator.create(levelData, gameContainer);

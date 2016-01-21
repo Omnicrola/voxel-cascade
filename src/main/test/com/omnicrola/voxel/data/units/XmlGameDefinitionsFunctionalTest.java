@@ -2,6 +2,7 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.omnicrola.util.TestTools;
+import com.omnicrola.voxel.data.GameXmlDataParser;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -68,7 +69,7 @@ public class XmlGameDefinitionsFunctionalTest extends TestTools {
     private void writeAndReloadDefinitions(XmlGameDefinitions xmlGameDefinitions) throws FileNotFoundException {
         gameXmlDataParser.writeDefinitions(new FileOutputStream(this.testFile), xmlGameDefinitions);
 
-        DefinitionRepository definitionRepository = gameXmlDataParser.loadDefinitions(new FileInputStream(this.testFile));
+        UnitDefinitionRepository definitionRepository = gameXmlDataParser.loadDefinitions(new FileInputStream(this.testFile));
         XmlGameDefinitions actualDefinitions = definitionRepository.getGameDefinitions();
 
         checkDefinitions(xmlGameDefinitions, actualDefinitions);

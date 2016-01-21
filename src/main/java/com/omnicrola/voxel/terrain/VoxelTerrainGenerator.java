@@ -5,7 +5,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3iRead;
-import com.omnicrola.voxel.data.level.LevelData;
+import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -17,7 +17,7 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
  * Created by omnic on 1/16/2016.
  */
 public class VoxelTerrainGenerator {
-    public static Node load(LevelData levelData, IGameContainer gameContainer) {
+    public static Node load(LevelDefinition levelData, IGameContainer gameContainer) {
         IGameWorld gameWorld = gameContainer.world();
         IGeometryBuilder geometryBuilder = gameWorld.build();
 
@@ -46,7 +46,7 @@ public class VoxelTerrainGenerator {
         return terrainRoot;
     }
 
-    private static void generateVoxels(LevelData levelData, IGeometryBuilder geometryBuilder, Node terrainRoot) {
+    private static void generateVoxels(LevelDefinition levelData, IGeometryBuilder geometryBuilder, Node terrainRoot) {
 
     }
 }
