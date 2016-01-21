@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data.xml;
+package com.omnicrola.voxel.data.units;
 
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetLoader;

@@ -1,9 +1,9 @@
 package com.omnicrola.voxel.entities.control;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.xml.MovementDefinition;
-import com.omnicrola.voxel.data.xml.ProjectileDefinition;
-import com.omnicrola.voxel.data.xml.WeaponDefinition;
+import com.omnicrola.voxel.data.units.MovementDefinition;
+import com.omnicrola.voxel.data.units.ProjectileDefinition;
+import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
 /**

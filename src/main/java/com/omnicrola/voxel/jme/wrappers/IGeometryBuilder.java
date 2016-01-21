@@ -4,7 +4,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.xml.ProjectileDefinition;
+import com.omnicrola.voxel.data.units.ProjectileDefinition;
 
 /**
  * Created by omnic on 1/16/2016.

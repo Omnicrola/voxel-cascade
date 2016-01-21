@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data.xml;
+package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;

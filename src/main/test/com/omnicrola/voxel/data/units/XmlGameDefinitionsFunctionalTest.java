@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data.xml;
+package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.omnicrola.util.TestTools;
@@ -27,7 +27,7 @@ public class XmlGameDefinitionsFunctionalTest extends TestTools {
     @Before
     public void setup() {
         this.gameXmlDataParser = new GameXmlDataParser();
-        this.testFile = new File("xml-test.xml");
+        this.testFile = new File("units-test.units");
         this.testFile.deleteOnExit();
     }
 

@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data.xml;
+package com.omnicrola.voxel.data.units;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

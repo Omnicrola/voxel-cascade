@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data.xml;
+package com.omnicrola.voxel.data.units;
 
 /**
  * Created by Eric on 1/20/2016.

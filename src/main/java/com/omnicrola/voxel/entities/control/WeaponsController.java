@@ -7,8 +7,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
-import com.omnicrola.voxel.data.xml.ProjectileDefinition;
-import com.omnicrola.voxel.data.xml.WeaponDefinition;
+import com.omnicrola.voxel.data.units.ProjectileDefinition;
+import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 

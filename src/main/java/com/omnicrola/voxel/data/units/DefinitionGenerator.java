@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.data.xml;
+package com.omnicrola.voxel.data.units;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -11,7 +11,7 @@ import java.util.List;
 public class DefinitionGenerator {
 
     public static void main(String[] args) throws Exception {
-        File outputFile = new File("src/assets/Data/core-definitions.def.xml");
+        File outputFile = new File("src/assets/Data/core-definitions.def.units");
         GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
         FileOutputStream stream = new FileOutputStream(outputFile);
 

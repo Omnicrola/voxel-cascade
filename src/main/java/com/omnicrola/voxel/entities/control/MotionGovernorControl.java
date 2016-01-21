@@ -7,7 +7,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
-import com.omnicrola.voxel.data.xml.MovementDefinition;
+import com.omnicrola.voxel.data.units.MovementDefinition;
 
 /**
  * Created by omnic on 1/16/2016.
