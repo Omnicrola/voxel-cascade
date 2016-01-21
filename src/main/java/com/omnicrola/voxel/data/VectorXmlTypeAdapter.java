@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.adapters.XmlAdapter;
 /**
  * Created by Eric on 1/20/2016.
  */
-public class VectorXmlAdapter extends XmlAdapter<SerialVector3f, Vector3f> {
+public class VectorXmlTypeAdapter extends XmlAdapter<SerialVector3f, Vector3f> {
 
     @Override
     public SerialVector3f marshal(Vector3f jmeVector) throws Exception {

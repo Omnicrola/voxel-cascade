@@ -3,7 +3,7 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Node;
-import com.omnicrola.voxel.data.level.LevelDefinition;
+import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.GLabel;
@@ -19,7 +19,7 @@ public class MainMenuState extends VoxelGameState {
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             gameContainer.disableState(MainMenuState.class);
-            activePlayState.loadLevel(new LevelDefinition());
+            activePlayState.loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
             gameContainer.enableState(ActivePlayState.class);
         }
     }

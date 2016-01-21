@@ -9,15 +9,18 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.UUID;
 
 /**
  * Created by Eric on 1/20/2016.
  */
 public class LevelGeneratorTool {
 
+    public static final UUID BASIC_LEVEL_UUID = UUID.fromString("4ae9ecf5-25e0-477a-9662-46dda8f095c9");
+
     public static void main(String[] args) throws FileNotFoundException {
         GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
-        File outputFile = new File("src/assets/Data/basic.level");
+        File outputFile = new File("src/assets/Data/levels/basic.level");
         LevelDefinition levelDefinition = createBasicLevelDefinition();
         gameXmlDataParser.writeLevel(new FileOutputStream(outputFile), levelDefinition);
     }
@@ -25,6 +28,7 @@ public class LevelGeneratorTool {
     private static LevelDefinition createBasicLevelDefinition() {
         LevelDefinition levelDefinition = new LevelDefinition();
         levelDefinition.name = "Basic";
+        levelDefinition.uuid = BASIC_LEVEL_UUID;
         levelDefinition.terrainOffset = new Vec3i(0, -5, 0);
         levelDefinition.terrainSize = new Vec3i(40, 5, 40);
         levelDefinition.unitPlacements = createBasicUnits();

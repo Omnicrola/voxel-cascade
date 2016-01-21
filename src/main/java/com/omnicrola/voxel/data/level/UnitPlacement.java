@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.data.VectorXmlAdapter;
+import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -18,7 +18,7 @@ public class UnitPlacement {
     protected int unitId;
 
     @XmlElement(name = "location", required = true)
-    @XmlJavaTypeAdapter(VectorXmlAdapter.class)
+    @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
     protected Vector3f location;
 
     public int getUnitId() {

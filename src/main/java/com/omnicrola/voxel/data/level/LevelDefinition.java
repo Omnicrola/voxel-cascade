@@ -2,11 +2,14 @@ package com.omnicrola.voxel.data.level;
 
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.util.Vec3iRead;
+import com.omnicrola.voxel.data.UuidXmlTypeAdapter;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -16,6 +19,10 @@ public class LevelDefinition {
 
     @XmlElement(name = "name", required = true)
     protected String name;
+
+    @XmlElement(name = "global-id")
+    @XmlJavaTypeAdapter(UuidXmlTypeAdapter.class)
+    protected UUID uuid;
 
     @XmlElement(name = "terrain-dimensions", required = true)
     protected Vec3i terrainSize = new Vec3i(40, 5, 40);
@@ -44,5 +51,9 @@ public class LevelDefinition {
 
     public List<UnitPlacement> getUnitPlacements() {
         return unitPlacements;
+    }
+
+    public UUID getUuid() {
+        return uuid;
     }
 }

@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<GameDefinitions>
+    <units>
+        <unit global-id="1" weapon-id="1000">
+            <name>Generic Tank AA-11</name>
+            <description>It resembles every tank, and yet is less than half as effective as less than half of them.</description>
+            <color>
+                <r>0.0</r>
+                <g>1.0</g>
+                <b>0.0</b>
+                <a>1.0</a>
+            </color>
+            <texture>test.png</texture>
+            <model>test.obj</model>
+            <hitpoints>100.0</hitpoints>
+            <mass>1.0</mass>
+            <movement max-velocity="1.0" turnspeed="1.0" acceleration="0.01"/>
+            <controls/>
+        </unit>
+    </units>
+    <weapons>
+        <weapon global-id="1000" projectile-id="2000">
+            <name>Slug Thrower</name>
+            <description>Slightly more effective than garden slugs</description>
+            <range>5.0</range>
+            <rounds-per-minute>60.0</rounds-per-minute>
+        </weapon>
+    </weapons>
+    <projectiles>
+        <projectile global-id="2000" obeys-gravity="false">
+            <model>sphere12.obj</model>
+            <texture>test.bmp</texture>
+            <damage>1.0</damage>
+            <speed>5.0</speed>
+        </projectile>
+    </projectiles>
+</GameDefinitions>

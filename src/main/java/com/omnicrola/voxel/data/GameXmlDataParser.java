@@ -10,6 +10,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 import java.io.*;
+import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -40,10 +41,12 @@ public class GameXmlDataParser {
         return jaxbContext.createUnmarshaller();
     }
 
-    public LevelDefinition loadLevels(String levelPath) {
+    public LevelDefinitionRepository loadLevels(String levelPath) {
         try {
+            levelPath = adjustRelativePath(levelPath);
             Unmarshaller unmarshaller = getUnmarshaller();
-            List<LevelDefinition> levels = Arrays.asList(new File(levelPath).listFiles())
+            List<File> allFilesInDirectory = Arrays.asList(new File(levelPath).listFiles());
+            List<LevelDefinition> levels = allFilesInDirectory
                     .stream()
                     .filter(f -> f.getName().endsWith(".level"))
                     .map(f -> getFileInputStream(f))
@@ -54,6 +57,13 @@ public class GameXmlDataParser {
             e.printStackTrace();
         }
         return null;
+    }
+
+    private String adjustRelativePath(String levelPath) {
+        URL systemResource = ClassLoader.getSystemResource("");
+        String jarRoot = systemResource.getPath();
+        levelPath = jarRoot + levelPath;
+        return levelPath;
     }
 
     private LevelDefinition loadSingleLevel(InputStream stream, Unmarshaller unmarshaller) {
@@ -107,5 +117,6 @@ public class GameXmlDataParser {
             return null;
         }
     }
+
 
 }

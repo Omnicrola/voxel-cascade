@@ -6,6 +6,7 @@ import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.engine.states.LoadingState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
@@ -22,7 +23,7 @@ public class VoxelGameEngineInitializer {
 
     private static void createStates(AppStateManager stateManager) {
         LoadingState loadingState = new LoadingState();
-        ActivePlayState playState = new ActivePlayState();
+        ActivePlayState playState = new ActivePlayState(new GameXmlDataParser());
         MainMenuState mainMenuState = new MainMenuState(playState);
 
         stateManager.attach(loadingState);

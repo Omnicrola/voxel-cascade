@@ -3,28 +3,33 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.data.level.LevelDefinition;
-import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.data.level.LevelStateGenerator;
+import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.UserInteractionHandler;
 import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
 import com.omnicrola.voxel.ui.UserInterfaceGenerator;
+
+import java.util.UUID;
 
 /**
  * Created by omnic on 1/15/2016.
  */
 public class ActivePlayState extends VoxelGameState {
 
+    private GameXmlDataParser gameDataParser;
+    private LevelDefinitionRepository levelDefinitions;
+
     private class DebugReloadListener implements ActionListener {
 
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             if (!isPressed) {
-                loadLevel(new LevelDefinition());
+                loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
             }
         }
     }
@@ -42,13 +47,16 @@ public class ActivePlayState extends VoxelGameState {
     private IGameContainer gameContainer;
     private LevelState currentLevelState;
 
-    public ActivePlayState() {
+    public ActivePlayState(GameXmlDataParser gameDataParser) {
         super("Active Play");
+        this.gameDataParser = gameDataParser;
     }
 
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
+
+        this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
 
         this.userInteractionHandler = new UserInteractionHandler(this.stateRootNode, gameContainer);
         UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
@@ -68,9 +76,10 @@ public class ActivePlayState extends VoxelGameState {
         addStateInput(GameInputAction.DEBUG_BUILD_2, new SetBuildSelectionListener(2, userInteractionHandler));
     }
 
-    public void loadLevel(LevelDefinition levelData) {
+    public void loadLevel(UUID levelId) {
         this.stateRootNode.detachAllChildren();
-        this.currentLevelState = LevelStateGenerator.create(levelData, this.gameContainer);
+        LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
+        this.currentLevelState = LevelStateGenerator.create(levelDefinition, this.gameContainer);
         this.userInteractionHandler.setLevel(this.currentLevelState);
 
         this.stateRootNode.attachChild(this.currentLevelState.getTerrain());

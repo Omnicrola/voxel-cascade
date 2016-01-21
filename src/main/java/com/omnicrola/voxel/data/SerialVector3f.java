@@ -12,11 +12,14 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class SerialVector3f {
     @XmlAttribute(name = "x", required = true)
-    private final float x;
+    private float x;
     @XmlAttribute(name = "y", required = true)
-    private final float y;
+    private float y;
     @XmlAttribute(name = "z", required = true)
-    private final float z;
+    private float z;
+
+    public SerialVector3f() {
+    }
 
     public SerialVector3f(Vector3f jmeVector) {
         this.x = jmeVector.getX();
