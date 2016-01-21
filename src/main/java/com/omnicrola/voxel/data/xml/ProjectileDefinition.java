@@ -19,13 +19,13 @@ public class ProjectileDefinition {
     @XmlElement(name = "model", required = true)
     protected String model;
 
-    @XmlElement(name = "texture")
+    @XmlElement(name = "texture", required = true)
     protected String texture;
 
-    @XmlElement(name = "damage")
+    @XmlElement(name = "damage", required = true)
     protected float damage;
 
-    @XmlElement(name = "speed")
+    @XmlElement(name = "speed", required = true)
     protected float muzzleVelocity;
 
     @XmlAttribute(name = "obeys-gravity")

@@ -14,14 +14,14 @@ import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
  * Created by omnic on 1/15/2016.
  */
 public class JmeWorldWrapper implements IGameWorld {
-    private final GeometryBuilder geometryBuilder;
+    private final EntityBuilder geometryBuilder;
     private final PhysicsSpace physicsSpace;
     private VoxelGameEngine game;
 
     public JmeWorldWrapper(VoxelGameEngine game) {
         this.game = game;
         this.physicsSpace = game.getPhysicsSpace();
-        this.geometryBuilder = new GeometryBuilder(game.getAssetManager(), this);
+        this.geometryBuilder = new EntityBuilder(game.getAssetManager(), this);
     }
 
     @Override

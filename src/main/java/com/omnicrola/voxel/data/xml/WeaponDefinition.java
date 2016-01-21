@@ -17,6 +17,12 @@ public class WeaponDefinition {
     @XmlAttribute(name="projectile-id", required = true)
     protected int projectileId;
 
+    @XmlElement(name="name",required = true)
+    protected String name;
+
+    @XmlElement(name="description")
+    protected String description;
+
     @XmlElement(name="range",required = true)
     protected float range;
 
@@ -38,5 +44,13 @@ public class WeaponDefinition {
 
     public int getProjectileId() {
         return projectileId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 }

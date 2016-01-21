@@ -22,6 +22,16 @@ public class UnitDefinition {
     @XmlAttribute(name = "global-id", required = true)
     protected int globalId = -1;
 
+
+    @XmlAttribute(name = "weapon-id")
+    protected int weaponId;
+
+    @XmlElement(name="name",required = true)
+    protected String name;
+
+    @XmlElement(name="description")
+    protected String description;
+
     @XmlElement(name = "color", required = true)
     protected ColorRGBA color;
 
@@ -37,10 +47,7 @@ public class UnitDefinition {
     @XmlElement(name = "mass", required = true)
     protected float mass;
 
-    @XmlElement(name = "weapon-id")
-    protected int weaponId;
-
-    @XmlElement(name = "movement")
+    @XmlElement(name = "movement", required = true)
     protected MovementDefinition movementDefinition;
 
     @XmlElementWrapper(name = "controls")
@@ -64,6 +71,14 @@ public class UnitDefinition {
 
     public String getModel() {
         return modelGeometry;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public float getHitpoints() {

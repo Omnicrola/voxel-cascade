@@ -22,14 +22,14 @@ import com.omnicrola.voxel.settings.GameConstants;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class GeometryBuilder implements IGeometryBuilder {
+public class EntityBuilder implements IGeometryBuilder {
     private static final String LIGHTED_MATERIAL = "Common/MatDefs/Light/Lighting.j3md";
 
     private final DefinitionRepository definitionRepository;
     private AssetManager assetManager;
     private JmeWorldWrapper worldWrapper;
 
-    public GeometryBuilder(AssetManager assetManager, JmeWorldWrapper jmeWorldWrapper) {
+    public EntityBuilder(AssetManager assetManager, JmeWorldWrapper jmeWorldWrapper) {
         this.assetManager = assetManager;
         this.definitionRepository = (DefinitionRepository) assetManager.loadAsset(GameConstants.DEFINITION_REPOSITORY_FILE);
         this.worldWrapper = jmeWorldWrapper;

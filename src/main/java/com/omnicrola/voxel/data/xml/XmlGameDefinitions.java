@@ -15,12 +15,12 @@ public class XmlGameDefinitions {
     @XmlElement(name = "unit")
     protected List<UnitDefinition> units = new ArrayList<>();
 
-    @XmlElementWrapper(name = "projectiles")
-    @XmlElement(name = "projectile")
-    protected List<ProjectileDefinition> projectiles = new ArrayList<>();
-
     @XmlElementWrapper(name = "weapons")
     @XmlElement(name = "weapon")
     protected List<WeaponDefinition> weapons = new ArrayList<>();
+
+    @XmlElementWrapper(name = "projectiles")
+    @XmlElement(name = "projectile")
+    protected List<ProjectileDefinition> projectiles = new ArrayList<>();
 
 }
