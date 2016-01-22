@@ -14,7 +14,7 @@ public interface IGameWorld {
 
     void remove(Spatial node);
 
-    IGeometryBuilder build();
+    IEntityBuilder build();
 
     WorldCursor createCursor(Node terrain);
 

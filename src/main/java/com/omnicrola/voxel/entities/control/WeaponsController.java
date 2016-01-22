@@ -7,6 +7,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
@@ -65,7 +66,9 @@ public class WeaponsController extends AbstractControl {
         Vector3f ourLocation = this.spatial.getWorldTranslation();
         Vector3f attackVector = VectorUtil.scale(targetLocation.subtract(ourLocation).normalize(), 5f);
 
-        Spatial projectile = this.gameWorld.build().projectile(this.projectileDefinition, attackVector);
+        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+
+        Spatial projectile = this.gameWorld.build().projectile(this.projectileDefinition, attackVector, teamData);
         projectile.setUserData(EntityDataKeys.PROJECTILE_OWNER_SPATIAL, this.spatial);
         projectile.setLocalTranslation(ourLocation);
         this.gameWorld.attach(projectile);

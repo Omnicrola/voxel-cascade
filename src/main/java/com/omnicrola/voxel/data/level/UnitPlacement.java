@@ -17,6 +17,9 @@ public class UnitPlacement {
     @XmlElement(name = "unit-id", required = true)
     protected int unitId;
 
+    @XmlElement(name = "team-id", required = true)
+    protected int teamId;
+
     @XmlElement(name = "location", required = true)
     @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
     protected Vector3f location;
@@ -27,5 +30,9 @@ public class UnitPlacement {
 
     public Vector3f getLocation() {
         return location;
+    }
+
+    public int getTeamId() {
+        return teamId;
     }
 }

@@ -8,7 +8,7 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
+import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -63,7 +63,7 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     @Override
-    public IGeometryBuilder build() {
+    public IEntityBuilder build() {
         return this.geometryBuilder;
     }
 

@@ -96,7 +96,7 @@ public class UserInteractionHandler {
 
     public void activateSelection() {
         if (this.isBuilding) {
-            Spatial entity = this.gameContainer.world().build().unit(this.buildType);
+            Spatial entity = this.gameContainer.world().build().unit(this.buildType, this.currentLevelState.getPlayerTeam());
             this.sceneRoot.attachChild(entity);
             isBuilding = false;
         } else {

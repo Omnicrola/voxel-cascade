@@ -10,7 +10,7 @@ import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
+import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
@@ -19,7 +19,7 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
 public class VoxelTerrainGenerator {
     public static Node load(LevelDefinition levelData, IGameContainer gameContainer) {
         IGameWorld gameWorld = gameContainer.world();
-        IGeometryBuilder geometryBuilder = gameWorld.build();
+        IEntityBuilder geometryBuilder = gameWorld.build();
 
         Node terrainRoot = new Node("Terrain");
 
@@ -46,7 +46,7 @@ public class VoxelTerrainGenerator {
         return terrainRoot;
     }
 
-    private static void generateVoxels(LevelDefinition levelData, IGeometryBuilder geometryBuilder, Node terrainRoot) {
+    private static void generateVoxels(LevelDefinition levelData, IEntityBuilder geometryBuilder, Node terrainRoot) {
 
     }
 }

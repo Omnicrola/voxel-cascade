@@ -79,11 +79,11 @@ public class ActivePlayState extends VoxelGameState {
     public void loadLevel(UUID levelId) {
         this.stateRootNode.detachAllChildren();
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
-        this.currentLevelState = LevelStateGenerator.create(levelDefinition, this.gameContainer);
+        this.currentLevelState = LevelStateFactory.create(levelDefinition, this.gameContainer);
         this.userInteractionHandler.setLevel(this.currentLevelState);
 
         this.stateRootNode.attachChild(this.currentLevelState.getTerrain());
-        this.stateRootNode.attachChild(this.currentLevelState.getEntities());
+        this.stateRootNode.attachChild(this.currentLevelState.getUnits());
         this.stateRootNode.attachChild(this.currentLevelState.getWorldCursor());
         this.gameContainer.world().addLight(this.currentLevelState.getSun());
     }

@@ -8,6 +8,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
@@ -15,14 +16,14 @@ import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
-import com.omnicrola.voxel.jme.wrappers.IGeometryBuilder;
+import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
  * Created by omnic on 1/16/2016.
  */
-public class EntityBuilder implements IGeometryBuilder {
+public class EntityBuilder implements IEntityBuilder {
     private static final String LIGHTED_MATERIAL = "Common/MatDefs/Light/Lighting.j3md";
 
     private final UnitDefinitionRepository definitionRepository;
@@ -45,7 +46,7 @@ public class EntityBuilder implements IGeometryBuilder {
     }
 
     @Override
-    public Spatial unit(int definitionId) {
+    public Spatial unit(int definitionId, TeamData teamData) {
         UnitDefinition entityDefinition = this.definitionRepository.getUnitDefinition(definitionId);
         if (entityDefinition == UnitDefinition.NONE) {
             throw new IllegalArgumentException("Entity with ID of " + definitionId + " does not exist");
@@ -60,12 +61,13 @@ public class EntityBuilder implements IGeometryBuilder {
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.HITPOINTS, entityDefinition.getHitpoints());
+        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
         return spatial;
     }
 
 
     @Override
-    public Spatial projectile(ProjectileDefinition projectileDefinition, Vector3f attackVector) {
+    public Spatial projectile(ProjectileDefinition projectileDefinition, Vector3f attackVector, TeamData teamData) {
         Spatial projectile = getModel(projectileDefinition.getModel());
         Texture texture = getTexture(projectileDefinition.getTexture());
         Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
@@ -74,6 +76,7 @@ public class EntityBuilder implements IGeometryBuilder {
 
         projectile.setUserData(EntityDataKeys.IS_PROJECTILE, true);
         projectile.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, projectileDefinition.getDamage());
+        projectile.setUserData(EntityDataKeys.TEAM_DATA, teamData);
         projectile.addControl(new CollisionController(new ProjectileCollisionHandler(projectile, this.worldWrapper)));
         LinearProjectileControl linearProjectileControl = new LinearProjectileControl(attackVector);
         projectile.addControl(linearProjectileControl);
@@ -86,6 +89,10 @@ public class EntityBuilder implements IGeometryBuilder {
     }
 
     private Spatial getModel(String modelName) {
+        if (modelName.equals("CUBE")) {
+            Box box = new Box(0.9f, 0.9f, 0.9f);
+            return new Geometry("cube", box);
+        }
         return this.assetManager.loadModel("Models/" + modelName);
     }
 

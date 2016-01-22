@@ -17,6 +17,8 @@ import java.util.UUID;
 public class LevelGeneratorTool {
 
     public static final UUID BASIC_LEVEL_UUID = UUID.fromString("4ae9ecf5-25e0-477a-9662-46dda8f095c9");
+    public static final int PLAYER_TEAM_ID = 1;
+    public static final int OPPONENT_TEAM_ID = 2;
 
     public static void main(String[] args) throws FileNotFoundException {
         GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
@@ -37,14 +39,24 @@ public class LevelGeneratorTool {
 
     private static ArrayList<UnitPlacement> createBasicUnits() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
-        unitPlacements.add(createUnitPlacement());
+
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 1));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 2));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 3));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 4));
+
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 1));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 2));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 3));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 4));
         return unitPlacements;
     }
 
-    private static UnitPlacement createUnitPlacement() {
+    private static UnitPlacement createUnitPlacement(int teamId, float x, float y, float z) {
         UnitPlacement unitPlacement = new UnitPlacement();
         unitPlacement.unitId = UnitGenerator.DEFAULT_TANK_ID;
-        unitPlacement.location = new Vector3f(0, 0, 0);
+        unitPlacement.teamId = teamId;
+        unitPlacement.location = new Vector3f(x, y, z);
         return unitPlacement;
     }
 }

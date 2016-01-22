@@ -8,6 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -34,6 +35,10 @@ public class LevelDefinition {
     @XmlElement(name = "placement")
     protected List<UnitPlacement> unitPlacements;
 
+    @XmlElementWrapper(name = "teams")
+    @XmlElement(name = "team")
+    private List<TeamDefinition> teams = new ArrayList<>();
+
     public LevelDefinition() {
     }
 
@@ -55,5 +60,9 @@ public class LevelDefinition {
 
     public UUID getUuid() {
         return uuid;
+    }
+
+    public List<TeamDefinition> getTeams() {
+        return teams;
     }
 }
