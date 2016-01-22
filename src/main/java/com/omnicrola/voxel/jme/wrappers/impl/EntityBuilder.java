@@ -8,9 +8,9 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
-import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
-import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
+import com.omnicrola.voxel.data.units.UnitDefinition;
+import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
@@ -50,8 +50,8 @@ public class EntityBuilder implements IGeometryBuilder {
         if (entityDefinition == UnitDefinition.NONE) {
             throw new IllegalArgumentException("Entity with ID of " + definitionId + " does not exist");
         }
-        Spatial spatial = this.assetManager.loadModel(entityDefinition.getModel());
-        Texture texture = this.assetManager.loadTexture(entityDefinition.getTexture());
+        Spatial spatial = getModel(entityDefinition.getModel());
+        Texture texture = getTexture(entityDefinition.getTexture());
         Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
         material.setTexture("DiffuseMap", texture);
         spatial.setMaterial(material);
@@ -63,10 +63,11 @@ public class EntityBuilder implements IGeometryBuilder {
         return spatial;
     }
 
+
     @Override
     public Spatial projectile(ProjectileDefinition projectileDefinition, Vector3f attackVector) {
-        Spatial projectile = this.assetManager.loadModel(projectileDefinition.getModel());
-        Texture texture = assetManager.loadTexture(projectileDefinition.getTexture());
+        Spatial projectile = getModel(projectileDefinition.getModel());
+        Texture texture = getTexture(projectileDefinition.getTexture());
         Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
         material.setTexture("DiffuseMap", texture);
         projectile.setMaterial(material);
@@ -78,6 +79,14 @@ public class EntityBuilder implements IGeometryBuilder {
         projectile.addControl(linearProjectileControl);
 
         return projectile;
+    }
+
+    private Texture getTexture(String texture) {
+        return this.assetManager.loadTexture("Textures/" + texture);
+    }
+
+    private Spatial getModel(String modelName) {
+        return this.assetManager.loadModel("Models/" + modelName);
     }
 
     private Material createMaterial(ColorRGBA color) {
