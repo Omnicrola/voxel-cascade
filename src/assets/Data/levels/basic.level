@@ -46,4 +46,8 @@
             <location x="-5.0" y="0.0" z="4.0"/>
         </placement>
     </unit-placements>
+    <teams>
+        <team team-id="1"/>
+        <team team-id="2"/>
+    </teams>
 </Level>

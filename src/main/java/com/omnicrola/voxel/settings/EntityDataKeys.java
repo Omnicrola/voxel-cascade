@@ -9,7 +9,6 @@ public class EntityDataKeys {
     public static final String IS_SELECTABLE= "is-selectable";
     public static final String TEAM_DATA = "team-id";
 
-    public static final String PROJECTILE_OWNER_SPATIAL = "projectile-owner";
     public static final String PROJECTILE_DAMAGE = "projectile-damage";
     public static final String HITPOINTS = "hitpoints";
 }

@@ -1,11 +1,16 @@
 package com.omnicrola.voxel.data;
 
+import com.jme3.export.JmeExporter;
+import com.jme3.export.JmeImporter;
+import com.jme3.export.Savable;
 import com.omnicrola.voxel.data.level.TeamDefinition;
+
+import java.io.IOException;
 
 /**
  * Created by Eric on 1/21/2016.
  */
-public class TeamData {
+public class TeamData implements Savable{
 
     private int teamId;
 
@@ -27,5 +32,13 @@ public class TeamData {
     @Override
     public int hashCode() {
         return teamId;
+    }
+
+    @Override
+    public void write(JmeExporter ex) throws IOException {
+    }
+
+    @Override
+    public void read(JmeImporter im) throws IOException {
     }
 }

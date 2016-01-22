@@ -37,7 +37,7 @@ public class LevelDefinition {
 
     @XmlElementWrapper(name = "teams")
     @XmlElement(name = "team")
-    private List<TeamDefinition> teams = new ArrayList<>();
+    protected List<TeamDefinition> teams = new ArrayList<>();
 
     public LevelDefinition() {
     }

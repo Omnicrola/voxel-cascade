@@ -13,7 +13,7 @@ import java.util.List;
 public class DefinitionGeneratorTool {
 
     public static void main(String[] args) throws Exception {
-        File outputFile = new File("src/assets/Data/core-definitions.def.units");
+        File outputFile = new File("src/assets/Data/core-definitions.units");
         GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
         FileOutputStream stream = new FileOutputStream(outputFile);
 

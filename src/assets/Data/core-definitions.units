@@ -11,7 +11,7 @@
                 <a>1.0</a>
             </color>
             <texture>test.png</texture>
-            <model>test.obj</model>
+            <model>CUBE</model>
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement max-velocity="1.0" turnspeed="1.0" acceleration="0.01"/>

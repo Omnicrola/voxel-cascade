@@ -1,8 +1,7 @@
 package com.omnicrola.voxel.engine.physics;
 
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
@@ -17,7 +16,7 @@ public class EntityCollisionHandler extends AbstractCollisionHandler {
     @Override
     public void collideWith(Spatial otherObject) {
         if (isProjectile(otherObject)) {
-            if (isNotOurOwnProjectile(otherObject)) {
+            if (isEnemyProjectile(otherObject)) {
                 takeDamage(otherObject);
             }
         } else if (isTerrain(otherObject)) {
@@ -27,19 +26,19 @@ public class EntityCollisionHandler extends AbstractCollisionHandler {
         }
     }
 
-    private boolean isNotOurOwnProjectile(Spatial otherObject) {
-        Object projectileEmitter = otherObject.getUserData(EntityDataKeys.PROJECTILE_OWNER_SPATIAL);
-        return this.parentSpatial != projectileEmitter;
+    private boolean isEnemyProjectile(Spatial otherObject) {
+        TeamData ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamData theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);
+        return !ourTeam.equals(theirTeam);
     }
 
     private void takeDamage(Spatial otherObject) {
         float damage = getFloat(otherObject, EntityDataKeys.PROJECTILE_DAMAGE);
         float hp = getFloat(EntityDataKeys.HITPOINTS);
-        System.out.println("taking damage: " + damage+ " from " +otherObject.getName());
         float newHp = hp - damage;
+        System.out.println("Damaged, new hp: " + newHp);
         this.parentSpatial.setUserData(EntityDataKeys.HITPOINTS, newHp);
         if (newHp <= 0) {
-            System.out.println("dead, no HP");
             selfTerminate();
         }
     }

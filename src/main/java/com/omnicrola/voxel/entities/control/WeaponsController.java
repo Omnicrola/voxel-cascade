@@ -67,9 +67,7 @@ public class WeaponsController extends AbstractControl {
         Vector3f attackVector = VectorUtil.scale(targetLocation.subtract(ourLocation).normalize(), 5f);
 
         TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-
         Spatial projectile = this.gameWorld.build().projectile(this.projectileDefinition, attackVector, teamData);
-        projectile.setUserData(EntityDataKeys.PROJECTILE_OWNER_SPATIAL, this.spatial);
         projectile.setLocalTranslation(ourLocation);
         this.gameWorld.attach(projectile);
     }

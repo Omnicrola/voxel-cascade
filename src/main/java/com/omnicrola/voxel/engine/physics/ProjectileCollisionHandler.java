@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.engine.physics;
 
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
@@ -18,18 +19,17 @@ public class ProjectileCollisionHandler extends AbstractCollisionHandler {
         if (isProjectile(otherObject)) {
             doNothing();
         } else if (isTerrain(otherObject)) {
-            System.out.println("dead, hit terrain");
             selfTerminate();
         } else if (isEntity(otherObject)) {
-            if (isNotOurEmitter(otherObject)) {
-                System.out.println("dead, hit an enemy");
+            if (isEnemyUnit(otherObject)) {
                 selfTerminate();
             }
         }
     }
 
-    private boolean isNotOurEmitter(Spatial otherObject) {
-        Object userData = this.parentSpatial.getUserData(EntityDataKeys.PROJECTILE_OWNER_SPATIAL);
-        return userData != otherObject;
+    private boolean isEnemyUnit(Spatial otherObject) {
+        TeamData ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamData theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);
+        return !ourTeam.equals(theirTeam);
     }
 }

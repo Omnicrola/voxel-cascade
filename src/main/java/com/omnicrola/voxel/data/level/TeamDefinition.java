@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 public class TeamDefinition {
 
     @XmlAttribute(name = "team-id", required = true)
-    private int id;
+    protected int id;
 
     public TeamDefinition() {
     }

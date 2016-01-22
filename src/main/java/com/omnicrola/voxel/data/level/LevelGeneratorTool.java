@@ -9,6 +9,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -34,7 +35,21 @@ public class LevelGeneratorTool {
         levelDefinition.terrainOffset = new Vec3i(0, -5, 0);
         levelDefinition.terrainSize = new Vec3i(40, 5, 40);
         levelDefinition.unitPlacements = createBasicUnits();
+        levelDefinition.teams = createTeams();
         return levelDefinition;
+    }
+
+    private static List<TeamDefinition> createTeams() {
+        ArrayList<TeamDefinition> teamDefinitions = new ArrayList<>();
+        teamDefinitions.add(createTeam(PLAYER_TEAM_ID));
+        teamDefinitions.add(createTeam(OPPONENT_TEAM_ID));
+        return teamDefinitions;
+    }
+
+    private static TeamDefinition createTeam(int id) {
+        TeamDefinition teamDefinition = new TeamDefinition();
+        teamDefinition.id = id;
+        return teamDefinition;
     }
 
     private static ArrayList<UnitPlacement> createBasicUnits() {

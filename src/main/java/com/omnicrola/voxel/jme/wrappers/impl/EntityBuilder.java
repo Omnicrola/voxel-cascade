@@ -52,6 +52,7 @@ public class EntityBuilder implements IEntityBuilder {
             throw new IllegalArgumentException("Entity with ID of " + definitionId + " does not exist");
         }
         Spatial spatial = getModel(entityDefinition.getModel());
+        spatial.setName(entityDefinition.getName());
         Texture texture = getTexture(entityDefinition.getTexture());
         Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
         material.setTexture("DiffuseMap", texture);
