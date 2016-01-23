@@ -43,6 +43,7 @@ public class VoxelGameEngineInitializer {
         addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_NUMPAD8);
         addKeyMapping(inputManager, GameInputAction.ORDER_STOP, KeyInput.KEY_NUMPAD9);
 
+        addKeyMapping(inputManager, GameInputAction.TOGGLE_PHYSICS_DEBUG, KeyInput.KEY_F3);
         addKeyMapping(inputManager, GameInputAction.DEBUG_RELOAD_LEVEL, KeyInput.KEY_R);
         addKeyMapping(inputManager, GameInputAction.DEBUG_BUILD_1, KeyInput.KEY_1);
         addKeyMapping(inputManager, GameInputAction.DEBUG_BUILD_2, KeyInput.KEY_2);

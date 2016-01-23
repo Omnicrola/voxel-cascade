@@ -8,9 +8,9 @@ import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
+import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
@@ -32,7 +32,7 @@ public class VoxelTerrainGenerator {
             for (int y = -ySize; y < ySize; y++) {
                 for (int z = -zSize; z < zSize; z++) {
                     Geometry cube = geometryBuilder.terrainVoxel(0.5f, ColorRGBA.randomColor());
-                    cube.setName("voxel");
+                    cube.setName("voxel " + x + "," + y + "," + z);
                     cube.setUserData(EntityDataKeys.IS_TERRAIN, true);
                     cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
                     RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);

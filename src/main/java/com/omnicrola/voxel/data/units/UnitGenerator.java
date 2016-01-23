@@ -13,8 +13,8 @@ public class UnitGenerator {
         unitDefinition.globalId = DEFAULT_TANK_ID;
         unitDefinition.name = "Generic Tank AA-11";
         unitDefinition.description = "It resembles every tank, and yet is less than half as effective as less than half of them.";
-        unitDefinition.modelGeometry = "CUBE";
-        unitDefinition.modelTexture = "test.png";
+        unitDefinition.modelGeometry = "tank.obj";
+        unitDefinition.modelTexture = "gunmetal-grid.png";
         unitDefinition.color = ColorRGBA.Green;
         unitDefinition.hitpoints = 100;
         unitDefinition.weaponId = WeaponGenerator.DEFAULT_WEAPON_ID;

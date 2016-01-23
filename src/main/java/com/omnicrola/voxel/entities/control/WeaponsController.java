@@ -7,11 +7,8 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.VectorUtil;
-import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -19,20 +16,21 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
 public class WeaponsController extends AbstractControl {
 
     private static final float SIXTY_SECONDS = 60f;
+    private static final Vector3f WEAPON_MOUNTING_OFFSET = new Vector3f(0, 1, 0);
 
     private float timeSinceLastShot = 0f;
     private Geometry currentTarget;
     private IGameWorld gameWorld;
     private Vector3f muzzleOffset = new Vector3f(0, 1, 0);
     private WeaponDefinition weaponDefinition;
-    private ProjectileDefinition projectileDefinition;
+    private int projectileId;
 
     public WeaponsController(IGameWorld gameWorld,
                              WeaponDefinition weaponDefinition,
-                             ProjectileDefinition projectileDefinition) {
+                             int projectileId) {
         this.gameWorld = gameWorld;
         this.weaponDefinition = weaponDefinition;
-        this.projectileDefinition = projectileDefinition;
+        this.projectileId = projectileId;
     }
 
     public boolean isInRangeOfTarget(Geometry target) {
@@ -63,11 +61,10 @@ public class WeaponsController extends AbstractControl {
         this.timeSinceLastShot = 0;
 
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
-        Vector3f ourLocation = this.spatial.getWorldTranslation();
+        Vector3f ourLocation = this.spatial.getWorldTranslation().add(WEAPON_MOUNTING_OFFSET);
         Vector3f attackVector = VectorUtil.scale(targetLocation.subtract(ourLocation).normalize(), 5f);
 
-        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        Spatial projectile = this.gameWorld.build().projectile(this.projectileDefinition, attackVector, teamData);
+        Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.projectileId, attackVector);
         projectile.setLocalTranslation(ourLocation);
         this.gameWorld.attach(projectile);
     }

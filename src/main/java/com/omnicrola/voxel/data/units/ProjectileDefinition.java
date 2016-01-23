@@ -31,6 +31,9 @@ public class ProjectileDefinition {
     @XmlAttribute(name = "obeys-gravity")
     protected boolean obeysGravity = false;
 
+    @XmlElement(name="physical-size", required = true)
+    protected float size;
+
     public ProjectileDefinition() {
     }
 
@@ -56,5 +59,9 @@ public class ProjectileDefinition {
 
     public boolean obeysGravity() {
         return obeysGravity;
+    }
+
+    public float getSize() {
+        return size;
     }
 }

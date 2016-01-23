@@ -19,15 +19,17 @@ public class ProjectileCollisionHandler extends AbstractCollisionHandler {
         if (isProjectile(otherObject)) {
             doNothing();
         } else if (isTerrain(otherObject)) {
+            System.out.println(otherObject.getName()+" destroying projectile");
             selfTerminate();
         } else if (isEntity(otherObject)) {
-            if (isEnemyUnit(otherObject)) {
+            if (isNotFriendly(otherObject)) {
+                System.out.println("non-friendly, destroying projectile");
                 selfTerminate();
             }
         }
     }
 
-    private boolean isEnemyUnit(Spatial otherObject) {
+    private boolean isNotFriendly(Spatial otherObject) {
         TeamData ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
         TeamData theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);
         return !ourTeam.equals(theirTeam);

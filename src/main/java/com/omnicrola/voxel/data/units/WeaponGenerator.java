@@ -12,7 +12,7 @@ public class WeaponGenerator {
         weaponDefinition.projectileId = ProjectileGenerator.DEFAULT_PROJECTILE_ID;
         weaponDefinition.name = "Slug Thrower";
         weaponDefinition.description = "Slightly more effective than garden slugs";
-        weaponDefinition.range = 5;
+        weaponDefinition.range = 10;
         weaponDefinition.rateOfFire = 60;
         return weaponDefinition;
     }

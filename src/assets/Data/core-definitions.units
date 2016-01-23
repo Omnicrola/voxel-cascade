@@ -10,8 +10,8 @@
                 <b>0.0</b>
                 <a>1.0</a>
             </color>
-            <texture>test.png</texture>
-            <model>CUBE</model>
+            <texture>gunmetal-grid.png</texture>
+            <model>tank.obj</model>
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement max-velocity="1.0" turnspeed="1.0" acceleration="0.01"/>
@@ -22,7 +22,7 @@
         <weapon global-id="1000" projectile-id="2000">
             <name>Slug Thrower</name>
             <description>Slightly more effective than garden slugs</description>
-            <range>5.0</range>
+            <range>10.0</range>
             <rounds-per-minute>60.0</rounds-per-minute>
         </weapon>
     </weapons>
@@ -32,6 +32,7 @@
             <texture>test.bmp</texture>
             <damage>1.0</damage>
             <speed>5.0</speed>
+            <physical-size>0.0125</physical-size>
         </projectile>
     </projectiles>
 </GameDefinitions>

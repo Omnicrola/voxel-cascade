@@ -22,14 +22,13 @@ public class UnitDefinition {
     @XmlAttribute(name = "global-id", required = true)
     protected int globalId = -1;
 
-
     @XmlAttribute(name = "weapon-id")
     protected int weaponId;
 
-    @XmlElement(name="name",required = true)
+    @XmlElement(name = "name", required = true)
     protected String name;
 
-    @XmlElement(name="description")
+    @XmlElement(name = "description")
     protected String description;
 
     @XmlElement(name = "color", required = true)
@@ -96,7 +95,7 @@ public class UnitDefinition {
         ArrayList<IControlFactory> iControlFactories = new ArrayList<>(this.controlFactories);
         iControlFactories.add(new PhysicsControlFactory(this.mass));
         iControlFactories.add(new CollisionControlFactory());
-        iControlFactories.add(new EntityAiControlFactory(weaponDefinition, projectileDefinition, this.movementDefinition));
+        iControlFactories.add(new EntityAiControlFactory(weaponDefinition, projectileDefinition.getId(), this.movementDefinition));
         return iControlFactories;
     }
 }

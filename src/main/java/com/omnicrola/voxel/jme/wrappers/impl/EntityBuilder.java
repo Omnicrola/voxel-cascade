@@ -66,9 +66,10 @@ public class EntityBuilder implements IEntityBuilder {
         return spatial;
     }
 
-
     @Override
-    public Spatial projectile(ProjectileDefinition projectileDefinition, Vector3f attackVector, TeamData teamData) {
+    public Spatial projectile(Spatial emittingEntity, int projectileId, Vector3f attackVector) {
+        ProjectileDefinition projectileDefinition = this.definitionRepository.getProjectileDefinition(projectileId);
+
         Spatial projectile = getModel(projectileDefinition.getModel());
         Texture texture = getTexture(projectileDefinition.getTexture());
         Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
@@ -77,9 +78,10 @@ public class EntityBuilder implements IEntityBuilder {
 
         projectile.setUserData(EntityDataKeys.IS_PROJECTILE, true);
         projectile.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, projectileDefinition.getDamage());
-        projectile.setUserData(EntityDataKeys.TEAM_DATA, teamData);
+        projectile.setUserData(EntityDataKeys.TEAM_DATA, emittingEntity.getUserData(EntityDataKeys.TEAM_DATA));
+        projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
         projectile.addControl(new CollisionController(new ProjectileCollisionHandler(projectile, this.worldWrapper)));
-        LinearProjectileControl linearProjectileControl = new LinearProjectileControl(attackVector);
+        LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), attackVector);
         projectile.addControl(linearProjectileControl);
 
         return projectile;
@@ -91,7 +93,7 @@ public class EntityBuilder implements IEntityBuilder {
 
     private Spatial getModel(String modelName) {
         if (modelName.equals("CUBE")) {
-            Box box = new Box(0.9f, 0.9f, 0.9f);
+            Box box = new Box(0.4f, 0.4f, 0.4f);
             return new Geometry("cube", box);
         }
         return this.assetManager.loadModel("Models/" + modelName);

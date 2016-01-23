@@ -35,9 +35,9 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
     }
 
     protected void selfTerminate() {
-        System.out.println("terimating entity");
         Node parent = this.parentSpatial.getParent();
         if (parent != null) {
+            System.out.println("terminating entity");
             parent.detachChild(this.parentSpatial);
         }
         gameWorld.remove(this.parentSpatial);
