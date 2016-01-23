@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.PhysicsControl;
 import com.jme3.light.Light;
@@ -21,7 +22,8 @@ public class JmeWorldWrapper implements IGameWorld {
     public JmeWorldWrapper(VoxelGameEngine game) {
         this.game = game;
         this.physicsSpace = game.getPhysicsSpace();
-        this.geometryBuilder = new EntityBuilder(game.getAssetManager(), this);
+        AssetManager assetManager = game.getAssetManager();
+        this.geometryBuilder = new EntityBuilder(assetManager, this, new ParticleBuilder(assetManager));
     }
 
     @Override

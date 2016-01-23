@@ -16,7 +16,9 @@ import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
+import com.omnicrola.voxel.fx.VoxelFireSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
+import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
 
@@ -29,9 +31,11 @@ public class EntityBuilder implements IEntityBuilder {
     private final UnitDefinitionRepository definitionRepository;
     private AssetManager assetManager;
     private JmeWorldWrapper worldWrapper;
+    private IParticleBuilder particleBuilder;
 
-    public EntityBuilder(AssetManager assetManager, JmeWorldWrapper jmeWorldWrapper) {
+    public EntityBuilder(AssetManager assetManager, JmeWorldWrapper jmeWorldWrapper, ParticleBuilder particleBuilder) {
         this.assetManager = assetManager;
+        this.particleBuilder = particleBuilder;
         this.definitionRepository = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.DEFINITION_REPOSITORY_FILE);
         this.worldWrapper = jmeWorldWrapper;
     }
@@ -80,11 +84,20 @@ public class EntityBuilder implements IEntityBuilder {
         projectile.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, projectileDefinition.getDamage());
         projectile.setUserData(EntityDataKeys.TEAM_DATA, emittingEntity.getUserData(EntityDataKeys.TEAM_DATA));
         projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
-        projectile.addControl(new CollisionController(new ProjectileCollisionHandler(projectile, this.worldWrapper)));
+
+        ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, this.worldWrapper);
+        projectileCollisionHandler.setDeathAction(new VoxelFireSpawnAction(this, 10));
+        projectile.addControl(new CollisionController(projectileCollisionHandler));
+
         LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), attackVector);
         projectile.addControl(linearProjectileControl);
 
         return projectile;
+    }
+
+    @Override
+    public IParticleBuilder particles() {
+        return this.particleBuilder;
     }
 
     private Texture getTexture(String texture) {

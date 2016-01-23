@@ -1,0 +1,47 @@
+package com.omnicrola.voxel.jme.wrappers.impl;
+
+import com.jme3.asset.AssetManager;
+import com.jme3.effect.ParticleEmitter;
+import com.jme3.effect.ParticleMesh;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.fx.ParticleDurationControl;
+import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
+
+/**
+ * Created by omnic on 1/22/2016.
+ */
+public class ParticleBuilder implements IParticleBuilder {
+
+    private AssetManager assetManager;
+
+    public ParticleBuilder(AssetManager assetManager) {
+        this.assetManager = assetManager;
+    }
+
+    @Override
+    public Spatial voxelFire(float duration) {
+        ParticleEmitter fire = new ParticleEmitter("particles", ParticleMesh.Type.Triangle, 20);
+        Material material = new Material(this.assetManager, "Common/MatDefs/Misc/Particle.j3md");
+        material.setTexture("Texture", assetManager.loadTexture("Textures/test.png"));
+        fire.setMaterial(material);
+        fire.setImagesX(2);
+        fire.setImagesY(2); // 2x2 texture animation
+        fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
+        fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
+        fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
+        fire.setStartSize(0.5f);
+        fire.setEndSize(0.05f);
+        fire.setGravity(0, 0, 0);
+        fire.setLowLife(1f);
+        fire.setHighLife(3f);
+        fire.getParticleInfluencer().setVelocityVariation(0.3f);
+        fire.addControl(new ParticleDurationControl(duration));
+
+
+        return fire;
+
+    }
+}

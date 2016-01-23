@@ -2,6 +2,8 @@ package com.omnicrola.voxel.engine.physics;
 
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.engine.IDeathAction;
+import com.omnicrola.voxel.entities.commands.NullDeathAction;
 import com.omnicrola.voxel.entities.control.ISpatialCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -13,10 +15,12 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
 
     protected Spatial parentSpatial;
     private IGameWorld gameWorld;
+    private IDeathAction deathAction;
 
     public AbstractCollisionHandler(Spatial parentSpatial, IGameWorld gameWorld) {
         this.parentSpatial = parentSpatial;
         this.gameWorld = gameWorld;
+        this.deathAction = NullDeathAction.NULL;
     }
 
     protected boolean isProjectile(Spatial otherObject) {
@@ -38,9 +42,14 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
         Node parent = this.parentSpatial.getParent();
         if (parent != null) {
             System.out.println("terminating entity");
+            this.deathAction.destruct(this.parentSpatial);
             parent.detachChild(this.parentSpatial);
         }
         gameWorld.remove(this.parentSpatial);
+    }
+
+    public void setDeathAction(IDeathAction deathAction){
+        this.deathAction = deathAction;
     }
 
     protected boolean getBoolean(String dataKey) {

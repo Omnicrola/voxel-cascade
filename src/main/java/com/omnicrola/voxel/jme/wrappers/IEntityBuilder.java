@@ -15,4 +15,6 @@ public interface IEntityBuilder {
     public Spatial projectile(Spatial emittingEntity, int projectileId, Vector3f attackVector);
 
     Spatial unit(int definitionId, TeamData teamData);
+
+    IParticleBuilder particles();
 }
