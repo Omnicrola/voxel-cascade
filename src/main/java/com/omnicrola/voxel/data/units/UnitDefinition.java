@@ -1,12 +1,15 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.PhysicsControlFactory;
 
 import javax.xml.bind.annotation.*;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -53,6 +56,10 @@ public class UnitDefinition {
     @XmlAnyElement(lax = true)
     protected List<IControlFactory> controlFactories = new ArrayList<>();
 
+    @XmlElement(name = "weapon-offset")
+    @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
+    protected Vector3f weaponEmissionOffset = new Vector3f(0, 1, 0);
+
     public UnitDefinition() {
     }
 
@@ -95,7 +102,7 @@ public class UnitDefinition {
         ArrayList<IControlFactory> iControlFactories = new ArrayList<>(this.controlFactories);
         iControlFactories.add(new PhysicsControlFactory(this.mass));
         iControlFactories.add(new CollisionControlFactory());
-        iControlFactories.add(new EntityAiControlFactory(weaponDefinition, projectileDefinition.getId(), this.movementDefinition));
+        iControlFactories.add(new EntityAiControlFactory(weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
         return iControlFactories;
     }
 }

@@ -16,6 +16,7 @@
             <mass>1.0</mass>
             <movement max-velocity="1.0" turnspeed="1.0" acceleration="0.01"/>
             <controls/>
+            <weapon-offset x="0.0" y="1.0" z="0.0"/>
         </unit>
     </units>
     <weapons>
@@ -32,7 +33,7 @@
             <texture>test.bmp</texture>
             <damage>1.0</damage>
             <speed>5.0</speed>
-            <physical-size>0.0125</physical-size>
+            <physical-size>0.125</physical-size>
         </projectile>
     </projectiles>
 </GameDefinitions>

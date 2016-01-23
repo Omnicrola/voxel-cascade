@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 
 /**
  * Created by Eric on 1/20/2016.
@@ -18,6 +19,7 @@ public class UnitGenerator {
         unitDefinition.color = ColorRGBA.Green;
         unitDefinition.hitpoints = 100;
         unitDefinition.weaponId = WeaponGenerator.DEFAULT_WEAPON_ID;
+        unitDefinition.weaponEmissionOffset = new Vector3f(0,1,0);
         unitDefinition.mass = 1f;
         unitDefinition.movementDefinition = movementDef(1.0f, 1.0f, 0.01f);
         return unitDefinition;

@@ -16,20 +16,21 @@ import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 public class WeaponsController extends AbstractControl {
 
     private static final float SIXTY_SECONDS = 60f;
-    private static final Vector3f WEAPON_MOUNTING_OFFSET = new Vector3f(0, 1, 0);
 
     private float timeSinceLastShot = 0f;
     private Geometry currentTarget;
     private IGameWorld gameWorld;
-    private Vector3f muzzleOffset = new Vector3f(0, 1, 0);
     private WeaponDefinition weaponDefinition;
+    private Vector3f projectileOffset;
     private int projectileId;
 
     public WeaponsController(IGameWorld gameWorld,
                              WeaponDefinition weaponDefinition,
+                             Vector3f projectileOffset,
                              int projectileId) {
         this.gameWorld = gameWorld;
         this.weaponDefinition = weaponDefinition;
+        this.projectileOffset = projectileOffset;
         this.projectileId = projectileId;
     }
 
@@ -61,7 +62,7 @@ public class WeaponsController extends AbstractControl {
         this.timeSinceLastShot = 0;
 
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
-        Vector3f ourLocation = this.spatial.getWorldTranslation().add(WEAPON_MOUNTING_OFFSET);
+        Vector3f ourLocation = this.spatial.getWorldTranslation().add(projectileOffset);
         Vector3f attackVector = VectorUtil.scale(targetLocation.subtract(ourLocation).normalize(), 5f);
 
         Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.projectileId, attackVector);
