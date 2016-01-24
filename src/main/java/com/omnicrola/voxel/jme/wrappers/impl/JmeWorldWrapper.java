@@ -18,11 +18,11 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
-import java.util.stream.StreamSupport;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -95,13 +95,9 @@ public class JmeWorldWrapper implements IGameWorld {
     public Stream<CollisionResult> getUnitsInRange(Vector3f position, float radius) {
         CollisionResults collisionResults = new CollisionResults();
         this.units.collideWith(new BoundingSphere(radius, position), collisionResults);
-        return convertToStream(collisionResults);
+        return VoxelUtil.convertToStream(collisionResults);
     }
 
-    private Stream<CollisionResult> convertToStream(CollisionResults collisionResults) {
-        Iterable<CollisionResult> iterable = () -> collisionResults.iterator();
-        return StreamSupport.stream(iterable.spliterator(), false);
-    }
 
     @Override
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
@@ -109,15 +105,17 @@ public class JmeWorldWrapper implements IGameWorld {
         List<Spatial> children = this.units.getChildren();
         List<Spatial> collect = children
                 .stream()
-                .filter(s -> isSelectable(s))
+                .filter(s -> isSelectableUnit(s))
                 .filter(s -> screenSelectionEvaluator.isInSelection(s.getWorldTranslation()))
                 .collect(Collectors.toList());
         return collect;
     }
 
-    private boolean isSelectable(Spatial s) {
-        Boolean selectable = s.getUserData(EntityDataKeys.IS_SELECTABLE);
-        return selectable != null && selectable.booleanValue();
+    private boolean isSelectableUnit(Spatial s) {
+        Boolean isUnit = s.getUserData(EntityDataKeys.IS_UNIT);
+        Boolean isSelectable = s.getUserData(EntityDataKeys.IS_SELECTABLE);
+        return isSelectable != null && isSelectable.booleanValue() &&
+                isUnit!=null && isUnit.booleanValue();
     }
 
     @Override

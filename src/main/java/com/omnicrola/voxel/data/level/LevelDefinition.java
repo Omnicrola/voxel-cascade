@@ -70,4 +70,8 @@ public class LevelDefinition {
     public List<TeamDefinition> getTeams() {
         return teams;
     }
+
+    public List<UnitPlacement> getStructures() {
+        return this.structurePlacements;
+    }
 }

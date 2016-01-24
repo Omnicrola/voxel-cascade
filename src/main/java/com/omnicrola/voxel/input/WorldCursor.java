@@ -7,7 +7,11 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.physics.CollisionDistanceComparator;
+import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.Optional;
 
@@ -17,12 +21,14 @@ import java.util.Optional;
 public class WorldCursor extends Node {
     private final InputManager inputManager;
     private final Camera camera;
+    private final CollisionDistanceComparator collisionDistanceComparator;
     private Node terrainNode;
 
     public WorldCursor(InputManager inputManager, Camera camera, Node terrainNode) {
         this.inputManager = inputManager;
         this.camera = camera;
         this.terrainNode = terrainNode;
+        this.collisionDistanceComparator = new CollisionDistanceComparator();
     }
 
     @Override
@@ -56,15 +62,20 @@ public class WorldCursor extends Node {
         }
     }
 
-    public Optional<CollisionResult> getEntityUnderCursor(Node targetNode) {
+    public Optional<CollisionResult> getUnitUnderCursor(Node targetNode) {
         CollisionResults results = new CollisionResults();
         Ray pickRay = getPickRay();
         targetNode.collideWith(pickRay, results);
-        if (results.size() > 0) {
-            CollisionResult closestCollision = results.getClosestCollision();
-            return Optional.of(closestCollision);
-        }
+        return VoxelUtil.convertToStream(results)
+                .filter(c -> isSelectableUnit(c))
+                .sorted(this.collisionDistanceComparator)
+                .findFirst();
+    }
 
-        return Optional.empty();
+    private boolean isSelectableUnit(CollisionResult collision) {
+        Geometry geometry = collision.getGeometry();
+        boolean isUnit = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_UNIT);
+        boolean isSelectable = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_SELECTABLE);
+        return isUnit && isSelectable;
     }
 }

@@ -11,39 +11,49 @@ import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 
-import java.util.Map;
-import java.util.stream.Collectors;
+import java.util.List;
 
 /**
  * Created by omnic on 1/16/2016.
  */
 public class LevelStateFactory {
+
     public static LevelState create(LevelDefinition levelDefinition, IGameContainer gameContainer) {
         Node terrain = VoxelTerrainGenerator.load(levelDefinition, gameContainer);
         WorldCursor worldCursor = createWorldCursor(gameContainer, terrain);
         DirectionalLight sun = createLights();
 
         LevelState levelState = new LevelState(terrain, sun, worldCursor, levelDefinition.getName());
+        addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition, gameContainer);
+        addStructures(levelState, levelDefinition, gameContainer);
         return levelState;
+    }
+
+    private static void addTeams(LevelState levelState, LevelDefinition levelDefinition) {
+        levelDefinition.getTeams().forEach(t -> levelState.addTeam(new TeamData(t)));
+    }
+
+    private static void addStructures(LevelState levelState, LevelDefinition levelDefinition, IGameContainer gameContainer) {
+        List<UnitPlacement> structures = levelDefinition.getStructures();
+        for (UnitPlacement placement : structures) {
+            TeamData teamData = levelState.getTeamById(placement.getTeamId());
+            Spatial structure = gameContainer.world().build().structure(placement.getUnitId(), teamData);
+            structure.setLocalTranslation(placement.getLocation());
+            levelState.addUnit(structure);
+
+        }
     }
 
     private static void addUnits(LevelState levelState, LevelDefinition levelDefinition, IGameContainer gameContainer) {
 
-        Map<Integer, TeamData> teamsById = levelDefinition.getTeams()
-                .stream()
-                .collect(Collectors.toMap(TeamDefinition::getId, t -> new TeamData(t)));
-        teamsById.forEach((k, v) -> levelState.addTeam(v));
-
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
-            TeamData teamData = teamsById.get(unitPlacement.getTeamId());
+            TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
             entity.getControl(GroundVehicleControl.class).setPhysicsLocation(unitPlacement.getLocation());
-            entity.setLocalTranslation(unitPlacement.getLocation());
             levelState.addUnit(entity);
         }
     }
-
 
     private static WorldCursor createWorldCursor(IGameContainer gameContainer, Node terrain) {
         WorldCursor worldCursor = gameContainer.world().createCursor(terrain);

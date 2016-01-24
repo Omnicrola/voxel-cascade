@@ -31,7 +31,7 @@ public class UserSelectionListener implements ActionListener {
                 ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.input.getCursorPosition());
                 this.userInteractionHandler.selectArea(screenRectangle);
             } else {
-                this.userInteractionHandler.activateSelection();
+                this.userInteractionHandler.selectPoint();
             }
         }
         this.wasPressed = isPressed;

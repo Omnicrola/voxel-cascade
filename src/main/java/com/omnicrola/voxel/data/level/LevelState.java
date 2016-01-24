@@ -5,8 +5,10 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.main.VoxelException;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -34,6 +36,7 @@ public class LevelState implements ILevelStateRead {
     }
 
     public void addTeam(TeamData team) {
+        System.out.println("add team: " + team.getId());
         this.teams.add(team);
     }
 
@@ -83,5 +86,21 @@ public class LevelState implements ILevelStateRead {
 
     public TeamData getPlayerTeam() {
         return this.teams.get(0);
+    }
+
+    public TeamData getTeamById(int teamId) {
+        Optional<TeamData> first = this.teams
+                .stream()
+                .filter(t -> hasId(t, teamId))
+                .findFirst();
+        if (first.isPresent()) {
+            return first.get();
+        } else {
+            throw new VoxelException("Requested teamID was not found for this level : " + teamId);
+        }
+    }
+
+    private boolean hasId(TeamData teamData, int teamId) {
+        return teamData.getId() == teamId;
     }
 }

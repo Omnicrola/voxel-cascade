@@ -17,4 +17,6 @@ public interface IEntityBuilder {
     Spatial unit(int definitionId, TeamData teamData);
 
     IParticleBuilder particles();
+
+    Spatial structure(int unitId, TeamData teamData);
 }

@@ -12,8 +12,12 @@ import java.util.List;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 public class StructureDefinition {
-    @XmlAttribute(name="global-id",required = true)
-    protected int globalId=-1;
+
+    @XmlTransient
+    public static final StructureDefinition NONE = new StructureDefinition();
+
+    @XmlAttribute(name = "global-id", required = true)
+    protected int globalId = -1;
 
     @XmlElement(name = "name", required = true)
     protected String name;
@@ -49,11 +53,11 @@ public class StructureDefinition {
         return description;
     }
 
-    public String getModelTexture() {
+    public String getTexture() {
         return modelTexture;
     }
 
-    public String getModelGeometry() {
+    public String getModel() {
         return modelGeometry;
     }
 

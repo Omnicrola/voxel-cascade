@@ -12,8 +12,8 @@ public class StructureGenerator {
         StructureDefinition structureDefinition = new StructureDefinition();
         structureDefinition.globalId = BUILDING_CORE_ID;
         structureDefinition.color = ColorRGBA.Blue;
-        structureDefinition.modelGeometry = "CUBE";
-        structureDefinition.modelTexture = "Textures/test.png";
+        structureDefinition.modelGeometry = "building-core.obj";
+        structureDefinition.modelTexture = "gunmetal-grid.png";
         structureDefinition.name = "Core";
         structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;

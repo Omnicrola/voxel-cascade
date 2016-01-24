@@ -10,6 +10,7 @@ import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
+import com.omnicrola.voxel.data.units.StructureDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.physics.CollisionController;
@@ -52,26 +53,51 @@ public class EntityBuilder implements IEntityBuilder {
     public Spatial unit(int definitionId, TeamData teamData) {
         UnitDefinition entityDefinition = this.definitionRepository.getUnitDefinition(definitionId);
         if (entityDefinition == UnitDefinition.NONE) {
-            throw new IllegalArgumentException("Entity with ID of " + definitionId + " does not exist");
+            throw new IllegalArgumentException("Unit with ID of " + definitionId + " is not defined.");
         }
         Spatial spatial = getModel(entityDefinition.getModel());
         spatial.setName(entityDefinition.getName());
-        Texture texture = getTexture(entityDefinition.getTexture());
-        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
-        material.setTexture("DiffuseMap", texture);
+        Material material = createMaterial(entityDefinition.getTexture());
         spatial.setMaterial(material);
         for (IControlFactory factory : entityDefinition.getControlFactories(this.definitionRepository)) {
             factory.build(spatial, worldWrapper);
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
+        spatial.setUserData(EntityDataKeys.IS_UNIT, true);
         spatial.setUserData(EntityDataKeys.HITPOINTS, entityDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
         return spatial;
     }
 
     @Override
+    public Spatial structure(int definitionId, TeamData teamData) {
+        StructureDefinition structureDefinition = this.definitionRepository.getBuildingDefinition(definitionId);
+        if (structureDefinition == StructureDefinition.NONE) {
+            throw new IllegalArgumentException("Structure with ID of " + definitionId + " is not defined");
+        }
+        Spatial spatial = getModel(structureDefinition.getModel());
+        spatial.setName(structureDefinition.getName());
+        Material material = createMaterial(structureDefinition.getTexture());
+        spatial.setMaterial(material);
+
+        for (IControlFactory factory : structureDefinition.getControlFactories()) {
+            factory.build(spatial, worldWrapper);
+        }
+
+        spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
+        spatial.setUserData(EntityDataKeys.IS_STRUCTURE, true);
+        spatial.setUserData(EntityDataKeys.HITPOINTS, structureDefinition.getHitpoints());
+        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
+
+        return spatial;
+    }
+
+    @Override
     public Spatial projectile(Spatial emittingEntity, int projectileId, Vector3f attackVector) {
         ProjectileDefinition projectileDefinition = this.definitionRepository.getProjectileDefinition(projectileId);
+        if (projectileDefinition == ProjectileDefinition.NONE) {
+            throw new IllegalArgumentException("Projectile with ID of " + projectileId + " is not defined");
+        }
 
         Spatial projectile = getModel(projectileDefinition.getModel());
         Texture texture = getTexture(projectileDefinition.getTexture());
@@ -85,7 +111,6 @@ public class EntityBuilder implements IEntityBuilder {
         projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
 
         ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, this.worldWrapper);
-//        projectileCollisionHandler.setDeathAction(new VoxelFireSpawnAction(this, 10));
         projectileCollisionHandler.setDeathAction(new VoxelShowerSpawnAction(this, 100));
         projectile.addControl(new CollisionController(projectileCollisionHandler));
 
@@ -111,6 +136,13 @@ public class EntityBuilder implements IEntityBuilder {
             return new Geometry("cube", box);
         }
         return this.assetManager.loadModel("Models/" + modelName);
+    }
+
+    private Material createMaterial(String textureName) {
+        Texture texture = getTexture(textureName);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
+        material.setTexture("DiffuseMap", texture);
+        return material;
     }
 
     private Material createMaterial(ColorRGBA color) {

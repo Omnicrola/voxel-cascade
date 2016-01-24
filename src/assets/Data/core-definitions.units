@@ -45,8 +45,8 @@
         <structure global-id="1">
             <name>Core</name>
             <description>Use this to build things</description>
-            <texture>Textures/test.png</texture>
-            <model>CUBE</model>
+            <texture>gunmetal-grid.png</texture>
+            <model>building-core.obj</model>
             <color>
                 <r>0.0</r>
                 <g>0.0</g>

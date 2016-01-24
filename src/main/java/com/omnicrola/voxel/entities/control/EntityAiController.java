@@ -30,7 +30,9 @@ public class EntityAiController extends AbstractControl {
     private TargetingController targetingController;
     private MotionGovernorControl motionGovernor;
 
-    public EntityAiController(MotionGovernorControl motionGovernor, WeaponsController weaponsController, TargetingController targetingController) {
+    public EntityAiController(MotionGovernorControl motionGovernor,
+                              WeaponsController weaponsController,
+                              TargetingController targetingController) {
         this.motionGovernor = motionGovernor;
         this.weaponsController = weaponsController;
         this.targetingController = targetingController;

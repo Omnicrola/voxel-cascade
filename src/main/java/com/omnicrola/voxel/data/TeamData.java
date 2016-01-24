@@ -41,4 +41,8 @@ public class TeamData implements Savable{
     @Override
     public void read(JmeImporter im) throws IOException {
     }
+
+    public int getId() {
+        return teamId;
+    }
 }
