@@ -16,7 +16,7 @@ import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
-import com.omnicrola.voxel.fx.VoxelFireSpawnAction;
+import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -86,7 +86,8 @@ public class EntityBuilder implements IEntityBuilder {
         projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
 
         ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, this.worldWrapper);
-        projectileCollisionHandler.setDeathAction(new VoxelFireSpawnAction(this, 10));
+//        projectileCollisionHandler.setDeathAction(new VoxelFireSpawnAction(this, 10));
+        projectileCollisionHandler.setDeathAction(new VoxelShowerSpawnAction(this, 100));
         projectile.addControl(new CollisionController(projectileCollisionHandler));
 
         Vector3f velocity = attackVector.normalize().mult(projectileDefinition.getMuzzleVelocity());

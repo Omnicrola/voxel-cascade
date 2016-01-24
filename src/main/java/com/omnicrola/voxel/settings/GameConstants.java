@@ -10,4 +10,6 @@ public class GameConstants {
 
     public static final String LEVEL_DEFINITION_FILE_EXTENSION = "level";
     public static final String LEVEL_DEFINITIONS = "Data/levels";
+
+    public static final String MATERIAL_PARTICLE_SHADER = "Common/MatDefs/Misc/Particle.j3md";
 }

@@ -19,11 +19,9 @@ public class ProjectileCollisionHandler extends AbstractCollisionHandler {
         if (isProjectile(otherObject)) {
             doNothing();
         } else if (isTerrain(otherObject)) {
-            System.out.println(otherObject.getName()+" destroying projectile");
             selfTerminate();
         } else if (isEntity(otherObject)) {
             if (isNotFriendly(otherObject)) {
-                System.out.println("non-friendly, destroying projectile");
                 selfTerminate();
             }
         }

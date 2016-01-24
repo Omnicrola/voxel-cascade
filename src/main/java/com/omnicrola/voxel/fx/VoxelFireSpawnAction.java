@@ -10,14 +10,16 @@ import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
  */
 public class VoxelFireSpawnAction implements IDeathAction {
     private IEntityBuilder entityBuilder;
+    private int count;
 
     public VoxelFireSpawnAction(IEntityBuilder entityBuilder, int count) {
         this.entityBuilder = entityBuilder;
+        this.count = count;
     }
 
     @Override
     public void destruct(Spatial parentSpatial) {
-        Spatial particles = this.entityBuilder.particles().voxelFire(1f);
+        Spatial particles = this.entityBuilder.particles().voxelFire(1f, this.count);
         Node parent = parentSpatial.getParent();
         parent.attachChild(particles);
         particles.setLocalTranslation(parentSpatial.getLocalTranslation());

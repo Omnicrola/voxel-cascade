@@ -9,6 +9,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.fx.ParticleDurationControl;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
+import com.omnicrola.voxel.settings.GameConstants;
 
 /**
  * Created by omnic on 1/22/2016.
@@ -22,14 +23,14 @@ public class ParticleBuilder implements IParticleBuilder {
     }
 
     @Override
-    public Spatial voxelFire(float duration) {
-        ParticleEmitter fire = new ParticleEmitter("particles", ParticleMesh.Type.Triangle, 20);
-        Material material = new Material(this.assetManager, "Common/MatDefs/Misc/Particle.j3md");
+    public Spatial voxelFire(float duration, int count) {
+        ParticleEmitter fire = new ParticleEmitter("particles", ParticleMesh.Type.Triangle, count);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_PARTICLE_SHADER);
         material.setTexture("Texture", assetManager.loadTexture("Textures/test.png"));
         fire.setMaterial(material);
         fire.setImagesX(2);
         fire.setImagesY(2); // 2x2 texture animation
-        fire.setEndColor(  new ColorRGBA(1f, 0f, 0f, 1f));   // red
+        fire.setEndColor(new ColorRGBA(1f, 0f, 0f, 1f));   // red
         fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
         fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
         fire.setStartSize(0.5f);
@@ -40,8 +41,30 @@ public class ParticleBuilder implements IParticleBuilder {
         fire.getParticleInfluencer().setVelocityVariation(0.3f);
         fire.addControl(new ParticleDurationControl(duration));
 
-
         return fire;
+    }
 
+    @Override
+    public Spatial voxelSpray(int count) {
+        ParticleEmitter spray = new ParticleEmitter("spray", ParticleMesh.Type.Point, count);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_PARTICLE_SHADER);
+        spray.setMaterial(material);
+
+        spray.setParticlesPerSec(10000);
+        spray.addControl(new ParticleDurationControl(0.1f));
+        spray.setGravity(0, 9.8f, 0);
+        ColorRGBA color = ColorRGBA.randomColor();
+        spray.setStartColor(color);
+        color.a = 0;
+
+        spray.setStartSize(1f);
+        spray.setEndSize(0f);
+        spray.setEndColor(color);
+        spray.setLowLife(1f);
+        spray.setHighLife(3f);
+        spray.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 5f, 0));
+        spray.getParticleInfluencer().setVelocityVariation(0.3f);
+
+        return spray;
     }
 }

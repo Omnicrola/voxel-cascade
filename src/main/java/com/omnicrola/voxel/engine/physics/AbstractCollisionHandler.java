@@ -41,7 +41,6 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
     protected void selfTerminate() {
         Node parent = this.parentSpatial.getParent();
         if (parent != null) {
-            System.out.println("terminating entity");
             this.deathAction.destruct(this.parentSpatial);
             parent.detachChild(this.parentSpatial);
         }
