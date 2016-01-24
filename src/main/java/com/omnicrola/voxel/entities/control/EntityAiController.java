@@ -129,7 +129,7 @@ public class EntityAiController extends AbstractControl {
         clearTarget();
     }
 
-    public void attackEntity(Geometry targetEntity) {
+    public void attackTarget(Geometry targetEntity) {
         setGoal(Goal.ATTACK_TARGET);
         this.currentTarget = targetEntity;
         this.weaponsController.setTarget(targetEntity);

@@ -107,11 +107,12 @@ public class JmeWorldWrapper implements IGameWorld {
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
         ScreenSelectionEvaluator screenSelectionEvaluator = this.screenSelectionEvaluatorFactory.build(screenRectangle);
         List<Spatial> children = this.units.getChildren();
-        return children
+        List<Spatial> collect = children
                 .stream()
                 .filter(s -> isSelectable(s))
                 .filter(s -> screenSelectionEvaluator.isInSelection(s.getWorldTranslation()))
                 .collect(Collectors.toList());
+        return collect;
     }
 
     private boolean isSelectable(Spatial s) {
