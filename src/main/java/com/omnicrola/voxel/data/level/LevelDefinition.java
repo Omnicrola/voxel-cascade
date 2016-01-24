@@ -35,6 +35,11 @@ public class LevelDefinition {
     @XmlElement(name = "placement")
     protected List<UnitPlacement> unitPlacements;
 
+
+    @XmlElementWrapper(name = "structure-placements", required = true)
+    @XmlElement(name = "placement")
+    public List<UnitPlacement> structurePlacements;
+
     @XmlElementWrapper(name = "teams")
     @XmlElement(name = "team")
     protected List<TeamDefinition> teams = new ArrayList<>();

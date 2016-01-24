@@ -46,6 +46,18 @@
             <location x="-5.0" y="0.0" z="10.0"/>
         </placement>
     </unit-placements>
+    <structure-placements>
+        <placement>
+            <unit-id>1</unit-id>
+            <team-id>1</team-id>
+            <location x="15.0" y="0.0" z="0.0"/>
+        </placement>
+        <placement>
+            <unit-id>1</unit-id>
+            <team-id>2</team-id>
+            <location x="-15.0" y="0.0" z="0.0"/>
+        </placement>
+    </structure-placements>
     <teams>
         <team team-id="1"/>
         <team team-id="2"/>

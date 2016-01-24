@@ -23,4 +23,7 @@ public class XmlGameDefinitions {
     @XmlElement(name = "projectile")
     protected List<ProjectileDefinition> projectiles = new ArrayList<>();
 
+    @XmlElementWrapper(name = "structures")
+    @XmlElement(name = "structure")
+    public List<StructureDefinition> structures;
 }

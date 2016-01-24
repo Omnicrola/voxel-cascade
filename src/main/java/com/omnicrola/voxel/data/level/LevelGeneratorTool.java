@@ -3,6 +3,7 @@ package com.omnicrola.voxel.data.level;
 import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.units.StructureGenerator;
 import com.omnicrola.voxel.data.units.UnitGenerator;
 
 import java.io.File;
@@ -35,8 +36,16 @@ public class LevelGeneratorTool {
         levelDefinition.terrainOffset = new Vec3i(0, -5, 0);
         levelDefinition.terrainSize = new Vec3i(40, 5, 40);
         levelDefinition.unitPlacements = createBasicUnits();
+        levelDefinition.structurePlacements = createBasicStructures();
         levelDefinition.teams = createTeams();
         return levelDefinition;
+    }
+
+    private static List<UnitPlacement> createBasicStructures() {
+        ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
+        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, PLAYER_TEAM_ID, 15, 0, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, OPPONENT_TEAM_ID, -15, 0, 0));
+        return unitPlacements;
     }
 
     private static List<TeamDefinition> createTeams() {
@@ -55,21 +64,21 @@ public class LevelGeneratorTool {
     private static ArrayList<UnitPlacement> createBasicUnits() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
 
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 6, 0, -10));
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 6, 0, -5));
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 6, 0, 0));
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 6, 0, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 0, -10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 0, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 0, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 0, 5));
 
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, -5));
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 0));
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 5));
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, 0, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, 0, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, 0, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, 0, 10));
         return unitPlacements;
     }
 
-    private static UnitPlacement createUnitPlacement(int teamId, float x, float y, float z) {
+    private static UnitPlacement createUnitPlacement(int unitGlobalId, int teamId, float x, float y, float z) {
         UnitPlacement unitPlacement = new UnitPlacement();
-        unitPlacement.unitId = UnitGenerator.DEFAULT_TANK_ID;
+        unitPlacement.unitId = unitGlobalId;
         unitPlacement.teamId = teamId;
         unitPlacement.location = new Vector3f(x, y, z);
         return unitPlacement;
