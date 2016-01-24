@@ -36,7 +36,6 @@ public class EntityCollisionHandler extends AbstractCollisionHandler {
         float damage = getFloat(otherObject, EntityDataKeys.PROJECTILE_DAMAGE);
         float hp = getFloat(EntityDataKeys.HITPOINTS);
         float newHp = hp - damage;
-        System.out.println("Damaged, new hp: " + newHp);
         this.parentSpatial.setUserData(EntityDataKeys.HITPOINTS, newHp);
         if (newHp <= 0) {
             selfTerminate();

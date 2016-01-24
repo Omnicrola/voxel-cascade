@@ -3,7 +3,6 @@ package com.omnicrola.voxel.input;
 import com.jme3.collision.CollisionResult;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.control.EntityAiController;
@@ -21,13 +20,11 @@ public class UserInteractionHandler {
     private final ArrayList<IUserInteractionObserver> observers;
     private LevelState currentLevelState;
     private int buildType;
-    private Node sceneRoot;
     private IGameContainer gameContainer;
     private boolean isBuilding;
     private Geometry currentlySelectedEntity;
 
-    public UserInteractionHandler(Node sceneRoot, IGameContainer gameContainer) {
-        this.sceneRoot = sceneRoot;
+    public UserInteractionHandler(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
         this.observers = new ArrayList<>();
     }
@@ -47,47 +44,46 @@ public class UserInteractionHandler {
 
     public void orderSelectionToMove() {
         if (hasSelection()) {
-            Optional<CollisionResult> entityUnderCursor = getEntityUnderCursor();
-            if (entityUnderCursor.isPresent()) {
-                Vector3f location = entityUnderCursor.get().getContactPoint();
-                Optional<EntityAiController> currentAi = getCurrentAi();
-                if (currentAi.isPresent()) {
-                    currentAi.get().moveToLocation(location);
-                }
+            Optional<Vector3f> terrainLocation = getTerrainPointUnderCursor();
+            if (terrainLocation.isPresent()) {
+                getCurrentAi().moveToLocation(terrainLocation.get());
             }
         }
     }
 
     public void orderSelectionToStop() {
         if (hasSelection()) {
-            Optional<EntityAiController> currentAi = getCurrentAi();
-            if (currentAi.isPresent()) {
-                currentAi.get().stop();
-            }
+            getCurrentAi().stop();
         }
     }
 
     public void orderSelectionToAttack() {
         if (hasSelection()) {
-            Optional<CollisionResult> entityUnderCursor = getEntityUnderCursor();
+            Optional<CollisionResult> entityUnderCursor = getUnitUnderCursor();
             if (entityUnderCursor.isPresent()) {
                 CollisionResult collisionResult = entityUnderCursor.get();
-                Optional<EntityAiController> currentAi = getCurrentAi();
-                if (currentAi.isPresent()) {
-                    Boolean isTerrain = collisionResult.getGeometry().getUserData(EntityDataKeys.IS_TERRAIN);
-                    Boolean isSelectable = collisionResult.getGeometry().getUserData(EntityDataKeys.IS_SELECTABLE);
-                    if (isTerrain != null && isTerrain) {
-                        currentAi.get().attackLocation(collisionResult.getContactPoint());
-                    } else if (isSelectable != null && isSelectable) {
-                        currentAi.get().attackEntity(collisionResult.getGeometry());
-                    }
+                EntityAiController currentAi = getCurrentAi();
+                currentAi.attackEntity(collisionResult.getGeometry());
+            } else {
+                Optional<Vector3f> terrainPoint = getTerrainPointUnderCursor();
+                if (terrainPoint.isPresent()) {
+                    getCurrentAi().attackLocation(terrainPoint.get());
                 }
             }
         }
     }
 
-    private Optional<CollisionResult> getEntityUnderCursor() {
-        return getWorldCursor().getEntityUnderCursor(this.sceneRoot);
+    private Optional<CollisionResult> getUnitUnderCursor() {
+        return getWorldCursor().getEntityUnderCursor(this.currentLevelState.getUnits());
+    }
+
+    private Optional<Vector3f> getTerrainPointUnderCursor() {
+        Optional<CollisionResult> entityUnderCursor = getWorldCursor().getEntityUnderCursor(this.currentLevelState.getTerrain());
+        if (entityUnderCursor.isPresent()) {
+            return Optional.of(entityUnderCursor.get().getContactPoint());
+        } else {
+            return Optional.empty();
+        }
     }
 
     public void clearSelection() {
@@ -97,10 +93,10 @@ public class UserInteractionHandler {
     public void activateSelection() {
         if (this.isBuilding) {
             Spatial entity = this.gameContainer.world().build().unit(this.buildType, this.currentLevelState.getPlayerTeam());
-            this.sceneRoot.attachChild(entity);
+            this.currentLevelState.getUnits().attachChild(entity);
             isBuilding = false;
         } else {
-            Optional<CollisionResult> entityUnderCursor = getEntityUnderCursor();
+            Optional<CollisionResult> entityUnderCursor = getUnitUnderCursor();
             if (entityUnderCursor.isPresent()) {
                 CollisionResult collisionResult = entityUnderCursor.get();
                 Geometry selection = collisionResult.getGeometry();
@@ -126,9 +122,10 @@ public class UserInteractionHandler {
         }
     }
 
-    private Optional<EntityAiController> getCurrentAi() {
-        EntityAiController control = this.currentlySelectedEntity.getControl(EntityAiController.class);
-        return Optional.ofNullable(control);
+    private EntityAiController getCurrentAi() {
+        EntityAiController entityAiController = this.currentlySelectedEntity.getControl(EntityAiController.class);
+
+        return entityAiController;
     }
 
     private boolean hasSelection() {

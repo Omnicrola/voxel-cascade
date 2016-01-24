@@ -9,7 +9,7 @@ public class ProjectileGenerator {
     public static ProjectileDefinition createDefaultProjectile() {
         ProjectileDefinition projectileDefinition = new ProjectileDefinition();
         projectileDefinition.globalId = DEFAULT_PROJECTILE_ID;
-        projectileDefinition.damage = 40.0f;
+        projectileDefinition.damage = 10.0f;
         projectileDefinition.obeysGravity = false;
         projectileDefinition.size = 0.125f;
         projectileDefinition.muzzleVelocity =10f;

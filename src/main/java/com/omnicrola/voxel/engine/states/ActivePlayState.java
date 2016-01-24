@@ -58,7 +58,7 @@ public class ActivePlayState extends VoxelGameState {
 
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
 
-        this.userInteractionHandler = new UserInteractionHandler(this.stateRootNode, gameContainer);
+        this.userInteractionHandler = new UserInteractionHandler(gameContainer);
         UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
         this.stateRootUiNode.attachChild(userInterface);
         this.userInteractionHandler.addSelectionListener(new UiSelectionObserver(userInterface));
@@ -77,15 +77,13 @@ public class ActivePlayState extends VoxelGameState {
     }
 
     public void loadLevel(UUID levelId) {
-        this.stateRootNode.detachAllChildren();
+        detatchStateNodes();
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
         this.currentLevelState = LevelStateFactory.create(levelDefinition, this.gameContainer);
         this.userInteractionHandler.setLevel(this.currentLevelState);
 
-        this.stateRootNode.attachChild(this.currentLevelState.getTerrain());
-        this.stateRootNode.attachChild(this.currentLevelState.getUnits());
-        this.stateRootNode.attachChild(this.currentLevelState.getWorldCursor());
-        this.gameContainer.world().addLight(this.currentLevelState.getSun());
+        setStateRootNode(new GameStateNode(this.currentLevelState));
+        attachStateNodes();
     }
 
     @Override

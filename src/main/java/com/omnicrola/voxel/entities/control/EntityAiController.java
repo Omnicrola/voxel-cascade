@@ -4,7 +4,11 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.settings.EntityDataKeys;
+
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -12,7 +16,6 @@ import com.jme3.scene.control.AbstractControl;
 public class EntityAiController extends AbstractControl {
 
     private enum Goal {
-        NONE,
         HOLD_POSITION,
         ATTACK_TARGET,
         ATTACK_LOCATION,
@@ -24,12 +27,14 @@ public class EntityAiController extends AbstractControl {
     private Goal currentGoal;
     private Geometry currentTarget;
     private WeaponsController weaponsController;
+    private TargetingController targetingController;
     private MotionGovernorControl motionGovernor;
 
-    public EntityAiController(MotionGovernorControl motionGovernor, WeaponsController weaponsController) {
+    public EntityAiController(MotionGovernorControl motionGovernor, WeaponsController weaponsController, TargetingController targetingController) {
         this.motionGovernor = motionGovernor;
         this.weaponsController = weaponsController;
-        setGoal(Goal.NONE);
+        this.targetingController = targetingController;
+        setGoal(Goal.STOP);
     }
 
     @Override
@@ -50,7 +55,6 @@ public class EntityAiController extends AbstractControl {
             case MOVE_TO_POSITION:
                 updateMoveToLocation();
                 break;
-            case NONE:
             default:
         }
     }
@@ -63,6 +67,7 @@ public class EntityAiController extends AbstractControl {
     private void updateMoveToLocation() {
         boolean hasArrived = this.spatial.getWorldTranslation().distance(this.currentTargetLocation) <= 0.5f;
         if (hasArrived) {
+            System.out.println("arrived");
             this.currentTargetLocation = this.spatial.getWorldTranslation();
             setGoal(Goal.HOLD_POSITION);
         } else {
@@ -71,13 +76,24 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void updateAttackTarget() {
-        boolean isNotInRange = !this.weaponsController.isInRangeOfTarget(this.currentTarget);
-        if (isNotInRange) {
-            Vector3f worldTranslation = this.currentTarget.getWorldTranslation();
-            this.motionGovernor.moveToward(worldTranslation);
+        if (targetIsAlive()) {
+
+            boolean isNotInRange = !this.weaponsController.isInRangeOfTarget(this.currentTarget);
+            if (isNotInRange) {
+                Vector3f worldTranslation = this.currentTarget.getWorldTranslation();
+                this.motionGovernor.moveToward(worldTranslation);
+            } else {
+                updateHoldPosition();
+            }
         } else {
-            updateHoldPosition();
+            this.currentTarget = null;
+            setGoal(Goal.HOLD_POSITION);
         }
+    }
+
+    private boolean targetIsAlive() {
+        Float hitpoints = this.currentTarget.getUserData(EntityDataKeys.HITPOINTS);
+        return hitpoints != null && hitpoints.floatValue() > 0;
     }
 
     private void updateAttackLocation() {
@@ -85,7 +101,11 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void updateHoldPosition() {
-       this.motionGovernor.holdPosition();
+        Optional<Spatial> closestTarget = this.targetingController.getClosestTarget();
+        if (closestTarget.isPresent()) {
+            this.weaponsController.setTarget(closestTarget.get());
+        }
+        this.motionGovernor.holdPosition();
     }
 
     @Override
@@ -122,6 +142,7 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void setGoal(Goal goal) {
+        System.out.println("new goal: " + goal);
         this.currentGoal = goal;
     }
 }

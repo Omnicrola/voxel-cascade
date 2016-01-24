@@ -1,15 +1,23 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.PhysicsControl;
+import com.jme3.collision.CollisionResult;
+import com.jme3.collision.CollisionResults;
 import com.jme3.light.Light;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+
+import java.util.List;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -18,6 +26,8 @@ public class JmeWorldWrapper implements IGameWorld {
     private final EntityBuilder geometryBuilder;
     private final PhysicsSpace physicsSpace;
     private VoxelGameEngine game;
+    private Spatial terrain;
+    private Spatial units;
 
     public JmeWorldWrapper(VoxelGameEngine game) {
         this.game = game;
@@ -75,7 +85,53 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     @Override
+    public Stream<CollisionResult> getUnitsInRange(Vector3f position, float radius) {
+        CollisionResults collisionResults = new CollisionResults();
+        this.units.collideWith(new BoundingSphere(radius, position), collisionResults);
+        Iterable<CollisionResult> iterable = () -> collisionResults.iterator();
+        return StreamSupport.stream(iterable.spliterator(), false);
+    }
+
+    @Override
     public WorldCursor createCursor(Node terrain) {
         return new WorldCursor(this.game.getInputManager(), this.game.getCamera(), terrain);
+    }
+
+    @Override
+    public void attachLights(List<Light> lights) {
+        for (Light light : lights) {
+            this.game.getRootNode().addLight(light);
+        }
+    }
+
+    @Override
+    public void attachTerrain(Spatial terrain) {
+        this.terrain = terrain;
+        attach(terrain);
+    }
+
+    @Override
+    public void attachUnits(Spatial units) {
+        this.units = units;
+        attach(units);
+    }
+
+    @Override
+    public void detatchLights(List<Light> lights) {
+        for (Light light : lights) {
+            this.game.getRootNode().removeLight(light);
+        }
+    }
+
+    @Override
+    public void detatchTerrain(Spatial terrain) {
+        this.terrain = null;
+        remove(terrain);
+    }
+
+    @Override
+    public void detatchUnits(Spatial units) {
+        this.units = null;
+        remove(units);
     }
 }

@@ -3,11 +3,11 @@ package com.omnicrola.voxel.entities.control;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -17,7 +17,7 @@ public class WeaponsController extends AbstractControl {
     private static final float SIXTY_SECONDS = 60f;
 
     private float timeSinceLastShot = 0f;
-    private Geometry currentTarget;
+    private Spatial currentTarget;
     private IGameWorld gameWorld;
     private WeaponDefinition weaponDefinition;
     private Vector3f projectileOffset;
@@ -33,7 +33,7 @@ public class WeaponsController extends AbstractControl {
         this.projectileId = projectileId;
     }
 
-    public boolean isInRangeOfTarget(Geometry target) {
+    public boolean isInRangeOfTarget(Spatial target) {
         Vector3f ourLocation = this.spatial.getWorldTranslation();
         Vector3f targetLocation = target.getWorldTranslation();
         float distanceToTarget = targetLocation.subtract(ourLocation).length();
@@ -44,12 +44,22 @@ public class WeaponsController extends AbstractControl {
     public void controlUpdate(float tpf) {
         this.timeSinceLastShot += tpf;
         if (this.currentTarget != null) {
-            if (isInRangeOfTarget(this.currentTarget)) {
-                if (weaponHasCooledDown()) {
-                    fireWeapon();
+            if (targetIsAlive()) {
+                if (isInRangeOfTarget(this.currentTarget)) {
+                    if (weaponHasCooledDown()) {
+                        fireWeapon();
+                    }
                 }
+            } else {
+                this.currentTarget = null;
             }
         }
+    }
+
+    private boolean targetIsAlive() {
+        Float hitpoints = this.spatial.getUserData(EntityDataKeys.HITPOINTS);
+        boolean alive = hitpoints != null && hitpoints.floatValue() >= 0f;
+        return alive;
     }
 
     private boolean weaponHasCooledDown() {
@@ -82,7 +92,7 @@ public class WeaponsController extends AbstractControl {
         this.currentTarget = null;
     }
 
-    public void setTarget(Geometry target) {
+    public void setTarget(Spatial target) {
         this.currentTarget = target;
     }
 }

@@ -31,8 +31,10 @@ public class EntityAiControlFactory implements IControlFactory {
     public void build(Spatial spatial, IGameWorld gameWorld) {
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
         WeaponsController weaponsController = new WeaponsController(gameWorld, this.weaponDefinition, this.projectileOffset, this.projectileId);
-        EntityAiController entityAi = new EntityAiController(motionGovernor, weaponsController);
+        TargetingController targetingController = new TargetingController(gameWorld);
+        EntityAiController entityAi = new EntityAiController(motionGovernor, weaponsController, targetingController);
         spatial.addControl(motionGovernor);
+        spatial.addControl(targetingController);
         spatial.addControl(weaponsController);
         spatial.addControl(entityAi);
     }

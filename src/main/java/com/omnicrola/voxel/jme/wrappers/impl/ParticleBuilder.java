@@ -30,8 +30,8 @@ public class ParticleBuilder implements IParticleBuilder {
         fire.setMaterial(material);
         fire.setImagesX(2);
         fire.setImagesY(2); // 2x2 texture animation
-        fire.setEndColor(new ColorRGBA(1f, 0f, 0f, 1f));   // red
-        fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f)); // yellow
+        fire.setEndColor(new ColorRGBA(1f, 0f, 0f, 1f));
+        fire.setStartColor(new ColorRGBA(1f, 1f, 0f, 0.5f));
         fire.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2, 0));
         fire.setStartSize(0.5f);
         fire.setEndSize(0.05f);
@@ -51,7 +51,7 @@ public class ParticleBuilder implements IParticleBuilder {
         spray.setMaterial(material);
 
         spray.setParticlesPerSec(10000);
-        spray.addControl(new ParticleDurationControl(0.1f));
+        spray.addControl(new ParticleDurationControl(0.05f));
         spray.setGravity(0, 9.8f, 0);
         ColorRGBA color = ColorRGBA.randomColor();
         spray.setStartColor(color);
@@ -63,7 +63,7 @@ public class ParticleBuilder implements IParticleBuilder {
         spray.setLowLife(1f);
         spray.setHighLife(3f);
         spray.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 5f, 0));
-        spray.getParticleInfluencer().setVelocityVariation(0.3f);
+        spray.getParticleInfluencer().setVelocityVariation(1f);
 
         return spray;
     }

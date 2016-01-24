@@ -36,7 +36,7 @@
         <projectile global-id="2000" obeys-gravity="false">
             <model>sphere12.obj</model>
             <texture>test.bmp</texture>
-            <damage>40.0</damage>
+            <damage>10.0</damage>
             <speed>10.0</speed>
             <physical-size>0.125</physical-size>
         </projectile>
