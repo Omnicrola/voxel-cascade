@@ -20,7 +20,6 @@ public class PhysicsControlFactory implements IControlFactory {
 
     @Override
     public void build(Spatial spatial, IGameWorld gameWorld) {
-//        RigidBodyControl rigidBodyControl = new RigidBodyControl(this.mass);
         GroundVehicleControl tankVehicleControl = new GroundVehicleControl(this.mass);
 
         spatial.addControl(tankVehicleControl);

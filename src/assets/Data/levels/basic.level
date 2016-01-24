@@ -8,42 +8,42 @@
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="5.0" y="0.0" z="1.0"/>
+            <location x="5.0" y="0.0" z="-10.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="5.0" y="0.0" z="2.0"/>
+            <location x="5.0" y="0.0" z="-5.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="5.0" y="0.0" z="3.0"/>
+            <location x="5.0" y="0.0" z="0.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="5.0" y="0.0" z="4.0"/>
+            <location x="5.0" y="0.0" z="5.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>2</team-id>
-            <location x="-5.0" y="0.0" z="1.0"/>
+            <location x="-5.0" y="0.0" z="-5.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>2</team-id>
-            <location x="-5.0" y="0.0" z="2.0"/>
+            <location x="-5.0" y="0.0" z="0.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>2</team-id>
-            <location x="-5.0" y="0.0" z="3.0"/>
+            <location x="-5.0" y="0.0" z="5.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>2</team-id>
-            <location x="-5.0" y="0.0" z="4.0"/>
+            <location x="-5.0" y="0.0" z="10.0"/>
         </placement>
     </unit-placements>
     <teams>

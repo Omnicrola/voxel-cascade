@@ -89,7 +89,8 @@ public class EntityBuilder implements IEntityBuilder {
         projectileCollisionHandler.setDeathAction(new VoxelFireSpawnAction(this, 10));
         projectile.addControl(new CollisionController(projectileCollisionHandler));
 
-        LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), attackVector);
+        Vector3f velocity = attackVector.normalize().mult(projectileDefinition.getMuzzleVelocity());
+        LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), velocity);
         projectile.addControl(linearProjectileControl);
 
         return projectile;

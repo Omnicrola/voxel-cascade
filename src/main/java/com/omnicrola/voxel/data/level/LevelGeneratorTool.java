@@ -55,15 +55,15 @@ public class LevelGeneratorTool {
     private static ArrayList<UnitPlacement> createBasicUnits() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
 
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 1));
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 2));
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 3));
-        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 4));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, -10));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, -5));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 0));
+        unitPlacements.add(createUnitPlacement(PLAYER_TEAM_ID, 5, 0, 5));
 
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 1));
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 2));
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 3));
-        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 4));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, -5));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 0));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 5));
+        unitPlacements.add(createUnitPlacement(OPPONENT_TEAM_ID, -5, 0, 10));
         return unitPlacements;
     }
 

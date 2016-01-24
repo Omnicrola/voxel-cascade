@@ -10,7 +10,7 @@ import java.util.List;
 /**
  * Created by Eric on 1/20/2016.
  */
-public class DefinitionGeneratorTool {
+public class UnitDefinitionGeneratorTool {
 
     public static void main(String[] args) throws Exception {
         File outputFile = new File("src/assets/Data/core-definitions.units");

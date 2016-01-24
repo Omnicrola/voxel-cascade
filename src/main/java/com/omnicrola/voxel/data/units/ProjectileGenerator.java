@@ -9,10 +9,10 @@ public class ProjectileGenerator {
     public static ProjectileDefinition createDefaultProjectile() {
         ProjectileDefinition projectileDefinition = new ProjectileDefinition();
         projectileDefinition.globalId = DEFAULT_PROJECTILE_ID;
-        projectileDefinition.damage = 1.0f;
+        projectileDefinition.damage = 40.0f;
         projectileDefinition.obeysGravity = false;
         projectileDefinition.size = 0.125f;
-        projectileDefinition.muzzleVelocity = 5;
+        projectileDefinition.muzzleVelocity =10f;
         projectileDefinition.model = "sphere12.obj";
         projectileDefinition.texture = "test.bmp";
         return projectileDefinition;

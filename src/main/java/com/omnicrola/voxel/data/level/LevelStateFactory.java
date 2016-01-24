@@ -8,6 +8,7 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 
 import java.util.Map;
@@ -37,6 +38,7 @@ public class LevelStateFactory {
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = teamsById.get(unitPlacement.getTeamId());
             Spatial entity = gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
+            entity.getControl(GroundVehicleControl.class).setPhysicsLocation(unitPlacement.getLocation());
             entity.setLocalTranslation(unitPlacement.getLocation());
             levelState.addUnit(entity);
         }
