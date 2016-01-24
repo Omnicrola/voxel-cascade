@@ -13,7 +13,7 @@ public class StructureGenerator {
         structureDefinition.globalId = BUILDING_CORE_ID;
         structureDefinition.color = ColorRGBA.Blue;
         structureDefinition.modelGeometry = "building-core.obj";
-        structureDefinition.modelTexture = "gunmetal-grid.png";
+        structureDefinition.modelTexture = "voxel-face-green.png";
         structureDefinition.name = "Core";
         structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;

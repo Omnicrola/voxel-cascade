@@ -10,7 +10,7 @@
                 <b>0.0</b>
                 <a>1.0</a>
             </color>
-            <texture>gunmetal-grid.png</texture>
+            <texture>voxel-face-red.png</texture>
             <model>tank.obj</model>
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
@@ -45,7 +45,7 @@
         <structure global-id="1">
             <name>Core</name>
             <description>Use this to build things</description>
-            <texture>gunmetal-grid.png</texture>
+            <texture>voxel-face-green.png</texture>
             <model>building-core.obj</model>
             <color>
                 <r>0.0</r>
