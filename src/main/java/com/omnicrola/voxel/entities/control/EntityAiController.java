@@ -11,7 +11,6 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class EntityAiController extends AbstractControl {
 
-
     private enum Goal {
         NONE,
         HOLD_POSITION,
@@ -62,18 +61,22 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void updateMoveToLocation() {
-        boolean hasArrived = this.motionGovernor.seekAndArriveAtRange(this.currentTargetLocation, 3, 0);
+        boolean hasArrived = this.spatial.getWorldTranslation().distance(this.currentTargetLocation) <= 0.5f;
         if (hasArrived) {
             this.currentTargetLocation = this.spatial.getWorldTranslation();
             setGoal(Goal.HOLD_POSITION);
+        } else {
+            this.motionGovernor.moveToward(this.currentTargetLocation);
         }
     }
 
     private void updateAttackTarget() {
-        if (!this.weaponsController.isInRangeOfTarget(this.currentTarget)) {
+        boolean isNotInRange = !this.weaponsController.isInRangeOfTarget(this.currentTarget);
+        if (isNotInRange) {
             Vector3f worldTranslation = this.currentTarget.getWorldTranslation();
-            float weaponRange = this.weaponsController.getRange();
-            this.motionGovernor.seekAndArriveAtRange(worldTranslation, 0, weaponRange * 0.9f);
+            this.motionGovernor.moveToward(worldTranslation);
+        } else {
+            updateHoldPosition();
         }
     }
 
@@ -82,11 +85,7 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void updateHoldPosition() {
-        Vector3f location = this.spatial.getWorldTranslation();
-        float distanceFromTarget = this.currentTargetLocation.subtract(location).length();
-        if (distanceFromTarget > 0.5f) {
-            this.motionGovernor.seekAndArriveAtRange(this.currentTargetLocation, 1.0f, 0);
-        }
+       this.motionGovernor.holdPosition();
     }
 
     @Override

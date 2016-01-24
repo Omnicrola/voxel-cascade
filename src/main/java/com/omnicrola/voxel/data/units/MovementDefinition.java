@@ -2,7 +2,7 @@ package com.omnicrola.voxel.data.units;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlAttribute;
+import javax.xml.bind.annotation.XmlElement;
 
 /**
  * Created by Eric on 1/18/2016.
@@ -10,14 +10,17 @@ import javax.xml.bind.annotation.XmlAttribute;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MovementDefinition {
 
-    @XmlAttribute(name="max-velocity")
+    @XmlElement(name="max-velocity")
     protected float maxVelocity;
 
-    @XmlAttribute(name="turnspeed")
+    @XmlElement(name="turnspeed")
     protected float turnspeed;
 
-    @XmlAttribute(name="acceleration")
+    @XmlElement(name="acceleration")
     protected float accelleration;
+
+    @XmlElement(name = "personal-radius")
+    protected float personalRadius;
 
     public MovementDefinition() {
     }
@@ -32,5 +35,9 @@ public class MovementDefinition {
 
     public float getTurnspeed() {
         return turnspeed;
+    }
+
+    public float getPersonalRadius() {
+        return personalRadius;
     }
 }

@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.entities.control;
 
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +20,9 @@ public class PhysicsControlFactory implements IControlFactory {
 
     @Override
     public void build(Spatial spatial, IGameWorld gameWorld) {
-        RigidBodyControl rigidBodyControl = new RigidBodyControl(this.mass);
-        spatial.addControl(rigidBodyControl);
+//        RigidBodyControl rigidBodyControl = new RigidBodyControl(this.mass);
+        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(this.mass);
+
+        spatial.addControl(tankVehicleControl);
     }
 }

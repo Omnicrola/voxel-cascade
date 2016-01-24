@@ -21,7 +21,7 @@ public class UnitGenerator {
         unitDefinition.weaponId = WeaponGenerator.DEFAULT_WEAPON_ID;
         unitDefinition.weaponEmissionOffset = new Vector3f(0,1,0);
         unitDefinition.mass = 1f;
-        unitDefinition.movementDefinition = movementDef(1.0f, 1.0f, 0.01f);
+        unitDefinition.movementDefinition = movementDef(1.0f, 0.2f, 0.01f);
         return unitDefinition;
     }
 
@@ -30,6 +30,7 @@ public class UnitGenerator {
         movementDefinition.turnspeed = turnspeed;
         movementDefinition.maxVelocity = maxVelocity;
         movementDefinition.accelleration = accelleration;
+        movementDefinition.personalRadius = 1.0f;
         return movementDefinition;
     }
 }

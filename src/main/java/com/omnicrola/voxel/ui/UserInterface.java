@@ -1,9 +1,9 @@
 package com.omnicrola.voxel.ui;
 
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 import java.text.DecimalFormat;
 
@@ -35,7 +35,7 @@ public class UserInterface extends Node {
             String name = this.selectedEntity.getName();
             this.selectedLabel.setText("Selected: " + name);
             this.positionLabel.setText("P: " + format(worldTranslation));
-            Vector3f linearVelocity = this.selectedEntity.getControl(RigidBodyControl.class).getLinearVelocity();
+            Vector3f linearVelocity = this.selectedEntity.getControl(GroundVehicleControl.class).getWalkDirection();
             this.velocityLabel.setText("V: " + format(linearVelocity));
         } else {
             this.selectedLabel.setText("Selected: ");

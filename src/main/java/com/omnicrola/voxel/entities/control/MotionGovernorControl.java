@@ -1,13 +1,11 @@
 package com.omnicrola.voxel.entities.control;
 
-import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.bullet.objects.PhysicsRigidBody;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.util.VectorUtil;
 import com.omnicrola.voxel.data.units.MovementDefinition;
+import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -33,47 +31,36 @@ public class MotionGovernorControl extends AbstractControl {
         this.masterSteering.z += steering.z;
     }
 
-    public boolean seekAndArriveAtRange(Vector3f targetPosition, float slowRadius, float minimumRange) {
-        PhysicsRigidBody physicsControl = getPhysicsControl();
-        Vector3f worldTranslation = this.spatial.getWorldTranslation();
-        Vector3f desiredVelocity = targetPosition.subtract(worldTranslation);
-        final float distance = desiredVelocity.length();
-        final float adjustedDistance = distance - this.floorOffset;
-        if (adjustedDistance < DAMPENING + minimumRange) {
-            physicsControl.setLinearVelocity(new Vector3f(0, 0, 0));
-            return true;
-        } else {
-            seek(targetPosition);
-        }
-        return false;
-    }
-
-    private void seek(Vector3f targetPosition) {
-        PhysicsRigidBody physicsControl = getPhysicsControl();
+    public void moveToward(Vector3f targetPosition) {
+        GroundVehicleControl physicsControl = getPhysicsControl();
         final Vector3f desiredVelocity = targetPosition.subtract(physicsControl.getPhysicsLocation());
-        desiredVelocity.normalize();
-        VectorUtil.scale(desiredVelocity, MAX_VELOCITY);
-        final Vector3f steering = desiredVelocity.subtract(physicsControl.getLinearVelocity());
+        final Vector3f steering = desiredVelocity.subtract(physicsControl.getWalkDirection());
         addSteering(steering);
     }
 
-    private PhysicsRigidBody getPhysicsControl() {
-        return this.spatial.getControl(RigidBodyControl.class);
+    private GroundVehicleControl getPhysicsControl() {
+        return this.spatial.getControl(GroundVehicleControl.class);
     }
-
 
     @Override
     protected void controlUpdate(float tpf) {
-        PhysicsRigidBody physicsControl = getPhysicsControl();
-        if (this.masterSteering.length() > 0) {
-            Vector3f steering = this.masterSteering.add(physicsControl.getLinearVelocity());
-            getPhysicsControl().setLinearVelocity(steering);
-            this.masterSteering.set(0, 0, 0);
+        GroundVehicleControl physicsControl = getPhysicsControl();
+        Vector3f steering = this.masterSteering
+                .normalize()
+                .mult(this.movementDefinition.getMaxVelocity());
+        physicsControl.setWalkDirection(steering);
+        if (steering.length() > 0) {
+            physicsControl.setViewDirection(steering.setY(0));
         }
+        this.masterSteering.set(0, 0, 0);
     }
 
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
 
+    }
+
+    public void holdPosition() {
+        this.masterSteering.set(0, 0, 0);
     }
 }
