@@ -2,6 +2,7 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.controls.InputListener;
+import com.jme3.math.Vector2f;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.IActionCode;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
@@ -30,6 +31,11 @@ public class JmeInputWrapper implements IGameInput {
     public void toggleMouseGrabbed() {
         boolean isGrabbed = this.game.getInputManager().isCursorVisible();
         setMouseGrabbed(!isGrabbed);
+    }
+
+    @Override
+    public Vector2f getCursorPosition() {
+        return new Vector2f(this.game.getInputManager().getCursorPosition());
     }
 
     @Override

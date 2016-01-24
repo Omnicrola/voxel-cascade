@@ -67,7 +67,6 @@ public class EntityAiController extends AbstractControl {
     private void updateMoveToLocation() {
         boolean hasArrived = this.spatial.getWorldTranslation().distance(this.currentTargetLocation) <= 0.5f;
         if (hasArrived) {
-            System.out.println("arrived");
             this.currentTargetLocation = this.spatial.getWorldTranslation();
             setGoal(Goal.HOLD_POSITION);
         } else {
@@ -142,7 +141,6 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void setGoal(Goal goal) {
-        System.out.println("new goal: " + goal);
         this.currentGoal = goal;
     }
 }

@@ -5,6 +5,7 @@ import com.jme3.light.Light;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.WorldCursor;
 
 import java.util.List;
@@ -27,9 +28,9 @@ public interface IGameWorld {
 
     Stream<CollisionResult> getUnitsInRange(Vector3f position, float radius);
 
-    void attachTerrain(Spatial terrain);
+    void attachTerrain(Node terrain);
 
-    void attachUnits(Spatial units);
+    void attachUnits(Node units);
 
     void attachLights(List<Light> lights);
 
@@ -38,4 +39,6 @@ public interface IGameWorld {
     void detatchUnits(Spatial units);
 
     void detatchLights(List<Light> lights);
+
+    List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle);
 }

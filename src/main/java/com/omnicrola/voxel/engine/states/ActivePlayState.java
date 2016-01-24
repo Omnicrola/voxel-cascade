@@ -65,7 +65,7 @@ public class ActivePlayState extends VoxelGameState {
 
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
         addStateInput(GameInputAction.MOUSE_LOOK, new MouseLookListener());
-        addStateInput(GameInputAction.MOUSE_SELECT, new UserSelectionListener(userInteractionHandler));
+        addStateInput(GameInputAction.MOUSE_SELECT, new UserSelectionListener(gameContainer.input(), userInteractionHandler));
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(userInteractionHandler));
 
         addStateInput(GameInputAction.ORDER_MOVE, new OrderMoveListener(userInteractionHandler));

@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.ui;
 
-import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.input.IUserInteractionObserver;
+import com.omnicrola.voxel.input.SelectionGroup;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -14,7 +14,7 @@ public class UiSelectionObserver implements IUserInteractionObserver {
     }
 
     @Override
-    public void notifyNewSelection(Geometry geometry) {
-        this.userInterface.setSelectedEntity(geometry);
+    public void notifyNewSelection(SelectionGroup selectionGroup) {
+        this.userInterface.setSelectedUnits(selectionGroup);
     }
 }

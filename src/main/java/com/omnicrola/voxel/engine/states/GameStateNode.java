@@ -2,7 +2,6 @@ package com.omnicrola.voxel.engine.states;
 
 import com.jme3.light.Light;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
 
 import java.util.ArrayList;
@@ -12,8 +11,8 @@ import java.util.List;
  * Created by omnic on 1/23/2016.
  */
 public class GameStateNode {
-    private Spatial terrain;
-    private Spatial units;
+    private Node terrain;
+    private Node units;
     private List<Light> lights = new ArrayList<>();
 
     public GameStateNode() {
@@ -27,11 +26,11 @@ public class GameStateNode {
         this.lights.add(levelDefinition.getSun());
     }
 
-    public Spatial getTerrain() {
+    public Node getTerrain() {
         return terrain;
     }
 
-    public Spatial getUnits() {
+    public Node getUnits() {
         return units;
     }
 

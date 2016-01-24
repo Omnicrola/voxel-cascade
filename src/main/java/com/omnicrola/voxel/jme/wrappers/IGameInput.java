@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers;
 
 import com.jme3.input.controls.InputListener;
+import com.jme3.math.Vector2f;
 import com.omnicrola.voxel.input.IActionCode;
 
 /**
@@ -16,4 +17,7 @@ public interface IGameInput {
     void setMouseGrabbed(boolean isGrabbed);
 
     void setCameraMoveSpeed(float speed);
+
+    Vector2f getCursorPosition();
+
 }

@@ -26,7 +26,6 @@ import com.omnicrola.voxel.settings.GameConstants;
  * Created by omnic on 1/16/2016.
  */
 public class EntityBuilder implements IEntityBuilder {
-    private static final String LIGHTED_MATERIAL = "Common/MatDefs/Light/Lighting.j3md";
 
     private final UnitDefinitionRepository definitionRepository;
     private AssetManager assetManager;
@@ -58,7 +57,7 @@ public class EntityBuilder implements IEntityBuilder {
         Spatial spatial = getModel(entityDefinition.getModel());
         spatial.setName(entityDefinition.getName());
         Texture texture = getTexture(entityDefinition.getTexture());
-        Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
         material.setTexture("DiffuseMap", texture);
         spatial.setMaterial(material);
         for (IControlFactory factory : entityDefinition.getControlFactories(this.definitionRepository)) {
@@ -76,7 +75,7 @@ public class EntityBuilder implements IEntityBuilder {
 
         Spatial projectile = getModel(projectileDefinition.getModel());
         Texture texture = getTexture(projectileDefinition.getTexture());
-        Material material = new Material(this.assetManager, LIGHTED_MATERIAL);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
         material.setTexture("DiffuseMap", texture);
         projectile.setMaterial(material);
 
@@ -115,7 +114,7 @@ public class EntityBuilder implements IEntityBuilder {
     }
 
     private Material createMaterial(ColorRGBA color) {
-        Material material = new Material(assetManager, LIGHTED_MATERIAL);
+        Material material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         material.setBoolean("UseMaterialColors", true);
         material.setColor("Ambient", color);
         material.setColor("Diffuse", color);

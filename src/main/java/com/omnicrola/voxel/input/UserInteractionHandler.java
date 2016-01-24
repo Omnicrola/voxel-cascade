@@ -5,11 +5,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -22,10 +23,11 @@ public class UserInteractionHandler {
     private int buildType;
     private IGameContainer gameContainer;
     private boolean isBuilding;
-    private Geometry currentlySelectedEntity;
+    private SelectionGroup currentlySelected;
 
     public UserInteractionHandler(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
+        this.currentlySelected = new SelectionGroup();
         this.observers = new ArrayList<>();
     }
 
@@ -46,14 +48,14 @@ public class UserInteractionHandler {
         if (hasSelection()) {
             Optional<Vector3f> terrainLocation = getTerrainPointUnderCursor();
             if (terrainLocation.isPresent()) {
-                getCurrentAi().moveToLocation(terrainLocation.get());
+                this.currentlySelected.orderMoveToLocation(terrainLocation.get());
             }
         }
     }
 
     public void orderSelectionToStop() {
         if (hasSelection()) {
-            getCurrentAi().stop();
+            this.currentlySelected.orderStop();
         }
     }
 
@@ -62,12 +64,11 @@ public class UserInteractionHandler {
             Optional<CollisionResult> entityUnderCursor = getUnitUnderCursor();
             if (entityUnderCursor.isPresent()) {
                 CollisionResult collisionResult = entityUnderCursor.get();
-                EntityAiController currentAi = getCurrentAi();
-                currentAi.attackEntity(collisionResult.getGeometry());
+                this.currentlySelected.orderAttackTarget(collisionResult.getGeometry());
             } else {
                 Optional<Vector3f> terrainPoint = getTerrainPointUnderCursor();
                 if (terrainPoint.isPresent()) {
-                    getCurrentAi().attackLocation(terrainPoint.get());
+                    this.currentlySelected.orderAttackLocation(terrainPoint.get());
                 }
             }
         }
@@ -116,19 +117,22 @@ public class UserInteractionHandler {
     }
 
     private void setCurrentSelection(Geometry geometry) {
-        this.currentlySelectedEntity = geometry;
+        this.currentlySelected = new SelectionGroup(Arrays.asList(geometry));
+        notifyObserversOfSelection();
+    }
+
+    private void notifyObserversOfSelection() {
         for (IUserInteractionObserver observer : this.observers) {
-            observer.notifyNewSelection(geometry);
+            observer.notifyNewSelection(this.currentlySelected);
         }
     }
 
-    private EntityAiController getCurrentAi() {
-        EntityAiController entityAiController = this.currentlySelectedEntity.getControl(EntityAiController.class);
-
-        return entityAiController;
+    private boolean hasSelection() {
+        return this.currentlySelected.count() > 0;
     }
 
-    private boolean hasSelection() {
-        return this.currentlySelectedEntity != null;
+    public void selectArea(ScreenRectangle screenRectangle) {
+        List<Spatial> selection = this.gameContainer.world().selectAllUnitsIn(screenRectangle);
+        this.currentlySelected = new SelectionGroup(selection);
     }
 }
