@@ -63,4 +63,8 @@ public class MotionGovernorControl extends AbstractControl {
     public void holdPosition() {
         this.masterSteering.set(0, 0, 0);
     }
+
+    public float getPersonalRadius() {
+        return this.movementDefinition.getPersonalRadius();
+    }
 }

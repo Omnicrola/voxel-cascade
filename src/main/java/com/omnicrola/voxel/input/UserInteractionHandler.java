@@ -134,5 +134,6 @@ public class UserInteractionHandler {
     public void selectArea(ScreenRectangle screenRectangle) {
         List<Spatial> selection = this.gameContainer.world().selectAllUnitsIn(screenRectangle);
         this.currentlySelected = new SelectionGroup(selection);
+        notifyObserversOfSelection();
     }
 }
