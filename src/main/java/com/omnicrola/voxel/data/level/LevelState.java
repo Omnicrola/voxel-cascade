@@ -8,6 +8,7 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.main.VoxelException;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -15,20 +16,19 @@ import java.util.Optional;
  */
 public class LevelState implements ILevelStateRead {
     private final ArrayList<TeamData> teams;
+    private final ArrayList<Light> lights;
     private Node entities;
     private Node terrain;
     private WorldCursor worldCursor;
     private String levelName;
     private float resources;
     private float timeElapsed;
-    private Light sun;
-    private TeamData playerTeam;
 
-    public LevelState(Node terrain, Light sun, WorldCursor worldCursor, String levelName) {
+    public LevelState(Node terrain, WorldCursor worldCursor, String levelName) {
         this.teams = new ArrayList<>();
         this.terrain = terrain;
         this.entities = new Node();
-        this.sun = sun;
+        this.lights = new ArrayList<>();
         this.worldCursor = worldCursor;
         this.levelName = levelName;
         this.resources = 0;
@@ -80,8 +80,8 @@ public class LevelState implements ILevelStateRead {
         return worldCursor;
     }
 
-    public Light getSun() {
-        return this.sun;
+    public List<Light> getLights() {
+        return this.lights;
     }
 
     public TeamData getPlayerTeam() {
@@ -102,5 +102,9 @@ public class LevelState implements ILevelStateRead {
 
     private boolean hasId(TeamData teamData, int teamId) {
         return teamData.getId() == teamId;
+    }
+
+    public void addLight(Light light) {
+        this.lights.add(light);
     }
 }

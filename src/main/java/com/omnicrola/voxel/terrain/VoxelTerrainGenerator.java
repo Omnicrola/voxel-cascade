@@ -46,7 +46,4 @@ public class VoxelTerrainGenerator {
         return terrainRoot;
     }
 
-    private static void generateVoxels(LevelDefinition levelData, IEntityBuilder geometryBuilder, Node terrainRoot) {
-
-    }
 }

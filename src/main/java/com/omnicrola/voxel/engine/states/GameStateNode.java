@@ -23,7 +23,7 @@ public class GameStateNode {
     public GameStateNode(LevelState levelDefinition) {
         this.terrain = levelDefinition.getTerrain();
         this.units = levelDefinition.getUnits();
-        this.lights.add(levelDefinition.getSun());
+        this.lights = levelDefinition.getLights();
     }
 
     public Node getTerrain() {

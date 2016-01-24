@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -22,13 +23,25 @@ public class LevelStateFactory {
     public static LevelState create(LevelDefinition levelDefinition, IGameContainer gameContainer) {
         Node terrain = VoxelTerrainGenerator.load(levelDefinition, gameContainer);
         WorldCursor worldCursor = createWorldCursor(gameContainer, terrain);
-        DirectionalLight sun = createLights();
 
-        LevelState levelState = new LevelState(terrain, sun, worldCursor, levelDefinition.getName());
+        LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName());
+        addLights(levelState, levelDefinition);
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition, gameContainer);
         addStructures(levelState, levelDefinition, gameContainer);
         return levelState;
+    }
+
+    private static void addLights(LevelState levelState, LevelDefinition levelDefinition) {
+        DirectionalLight sun = new DirectionalLight();
+        sun.setColor(ColorRGBA.White.mult(0.7f));
+        sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
+
+        AmbientLight ambientLight = new AmbientLight();
+        ambientLight.setColor(ColorRGBA.White.mult(0.3f));
+
+        levelState.addLight(sun);
+        levelState.addLight(ambientLight);
     }
 
     private static void addTeams(LevelState levelState, LevelDefinition levelDefinition) {
@@ -57,12 +70,5 @@ public class LevelStateFactory {
     private static WorldCursor createWorldCursor(IGameContainer gameContainer, Node terrain) {
         WorldCursor worldCursor = gameContainer.world().createCursor(terrain);
         return worldCursor;
-    }
-
-    private static DirectionalLight createLights() {
-        DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White);
-        sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
-        return sun;
     }
 }
