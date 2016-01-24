@@ -6,7 +6,7 @@ import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
-import com.omnicrola.voxel.entities.control.PhysicsControlFactory;
+import com.omnicrola.voxel.entities.control.UnitPhysicsControlFactory;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -100,7 +100,7 @@ public class UnitDefinition {
         ProjectileDefinition projectileDefinition = repository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
         ArrayList<IControlFactory> iControlFactories = new ArrayList<>(this.controlFactories);
-        iControlFactories.add(new PhysicsControlFactory(this.mass));
+        iControlFactories.add(new UnitPhysicsControlFactory(this.mass));
         iControlFactories.add(new CollisionControlFactory());
         iControlFactories.add(new EntityAiControlFactory(weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
         return iControlFactories;

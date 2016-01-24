@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.data.level;
 
+import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -39,14 +40,12 @@ public class LevelStateFactory {
         for (UnitPlacement placement : structures) {
             TeamData teamData = levelState.getTeamById(placement.getTeamId());
             Spatial structure = gameContainer.world().build().structure(placement.getUnitId(), teamData);
-            structure.setLocalTranslation(placement.getLocation());
+            structure.getControl(RigidBodyControl.class).setPhysicsLocation(placement.getLocation());
             levelState.addUnit(structure);
-
         }
     }
 
     private static void addUnits(LevelState levelState, LevelDefinition levelDefinition, IGameContainer gameContainer) {
-
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);

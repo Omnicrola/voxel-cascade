@@ -125,7 +125,7 @@
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
-            <artifactId>jme3-effects</artifactId>
+            <artifactId>jme3-terrain</artifactId>
             <version>${jme3.version}</version>
         </dependency>
 

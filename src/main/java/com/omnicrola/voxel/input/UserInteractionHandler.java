@@ -90,7 +90,7 @@ public class UserInteractionHandler {
     }
 
     private Optional<Vector3f> getTerrainPointUnderCursor() {
-        Optional<CollisionResult> entityUnderCursor = getWorldCursor().getUnitUnderCursor(this.currentLevelState.getTerrain());
+        Optional<CollisionResult> entityUnderCursor = getWorldCursor().getTerrainUnderCursor(this.currentLevelState.getTerrain());
         if (entityUnderCursor.isPresent()) {
             return Optional.of(entityUnderCursor.get().getContactPoint());
         } else {

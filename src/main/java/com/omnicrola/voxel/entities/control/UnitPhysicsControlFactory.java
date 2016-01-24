@@ -11,17 +11,16 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement(name = "PhysicsControl")
-public class PhysicsControlFactory implements IControlFactory {
+public class UnitPhysicsControlFactory implements IControlFactory {
     private float mass;
 
-    public PhysicsControlFactory(float mass) {
+    public UnitPhysicsControlFactory(float mass) {
         this.mass = mass;
     }
 
     @Override
     public void build(Spatial spatial, IGameWorld gameWorld) {
         GroundVehicleControl tankVehicleControl = new GroundVehicleControl(this.mass);
-
         spatial.addControl(tankVehicleControl);
     }
 }

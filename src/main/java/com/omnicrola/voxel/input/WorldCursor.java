@@ -78,4 +78,13 @@ public class WorldCursor extends Node {
         boolean isSelectable = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_SELECTABLE);
         return isUnit && isSelectable;
     }
+
+    public Optional<CollisionResult> getTerrainUnderCursor(Node terrain) {
+        CollisionResults results = new CollisionResults();
+        Ray pickRay = getPickRay();
+        terrain.collideWith(pickRay, results);
+        return VoxelUtil.convertToStream(results)
+                .sorted(this.collisionDistanceComparator)
+                .findFirst();
+    }
 }

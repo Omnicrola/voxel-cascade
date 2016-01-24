@@ -1,7 +1,9 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
+import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
+import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -70,6 +72,9 @@ public class StructureDefinition {
     }
 
     public List<IControlFactory> getControlFactories() {
+        ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
+        controlFactories.add(new StructurePhysicsControlFactory());
+        controlFactories.add(new CollisionControlFactory());
         return controlFactories;
     }
 }
