@@ -6,9 +6,6 @@ package com.omnicrola.voxel.input;
 public enum GameInputAction implements IActionCode {
     SELECT,
     DEBUG_RELOAD_LEVEL,
-    DEBUG_BUILD_1,
-    DEBUG_BUILD_2,
-    DEBUG_APPLY_FORCE,
     ORDER_MOVE,
     ORDER_ATTACK,
     ORDER_STOP,

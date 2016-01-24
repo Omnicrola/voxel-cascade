@@ -72,8 +72,6 @@ public class ActivePlayState extends VoxelGameState {
         addStateInput(GameInputAction.ORDER_STOP, new OrderStopListener(userInteractionHandler));
         addStateInput(GameInputAction.ORDER_ATTACK, new OrderAttackListener(userInteractionHandler));
 
-        addStateInput(GameInputAction.DEBUG_BUILD_1, new SetBuildSelectionListener(1, userInteractionHandler));
-        addStateInput(GameInputAction.DEBUG_BUILD_2, new SetBuildSelectionListener(2, userInteractionHandler));
     }
 
     public void loadLevel(UUID levelId) {
