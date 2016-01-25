@@ -1,18 +1,16 @@
 package com.omnicrola.voxel.engine.states;
 
 import com.jme3.input.controls.ActionListener;
-import com.jme3.math.ColorRGBA;
-import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.ui.GLabel;
+import com.omnicrola.voxel.ui.UiScreen;
+import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
 
 /**
  * Created by omnic on 1/15/2016.
  */
 public class MainMenuState extends VoxelGameState {
-    private ActivePlayState activePlayState;
 
     private class StartGameListener implements ActionListener {
 
@@ -24,9 +22,8 @@ public class MainMenuState extends VoxelGameState {
         }
     }
 
+    private ActivePlayState activePlayState;
     private IGameContainer gameContainer;
-    private Node stateRoot;
-    private StartGameListener startGameListener;
 
     public MainMenuState(ActivePlayState activePlayState) {
         super("Main Menu");
@@ -36,23 +33,18 @@ public class MainMenuState extends VoxelGameState {
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
-        this.startGameListener = new StartGameListener();
-        this.stateRoot = new Node();
-        GLabel titleText = this.gameContainer.gui().build().label("Main Menu", ColorRGBA.Green);
-        titleText.setTextPosition(300, 300);
-        stateRoot.attachChild(titleText);
+        StartGameListener startGameListener = new StartGameListener();
+        addStateInput(GameInputAction.SELECT, startGameListener);
+        MainMenuUiBuilder.build(gameContainer);
+        gameContainer.gui().changeScreens(UiScreen.MAIN_MENU);
         setEnabled(false);
     }
 
     @Override
     protected void voxelEnable(IGameContainer gameContainer) {
-        this.gameContainer.gui().attach(this.stateRoot);
-        this.gameContainer.input().bind(GameInputAction.SELECT, this.startGameListener);
     }
 
     @Override
     protected void voxelDisable(IGameContainer gameContainer) {
-        gameContainer.gui().remove(this.stateRoot);
-        this.gameContainer.input().unbind(this.startGameListener);
     }
 }

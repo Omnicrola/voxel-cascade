@@ -6,6 +6,7 @@ import com.jme3.renderer.Camera;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
+import com.omnicrola.voxel.ui.UiScreen;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -56,5 +57,10 @@ public class JmeGuiWrapper implements IGameGui {
         velocity.multLocal(amount * CAMERA_MOVE_SPEED);
         location.addLocal(velocity);
         camera.setLocation(location);
+    }
+
+    @Override
+    public void changeScreens(UiScreen screenName) {
+        this.game.getNiftyGui().gotoScreen(screenName.toString());
     }
 }

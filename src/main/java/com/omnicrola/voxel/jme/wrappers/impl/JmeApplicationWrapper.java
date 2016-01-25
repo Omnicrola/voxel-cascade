@@ -51,4 +51,5 @@ public class JmeApplicationWrapper implements IGameContainer {
     public void disableState(Class<? extends VoxelGameState> stateClass) {
         this.game.getStateManager().getState(stateClass).setEnabled(false);
     }
+
 }

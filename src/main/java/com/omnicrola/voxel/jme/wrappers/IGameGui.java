@@ -4,6 +4,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.jme.wrappers.impl.GuiBuilder;
+import com.omnicrola.voxel.ui.UiScreen;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -21,4 +22,5 @@ public interface IGameGui {
 
     void moveCamera(float amount, boolean sideways);
 
+    void changeScreens(UiScreen screenName);
 }
