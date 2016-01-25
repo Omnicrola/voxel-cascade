@@ -10,6 +10,7 @@ import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
 import com.omnicrola.voxel.ui.builders.UserInterfaceBuilder;
@@ -102,6 +103,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         gameContainer.input().setCameraMoveSpeed(10);
         gameContainer.gui().setCameraRotation(new Quaternion(-0.021947166f, 0.9495664f, -0.06827275f, -0.30525514f));
         gameContainer.gui().setCameraPosition(new Vector3f(10, 0, 10));
+        gameContainer.gui().changeScreens(UiScreen.ACTIVE_PLAY);
     }
 
     @Override

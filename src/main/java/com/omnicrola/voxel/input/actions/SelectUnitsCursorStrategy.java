@@ -31,6 +31,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
         super(levelState, worldCursor);
         this.input = inputManager;
         this.gameWorld = gameWorld;
+        this.lastCursorPosition = new Vector2f();
     }
 
     @Override

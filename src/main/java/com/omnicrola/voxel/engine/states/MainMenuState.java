@@ -35,13 +35,13 @@ public class MainMenuState extends VoxelGameState {
         this.gameContainer = gameContainer;
         StartGameListener startGameListener = new StartGameListener();
         addStateInput(GameInputAction.SELECT, startGameListener);
-        MainMenuUiBuilder.build(gameContainer);
-        gameContainer.gui().changeScreens(UiScreen.MAIN_MENU);
+        MainMenuUiBuilder.build(gameContainer, this.activePlayState);
         setEnabled(false);
     }
 
     @Override
     protected void voxelEnable(IGameContainer gameContainer) {
+        gameContainer.gui().changeScreens(UiScreen.MAIN_MENU);
     }
 
     @Override

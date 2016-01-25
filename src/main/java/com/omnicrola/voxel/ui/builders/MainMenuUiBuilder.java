@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.ui.builders;
 
+import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.MainMenuScreenController;
 import com.omnicrola.voxel.ui.UiScreen;
@@ -13,10 +14,12 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 public class MainMenuUiBuilder {
     private static final String DEFAULT_FONT = "Interface/Fonts/Default.fnt";
 
-    public static void build(IGameContainer gameContainer) {
+    public static void build(IGameContainer gameContainer, ActivePlayState activePlayState) {
         String screenName = UiScreen.MAIN_MENU.toString();
+        final MainMenuScreenController mainMenuScreenController = new MainMenuScreenController(gameContainer, activePlayState);
+
         gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
-            controller(new MainMenuScreenController());
+            controller(mainMenuScreenController);
             layer(new LayerBuilder("background") {
                 {
                     childLayoutCenter();

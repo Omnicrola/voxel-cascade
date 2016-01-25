@@ -28,19 +28,20 @@ public abstract class AbstractScreenController implements ScreenController {
     }
 
     protected static void assertEventSubscribers(ScreenController controller, UiToken... tokens) {
-        List<Method> methods = Arrays.asList(controller.getClass().getDeclaredMethods())
+        List<Method> allMethods = Arrays.asList(controller.getClass().getDeclaredMethods());
+        List<Method> linkedMethods = allMethods
                 .stream()
                 .filter(m -> hasLink(m))
                 .filter(m -> hasSubscriber(m))
                 .collect(Collectors.toList());
-        for (Method method : methods) {
+        linkedMethods.stream().forEach(method -> {
             UiToken token = method.getAnnotation(SubscriberLink.class).value();
             String linkId = method.getAnnotation(NiftyEventSubscriber.class).id();
             if (!token.toString().equals(linkId)) {
                 throw new VoxelException("Broken UI event subscriber. Method is listenting for '" +
                         linkId + "' but enum is '" + token + "'");
             }
-        }
+        });
     }
 
     private static boolean hasSubscriber(Method method) {
