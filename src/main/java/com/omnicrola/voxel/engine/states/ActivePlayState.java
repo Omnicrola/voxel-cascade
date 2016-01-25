@@ -7,6 +7,7 @@ import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.UserInteractionHandler;
+import com.omnicrola.voxel.input.listeners.SetAttackCursorStrategyListener;
 import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -19,7 +20,7 @@ import java.util.UUID;
 /**
  * Created by omnic on 1/15/2016.
  */
-public class ActivePlayState extends VoxelGameState {
+public class ActivePlayState extends VoxelGameState implements ICurrentLevelProvider {
 
     private GameXmlDataParser gameDataParser;
     private LevelDefinitionRepository levelDefinitions;
@@ -60,17 +61,29 @@ public class ActivePlayState extends VoxelGameState {
 
         this.userInteractionHandler = new UserInteractionHandler(gameContainer);
         UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
+
         this.stateRootUiNode.attachChild(userInterface);
         this.userInteractionHandler.addSelectionListener(new UiSelectionObserver(userInterface));
 
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
-        addStateInput(GameInputAction.MOUSE_LOOK, new MouseLookListener());
-        addStateInput(GameInputAction.MOUSE_SELECT, new UserSelectionListener(gameContainer.input(), userInteractionHandler));
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(userInteractionHandler));
 
-        addStateInput(GameInputAction.ORDER_MOVE, new OrderMoveListener(userInteractionHandler));
-        addStateInput(GameInputAction.ORDER_STOP, new OrderStopListener(userInteractionHandler));
-        addStateInput(GameInputAction.ORDER_ATTACK, new OrderAttackListener(userInteractionHandler));
+        addStateInput(GameInputAction.MOUSE_PRIMARY, new ExecutePrimaryCursorListener(this));
+        addStateInput(GameInputAction.MOUSE_PRIMARY, new ExecuteSecondaryCursorListener(this));
+
+        addStateInput(GameInputAction.ORDER_MOVE, new SetMoveCursorStrategyListener(this));
+        addStateInput(GameInputAction.ORDER_ATTACK, new SetAttackCursorStrategyListener(this));
+        addStateInput(GameInputAction.ORDER_STOP, new OrderSelectedUnitsStopListeners(this));
+
+//        addStateInput(GameInputAction.MOUSE_PRIMARY, new UserSelectionListener(gameContainer.input(), userInteractionHandler));
+//        addStateInput(GameInputAction.MOUSE_SECONDARY, new MouseLookListener());
+//        addStateInput(GameInputAction.ORDER_MOVE, new OrderMoveListener(userInteractionHandler));
+//        addStateInput(GameInputAction.ORDER_STOP, new OrderStopListener(userInteractionHandler));
+//        addStateInput(GameInputAction.ORDER_ATTACK, new OrderAttackListener(userInteractionHandler));
+//
+//        addStateInput(GameInputAction.ORDER_BUILD_MODE, new ToggleBuildModeListener(this.userInteractionHandler));
+//        addStateInput(GameInputAction.ORDER_BUILD_SELECT_1, new BuildSelectedItemListener(userInteractionHandler, 1));
+//        addStateInput(GameInputAction.ORDER_BUILD_SELECT_2, new BuildSelectedItemListener(userInteractionHandler, 2));
 
     }
 
@@ -82,6 +95,11 @@ public class ActivePlayState extends VoxelGameState {
 
         setStateRootNode(new GameStateNode(this.currentLevelState));
         attachStateNodes();
+    }
+
+    @Override
+    public LevelState getCurrentLevelState() {
+        return this.currentLevelState;
     }
 
     @Override

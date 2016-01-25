@@ -34,14 +34,18 @@ public class VoxelGameEngineInitializer {
     private static void createInputMappings(AppStateManager stateManager) {
         InputManager inputManager = stateManager.getApplication().getInputManager();
 
-        addMouseMapping(inputManager, GameInputAction.MOUSE_LOOK, MouseInput.BUTTON_RIGHT);
-        addMouseMapping(inputManager, GameInputAction.MOUSE_SELECT, MouseInput.BUTTON_LEFT);
+        addMouseMapping(inputManager, GameInputAction.MOUSE_SECONDARY, MouseInput.BUTTON_RIGHT);
+        addMouseMapping(inputManager, GameInputAction.MOUSE_PRIMARY, MouseInput.BUTTON_LEFT);
 
         addKeyMapping(inputManager, GameInputAction.SELECT, KeyInput.KEY_RETURN);
         addKeyMapping(inputManager, GameInputAction.CLEAR_SELECTION, KeyInput.KEY_ESCAPE);
-        addKeyMapping(inputManager, GameInputAction.ORDER_ATTACK, KeyInput.KEY_1);
-        addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_2);
+
+        addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_1);
+        addKeyMapping(inputManager, GameInputAction.ORDER_ATTACK, KeyInput.KEY_2);
         addKeyMapping(inputManager, GameInputAction.ORDER_STOP, KeyInput.KEY_3);
+        addKeyMapping(inputManager, GameInputAction.ORDER_BUILD_MODE, KeyInput.KEY_B);
+        addKeyMapping(inputManager, GameInputAction.ORDER_BUILD_SELECT_1, KeyInput.KEY_Q);
+        addKeyMapping(inputManager, GameInputAction.ORDER_BUILD_SELECT_2, KeyInput.KEY_W);
 
         addKeyMapping(inputManager, GameInputAction.TOGGLE_PHYSICS_DEBUG, KeyInput.KEY_F3);
         addKeyMapping(inputManager, GameInputAction.DEBUG_RELOAD_LEVEL, KeyInput.KEY_R);

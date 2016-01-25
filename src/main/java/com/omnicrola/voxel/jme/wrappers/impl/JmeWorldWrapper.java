@@ -15,6 +15,7 @@ import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
 import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -98,7 +99,6 @@ public class JmeWorldWrapper implements IGameWorld {
         return VoxelUtil.convertToStream(collisionResults);
     }
 
-
     @Override
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
         ScreenSelectionEvaluator screenSelectionEvaluator = this.screenSelectionEvaluatorFactory.build(screenRectangle);
@@ -115,12 +115,14 @@ public class JmeWorldWrapper implements IGameWorld {
         Boolean isUnit = s.getUserData(EntityDataKeys.IS_UNIT);
         Boolean isSelectable = s.getUserData(EntityDataKeys.IS_SELECTABLE);
         return isSelectable != null && isSelectable.booleanValue() &&
-                isUnit!=null && isUnit.booleanValue();
+                isUnit != null && isUnit.booleanValue();
     }
 
     @Override
     public WorldCursor createCursor(Node terrain) {
-        return new WorldCursor(this.game.getInputManager(), this.game.getCamera(), terrain);
+        JmeInputWrapper inputManager = new JmeInputWrapper(this.game);
+        WorldCursor worldCursor = new WorldCursor(inputManager, this.game.getCamera(), terrain);
+        return worldCursor;
     }
 
     @Override

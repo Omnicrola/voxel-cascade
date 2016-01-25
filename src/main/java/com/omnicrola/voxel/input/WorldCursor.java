@@ -2,13 +2,13 @@ package com.omnicrola.voxel.input;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
-import com.jme3.input.InputManager;
 import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -19,22 +19,79 @@ import java.util.Optional;
  * Created by omnic on 1/16/2016.
  */
 public class WorldCursor extends Node {
-    private final InputManager inputManager;
+    private final IGameInput inputManager;
     private final Camera camera;
     private final CollisionDistanceComparator collisionDistanceComparator;
+    private ICursorStrategy cursorStrategy;
+    private ICursorStrategy defaultCursorStrategy;
     private Node terrainNode;
+    private SelectionGroup currentSelection;
 
-    public WorldCursor(InputManager inputManager, Camera camera, Node terrainNode) {
+    public WorldCursor(IGameInput inputManager, Camera camera, Node terrainNode) {
         this.inputManager = inputManager;
         this.camera = camera;
         this.terrainNode = terrainNode;
+        this.currentSelection = new SelectionGroup();
         this.collisionDistanceComparator = new CollisionDistanceComparator();
+        this.defaultCursorStrategy = NullCursorStrategy.NULL;
+        this.cursorStrategy = this.defaultCursorStrategy;
     }
 
     @Override
     public void updateLogicalState(float tpf) {
         Ray pickRay = getPickRay();
         setPositionToNearestVoxel(pickRay);
+    }
+
+    public void setCursorStrategy(ICursorStrategy cursorStrategy) {
+        this.cursorStrategy = cursorStrategy;
+    }
+
+    public void setDefaultCursorStrategy(ICursorStrategy cursorStrategy) {
+        this.defaultCursorStrategy = cursorStrategy;
+    }
+
+    public void clearCursorStrategy() {
+        this.cursorStrategy = this.defaultCursorStrategy;
+    }
+
+    public void setVisible(boolean visible) {
+        if (visible) {
+            this.setCullHint(CullHint.Inherit);
+        } else {
+            this.setCullHint(CullHint.Always);
+        }
+    }
+
+    public void executePrimary(boolean isPressed) {
+        this.cursorStrategy.executePrimary(isPressed, this.currentSelection);
+    }
+
+    public void executeSecondary(boolean isPressed) {
+        this.cursorStrategy.executeSecondary(isPressed, this.currentSelection);
+    }
+
+    public void clearSelection() {
+        this.currentSelection = new SelectionGroup();
+    }
+
+    public Optional<CollisionResult> getUnitUnderCursor(Node targetNode) {
+        CollisionResults results = new CollisionResults();
+        Ray pickRay = getPickRay();
+        targetNode.collideWith(pickRay, results);
+        return VoxelUtil.convertToStream(results)
+                .filter(c -> isSelectableUnit(c))
+                .sorted(this.collisionDistanceComparator)
+                .findFirst();
+    }
+
+    public Optional<CollisionResult> getTerrainUnderCursor(Node terrain) {
+        CollisionResults results = new CollisionResults();
+        Ray pickRay = getPickRay();
+        terrain.collideWith(pickRay, results);
+        return VoxelUtil.convertToStream(results)
+                .sorted(this.collisionDistanceComparator)
+                .findFirst();
     }
 
     private void setPositionToNearestVoxel(Ray pickRay) {
@@ -54,24 +111,6 @@ public class WorldCursor extends Node {
         return new Ray(cursor3d, direction);
     }
 
-    public void setVisible(boolean visible) {
-        if (visible) {
-            this.setCullHint(CullHint.Inherit);
-        } else {
-            this.setCullHint(CullHint.Always);
-        }
-    }
-
-    public Optional<CollisionResult> getUnitUnderCursor(Node targetNode) {
-        CollisionResults results = new CollisionResults();
-        Ray pickRay = getPickRay();
-        targetNode.collideWith(pickRay, results);
-        return VoxelUtil.convertToStream(results)
-                .filter(c -> isSelectableUnit(c))
-                .sorted(this.collisionDistanceComparator)
-                .findFirst();
-    }
-
     private boolean isSelectableUnit(CollisionResult collision) {
         Geometry geometry = collision.getGeometry();
         boolean isUnit = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_UNIT);
@@ -79,12 +118,11 @@ public class WorldCursor extends Node {
         return isUnit && isSelectable;
     }
 
-    public Optional<CollisionResult> getTerrainUnderCursor(Node terrain) {
-        CollisionResults results = new CollisionResults();
-        Ray pickRay = getPickRay();
-        terrain.collideWith(pickRay, results);
-        return VoxelUtil.convertToStream(results)
-                .sorted(this.collisionDistanceComparator)
-                .findFirst();
+    public void setCurrentSelection(SelectionGroup currentSelection) {
+        this.currentSelection = currentSelection;
+    }
+
+    public SelectionGroup getCurrentSelection() {
+        return currentSelection;
     }
 }

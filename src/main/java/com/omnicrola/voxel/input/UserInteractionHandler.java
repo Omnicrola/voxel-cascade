@@ -21,6 +21,7 @@ public class UserInteractionHandler {
     private LevelState currentLevelState;
     private IGameContainer gameContainer;
     private SelectionGroup currentlySelected;
+    private boolean inBuildMode;
 
     public UserInteractionHandler(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
@@ -85,6 +86,14 @@ public class UserInteractionHandler {
         }
     }
 
+    public void toggleBuildMode() {
+        this.inBuildMode = !this.inBuildMode;
+    }
+
+    public boolean isInBuildMode() {
+        return inBuildMode;
+    }
+
     private Optional<CollisionResult> getUnitUnderCursor() {
         return getWorldCursor().getUnitUnderCursor(this.currentLevelState.getUnits());
     }
@@ -116,4 +125,5 @@ public class UserInteractionHandler {
     private boolean hasSelection() {
         return this.currentlySelected.count() > 0;
     }
+
 }

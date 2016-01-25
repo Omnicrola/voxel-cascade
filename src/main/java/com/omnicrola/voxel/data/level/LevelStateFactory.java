@@ -9,6 +9,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
@@ -29,6 +30,11 @@ public class LevelStateFactory {
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition, gameContainer);
         addStructures(levelState, levelDefinition, gameContainer);
+
+        SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(gameContainer.input(),
+                gameContainer.world(), levelState, worldCursor);
+        worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
+
         return levelState;
     }
 
