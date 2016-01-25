@@ -128,6 +128,16 @@
             <artifactId>jme3-terrain</artifactId>
             <version>${jme3.version}</version>
         </dependency>
+        <dependency>
+            <groupId>com.jme3</groupId>
+            <artifactId>jme3-niftygui</artifactId>
+            <version>${jme3.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.bushe</groupId>
+            <artifactId>eventbus</artifactId>
+            <version>1.4</version>
+        </dependency>
 
 
         <dependency>

@@ -7,9 +7,9 @@ import com.omnicrola.voxel.input.SelectionGroup;
  * Created by omnic on 1/16/2016.
  */
 public class UiSelectionObserver implements IUserInteractionObserver {
-    private UserInterface userInterface;
+    private IGameUserInterface userInterface;
 
-    public UiSelectionObserver(UserInterface userInterface) {
+    public UiSelectionObserver(IGameUserInterface userInterface) {
         this.userInterface = userInterface;
     }
 

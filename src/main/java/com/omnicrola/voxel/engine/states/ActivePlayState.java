@@ -12,7 +12,7 @@ import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
-import com.omnicrola.voxel.ui.UserInterfaceGenerator;
+import com.omnicrola.voxel.ui.builders.UserInterfaceBuilder;
 
 import java.util.UUID;
 
@@ -56,7 +56,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
-        this.userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
+        this.userInterface = UserInterfaceBuilder.createPlayUi(gameContainer);
         this.stateRootUiNode.attachChild(userInterface);
 
         addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener());
@@ -76,6 +76,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         addStateInput(GameInputAction.ORDER_MOVE, new SetMoveCursorStrategyListener(this));
         addStateInput(GameInputAction.ORDER_ATTACK, new SetAttackCursorStrategyListener(this));
         addStateInput(GameInputAction.ORDER_STOP, new OrderSelectedUnitsStopListeners(this));
+        addStateInput(GameInputAction.ORDER_BUILD_MODE, new ToggleBuildModeListener(this.userInterface));
     }
 
     public void loadLevel(UUID levelId) {

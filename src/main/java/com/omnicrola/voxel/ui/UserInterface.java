@@ -9,12 +9,13 @@ import java.text.DecimalFormat;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class UserInterface extends Node {
+public class UserInterface extends Node implements IGameUserInterface {
     private final GLabel selectedLabel;
     private final GLabel positionLabel;
     private final DecimalFormat numberFormat;
     private GLabel velocityLabel;
     private SelectionGroup selectedUnits;
+    private boolean inBuildMode;
 
     public UserInterface(GLabel selectedLabel, GLabel positionLabel, GLabel velocityLabel) {
         this.numberFormat = new DecimalFormat("#,##0.000");
@@ -26,8 +27,8 @@ public class UserInterface extends Node {
     @Override
     public void updateLogicalState(float tpf) {
         if (this.selectedUnits != null) {
-            String names =this.selectedUnits.unitNames();
-            this.selectedLabel.setText("Selected: " + this.selectedUnits.count() + " "+names);
+            String names = this.selectedUnits.unitNames();
+            this.selectedLabel.setText("Selected: " + this.selectedUnits.count() + " " + names);
         } else {
             this.selectedLabel.setText("Selected: ");
         }
@@ -46,5 +47,15 @@ public class UserInterface extends Node {
 
     public void setSelectedUnits(SelectionGroup selectedUnits) {
         this.selectedUnits = selectedUnits;
+    }
+
+    @Override
+    public boolean isInBuildMode() {
+        return this.inBuildMode;
+    }
+
+    @Override
+    public void setBuildMode(boolean buildMode) {
+        this.inBuildMode = buildMode;
     }
 }

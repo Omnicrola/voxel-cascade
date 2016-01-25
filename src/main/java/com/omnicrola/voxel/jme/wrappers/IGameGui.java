@@ -20,4 +20,5 @@ public interface IGameGui {
     void setCameraPosition(Vector3f vector3f);
 
     void moveCamera(float amount, boolean sideways);
+
 }
