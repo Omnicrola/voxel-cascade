@@ -6,12 +6,10 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.input.GameInputAction;
-import com.omnicrola.voxel.input.UserInteractionHandler;
-import com.omnicrola.voxel.input.listeners.SetAttackCursorStrategyListener;
 import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
 import com.omnicrola.voxel.ui.UserInterfaceGenerator;
 
@@ -44,7 +42,6 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         }
     }
 
-    private UserInteractionHandler userInteractionHandler;
     private IGameContainer gameContainer;
     private LevelState currentLevelState;
 
@@ -56,34 +53,27 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
-
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
-
-        this.userInteractionHandler = new UserInteractionHandler(gameContainer);
         UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
-
         this.stateRootUiNode.attachChild(userInterface);
-        this.userInteractionHandler.addSelectionListener(new UiSelectionObserver(userInterface));
 
+        addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener());
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
-        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(userInteractionHandler));
+
+        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this));
 
         addStateInput(GameInputAction.MOUSE_PRIMARY, new ExecutePrimaryCursorListener(this));
-        addStateInput(GameInputAction.MOUSE_PRIMARY, new ExecuteSecondaryCursorListener(this));
+        addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this));
+
+        IGameGui input = gameContainer.gui();
+        addStateInput(GameInputAction.ARROW_UP, new PanCameraForwardListener(input));
+        addStateInput(GameInputAction.ARROW_DOWN, new PanCameraBackwardListener(input));
+        addStateInput(GameInputAction.ARROW_LEFT, new PanCameraLeftListener(input));
+        addStateInput(GameInputAction.ARROW_RIGHT, new PanCameraRightListener(input));
 
         addStateInput(GameInputAction.ORDER_MOVE, new SetMoveCursorStrategyListener(this));
         addStateInput(GameInputAction.ORDER_ATTACK, new SetAttackCursorStrategyListener(this));
         addStateInput(GameInputAction.ORDER_STOP, new OrderSelectedUnitsStopListeners(this));
-
-//        addStateInput(GameInputAction.MOUSE_PRIMARY, new UserSelectionListener(gameContainer.input(), userInteractionHandler));
-//        addStateInput(GameInputAction.MOUSE_SECONDARY, new MouseLookListener());
-//        addStateInput(GameInputAction.ORDER_MOVE, new OrderMoveListener(userInteractionHandler));
-//        addStateInput(GameInputAction.ORDER_STOP, new OrderStopListener(userInteractionHandler));
-//        addStateInput(GameInputAction.ORDER_ATTACK, new OrderAttackListener(userInteractionHandler));
-//
-//        addStateInput(GameInputAction.ORDER_BUILD_MODE, new ToggleBuildModeListener(this.userInteractionHandler));
-//        addStateInput(GameInputAction.ORDER_BUILD_SELECT_1, new BuildSelectedItemListener(userInteractionHandler, 1));
-//        addStateInput(GameInputAction.ORDER_BUILD_SELECT_2, new BuildSelectedItemListener(userInteractionHandler, 2));
 
     }
 
@@ -91,7 +81,6 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         detatchStateNodes();
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
         this.currentLevelState = LevelStateFactory.create(levelDefinition, this.gameContainer);
-        this.userInteractionHandler.setLevel(this.currentLevelState);
 
         setStateRootNode(new GameStateNode(this.currentLevelState));
         attachStateNodes();

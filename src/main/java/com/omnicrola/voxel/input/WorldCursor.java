@@ -44,6 +44,7 @@ public class WorldCursor extends Node {
     }
 
     public void setCursorStrategy(ICursorStrategy cursorStrategy) {
+        System.out.println("set " + cursorStrategy.getClass().getSimpleName());
         this.cursorStrategy = cursorStrategy;
     }
 
