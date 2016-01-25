@@ -3,21 +3,23 @@ package com.omnicrola.voxel.data.level;
 import com.jme3.light.Light;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.main.VoxelException;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
  */
-public class LevelState implements ILevelStateRead {
+public class LevelState implements ILevelStateRead, IDisposable {
     private final ArrayList<TeamData> teams;
     private final ArrayList<Light> lights;
-    private Node entities;
+    private Node units;
     private Node terrain;
     private WorldCursor worldCursor;
     private String levelName;
@@ -27,7 +29,7 @@ public class LevelState implements ILevelStateRead {
     public LevelState(Node terrain, WorldCursor worldCursor, String levelName) {
         this.teams = new ArrayList<>();
         this.terrain = terrain;
-        this.entities = new Node();
+        this.units = new Node();
         this.lights = new ArrayList<>();
         this.worldCursor = worldCursor;
         this.levelName = levelName;
@@ -41,11 +43,11 @@ public class LevelState implements ILevelStateRead {
     }
 
     public Node getUnits() {
-        return entities;
+        return units;
     }
 
     public void addUnit(Spatial unit) {
-        this.entities.attachChild(unit);
+        this.units.attachChild(unit);
     }
 
     public void setResources(float resources) {
@@ -106,5 +108,23 @@ public class LevelState implements ILevelStateRead {
 
     public void addLight(Light light) {
         this.lights.add(light);
+    }
+
+    @Override
+    public void dispose() {
+        this.getWorldCursor().dispose();
+        recursivelyDisposeNode(this.terrain);
+        recursivelyDisposeNode(this.units);
+    }
+
+    private void recursivelyDisposeNode(Node node) {
+        Iterator<Spatial> children = node.getChildren().iterator();
+        node.detachAllChildren();
+        while(children.hasNext()){
+            Spatial child = children.next();
+            if(child instanceof Node){
+                recursivelyDisposeNode((Node) child);
+            }
+        }
     }
 }

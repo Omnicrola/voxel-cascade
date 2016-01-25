@@ -10,6 +10,7 @@ import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.ui.UiSelectionObserver;
 import com.omnicrola.voxel.ui.UserInterface;
 import com.omnicrola.voxel.ui.UserInterfaceGenerator;
 
@@ -22,6 +23,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
 
     private GameXmlDataParser gameDataParser;
     private LevelDefinitionRepository levelDefinitions;
+    private UserInterface userInterface;
 
     private class DebugReloadListener implements ActionListener {
 
@@ -54,7 +56,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
-        UserInterface userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
+        this.userInterface = UserInterfaceGenerator.createPlayUi(gameContainer);
         this.stateRootUiNode.attachChild(userInterface);
 
         addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener());
@@ -74,15 +76,18 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         addStateInput(GameInputAction.ORDER_MOVE, new SetMoveCursorStrategyListener(this));
         addStateInput(GameInputAction.ORDER_ATTACK, new SetAttackCursorStrategyListener(this));
         addStateInput(GameInputAction.ORDER_STOP, new OrderSelectedUnitsStopListeners(this));
-
     }
 
     public void loadLevel(UUID levelId) {
         detatchStateNodes();
+        if (this.currentLevelState != null) {
+            this.currentLevelState.dispose();
+        }
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
         this.currentLevelState = LevelStateFactory.create(levelDefinition, this.gameContainer);
 
         setStateRootNode(new GameStateNode(this.currentLevelState));
+        this.currentLevelState.getWorldCursor().addSelectionObserver(new UiSelectionObserver(this.userInterface));
         attachStateNodes();
     }
 

@@ -8,17 +8,20 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
  */
-public class WorldCursor extends Node {
+public class WorldCursor extends Node implements IDisposable {
     private final IGameInput inputManager;
     private final Camera camera;
     private final CollisionDistanceComparator collisionDistanceComparator;
@@ -26,8 +29,10 @@ public class WorldCursor extends Node {
     private ICursorStrategy defaultCursorStrategy;
     private Node terrainNode;
     private SelectionGroup currentSelection;
+    private List<IUserInteractionObserver> observers;
 
     public WorldCursor(IGameInput inputManager, Camera camera, Node terrainNode) {
+        this.observers = new ArrayList<>();
         this.inputManager = inputManager;
         this.camera = camera;
         this.terrainNode = terrainNode;
@@ -37,6 +42,10 @@ public class WorldCursor extends Node {
         this.cursorStrategy = this.defaultCursorStrategy;
     }
 
+    public void addSelectionObserver(IUserInteractionObserver selectionObserver) {
+        this.observers.add(selectionObserver);
+    }
+
     @Override
     public void updateLogicalState(float tpf) {
         Ray pickRay = getPickRay();
@@ -44,7 +53,6 @@ public class WorldCursor extends Node {
     }
 
     public void setCursorStrategy(ICursorStrategy cursorStrategy) {
-        System.out.println("set " + cursorStrategy.getClass().getSimpleName());
         this.cursorStrategy = cursorStrategy;
     }
 
@@ -74,6 +82,11 @@ public class WorldCursor extends Node {
 
     public void clearSelection() {
         this.currentSelection = new SelectionGroup();
+        notifySelectionObservers();
+    }
+
+    private void notifySelectionObservers() {
+        this.observers.forEach(o -> o.notifyNewSelection(this.currentSelection));
     }
 
     public Optional<CollisionResult> getUnitUnderCursor(Node targetNode) {
@@ -121,9 +134,15 @@ public class WorldCursor extends Node {
 
     public void setCurrentSelection(SelectionGroup currentSelection) {
         this.currentSelection = currentSelection;
+        notifySelectionObservers();
     }
 
     public SelectionGroup getCurrentSelection() {
         return currentSelection;
     }
+
+    public void dispose() {
+        this.observers.clear();
+    }
+
 }

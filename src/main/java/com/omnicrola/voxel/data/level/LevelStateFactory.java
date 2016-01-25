@@ -34,6 +34,7 @@ public class LevelStateFactory {
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(gameContainer.input(),
                 gameContainer.world(), levelState, worldCursor);
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
+        worldCursor.clearCursorStrategy();
 
         return levelState;
     }
