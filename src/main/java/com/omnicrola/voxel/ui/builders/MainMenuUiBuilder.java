@@ -2,7 +2,7 @@ package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.ui.MainMenuScreenController;
+import com.omnicrola.voxel.ui.controllers.MainMenuScreenController;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import de.lessvoid.nifty.builder.*;
@@ -12,7 +12,6 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
  * Created by Eric on 1/24/2016.
  */
 public class MainMenuUiBuilder {
-    private static final String DEFAULT_FONT = "Interface/Fonts/Default.fnt";
 
     public static void build(IGameContainer gameContainer, ActivePlayState activePlayState) {
         String screenName = UiScreen.MAIN_MENU.toString();
@@ -43,7 +42,7 @@ public class MainMenuUiBuilder {
                     // add text
                     text(new TextBuilder() {{
                         text("Voxel Cascade");
-                        font(DEFAULT_FONT);
+                        font(UiConstants.DEFAULT_FONT);
                         height("100%");
                         width("100%");
                     }});
@@ -58,7 +57,7 @@ public class MainMenuUiBuilder {
                     // add text
                     text(new TextBuilder() {{
                         text("A strategy game involving small colored cubes.");
-                        font(DEFAULT_FONT);
+                        font(UiConstants.DEFAULT_FONT);
                         wrap(true);
                         height("100%");
                         width("100%");

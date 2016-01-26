@@ -38,7 +38,7 @@ public abstract class AbstractScreenController implements ScreenController {
             UiToken token = method.getAnnotation(SubscriberLink.class).value();
             String linkId = method.getAnnotation(NiftyEventSubscriber.class).id();
             if (!token.toString().equals(linkId)) {
-                throw new VoxelException("Broken UI event subscriber. Method is listenting for '" +
+                throw new VoxelException("Broken UI event subscriber. Method is listening for '" +
                         linkId + "' but enum is '" + token + "'");
             }
         });

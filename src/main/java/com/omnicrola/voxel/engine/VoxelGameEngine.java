@@ -39,6 +39,7 @@ public class VoxelGameEngine extends SimpleApplication {
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
                 this.assetManager, this.inputManager, this.audioRenderer, this.guiViewPort);
         this.niftyGui = niftyDisplay.getNifty();
+        this.niftyGui.setIgnoreKeyboardEvents(true);
         this.guiViewPort.addProcessor(niftyDisplay);
         this.flyCam.setDragToRotate(true);
 
