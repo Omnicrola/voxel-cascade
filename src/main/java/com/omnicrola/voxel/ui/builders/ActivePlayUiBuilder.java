@@ -2,12 +2,15 @@ package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.UiScreen;
+import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.ActivePlayScreenController;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
+import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
+import de.lessvoid.nifty.tools.Color;
 
 /**
  * Created by Eric on 1/25/2016.
@@ -21,7 +24,7 @@ public class ActivePlayUiBuilder {
             controller(activePlayScreenController);
             layer(new LayerBuilder("foreground") {{
                 childLayoutVertical();
-                backgroundColor(UiConstants.Color.TRANSPARENT);
+                backgroundColor(UiConstants.Colors.TRANSPARENT);
 
                 panel(new PanelBuilder("panel-right") {{
                     childLayoutVertical();
@@ -30,7 +33,7 @@ public class ActivePlayUiBuilder {
                     height(UiConstants.Size.ONE_HUNDRED);
 
                     text(new TextBuilder() {{
-                        backgroundColor(UiConstants.Color.DARK_GRAY);
+                        backgroundColor(UiConstants.Colors.DARK_GRAY);
                         text("Time Elapsed");
                         font(UiConstants.DEFAULT_FONT);
                         width(UiConstants.Size.ONE_HUNDRED);
@@ -38,19 +41,49 @@ public class ActivePlayUiBuilder {
                     }});
 
                     panel(new PanelBuilder("selection-panel") {{
-                        backgroundColor(UiConstants.Color.LIGHT_GRAY);
+                        backgroundColor(UiConstants.Colors.LIGHT_GRAY);
                         childLayoutVertical();
-                        height("70%");
+                        height("*");
                         text(new TextBuilder() {{
-                            text("selection here");
+                            text("Selected");
                             font(UiConstants.DEFAULT_FONT);
-                            width(UiConstants.Size.ONE_HUNDRED);
-                            height("10%");
+                            width(percentage(100));
+                        }});
+                        control(new ScrollPanelBuilder("selection-scroll-panel") {{
+                            parameter("horizontal", "false");
+                            childLayoutVertical();
+                            height("*");
+                            width("*");
+                            style("autoscroll");
+                            panel(new PanelBuilder("selection-scroll-panel-internal") {{
+                                childLayoutVertical();
+                                x(pixels(0));
+                                y(pixels(0));
+                                text(new TextBuilder() {{
+                                    text("Item 1");
+                                    font(UiConstants.DEFAULT_FONT);
+                                    width(percentage(100));
+                                    height("20px");
+                                }});
+                                text(new TextBuilder() {{
+                                    text("Item 2");
+                                    font(UiConstants.DEFAULT_FONT);
+                                    width(percentage(100));
+                                    height("20px");
+                                }});
+                                text(new TextBuilder() {{
+                                    text("Item 3");
+                                    font(UiConstants.DEFAULT_FONT);
+                                    width(percentage(100));
+                                    height("20px");
+                                }});
+
+                            }});
                         }});
                     }});
 
                     panel(new PanelBuilder("action-panel") {{
-                        backgroundColor(UiConstants.Color.DARK_GREEN);
+                        backgroundColor(UiConstants.Colors.DARK_GREEN);
                         childLayoutVertical();
                         width(UiConstants.Size.ONE_HUNDRED);
                         height("20%");
@@ -60,9 +93,9 @@ public class ActivePlayUiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiConstants.Buttons.ACTION_1, "1"));
-                            control(actionButton(UiConstants.Buttons.ACTION_2, "2"));
-                            control(actionButton(UiConstants.Buttons.ACTION_3, "3"));
+                            control(actionButton(UiToken.ACTION_1, "1"));
+                            control(actionButton(UiToken.ACTION_2, "2"));
+                            control(actionButton(UiToken.ACTION_3, "3"));
                         }});
 
                         panel(new PanelBuilder("action-row-2") {{
@@ -70,9 +103,9 @@ public class ActivePlayUiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiConstants.Buttons.ACTION_4, "4"));
-                            control(actionButton(UiConstants.Buttons.ACTION_5, "5"));
-                            control(actionButton(UiConstants.Buttons.ACTION_6, "6"));
+                            control(actionButton(UiToken.ACTION_4, "4"));
+                            control(actionButton(UiToken.ACTION_5, "5"));
+                            control(actionButton(UiToken.ACTION_6, "6"));
                         }});
 
                         panel(new PanelBuilder("action-row-3") {{
@@ -80,9 +113,9 @@ public class ActivePlayUiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiConstants.Buttons.ACTION_7, "7"));
-                            control(actionButton(UiConstants.Buttons.ACTION_8, "8"));
-                            control(actionButton(UiConstants.Buttons.ACTION_9, "9"));
+                            control(actionButton(UiToken.ACTION_7, "7"));
+                            control(actionButton(UiToken.ACTION_8, "8"));
+                            control(actionButton(UiToken.ACTION_9, "9"));
                         }});
 
                     }});
@@ -93,11 +126,11 @@ public class ActivePlayUiBuilder {
 
     }
 
-    private static ButtonBuilder actionButton(String id, String name) {
-        return new ButtonBuilder(id, name) {{
-            width(UiConstants.Size.ONE_THIRD);
-            height(UiConstants.Size.ONE_HUNDRED);
-            backgroundColor(UiConstants.Color.BLACK);
+    private static ButtonBuilder actionButton(UiToken token, String name) {
+        return new ButtonBuilder(token.toString(), name) {{
+            width(percentage(33));
+            height(percentage(100));
+            backgroundColor(Color.BLACK);
         }};
     }
 }
