@@ -3,9 +3,11 @@ package com.omnicrola.voxel.input;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.entities.SelectedSpatial;
 import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.ui.ISelectedUnit;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -87,5 +89,12 @@ public class SelectionGroup {
     private float getPersonalRadius(Spatial spatial) {
         MotionGovernorControl motionControl = spatial.getControl(MotionGovernorControl.class);
         return motionControl.getPersonalRadius();
+    }
+
+    public List<ISelectedUnit> getSelections() {
+        return this.selection
+                .stream()
+                .map(s -> new SelectedSpatial(s))
+                .collect(Collectors.toList());
     }
 }

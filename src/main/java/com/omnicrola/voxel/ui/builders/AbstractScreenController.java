@@ -27,6 +27,14 @@ public abstract class AbstractScreenController implements ScreenController {
         assertEventSubscribers(this, UiToken.BUTTON_START);
     }
 
+    protected Screen getScreen() {
+        return screen;
+    }
+
+    public Nifty getNifty() {
+        return nifty;
+    }
+
     protected static void assertEventSubscribers(ScreenController controller, UiToken... tokens) {
         List<Method> allMethods = Arrays.asList(controller.getClass().getDeclaredMethods());
         List<Method> linkedMethods = allMethods

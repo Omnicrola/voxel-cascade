@@ -7,4 +7,6 @@ import com.omnicrola.voxel.data.level.LevelState;
  */
 public interface ICurrentLevelProvider {
     public abstract LevelState getCurrentLevelState();
+
+    void subscribe(ILevelChangeObserver levelChangeObserver);
 }

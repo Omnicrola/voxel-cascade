@@ -46,6 +46,10 @@ public class WorldCursor extends Node implements IDisposable {
         this.observers.add(selectionObserver);
     }
 
+    public void removeSelectionObserver(IUserInteractionObserver userInteractionObserver) {
+        this.observers.remove(userInteractionObserver);
+    }
+
     @Override
     public void updateLogicalState(float tpf) {
         Ray pickRay = getPickRay();

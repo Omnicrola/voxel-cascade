@@ -21,6 +21,7 @@ public class UiConstants {
         public static final Color DARK_GRAY = new Color("#888888FF");
         public static final Color DARK_GREEN = new Color("#008800FF");
         public static final Color BLACK = Color.BLACK;
+        public static final Color LIGHT_RED = new Color("#FFAAAA");
     }
 
 }

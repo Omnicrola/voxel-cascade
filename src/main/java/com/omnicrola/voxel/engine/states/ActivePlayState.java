@@ -12,7 +12,10 @@ import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
+import com.omnicrola.voxel.ui.controllers.UserActionGuiAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -20,8 +23,6 @@ import java.util.UUID;
  */
 public class ActivePlayState extends VoxelGameState implements ICurrentLevelProvider {
 
-    private GameXmlDataParser gameDataParser;
-    private LevelDefinitionRepository levelDefinitions;
 
     private class DebugReloadListener implements ActionListener {
 
@@ -44,17 +45,20 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
 
     private IGameContainer gameContainer;
     private LevelState currentLevelState;
+    private GameXmlDataParser gameDataParser;
+    private LevelDefinitionRepository levelDefinitions;
+    private List<ILevelChangeObserver> observers;
 
     public ActivePlayState(GameXmlDataParser gameDataParser) {
         super("Active Play");
         this.gameDataParser = gameDataParser;
+        this.observers= new ArrayList<>();
     }
 
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
-        ActivePlayUiBuilder.build(gameContainer);
 
         addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener());
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
@@ -70,9 +74,16 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         addStateInput(GameInputAction.ARROW_LEFT, new PanCameraLeftListener(input));
         addStateInput(GameInputAction.ARROW_RIGHT, new PanCameraRightListener(input));
 
-        addStateInput(GameInputAction.ORDER_MOVE, new SetMoveCursorStrategyListener(this));
-        addStateInput(GameInputAction.ORDER_ATTACK, new SetAttackCursorStrategyListener(this));
-        addStateInput(GameInputAction.ORDER_STOP, new OrderSelectedUnitsStopListeners(this));
+        SetMoveCursorStrategyListener moveListener = new SetMoveCursorStrategyListener(this);
+        SetAttackCursorStrategyListener attackListener = new SetAttackCursorStrategyListener(this);
+        OrderSelectedUnitsStopListeners stopListener = new OrderSelectedUnitsStopListeners(this);
+
+        addStateInput(GameInputAction.ORDER_MOVE, moveListener);
+        addStateInput(GameInputAction.ORDER_ATTACK, attackListener);
+        addStateInput(GameInputAction.ORDER_STOP, stopListener);
+
+        UserActionGuiAdapter actionAdapter = new UserActionGuiAdapter(moveListener, attackListener, stopListener);
+        ActivePlayUiBuilder.build(gameContainer, this, actionAdapter);
     }
 
     public void loadLevel(UUID levelId) {
@@ -85,11 +96,21 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
 
         setStateRootNode(new GameStateNode(this.currentLevelState));
         attachStateNodes();
+        notifyObserversLevelChanged();
+    }
+
+    private void notifyObserversLevelChanged() {
+        this.observers.forEach(o->o.levelChanged(this.currentLevelState));
     }
 
     @Override
     public LevelState getCurrentLevelState() {
         return this.currentLevelState;
+    }
+
+    @Override
+    public void subscribe(ILevelChangeObserver levelChangeObserver) {
+        this.observers.add(levelChangeObserver);
     }
 
     @Override
