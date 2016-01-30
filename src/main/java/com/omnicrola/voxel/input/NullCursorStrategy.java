@@ -13,8 +13,6 @@ public class NullCursorStrategy implements ICursorStrategy {
     private JmeCursor cursor2d;
 
     private NullCursorStrategy() {
-        JmeCursor jmeCursor = new JmeCursor();
-        this.cursor2d = jmeCursor;
     }
 
     @Override
@@ -29,6 +27,6 @@ public class NullCursorStrategy implements ICursorStrategy {
 
     @Override
     public JmeCursor get2DCursor() {
-        return this.cursor2d;
+        return null;
     }
 }

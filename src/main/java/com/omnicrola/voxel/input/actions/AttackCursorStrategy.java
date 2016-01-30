@@ -53,5 +53,6 @@ public class AttackCursorStrategy implements ICursorStrategy {
                 currentSelection.orderAttackLocation(terrainLocation);
             }
         }
+        worldCursor.clearCursorStrategy();
     }
 }

@@ -13,7 +13,6 @@ import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.builder.TextBuilder;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
-import de.lessvoid.nifty.tools.Color;
 
 /**
  * Created by Eric on 1/25/2016.
@@ -82,7 +81,6 @@ public class ActivePlayUiBuilder {
                                     width(percentage(100));
                                     height("20px");
                                 }});
-
                             }});
                         }});
                     }});
@@ -98,9 +96,9 @@ public class ActivePlayUiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiToken.ACTION_1, "1"));
-                            control(actionButton(UiToken.ACTION_2, "2"));
-                            control(actionButton(UiToken.ACTION_3, "3"));
+                            control(actionButton(UiToken.ACTION_1, "Move"));
+                            control(actionButton(UiToken.ACTION_2, "Attack"));
+                            control(actionButton(UiToken.ACTION_3, "Stop"));
                         }});
 
                         panel(new PanelBuilder("action-row-2") {{
@@ -122,20 +120,16 @@ public class ActivePlayUiBuilder {
                             control(actionButton(UiToken.ACTION_8, "8"));
                             control(actionButton(UiToken.ACTION_9, "9"));
                         }});
-
                     }});
-
                 }});
             }});
         }});
-
     }
 
     private static ButtonBuilder actionButton(UiToken token, String name) {
         return new ButtonBuilder(token.toString(), name) {{
             width(percentage(33));
             height(percentage(100));
-            backgroundColor(Color.BLACK);
         }};
     }
 }

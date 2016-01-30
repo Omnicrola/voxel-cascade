@@ -37,7 +37,7 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
     public void executePrimary(boolean isPressed, SelectionGroup currentSelection) {
         if (!isPressed) {
             moveToLocation(currentSelection);
-            this.worldCursor.clearSelection();
+            this.worldCursor.clearCursorStrategy();
         }
     }
 
@@ -45,6 +45,7 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
     public void executeSecondary(boolean isPressed, SelectionGroup currentSelection) {
         if (!isPressed) {
             moveToLocation(currentSelection);
+            this.worldCursor.clearCursorStrategy();
         }
     }
 
