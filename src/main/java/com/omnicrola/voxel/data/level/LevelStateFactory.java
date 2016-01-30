@@ -36,6 +36,7 @@ public class LevelStateFactory {
         WorldCursor worldCursor = createWorldCursor(terrain);
 
         LevelState levelState = new LevelState(this.gameContainer, terrain, worldCursor, levelDefinition.getName());
+        System.out.println("new level: "+levelState.hashCode());
         addLights(levelState, levelDefinition);
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition);
