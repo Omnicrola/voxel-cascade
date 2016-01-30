@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.FlyByCamera;
 import com.jme3.input.controls.InputListener;
 import com.jme3.math.Vector2f;
@@ -44,6 +45,11 @@ public class JmeInputWrapper implements IGameInput {
         FlyByCamera flyByCamera = this.game.getFlyByCamera();
         flyByCamera.setDragToRotate(!isGrabbed);
         flyByCamera.setEnabled(isGrabbed);
+    }
+
+    @Override
+    public void setCursor(JmeCursor newCursor) {
+        this.game.getInputManager().setMouseCursor(newCursor);
     }
 
     @Override

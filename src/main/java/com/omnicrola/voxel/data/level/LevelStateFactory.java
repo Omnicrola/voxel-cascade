@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
@@ -13,6 +14,8 @@ import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.ui.Cursor2dProvider;
+import com.omnicrola.voxel.ui.CursorToken;
 
 import java.util.List;
 
@@ -21,18 +24,32 @@ import java.util.List;
  */
 public class LevelStateFactory {
 
-    public static LevelState create(LevelDefinition levelDefinition, IGameContainer gameContainer) {
-        Node terrain = VoxelTerrainGenerator.load(levelDefinition, gameContainer);
-        WorldCursor worldCursor = createWorldCursor(gameContainer, terrain);
+    private VoxelTerrainGenerator voxelTerrainGenerator;
+    private IGameContainer gameContainer;
+    private Cursor2dProvider cursor2dProvider;
+
+    public LevelStateFactory(VoxelTerrainGenerator voxelTerrainGenerator,
+                             IGameContainer gameContainer,
+                             Cursor2dProvider cursor2dProvider) {
+        this.voxelTerrainGenerator = voxelTerrainGenerator;
+        this.gameContainer = gameContainer;
+        this.cursor2dProvider = cursor2dProvider;
+    }
+
+    public LevelState create(LevelDefinition levelDefinition) {
+        Node terrain = this.voxelTerrainGenerator.load(levelDefinition);
+        WorldCursor worldCursor = createWorldCursor(terrain);
 
         LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName());
         addLights(levelState, levelDefinition);
         addTeams(levelState, levelDefinition);
-        addUnits(levelState, levelDefinition, gameContainer);
-        addStructures(levelState, levelDefinition, gameContainer);
+        addUnits(levelState, levelDefinition);
+        addStructures(levelState, levelDefinition);
 
-        SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(gameContainer.input(),
-                gameContainer.world(), levelState, worldCursor);
+
+        JmeCursor defaultCursor = this.cursor2dProvider.getCursor(CursorToken.DEFAULT);
+        SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(this.gameContainer.input(),
+                this.gameContainer.world(), levelState, worldCursor, defaultCursor);
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
         worldCursor.clearCursorStrategy();
 
@@ -51,31 +68,31 @@ public class LevelStateFactory {
         levelState.addLight(ambientLight);
     }
 
-    private static void addTeams(LevelState levelState, LevelDefinition levelDefinition) {
+    private  void addTeams(LevelState levelState, LevelDefinition levelDefinition) {
         levelDefinition.getTeams().forEach(t -> levelState.addTeam(new TeamData(t)));
     }
 
-    private static void addStructures(LevelState levelState, LevelDefinition levelDefinition, IGameContainer gameContainer) {
+    private  void addStructures(LevelState levelState, LevelDefinition levelDefinition) {
         List<UnitPlacement> structures = levelDefinition.getStructures();
         for (UnitPlacement placement : structures) {
             TeamData teamData = levelState.getTeamById(placement.getTeamId());
-            Spatial structure = gameContainer.world().build().structure(placement.getUnitId(), teamData);
+            Spatial structure = this.gameContainer.world().build().structure(placement.getUnitId(), teamData);
             structure.getControl(RigidBodyControl.class).setPhysicsLocation(placement.getLocation());
             levelState.addUnit(structure);
         }
     }
 
-    private static void addUnits(LevelState levelState, LevelDefinition levelDefinition, IGameContainer gameContainer) {
+    private  void addUnits(LevelState levelState, LevelDefinition levelDefinition) {
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
-            Spatial entity = gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
+            Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
             entity.getControl(GroundVehicleControl.class).setPhysicsLocation(unitPlacement.getLocation());
             levelState.addUnit(entity);
         }
     }
 
-    private static WorldCursor createWorldCursor(IGameContainer gameContainer, Node terrain) {
-        WorldCursor worldCursor = gameContainer.world().createCursor(terrain);
+    private  WorldCursor createWorldCursor(Node terrain) {
+        WorldCursor worldCursor = this.gameContainer.world().createCursor(terrain);
         return worldCursor;
     }
 }

@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.engine.states.VoxelGameState;
 
 /**
@@ -18,4 +19,6 @@ public interface IGameContainer {
     IGameInput input();
 
     IGamePhysics physics();
+
+    AssetManager getAssetManager();
 }

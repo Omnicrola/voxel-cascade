@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.controls.InputListener;
 import com.jme3.math.Vector2f;
 import com.omnicrola.voxel.input.IActionCode;
@@ -20,4 +21,5 @@ public interface IGameInput {
 
     Vector2f getCursorPosition();
 
+    void setCursor(JmeCursor newCursor);
 }

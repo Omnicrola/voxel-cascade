@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
+import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.VoxelGameState;
 import com.omnicrola.voxel.jme.wrappers.*;
@@ -52,4 +53,8 @@ public class JmeApplicationWrapper implements IGameContainer {
         this.game.getStateManager().getState(stateClass).setEnabled(false);
     }
 
+    @Override
+    public AssetManager getAssetManager() {
+        return this.game.getAssetManager();
+    }
 }

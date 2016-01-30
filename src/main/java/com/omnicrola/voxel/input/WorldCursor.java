@@ -32,13 +32,13 @@ public class WorldCursor extends Node implements IDisposable {
     private List<IUserInteractionObserver> observers;
 
     public WorldCursor(IGameInput inputManager, Camera camera, Node terrainNode) {
+        this.defaultCursorStrategy = NullCursorStrategy.INSTANCE;
         this.observers = new ArrayList<>();
         this.inputManager = inputManager;
         this.camera = camera;
         this.terrainNode = terrainNode;
         this.currentSelection = new SelectionGroup();
         this.collisionDistanceComparator = new CollisionDistanceComparator();
-        this.defaultCursorStrategy = NullCursorStrategy.NULL;
         this.cursorStrategy = this.defaultCursorStrategy;
     }
 
@@ -58,6 +58,7 @@ public class WorldCursor extends Node implements IDisposable {
 
     public void setCursorStrategy(ICursorStrategy cursorStrategy) {
         this.cursorStrategy = cursorStrategy;
+        this.inputManager.setCursor(cursorStrategy.get2DCursor());
     }
 
     public void setDefaultCursorStrategy(ICursorStrategy cursorStrategy) {

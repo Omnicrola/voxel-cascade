@@ -24,4 +24,10 @@ public class UiConstants {
         public static final Color LIGHT_RED = new Color("#FFAAAA");
     }
 
+    public static class Cursors {
+        public static final String DEFAULT = "default.png";
+        public static final String ATTACK = "attack.png";
+        public static final String BUILD = "build.png";
+        public static final String MOVE = "move.png";
+    }
 }

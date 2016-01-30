@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.input.actions;
 
 import com.jme3.collision.CollisionResult;
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.ICursorStrategy;
@@ -14,9 +15,16 @@ import java.util.Optional;
  */
 public class AttackCursorStrategy implements ICursorStrategy {
     private LevelState currentLevelState;
+    private JmeCursor cursor2d;
 
-    public AttackCursorStrategy(LevelState currentLevelState) {
+    public AttackCursorStrategy(LevelState currentLevelState, JmeCursor cursor2d) {
         this.currentLevelState = currentLevelState;
+        this.cursor2d = cursor2d;
+    }
+
+    @Override
+    public JmeCursor get2DCursor() {
+        return this.cursor2d;
     }
 
     @Override

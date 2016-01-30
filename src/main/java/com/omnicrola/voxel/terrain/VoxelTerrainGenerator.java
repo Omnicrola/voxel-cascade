@@ -17,8 +17,15 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
  * Created by omnic on 1/16/2016.
  */
 public class VoxelTerrainGenerator {
-    public static Node load(LevelDefinition levelData, IGameContainer gameContainer) {
-        IGameWorld gameWorld = gameContainer.world();
+
+    private IGameContainer gameContainer;
+
+    public VoxelTerrainGenerator(IGameContainer gameContainer) {
+        this.gameContainer = gameContainer;
+    }
+
+    public  Node load(LevelDefinition levelData) {
+        IGameWorld gameWorld = this.gameContainer.world();
         IEntityBuilder geometryBuilder = gameWorld.build();
 
         Node terrainRoot = new Node("Terrain");

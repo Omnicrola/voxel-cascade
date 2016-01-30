@@ -10,6 +10,9 @@ import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.ui.Cursor2dProvider;
+import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
 import com.omnicrola.voxel.ui.controllers.UserActionGuiAdapter;
@@ -24,6 +27,7 @@ import java.util.UUID;
 public class ActivePlayState extends VoxelGameState implements ICurrentLevelProvider {
 
 
+
     private class DebugReloadListener implements ActionListener {
 
         @Override
@@ -36,31 +40,40 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
 
     private class MouseLookListener implements ActionListener {
 
+        private IGameContainer gameContainer;
+
+        public MouseLookListener(IGameContainer gameContainer) {
+            this.gameContainer = gameContainer;
+        }
+
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             currentLevelState.getWorldCursor().setVisible(!isPressed);
-            gameContainer.input().setMouseGrabbed(isPressed);
+            this.gameContainer.input().setMouseGrabbed(isPressed);
         }
     }
 
-    private IGameContainer gameContainer;
     private LevelState currentLevelState;
     private GameXmlDataParser gameDataParser;
+    private CursorProviderBuilder cursorProviderBuilder;
+    private LevelStateFactory levelStateFactory;
     private LevelDefinitionRepository levelDefinitions;
     private List<ILevelChangeObserver> observers;
 
-    public ActivePlayState(GameXmlDataParser gameDataParser) {
+    public ActivePlayState(GameXmlDataParser gameDataParser, CursorProviderBuilder cursorProviderBuilder) {
         super("Active Play");
         this.gameDataParser = gameDataParser;
-        this.observers= new ArrayList<>();
+        this.cursorProviderBuilder = cursorProviderBuilder;
+        this.observers = new ArrayList<>();
     }
 
     @Override
     protected void voxelInitialize(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
+        Cursor2dProvider cursor2dProvider = this.cursorProviderBuilder.build(gameContainer.getAssetManager());
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
+        this.levelStateFactory = new LevelStateFactory(new VoxelTerrainGenerator(gameContainer), gameContainer, cursor2dProvider);
 
-        addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener());
+        addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener(gameContainer));
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
 
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this));
@@ -74,8 +87,8 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         addStateInput(GameInputAction.ARROW_LEFT, new PanCameraLeftListener(input));
         addStateInput(GameInputAction.ARROW_RIGHT, new PanCameraRightListener(input));
 
-        SetMoveCursorStrategyListener moveListener = new SetMoveCursorStrategyListener(this);
-        SetAttackCursorStrategyListener attackListener = new SetAttackCursorStrategyListener(this);
+        SetMoveCursorStrategyListener moveListener = new SetMoveCursorStrategyListener(this, cursor2dProvider);
+        SetAttackCursorStrategyListener attackListener = new SetAttackCursorStrategyListener(this, cursor2dProvider);
         OrderSelectedUnitsStopListeners stopListener = new OrderSelectedUnitsStopListeners(this);
 
         addStateInput(GameInputAction.ORDER_MOVE, moveListener);
@@ -92,7 +105,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
             this.currentLevelState.dispose();
         }
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
-        this.currentLevelState = LevelStateFactory.create(levelDefinition, this.gameContainer);
+        this.currentLevelState = this.levelStateFactory.create(levelDefinition);
 
         setStateRootNode(new GameStateNode(this.currentLevelState));
         attachStateNodes();
@@ -100,7 +113,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     }
 
     private void notifyObserversLevelChanged() {
-        this.observers.forEach(o->o.levelChanged(this.currentLevelState));
+        this.observers.forEach(o -> o.levelChanged(this.currentLevelState));
     }
 
     @Override

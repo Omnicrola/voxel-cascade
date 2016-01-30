@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.input.actions;
 
 import com.jme3.collision.CollisionResult;
+import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
@@ -27,8 +28,8 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     public SelectUnitsCursorStrategy(IGameInput inputManager,
                                      IGameWorld gameWorld,
                                      LevelState levelState,
-                                     WorldCursor worldCursor) {
-        super(levelState, worldCursor);
+                                     WorldCursor worldCursor, JmeCursor cursor2d) {
+        super(levelState, worldCursor, cursor2d);
         this.input = inputManager;
         this.gameWorld = gameWorld;
         this.lastCursorPosition = new Vector2f();
