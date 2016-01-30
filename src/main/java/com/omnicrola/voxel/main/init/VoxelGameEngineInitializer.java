@@ -13,7 +13,6 @@ import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.engine.states.LoadingState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 import com.omnicrola.voxel.input.GameInputAction;
-import com.omnicrola.voxel.ui.CursorProviderBuilder;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -26,8 +25,7 @@ public class VoxelGameEngineInitializer {
 
     private static void createStates(AppStateManager stateManager) {
         LoadingState loadingState = new LoadingState();
-        CursorProviderBuilder cursorProviderBuilder = new CursorProviderBuilder();
-        ActivePlayState playState = new ActivePlayState(new GameXmlDataParser(), cursorProviderBuilder);
+        ActivePlayState playState = new ActivePlayState(new GameXmlDataParser());
         MainMenuState mainMenuState = new MainMenuState(playState);
 
         stateManager.attach(loadingState);

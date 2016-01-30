@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.entities.commands;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.engine.IDeathAction;
 
 /**
  * Created by omnic on 1/22/2016.

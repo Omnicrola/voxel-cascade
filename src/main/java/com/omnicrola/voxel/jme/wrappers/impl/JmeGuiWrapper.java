@@ -14,14 +14,16 @@ import com.omnicrola.voxel.ui.UiScreen;
 public class JmeGuiWrapper implements IGameGui {
     private static final float CAMERA_MOVE_SPEED = 3f;
     private VoxelGameEngine game;
+    private GuiBuilder guiBuilder;
 
     public JmeGuiWrapper(VoxelGameEngine game) {
         this.game = game;
+        this.guiBuilder = new GuiBuilder(this.game);
     }
 
     @Override
     public GuiBuilder build() {
-        return new GuiBuilder(this.game);
+        return this.guiBuilder;
     }
 
     @Override

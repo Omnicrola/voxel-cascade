@@ -14,7 +14,6 @@ import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
-import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorToken;
 
 import java.util.List;
@@ -26,28 +25,25 @@ public class LevelStateFactory {
 
     private VoxelTerrainGenerator voxelTerrainGenerator;
     private IGameContainer gameContainer;
-    private Cursor2dProvider cursor2dProvider;
 
     public LevelStateFactory(VoxelTerrainGenerator voxelTerrainGenerator,
-                             IGameContainer gameContainer,
-                             Cursor2dProvider cursor2dProvider) {
+                             IGameContainer gameContainer ) {
         this.voxelTerrainGenerator = voxelTerrainGenerator;
         this.gameContainer = gameContainer;
-        this.cursor2dProvider = cursor2dProvider;
     }
 
-    public LevelState create(LevelDefinition levelDefinition) {
+    public LevelState create(LevelDefinition levelDefinition ) {
         Node terrain = this.voxelTerrainGenerator.load(levelDefinition);
         WorldCursor worldCursor = createWorldCursor(terrain);
 
-        LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName());
+        LevelState levelState = new LevelState(this.gameContainer, terrain, worldCursor, levelDefinition.getName());
         addLights(levelState, levelDefinition);
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition);
         addStructures(levelState, levelDefinition);
 
 
-        JmeCursor defaultCursor = this.cursor2dProvider.getCursor(CursorToken.DEFAULT);
+        JmeCursor defaultCursor = this.gameContainer.gui().build().cursor(CursorToken.DEFAULT);
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(this.gameContainer.input(),
                 this.gameContainer.world(), levelState, worldCursor, defaultCursor);
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);

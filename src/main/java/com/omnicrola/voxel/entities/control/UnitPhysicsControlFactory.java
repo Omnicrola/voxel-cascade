@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.entities.control;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -19,7 +18,7 @@ public class UnitPhysicsControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, IGameWorld gameWorld) {
+    public void build(Spatial spatial) {
         GroundVehicleControl tankVehicleControl = new GroundVehicleControl(this.mass);
         spatial.addControl(tankVehicleControl);
     }

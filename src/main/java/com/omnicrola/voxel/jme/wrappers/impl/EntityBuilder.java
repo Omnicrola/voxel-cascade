@@ -19,6 +19,7 @@ import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
 import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -30,14 +31,14 @@ public class EntityBuilder implements IEntityBuilder {
 
     private final UnitDefinitionRepository definitionRepository;
     private AssetManager assetManager;
-    private JmeWorldWrapper worldWrapper;
+    private IGameContainer gameContainer;
     private IParticleBuilder particleBuilder;
 
-    public EntityBuilder(AssetManager assetManager, JmeWorldWrapper jmeWorldWrapper, ParticleBuilder particleBuilder) {
+    public EntityBuilder(AssetManager assetManager, IGameContainer gameContainer, ParticleBuilder particleBuilder) {
         this.assetManager = assetManager;
+        this.gameContainer = gameContainer;
         this.particleBuilder = particleBuilder;
         this.definitionRepository = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.DEFINITION_REPOSITORY_FILE);
-        this.worldWrapper = jmeWorldWrapper;
     }
 
     @Override
@@ -59,8 +60,8 @@ public class EntityBuilder implements IEntityBuilder {
         spatial.setName(entityDefinition.getName());
         Material material = createMaterial(entityDefinition.getTexture());
         spatial.setMaterial(material);
-        for (IControlFactory factory : entityDefinition.getControlFactories(this.definitionRepository)) {
-            factory.build(spatial, worldWrapper);
+        for (IControlFactory factory : entityDefinition.getControlFactories(this.gameContainer, this.definitionRepository)) {
+            factory.build(spatial);
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_UNIT, true);
@@ -80,8 +81,8 @@ public class EntityBuilder implements IEntityBuilder {
         Material material = createMaterial(structureDefinition.getTexture());
         spatial.setMaterial(material);
 
-        for (IControlFactory factory : structureDefinition.getControlFactories()) {
-            factory.build(spatial, worldWrapper);
+        for (IControlFactory factory : structureDefinition.getControlFactories(this.gameContainer)) {
+            factory.build(spatial);
         }
 
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
@@ -110,7 +111,7 @@ public class EntityBuilder implements IEntityBuilder {
         projectile.setUserData(EntityDataKeys.TEAM_DATA, emittingEntity.getUserData(EntityDataKeys.TEAM_DATA));
         projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
 
-        ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, this.worldWrapper);
+        ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, this.gameContainer.world());
         projectileCollisionHandler.setDeathAction(new VoxelShowerSpawnAction(this, 100));
         projectile.addControl(new CollisionController(projectileCollisionHandler));
 

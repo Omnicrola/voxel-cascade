@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
 /**
@@ -12,15 +13,17 @@ import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
 public class EntityAiControlFactory implements IControlFactory {
 
+    private IGameContainer gameContainer;
     private WeaponDefinition weaponDefinition;
     private final MovementDefinition movementDefinition;
     private int projectileId;
     private Vector3f projectileOffset;
 
-    public EntityAiControlFactory(WeaponDefinition weaponDefinition,
+    public EntityAiControlFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition,
                                   int projectileId,
                                   Vector3f projectileOffset,
                                   MovementDefinition movementDefinition) {
+        this.gameContainer = gameContainer;
         this.weaponDefinition = weaponDefinition;
         this.projectileId = projectileId;
         this.projectileOffset = projectileOffset;
@@ -28,7 +31,8 @@ public class EntityAiControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, IGameWorld gameWorld) {
+    public void build(Spatial spatial) {
+        IGameWorld gameWorld = this.gameContainer.world();
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
         WeaponsController weaponsController = new WeaponsController(gameWorld, this.weaponDefinition, this.projectileOffset, this.projectileId);
         TargetingController targetingController = new TargetingController(gameWorld);

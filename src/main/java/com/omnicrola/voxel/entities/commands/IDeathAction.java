@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine;
+package com.omnicrola.voxel.entities.commands;
 
 import com.jme3.scene.Spatial;
 

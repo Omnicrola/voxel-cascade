@@ -15,7 +15,6 @@ import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
 import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -36,11 +35,11 @@ public class JmeWorldWrapper implements IGameWorld {
     private Node terrain;
     private Node units;
 
-    public JmeWorldWrapper(VoxelGameEngine game) {
+    public JmeWorldWrapper(VoxelGameEngine game, JmeApplicationWrapper jmeApplicationWrapper) {
         this.game = game;
         this.physicsSpace = game.getPhysicsSpace();
         AssetManager assetManager = game.getAssetManager();
-        this.geometryBuilder = new EntityBuilder(assetManager, this, new ParticleBuilder(assetManager));
+        this.geometryBuilder = new EntityBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
         this.screenSelectionEvaluatorFactory = new ScreenSelectionEvaluatorFactory(game.getCamera());
     }
 

@@ -22,6 +22,9 @@ public class UnitGenerator {
         unitDefinition.weaponEmissionOffset = new Vector3f(0,1,0);
         unitDefinition.mass = 1f;
         unitDefinition.movementDefinition = movementDef(1.0f, 0.2f, 0.01f);
+        unitDefinition.commands.add(new MoveCommandFactory());
+        unitDefinition.commands.add(new AttackCommandFactory());
+        unitDefinition.commands.add(new StopCommandFactory());
         return unitDefinition;
     }
 

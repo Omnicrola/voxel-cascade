@@ -6,6 +6,7 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
 
 import java.util.ArrayList;
@@ -25,8 +26,10 @@ public class LevelState implements ILevelStateRead, IDisposable {
     private String levelName;
     private float resources;
     private float timeElapsed;
+    private IGameContainer gameContainer;
 
-    public LevelState(Node terrain, WorldCursor worldCursor, String levelName) {
+    public LevelState(IGameContainer gameContainer, Node terrain, WorldCursor worldCursor, String levelName) {
+        this.gameContainer = gameContainer;
         this.teams = new ArrayList<>();
         this.terrain = terrain;
         this.units = new Node();

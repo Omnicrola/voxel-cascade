@@ -1,9 +1,11 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
+import com.omnicrola.voxel.entities.commands.ICommand;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -39,6 +41,10 @@ public class StructureDefinition {
     @XmlElement(name = "hitpoints", required = true)
     protected float hitpoints;
 
+    @XmlElementWrapper(name="commands")
+    @XmlAnyElement(lax=true)
+    protected List<ICommand> commands = new ArrayList<>();
+
     @XmlElementWrapper(name = "controls")
     @XmlAnyElement(lax = true)
     protected List<IControlFactory> controlFactories = new ArrayList<>();
@@ -71,10 +77,10 @@ public class StructureDefinition {
         return hitpoints;
     }
 
-    public List<IControlFactory> getControlFactories() {
+    public List<IControlFactory> getControlFactories(IGameContainer gameContainer) {
         ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
         controlFactories.add(new StructurePhysicsControlFactory());
-        controlFactories.add(new CollisionControlFactory());
+        controlFactories.add(new CollisionControlFactory(gameContainer.world()));
         return controlFactories;
     }
 }

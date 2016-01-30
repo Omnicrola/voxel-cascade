@@ -13,8 +13,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(name = "CollisionControl")
 public class CollisionControlFactory implements IControlFactory {
+
+    private IGameWorld gameWorld;
+
+    public CollisionControlFactory(IGameWorld gameWorld) {
+        this.gameWorld = gameWorld;
+    }
+
     @Override
-    public void build(Spatial spatial, IGameWorld gameWorld) {
+    public void build(Spatial spatial) {
         CollisionController collisionController = new CollisionController(new EntityCollisionHandler(spatial, gameWorld));
         spatial.addControl(collisionController);
     }

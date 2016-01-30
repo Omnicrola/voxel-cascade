@@ -7,6 +7,7 @@ import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.UnitPhysicsControlFactory;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -56,6 +57,10 @@ public class UnitDefinition {
     @XmlAnyElement(lax = true)
     protected List<IControlFactory> controlFactories = new ArrayList<>();
 
+    @XmlElementWrapper(name = "commands")
+    @XmlAnyElement(lax = true)
+    protected List<ICommandFactory> commands  = new ArrayList<>();
+
     @XmlElement(name = "weapon-offset")
     @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
     protected Vector3f weaponEmissionOffset = new Vector3f(0, 1, 0);
@@ -95,14 +100,15 @@ public class UnitDefinition {
         return modelTexture;
     }
 
-    public List<IControlFactory> getControlFactories(UnitDefinitionRepository repository) {
+    public List<IControlFactory> getControlFactories(IGameContainer gameContainer, UnitDefinitionRepository repository) {
         WeaponDefinition weaponDefinition = repository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = repository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
-        ArrayList<IControlFactory> iControlFactories = new ArrayList<>(this.controlFactories);
-        iControlFactories.add(new UnitPhysicsControlFactory(this.mass));
-        iControlFactories.add(new CollisionControlFactory());
-        iControlFactories.add(new EntityAiControlFactory(weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
-        return iControlFactories;
+        ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
+        controlFactories.add(new UnitPhysicsControlFactory(this.mass));
+        controlFactories.add(new CollisionControlFactory(gameContainer.world()));
+        controlFactories.add(new CommandControlFactory(gameContainer, this.commands));
+        controlFactories.add(new EntityAiControlFactory(gameContainer, weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
+        return controlFactories;
     }
 }
