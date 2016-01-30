@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
+import com.omnicrola.voxel.entities.commands.EntityCommand;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -17,6 +18,7 @@ public class StructureGenerator {
         structureDefinition.name = "Core";
         structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;
+        structureDefinition.commands.add(EntityCommand.BUILD);
         return structureDefinition;
     }
 }

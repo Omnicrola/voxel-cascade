@@ -32,6 +32,7 @@ public class CommandCollector {
                 .stream()
                 .filter(e -> e.getValue() == this.totalUnitsSelected)
                 .map(e -> new CommandGroup(selectionGroup, cursorStrategySetter, e.getKey()))
+                .sorted(new CommandSorter())
                 .collect(Collectors.toList());
     }
 }

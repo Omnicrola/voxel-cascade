@@ -39,4 +39,8 @@ public class CommandGroup {
     private void setMoveStrategy() {
         this.cursorStrategySetter.setMoveStrategy();
     }
+
+    public int priority() {
+        return this.command.priority();
+    }
 }
