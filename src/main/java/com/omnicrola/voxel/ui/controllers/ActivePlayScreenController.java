@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 import com.omnicrola.voxel.ui.SubscriberLink;
@@ -13,6 +14,8 @@ import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.elements.Element;
 
+import java.util.List;
+
 /**
  * Created by Eric on 1/25/2016.
  */
@@ -21,7 +24,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
     private UserActionGuiAdapter actionAdapter;
     private LevelState currentLevel;
     private SelectionGroup currentSelection;
-
+    private List<CommandGroup> actionCommands;
 
     public ActivePlayScreenController(UserActionGuiAdapter actionAdapter) {
         this.actionAdapter = actionAdapter;
@@ -32,6 +35,15 @@ public class ActivePlayScreenController extends AbstractScreenController {
     @SubscriberLink(UiToken.ACTION_1)
     public void triggerActionButton_1(String id, ButtonClickedEvent buttonClickedEvent) {
         this.actionAdapter.triggerMove();
+        triggerCommandGroup(1);
+    }
+
+    private void triggerCommandGroup(int index) {
+        if (this.actionCommands.size() >= index) {
+            index = index - 1;
+            CommandGroup commandGroup = this.actionCommands.get(index);
+            commandGroup.execute();
+        }
     }
 
     @NiftyEventSubscriber(id = "ACTION_2")
@@ -64,6 +76,8 @@ public class ActivePlayScreenController extends AbstractScreenController {
                 .stream()
                 .map(s -> makeUnitLabel(s, selectionPanel))
                 .forEach(l -> selectionPanel.add(l));
+
+        this.actionCommands = this.currentSelection.getAvailableCommands();
     }
 
     private Element makeUnitLabel(ISelectedUnit selectedUnit, Element parent) {

@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
@@ -9,12 +8,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.input.CursorStrategySetter;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
-import com.omnicrola.voxel.ui.CursorToken;
 
 import java.util.List;
 
@@ -27,12 +26,12 @@ public class LevelStateFactory {
     private IGameContainer gameContainer;
 
     public LevelStateFactory(VoxelTerrainGenerator voxelTerrainGenerator,
-                             IGameContainer gameContainer ) {
+                             IGameContainer gameContainer) {
         this.voxelTerrainGenerator = voxelTerrainGenerator;
         this.gameContainer = gameContainer;
     }
 
-    public LevelState create(LevelDefinition levelDefinition ) {
+    public LevelState create(LevelDefinition levelDefinition) {
         Node terrain = this.voxelTerrainGenerator.load(levelDefinition);
         WorldCursor worldCursor = createWorldCursor(terrain);
 
@@ -42,10 +41,8 @@ public class LevelStateFactory {
         addUnits(levelState, levelDefinition);
         addStructures(levelState, levelDefinition);
 
-
-        JmeCursor defaultCursor = this.gameContainer.gui().build().cursor(CursorToken.DEFAULT);
-        SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(this.gameContainer.input(),
-                this.gameContainer.world(), levelState, worldCursor, defaultCursor);
+        CursorStrategySetter cursorStrategyFactory = new CursorStrategySetter(this.gameContainer, levelState, worldCursor);
+        SelectUnitsCursorStrategy selectUnitsCursorStrategy = cursorStrategyFactory.setSelectStrategy();
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
         worldCursor.clearCursorStrategy();
 
@@ -64,11 +61,11 @@ public class LevelStateFactory {
         levelState.addLight(ambientLight);
     }
 
-    private  void addTeams(LevelState levelState, LevelDefinition levelDefinition) {
+    private void addTeams(LevelState levelState, LevelDefinition levelDefinition) {
         levelDefinition.getTeams().forEach(t -> levelState.addTeam(new TeamData(t)));
     }
 
-    private  void addStructures(LevelState levelState, LevelDefinition levelDefinition) {
+    private void addStructures(LevelState levelState, LevelDefinition levelDefinition) {
         List<UnitPlacement> structures = levelDefinition.getStructures();
         for (UnitPlacement placement : structures) {
             TeamData teamData = levelState.getTeamById(placement.getTeamId());
@@ -78,7 +75,7 @@ public class LevelStateFactory {
         }
     }
 
-    private  void addUnits(LevelState levelState, LevelDefinition levelDefinition) {
+    private void addUnits(LevelState levelState, LevelDefinition levelDefinition) {
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
@@ -87,7 +84,7 @@ public class LevelStateFactory {
         }
     }
 
-    private  WorldCursor createWorldCursor(Node terrain) {
+    private WorldCursor createWorldCursor(Node terrain) {
         WorldCursor worldCursor = this.gameContainer.world().createCursor(terrain);
         return worldCursor;
     }

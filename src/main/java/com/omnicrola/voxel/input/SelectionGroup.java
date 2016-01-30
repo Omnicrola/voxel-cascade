@@ -6,6 +6,7 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.SelectedSpatial;
 import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
 import com.omnicrola.voxel.entities.control.EntityAiController;
+import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 
@@ -20,15 +21,17 @@ import java.util.stream.Collectors;
  */
 public class SelectionGroup {
     private final NavigationGridDistributor gridDistributor;
+    private CursorStrategySetter cursorStrategySetter;
     private List<Spatial> selection;
 
-    public SelectionGroup(List<Spatial> selection) {
+    public SelectionGroup(CursorStrategySetter cursorStrategyFactory, List<Spatial> selection) {
+        this.cursorStrategySetter = cursorStrategyFactory;
         this.selection = selection;
         this.gridDistributor = new NavigationGridDistributor(this);
     }
 
     public SelectionGroup() {
-        this(new ArrayList<>());
+        this(null, new ArrayList<>());
     }
 
     public int count() {
@@ -65,10 +68,6 @@ public class SelectionGroup {
                 .forEach(ai -> ai.attackLocation(navPoints.next()));
     }
 
-    public String unitNames() {
-        return this.selection.stream().map(s -> s.getName()).collect(Collectors.joining(", "));
-    }
-
     private EntityAiController getAi(Spatial spatial) {
         return spatial.getControl(EntityAiController.class);
     }
@@ -96,5 +95,14 @@ public class SelectionGroup {
                 .stream()
                 .map(s -> new SelectedSpatial(s))
                 .collect(Collectors.toList());
+    }
+
+    public List<CommandGroup> getAvailableCommands() {
+        CommandCollector commandCollector = new CommandCollector(this.count());
+        this.selection.stream()
+                .map(u -> u.getControl(EntityCommandController.class))
+                .filter(cc -> cc != null)
+                .forEach(cc -> cc.collect(commandCollector));
+        return commandCollector.getCommandsCommonToAllEntities(this, this.cursorStrategySetter);
     }
 }

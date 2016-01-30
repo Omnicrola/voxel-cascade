@@ -2,7 +2,9 @@ package com.omnicrola.voxel.data;
 
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
-import com.omnicrola.voxel.data.units.*;
+import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
+import com.omnicrola.voxel.data.units.XmlGameDefinitions;
+import com.omnicrola.voxel.entities.commands.EntityCommand;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -107,20 +109,16 @@ public class GameXmlDataParser {
         return marshaller;
     }
 
-
     private static JAXBContext getJaxContext() {
         try {
             return JAXBContext.newInstance(
                     XmlGameDefinitions.class,
                     LevelDefinition.class,
-                    MoveCommandFactory.class,
-                    AttackCommandFactory.class,
-                    StopCommandFactory.class);
+                    EntityCommand.class
+            );
         } catch (JAXBException e) {
             e.printStackTrace();
             return null;
         }
     }
-
-
 }
