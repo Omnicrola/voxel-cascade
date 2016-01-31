@@ -21,7 +21,7 @@ public class CommandCollector {
     public void collect(EntityCommand command) {
         Integer count = this.commandCounters.get(command);
         if (count == null) {
-            count = 1;
+            count = 0;
         }
         count++;
         this.commandCounters.put(command, count);

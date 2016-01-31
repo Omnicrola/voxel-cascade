@@ -13,7 +13,6 @@ import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
-import com.omnicrola.voxel.ui.controllers.UserActionGuiAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -91,8 +90,7 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         addStateInput(GameInputAction.ORDER_ATTACK, attackListener);
         addStateInput(GameInputAction.ORDER_STOP, stopListener);
 
-        UserActionGuiAdapter actionAdapter = new UserActionGuiAdapter(moveListener, attackListener, stopListener);
-        ActivePlayUiBuilder.build(gameContainer, this, actionAdapter);
+        ActivePlayUiBuilder.build(gameContainer, this);
     }
 
     public void loadLevel(UUID levelId) {

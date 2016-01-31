@@ -43,4 +43,8 @@ public class CommandGroup {
     public int priority() {
         return this.command.priority();
     }
+
+    public String getName() {
+        return this.command.getName();
+    }
 }

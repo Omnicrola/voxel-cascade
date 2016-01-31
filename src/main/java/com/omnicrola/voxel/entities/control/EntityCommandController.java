@@ -30,6 +30,10 @@ public class EntityCommandController extends AbstractControl {
     }
 
     public void collect(CommandCollector commandCollector) {
-        this.commands.stream().forEach(c -> commandCollector.collect(c));
+        this.commands.stream().forEach(c -> getCollect(commandCollector, c));
+    }
+
+    private void getCollect(CommandCollector commandCollector, EntityCommand c) {
+        commandCollector.collect(c);
     }
 }

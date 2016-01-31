@@ -25,7 +25,7 @@ public enum EntityCommand {
     }
 
     public String getName() {
-        return null;
+        return this.toString();
     }
 
     public int priority() {

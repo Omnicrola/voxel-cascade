@@ -9,11 +9,14 @@ import com.omnicrola.voxel.ui.UiCurrentSelectionObserver;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
+import com.omnicrola.voxel.ui.nifty.IUiButton;
+import com.omnicrola.voxel.ui.nifty.IUiElement;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
-import de.lessvoid.nifty.elements.Element;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -21,41 +24,43 @@ import java.util.List;
  */
 public class ActivePlayScreenController extends AbstractScreenController {
     private final UiCurrentSelectionObserver currentSelectionObserver;
-    private UserActionGuiAdapter actionAdapter;
     private LevelState currentLevel;
     private SelectionGroup currentSelection;
     private List<CommandGroup> actionCommands;
 
-    public ActivePlayScreenController(UserActionGuiAdapter actionAdapter) {
-        this.actionAdapter = actionAdapter;
+    public ActivePlayScreenController() {
         this.currentSelectionObserver = new UiCurrentSelectionObserver(this);
     }
 
     @NiftyEventSubscriber(id = "ACTION_1")
     @SubscriberLink(UiToken.ACTION_1)
     public void triggerActionButton_1(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.actionAdapter.triggerMove();
         triggerCommandGroup(1);
     }
 
-    private void triggerCommandGroup(int index) {
-        if (this.actionCommands.size() >= index) {
-            index = index - 1;
-            CommandGroup commandGroup = this.actionCommands.get(index);
-            commandGroup.execute();
-        }
-    }
 
     @NiftyEventSubscriber(id = "ACTION_2")
     @SubscriberLink(UiToken.ACTION_2)
     public void triggerActionButton_2(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.actionAdapter.triggerAttack();
+        triggerCommandGroup(2);
     }
 
     @NiftyEventSubscriber(id = "ACTION_3")
     @SubscriberLink(UiToken.ACTION_3)
     public void triggerActionButton_3(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.actionAdapter.triggerStop();
+        triggerCommandGroup(3);
+    }
+
+    @NiftyEventSubscriber(id = "ACTION_4")
+    @SubscriberLink(UiToken.ACTION_4)
+    public void triggerActionButton_4(String id, ButtonClickedEvent buttonClickedEvent) {
+        triggerCommandGroup(4);
+    }
+
+    @NiftyEventSubscriber(id = "ACTION_5")
+    @SubscriberLink(UiToken.ACTION_5)
+    public void triggerActionButton_5(String id, ButtonClickedEvent buttonClickedEvent) {
+        triggerCommandGroup(5);
     }
 
     public void setLevel(LevelState newLevel) {
@@ -68,22 +73,51 @@ public class ActivePlayScreenController extends AbstractScreenController {
 
     public void setCurrentSelection(SelectionGroup currentSelection) {
         this.currentSelection = currentSelection;
-        Element selectionPanel = getScreen().findElementByName(UiToken.SELECTION_PANEL.toString());
-        selectionPanel.getElements().forEach(e -> e.markForRemoval());
-        selectionPanel.layoutElements();
-
-        this.currentSelection.getSelections()
-                .stream()
-                .map(s -> makeUnitLabel(s, selectionPanel))
-                .forEach(l -> selectionPanel.add(l));
-
         this.actionCommands = this.currentSelection.getAvailableCommands();
+        updateSelectionList();
+        setCommandLabels();
     }
 
-    private Element makeUnitLabel(ISelectedUnit selectedUnit, Element parent) {
-        return new LabelBuilder("unit-label-" + selectedUnit.hashCode(), selectedUnit.getDisplayName()) {{
+    private void setCommandLabels() {
+        Iterator<IUiButton> buttonIterator = getCommandButtons().iterator();
+        this.actionCommands.forEach(c -> buttonIterator.next().setText(c.getName()));
+    }
+
+    private ArrayList<IUiButton> getCommandButtons() {
+        ArrayList<IUiButton> buttons = new ArrayList<>();
+        buttons.add(ui().getButton(UiToken.ACTION_1));
+        buttons.add(ui().getButton(UiToken.ACTION_2));
+        buttons.add(ui().getButton(UiToken.ACTION_3));
+        buttons.add(ui().getButton(UiToken.ACTION_4));
+        buttons.add(ui().getButton(UiToken.ACTION_5));
+        buttons.add(ui().getButton(UiToken.ACTION_6));
+        buttons.add(ui().getButton(UiToken.ACTION_7));
+        buttons.add(ui().getButton(UiToken.ACTION_8));
+        buttons.add(ui().getButton(UiToken.ACTION_9));
+        return buttons;
+    }
+
+    private void updateSelectionList() {
+        IUiElement selectionPanel = ui().getElement(UiToken.SELECTION_PANEL);
+        selectionPanel.removeAllChildren();
+
+        this.currentSelection.getSelections()
+                .forEach(l -> selectionPanel.addElement(makeElement(l)));
+    }
+
+    private LabelBuilder makeElement(ISelectedUnit selectedUnit) {
+        String id = "unit-label-" + selectedUnit.hashCode();
+        return new LabelBuilder(id, selectedUnit.getDisplayName()) {{
             backgroundColor(UiConstants.Colors.LIGHT_RED);
             height(pixels(20));
-        }}.build(getNifty(), getScreen(), parent);
+        }};
+    }
+
+    private void triggerCommandGroup(int index) {
+        if (this.actionCommands.size() >= index) {
+            index = index - 1;
+            CommandGroup commandGroup = this.actionCommands.get(index);
+            commandGroup.execute();
+        }
     }
 }
