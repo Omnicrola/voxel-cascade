@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.entities.control;
 
+import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -71,12 +72,13 @@ public class WeaponsController extends AbstractControl {
         this.timeSinceLastShot = 0;
 
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
-        Vector3f ourLocation = this.spatial.getWorldTranslation().add(projectileOffset);
+        Vector3f ourLocation = this.spatial.getWorldTranslation().add(this.projectileOffset);
         Vector3f attackVector = targetLocation.subtract(ourLocation);
 
         Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.projectileId, attackVector);
-        projectile.setLocalTranslation(ourLocation);
         this.gameWorld.attach(projectile);
+        projectile.getControl(GhostControl.class).setPhysicsLocation(ourLocation);
+        projectile.setLocalTranslation(ourLocation);
     }
 
     @Override

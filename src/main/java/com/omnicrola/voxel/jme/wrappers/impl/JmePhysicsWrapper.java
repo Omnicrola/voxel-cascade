@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.bullet.control.PhysicsControl;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
@@ -22,11 +23,30 @@ public class JmePhysicsWrapper implements IGamePhysics {
 
     @Override
     public void remove(Spatial spatial) {
-        this.game.getPhysicsSpace().remove(spatial);
+        PhysicsControl control = spatial.getControl(PhysicsControl.class);
+        if (control != null) {
+            this.game.getPhysicsSpace().remove(spatial);
+        }
+        if (spatial instanceof Node) {
+            ((Node) spatial)
+                    .getChildren()
+                    .stream()
+                    .forEach(child -> remove(child));
+        }
     }
 
     @Override
     public void add(Spatial spatial) {
-        this.game.getPhysicsSpace().add(spatial);
+        PhysicsControl control = spatial.getControl(PhysicsControl.class);
+        if (control != null) {
+            this.game.getPhysicsSpace().add(spatial);
+        }
+        if (spatial instanceof Node) {
+            ((Node) spatial)
+                    .getChildren()
+                    .stream()
+                    .forEach(child -> add(child));
+        }
+
     }
 }

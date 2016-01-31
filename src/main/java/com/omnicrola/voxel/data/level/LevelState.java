@@ -26,8 +26,11 @@ public class LevelState implements ILevelStateRead, IDisposable {
     private String levelName;
     private float resources;
     private float timeElapsed;
+    private IGameContainer gameContainer;
+    private boolean isActive;
 
     public LevelState(Node terrain, WorldCursor worldCursor, String levelName) {
+        this.isActive = false;
         this.teams = new ArrayList<>();
         this.terrain = terrain;
         this.units = new Node();
@@ -49,6 +52,9 @@ public class LevelState implements ILevelStateRead, IDisposable {
 
     public void addUnit(Spatial unit) {
         this.units.attachChild(unit);
+        if (isActive) {
+            this.gameContainer.physics().add(unit);
+        }
     }
 
     public void setResources(float resources) {
@@ -130,16 +136,19 @@ public class LevelState implements ILevelStateRead, IDisposable {
     }
 
     public void attachToWorld(IGameContainer gameContainer) {
-        gameContainer.world().attachUnits(this.units);
-        gameContainer.world().attachTerrain(this.terrain);
-        gameContainer.world().attachLights(this.lights);
-        gameContainer.world().attach(this.worldCursor);
+        this.gameContainer = gameContainer;
+        this.isActive = true;
+        this.gameContainer.world().attachUnits(this.units);
+        this.gameContainer.world().attachTerrain(this.terrain);
+        this.gameContainer.world().attachLights(this.lights);
+        this.gameContainer.world().attach(this.worldCursor);
     }
 
     public void detatchFromWorld(IGameContainer gameContainer) {
-        gameContainer.world().detatchUnits(this.units);
-        gameContainer.world().detatchTerrain(this.terrain);
-        gameContainer.world().detatchLights(this.lights);
-        gameContainer.world().detatch(this.worldCursor);
+        this.isActive = false;
+        this.gameContainer.world().detatchUnits(this.units);
+        this.gameContainer.world().detatchTerrain(this.terrain);
+        this.gameContainer.world().detatchLights(this.lights);
+        this.gameContainer.world().detatch(this.worldCursor);
     }
 }

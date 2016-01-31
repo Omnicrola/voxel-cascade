@@ -12,7 +12,6 @@ public class LinearProjectileControl extends GhostControl {
 
     public LinearProjectileControl(float size, Vector3f velocity) {
         super(new BetterSphereCollisionShape(size));
-
         this.velocity = velocity;
     }
 

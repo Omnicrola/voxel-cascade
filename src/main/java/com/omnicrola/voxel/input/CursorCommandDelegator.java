@@ -57,6 +57,7 @@ public class CursorCommandDelegator {
         JmeCursor buildCursor = this.gameContainer.gui().build().cursor(CursorToken.BUILD);
         Spatial exampleBuildTarget = this.gameContainer.world().build().unit(unitId, TeamData.NEUTRAL);
         Material material  = this.gameContainer.world().build().material(MaterialToken.GHOST_BUILDING);
+        exampleBuildTarget.setMaterial(material);
         BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.gameContainer, this.levelState, unitId, buildCursor, exampleBuildTarget);
         this.worldCursor.setCursorStrategy(buildUnitStrategy);
     }

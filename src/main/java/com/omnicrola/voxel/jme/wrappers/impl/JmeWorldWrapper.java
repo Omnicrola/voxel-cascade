@@ -3,7 +3,6 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.bullet.PhysicsSpace;
-import com.jme3.bullet.control.PhysicsControl;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.light.Light;
@@ -32,11 +31,13 @@ public class JmeWorldWrapper implements IGameWorld {
     private final PhysicsSpace physicsSpace;
     private final ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory;
     private VoxelGameEngine game;
+    private JmePhysicsWrapper physicsWrapper;
     private Node terrain;
     private Node units;
 
-    public JmeWorldWrapper(VoxelGameEngine game, JmeApplicationWrapper jmeApplicationWrapper) {
+    public JmeWorldWrapper(VoxelGameEngine game, JmeApplicationWrapper jmeApplicationWrapper, JmePhysicsWrapper physicsWrapper) {
         this.game = game;
+        this.physicsWrapper = physicsWrapper;
         this.physicsSpace = game.getPhysicsSpace();
         AssetManager assetManager = game.getAssetManager();
         this.geometryBuilder = new WorldBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
@@ -56,16 +57,7 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     private void addChildrenToPhysicsSpace(Spatial spatial) {
-        PhysicsControl control = spatial.getControl(PhysicsControl.class);
-        if (control != null) {
-            this.physicsSpace.add(spatial);
-        }
-        if (spatial instanceof Node) {
-            ((Node) spatial)
-                    .getChildren()
-                    .stream()
-                    .forEach(child -> addChildrenToPhysicsSpace(child));
-        }
+        this.physicsWrapper.add(spatial);
     }
 
     @Override
@@ -75,16 +67,7 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     private void removeChildrenFromPhysicsSpace(Spatial spatial) {
-        PhysicsControl control = spatial.getControl(PhysicsControl.class);
-        if (control != null) {
-            this.physicsSpace.remove(spatial);
-        }
-        if (spatial instanceof Node) {
-            ((Node) spatial)
-                    .getChildren()
-                    .stream()
-                    .forEach(child -> removeChildrenFromPhysicsSpace(child));
-        }
+        this.physicsWrapper.remove(spatial);
     }
 
     @Override
