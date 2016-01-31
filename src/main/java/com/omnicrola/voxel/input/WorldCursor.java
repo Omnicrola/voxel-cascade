@@ -57,12 +57,10 @@ public class WorldCursor extends Node implements IDisposable {
     }
 
     public void setCursorStrategy(ICursorStrategy cursorStrategy) {
-        System.out.println("Set Cursor: " + cursorStrategy.getClass().getSimpleName());
         this.cursorStrategy = cursorStrategy;
         this.inputManager.setCursor(cursorStrategy.get2DCursor());
         this.detachAllChildren();
         this.attachChild(this.cursorStrategy.get3dCursor());
-        System.out.println("attack cursor: "+this.cursorStrategy.get3dCursor().getName());
     }
 
     public void setDefaultCursorStrategy(ICursorStrategy cursorStrategy) {

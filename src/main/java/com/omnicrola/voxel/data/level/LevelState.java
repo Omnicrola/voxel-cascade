@@ -42,7 +42,6 @@ public class LevelState implements ILevelStateRead, IDisposable {
     }
 
     public void addTeam(TeamData team) {
-        System.out.println("add team: " + team.getId());
         this.teams.add(team);
     }
 

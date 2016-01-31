@@ -1,10 +1,10 @@
 package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.main.VoxelException;
-import com.omnicrola.voxel.ui.nifty.IUi;
-import com.omnicrola.voxel.ui.nifty.impl.NiftyUiWrapper;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiToken;
+import com.omnicrola.voxel.ui.nifty.IUi;
+import com.omnicrola.voxel.ui.nifty.impl.NiftyUiWrapper;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.screen.Screen;
@@ -25,6 +25,17 @@ public abstract class AbstractScreenController implements ScreenController {
     public void bind(Nifty nifty, Screen screen) {
         this.niftyUiWrapper = new NiftyUiWrapper(nifty, screen);
         assertEventSubscribers(this, UiToken.BUTTON_START);
+//        nifty.setNiftyInputConsumerNotify(new NiftyInputConsumerNotify() {
+//            @Override
+//            public void processedMouseEvent(int mouseX, int mouseY, int mouseWheel, int button, boolean buttonDown, boolean processed) {
+//                System.out.println("mouseX: " + mouseX + " mouseY: " + mouseY+ " processed: "+processed);
+//            }
+//
+//            @Override
+//            public void processKeyboardEvent(KeyboardInputEvent keyboardInputEvent, boolean b) {
+//
+//            }
+//        });
     }
 
     protected IUi ui() {

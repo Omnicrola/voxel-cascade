@@ -42,7 +42,6 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
     protected void selfTerminate() {
         Node parent = this.parentSpatial.getParent();
         Vector3f worldTranslation = this.parentSpatial.getWorldTranslation();
-        System.out.println(worldTranslation);
         if (parent != null) {
             this.deathAction.destruct(this.parentSpatial);
             parent.detachChild(this.parentSpatial);
