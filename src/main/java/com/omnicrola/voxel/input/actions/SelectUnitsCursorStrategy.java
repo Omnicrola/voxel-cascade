@@ -6,10 +6,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.input.CursorCommandDelegator;
-import com.omnicrola.voxel.input.ScreenRectangle;
-import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.input.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -43,11 +40,11 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     }
 
     @Override
-    public void executePrimary(boolean isPressed, SelectionGroup currentSelection) {
+    public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
         IGameInput input = this.gameContainer.input();
-        if (!this.wasPressed && isPressed) {
+        if (!this.wasPressed && gameMouseEvent.isPressed()) {
             this.lastCursorPosition = input.getCursorPosition();
-        } else if (!isPressed) {
+        } else if (!gameMouseEvent.isPressed()) {
             if (mouseHasBeenDragged()) {
                 ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, input.getCursorPosition());
                 List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
@@ -62,7 +59,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
                 }
             }
         }
-        this.wasPressed = isPressed;
+        this.wasPressed = gameMouseEvent.isPressed();
     }
 
     @Override

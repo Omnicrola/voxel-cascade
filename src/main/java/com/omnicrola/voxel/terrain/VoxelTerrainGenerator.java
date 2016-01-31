@@ -5,13 +5,9 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.level.LevelDefinition;
-import com.omnicrola.voxel.engine.physics.CollisionController;
-import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
-import com.omnicrola.voxel.physics.VoxelPhysicsControl;
-import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -51,13 +47,8 @@ public class VoxelTerrainGenerator {
     }
 
     private Geometry createVoxelSpatial(IGameWorld gameWorld, IWorldBuilder geometryBuilder, Vec3iRead offset, int x, int y, int z) {
-        Geometry cube = geometryBuilder.terrainVoxel(0.5f, ColorRGBA.randomColor());
-        cube.setName("voxel " + x + "," + y + "," + z);
-        cube.setUserData(EntityDataKeys.IS_TERRAIN, true);
-        cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
-        VoxelPhysicsControl rigidBodyControl = new VoxelPhysicsControl();
-        cube.addControl(rigidBodyControl);
-        cube.addControl(new CollisionController(new TerrainCollisionHandler(cube, gameWorld)));
-        return cube;
+        Geometry voxel = geometryBuilder.terrainVoxel(ColorRGBA.randomColor());
+        voxel.setName("voxel " + x + "," + y + "," + z);
+        return voxel;
     }
 }

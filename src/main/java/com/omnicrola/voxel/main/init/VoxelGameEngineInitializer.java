@@ -47,16 +47,12 @@ public class VoxelGameEngineInitializer {
 
         addKeyMapping(inputManager, GameInputAction.SELECT, KeyInput.KEY_RETURN);
         addKeyMapping(inputManager, GameInputAction.CLEAR_SELECTION, KeyInput.KEY_ESCAPE);
+        addKeyMapping(inputManager, GameInputAction.MULTI_SELECT, KeyInput.KEY_LSHIFT, KeyInput.KEY_RSHIFT);
 
         addKeyMapping(inputManager, GameInputAction.CAMERA_FORWARD, KeyInput.KEY_UP);
         addKeyMapping(inputManager, GameInputAction.CAMERA_BACKWARD, KeyInput.KEY_DOWN);
         addKeyMapping(inputManager, GameInputAction.CAMERA_LEFT, KeyInput.KEY_LEFT);
         addKeyMapping(inputManager, GameInputAction.CAMERA_RIGHT, KeyInput.KEY_RIGHT);
-
-        addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_1);
-        addKeyMapping(inputManager, GameInputAction.ORDER_ATTACK, KeyInput.KEY_2);
-        addKeyMapping(inputManager, GameInputAction.ORDER_STOP, KeyInput.KEY_3);
-        addKeyMapping(inputManager, GameInputAction.ORDER_BUILD_MODE, KeyInput.KEY_B);
 
         addKeyMapping(inputManager, GameInputAction.DEBUG_RELOAD_LEVEL, KeyInput.KEY_R);
         addKeyMapping(inputManager, GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, KeyInput.KEY_F2);
@@ -64,14 +60,15 @@ public class VoxelGameEngineInitializer {
         addKeyMapping(inputManager, GameInputAction.DEBUG_REBUILD_TERRAIN, KeyInput.KEY_F4);
         addKeyMapping(inputManager, GameInputAction.DEBUG_TARGET_OBJECT, KeyInput.KEY_F5);
         addKeyMapping(inputManager, GameInputAction.DEBUG_SCENE_GRAPH, KeyInput.KEY_F6);
-
     }
 
     private static void addMouseMapping(InputManager inputManager, GameInputAction action, int buttonCode) {
         inputManager.addMapping(action.trigger(), new MouseButtonTrigger(buttonCode));
     }
 
-    private static void addKeyMapping(InputManager inputManager, GameInputAction action, int keyCode) {
-        inputManager.addMapping(action.trigger(), new KeyTrigger(keyCode));
+    private static void addKeyMapping(InputManager inputManager, GameInputAction action, int... keys) {
+        for (int i = 0; i < keys.length; i++) {
+            inputManager.addMapping(action.trigger(), new KeyTrigger(keys[i]));
+        }
     }
 }

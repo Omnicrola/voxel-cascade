@@ -6,9 +6,11 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.jme.wrappers.impl.JmePhysicsWrapper;
 
 /**
@@ -79,5 +81,9 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
     public void forceRebuild() {
         System.out.println("rebuilding terrain");
         this.voxelChunkHandler.flagAllChunksAsDirty();
+    }
+
+    public void createVoxel(Geometry voxel, Vec3i location) {
+        this.voxelChunkHandler.create(voxel, location);
     }
 }

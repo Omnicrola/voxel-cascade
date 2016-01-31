@@ -5,6 +5,7 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.input.WorldCursor;
@@ -33,7 +34,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
     }
 
     @Override
-    public void executePrimary(boolean isPressed, SelectionGroup currentSelection) {
+    public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
         WorldCursor worldCursor = this.levelState.getWorldCursor();
         Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.levelState.getTerrain());
         if (terrainUnderCursor.isPresent()) {

@@ -8,7 +8,10 @@ import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.input.GameInputAction;
-import com.omnicrola.voxel.input.listeners.*;
+import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
+import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
+import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
+import com.omnicrola.voxel.input.listeners.PanCameraListener;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -140,15 +143,13 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
 
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this));
 
-        addStateInput(GameInputAction.MOUSE_PRIMARY, new ExecutePrimaryCursorListener(this));
+        ExecutePrimaryCursorListener primaryCursorListener = new ExecutePrimaryCursorListener(this);
+        addStateInput(GameInputAction.MULTI_SELECT, primaryCursorListener);
+        addStateInput(GameInputAction.MOUSE_PRIMARY, primaryCursorListener);
         addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this));
 
         PanCameraListener panCameraListener = new PanCameraListener(gameContainer.gui(), gameContainer.input());
         panCameraListener.registerInputs(this);
-
-        addStateInput(GameInputAction.ORDER_MOVE, new SetMoveCursorStrategyListener(this, gameContainer.gui()));
-        addStateInput(GameInputAction.ORDER_ATTACK, new SetAttackCursorStrategyListener(this, gameContainer.gui()));
-        addStateInput(GameInputAction.ORDER_STOP, new OrderSelectedUnitsStopListeners(this));
     }
 
     private void notifyObserversLevelChanged() {

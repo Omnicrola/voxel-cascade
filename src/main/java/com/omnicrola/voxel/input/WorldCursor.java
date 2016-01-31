@@ -8,6 +8,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
@@ -56,6 +57,18 @@ public class WorldCursor extends Node implements IDisposable {
         setPositionToNearestVoxel(pickRay);
     }
 
+    private void setPositionToNearestVoxel(Ray pickRay) {
+        CollisionResults results = new CollisionResults();
+        this.terrainNode.collideWith(pickRay, results);
+        if (results.size() > 0) {
+            Vector3f contactPoint = results.getClosestCollision().getContactPoint();
+            contactPoint.setX((float) Math.floor(contactPoint.x));
+            contactPoint.setY((float) Math.floor(contactPoint.y));
+            contactPoint.setZ((float) Math.floor(contactPoint.z));
+            this.setLocalTranslation(contactPoint);
+        }
+    }
+
     public void setCursorStrategy(ICursorStrategy cursorStrategy) {
         this.cursorStrategy = cursorStrategy;
         this.inputManager.setCursor(cursorStrategy.get2DCursor());
@@ -79,8 +92,8 @@ public class WorldCursor extends Node implements IDisposable {
         }
     }
 
-    public void executePrimary(boolean isPressed) {
-        this.cursorStrategy.executePrimary(isPressed, this.currentSelection);
+    public void executePrimary(GameMouseEvent gameMouseEvent) {
+        this.cursorStrategy.executePrimary(gameMouseEvent, this.currentSelection);
     }
 
     public void executeSecondary(boolean isPressed) {
@@ -115,15 +128,6 @@ public class WorldCursor extends Node implements IDisposable {
                 .findFirst();
     }
 
-    private void setPositionToNearestVoxel(Ray pickRay) {
-        CollisionResults results = new CollisionResults();
-        this.terrainNode.collideWith(pickRay, results);
-        if (results.size() > 0) {
-            Vector3f contactPoint = results.getClosestCollision().getContactPoint();
-            this.setLocalTranslation(contactPoint);
-        }
-    }
-
     private Ray getPickRay() {
         Vector2f cursorPosition = this.inputManager.getCursorPosition();
         Vector3f cursor3d = this.camera.getWorldCoordinates(cursorPosition.clone(), 0f).clone();
@@ -151,5 +155,10 @@ public class WorldCursor extends Node implements IDisposable {
 
     public void dispose() {
         this.observers.clear();
+    }
+
+    public Vec3i getSnappedLocation() {
+        Vector3f p = this.getLocalTranslation();
+        return new Vec3i((int) p.x, (int) p.y, (int) p.z);
     }
 }

@@ -25,8 +25,11 @@
                 <command>MOVE</command>
                 <command>ATTACK</command>
                 <command>STOP</command>
+                <command>BUILD</command>
             </commands>
-            <build-targets/>
+            <build-targets>
+                <voxel type="1"/>
+            </build-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
     </units>

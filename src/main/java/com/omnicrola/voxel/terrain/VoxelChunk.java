@@ -96,10 +96,8 @@ public class VoxelChunk extends Node {
                     Spatial voxel = this.spatials[x][y][z];
                     if (voxel != null) {
                         super.attachChild(voxel);
-
                         Vector3f location = this.chunkId.globalize(x,y,z);
                         voxel.setLocalTranslation(location);
-                        System.out.println("set " + voxel.getName() + " to " + location);
                         voxel.getControl(VoxelPhysicsControl.class).setPhysicsLocation(location);
                     }
                 }

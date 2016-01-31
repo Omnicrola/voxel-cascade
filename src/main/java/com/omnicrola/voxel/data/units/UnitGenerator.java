@@ -2,7 +2,9 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.settings.GameConstants;
 
 /**
  * Created by Eric on 1/20/2016.
@@ -26,6 +28,8 @@ public class UnitGenerator {
         unitDefinition.commands.add(EntityCommand.MOVE);
         unitDefinition.commands.add(EntityCommand.ATTACK);
         unitDefinition.commands.add(EntityCommand.STOP);
+        unitDefinition.commands.add(EntityCommand.BUILD);
+        unitDefinition.buildCommands.add(new BuildVoxelCommand(GameConstants.TERRAIN_TYPE_1));
         return unitDefinition;
     }
 

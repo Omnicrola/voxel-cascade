@@ -67,5 +67,9 @@ public class Vec3i implements Vec3iRead {
         result = 31 * result + z;
         return result;
     }
+
+    public Vec3i translate(int x, int y, int z) {
+        return new Vec3i(this.x + x, this.y + y, this.z + z);
+    }
 }
 

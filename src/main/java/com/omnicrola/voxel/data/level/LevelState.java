@@ -1,13 +1,16 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.light.Light;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
+import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -149,5 +152,10 @@ public class LevelState implements ILevelStateRead, IDisposable {
         this.gameContainer.world().detatchTerrain(this.terrain);
         this.gameContainer.world().detatchLights(this.lights);
         this.gameContainer.world().detatch(this.worldCursor);
+    }
+
+    public void createVoxel(Geometry voxel, Vec3i location) {
+        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
+        control.createVoxel(voxel, location);
     }
 }

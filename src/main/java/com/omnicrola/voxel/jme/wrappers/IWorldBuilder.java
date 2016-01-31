@@ -12,7 +12,7 @@ import com.omnicrola.voxel.fx.MaterialToken;
  * Created by omnic on 1/16/2016.
  */
 public interface IWorldBuilder {
-    Geometry terrainVoxel(float size, ColorRGBA color);
+    Geometry terrainVoxel(ColorRGBA color);
 
     public Spatial projectile(Spatial emittingEntity, int projectileId, Vector3f attackVector);
 

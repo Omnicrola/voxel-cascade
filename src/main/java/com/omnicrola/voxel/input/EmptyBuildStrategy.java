@@ -17,7 +17,7 @@ public class EmptyBuildStrategy implements ICursorStrategy {
     }
 
     @Override
-    public void executePrimary(boolean isPressed, SelectionGroup currentSelection) {
+    public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
 
     }
 
