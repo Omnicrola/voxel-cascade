@@ -15,4 +15,5 @@ public class GameConstants {
     public static final String MATERIAL_UNSHADED = "Common/MatDefs/Misc/Unshaded.j3md";
     public static final String MATERIAL_SHADED = "Common/MatDefs/Light/Lighting.j3md";
 
+    public static final int CHUNK_SIZE = 16;
 }

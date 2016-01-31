@@ -8,9 +8,9 @@ import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
-import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
@@ -24,11 +24,12 @@ public class VoxelTerrainGenerator {
         this.gameContainer = gameContainer;
     }
 
-    public  Node load(LevelDefinition levelData) {
+    public Node load(LevelDefinition levelData) {
         IGameWorld gameWorld = this.gameContainer.world();
         IWorldBuilder geometryBuilder = gameWorld.build();
 
         Node terrainRoot = new Node("Terrain");
+        VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler();
 
         Vec3iRead size = levelData.getTerrainSize();
         Vec3iRead offset = levelData.getTerrainOffset();
@@ -38,19 +39,24 @@ public class VoxelTerrainGenerator {
         for (int x = -xSize; x < xSize; x++) {
             for (int y = -ySize; y < ySize; y++) {
                 for (int z = -zSize; z < zSize; z++) {
-                    Geometry cube = geometryBuilder.terrainVoxel(0.5f, ColorRGBA.randomColor());
-                    cube.setName("voxel " + x + "," + y + "," + z);
-                    cube.setUserData(EntityDataKeys.IS_TERRAIN, true);
-                    cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
-                    RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
-                    cube.addControl(rigidBodyControl);
-                    cube.addControl(new CollisionController(new TerrainCollisionHandler(cube, gameWorld)));
-                    terrainRoot.attachChild(cube);
+                    Geometry cube = createVoxelSpatial(gameWorld, geometryBuilder, offset, x, y, z);
+                    voxelChunkHandler.create(cube, x, y, z);
                 }
             }
         }
+        terrainRoot.addControl(new VoxelTerrainControl(voxelChunkHandler));
 
         return terrainRoot;
     }
 
+    private Geometry createVoxelSpatial(IGameWorld gameWorld, IWorldBuilder geometryBuilder, Vec3iRead offset, int x, int y, int z) {
+        Geometry cube = geometryBuilder.terrainVoxel(0.5f, ColorRGBA.randomColor());
+        cube.setName("voxel " + x + "," + y + "," + z);
+        cube.setUserData(EntityDataKeys.IS_TERRAIN, true);
+        cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
+        RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
+        cube.addControl(rigidBodyControl);
+        cube.addControl(new CollisionController(new TerrainCollisionHandler(cube, gameWorld)));
+        return cube;
+    }
 }
