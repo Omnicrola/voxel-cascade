@@ -10,7 +10,16 @@ import java.io.IOException;
 /**
  * Created by Eric on 1/21/2016.
  */
-public class TeamData implements Savable{
+public class TeamData implements Savable {
+
+    public static final TeamData NEUTRAL = makeTeamData(999);
+
+    private static TeamData makeTeamData(int teamId) {
+        TeamDefinition teamDefinition = new TeamDefinition() {{
+            this.id = teamId;
+        }};
+        return new TeamData(teamDefinition);
+    }
 
     private int teamId;
 
@@ -26,7 +35,6 @@ public class TeamData implements Savable{
         TeamData teamData = (TeamData) o;
 
         return teamId == teamData.teamId;
-
     }
 
     @Override

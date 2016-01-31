@@ -1,9 +1,13 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.VoxelGameState;
 import com.omnicrola.voxel.jme.wrappers.*;
+
+import java.util.List;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -56,5 +60,18 @@ public class JmeApplicationWrapper implements IGameContainer {
     @Override
     public AssetManager getAssetManager() {
         return this.game.getAssetManager();
+    }
+
+    public void debugSceneGraph() {
+        Node rootNode = this.game.getRootNode();
+        recursiveTreePrint(rootNode, "");
+    }
+
+    private void recursiveTreePrint(Spatial spatial, String prefix) {
+        System.out.println(prefix + spatial.getName() + " : " + spatial.getWorldTranslation());
+        if (spatial instanceof Node) {
+            List<Spatial> children = ((Node) spatial).getChildren();
+            children.forEach(c -> recursiveTreePrint(c, prefix + "- "));
+        }
     }
 }

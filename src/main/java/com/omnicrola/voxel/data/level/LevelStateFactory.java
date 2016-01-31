@@ -35,8 +35,8 @@ public class LevelStateFactory {
         Node terrain = this.voxelTerrainGenerator.load(levelDefinition);
         WorldCursor worldCursor = createWorldCursor(terrain);
 
-        LevelState levelState = new LevelState(this.gameContainer, terrain, worldCursor, levelDefinition.getName());
-        System.out.println("new level: "+levelState.hashCode());
+        LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName());
+        System.out.println("new level: " + levelState.hashCode());
         addLights(levelState, levelDefinition);
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition);

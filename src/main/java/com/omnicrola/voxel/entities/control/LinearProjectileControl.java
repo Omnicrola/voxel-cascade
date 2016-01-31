@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.entities.control;
 
-import com.jme3.bullet.collision.shapes.SphereCollisionShape;
 import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.physics.BetterSphereCollisionShape;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -11,7 +11,7 @@ public class LinearProjectileControl extends GhostControl {
     private Vector3f velocity;
 
     public LinearProjectileControl(float size, Vector3f velocity) {
-        super(new SphereCollisionShape(size));
+        super(new BetterSphereCollisionShape(size));
 
         this.velocity = velocity;
     }

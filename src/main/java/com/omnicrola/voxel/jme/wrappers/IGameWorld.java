@@ -20,7 +20,7 @@ public interface IGameWorld {
 
     void remove(Spatial node);
 
-    IEntityBuilder build();
+    IWorldBuilder build();
 
     WorldCursor createCursor(Node terrain);
 
@@ -41,4 +41,6 @@ public interface IGameWorld {
     void detatchLights(List<Light> lights);
 
     List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle);
+
+    void detatch(Spatial spatial);
 }

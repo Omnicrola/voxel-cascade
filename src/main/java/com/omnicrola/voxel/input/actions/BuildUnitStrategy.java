@@ -22,12 +22,14 @@ public class BuildUnitStrategy implements ICursorStrategy {
     private final LevelState levelState;
     private final int unitId;
     private final JmeCursor buildCursor;
+    private Spatial exampleBuildTarget;
 
-    public BuildUnitStrategy(IGameContainer gameContainer, LevelState levelState, int unitId, JmeCursor buildCursor) {
+    public BuildUnitStrategy(IGameContainer gameContainer, LevelState levelState, int unitId, JmeCursor buildCursor, Spatial exampleBuildTarget) {
         this.gameContainer = gameContainer;
         this.levelState = levelState;
         this.unitId = unitId;
         this.buildCursor = buildCursor;
+        this.exampleBuildTarget = exampleBuildTarget;
     }
 
     @Override
@@ -37,7 +39,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
         if (terrainUnderCursor.isPresent()) {
             Spatial unit = this.gameContainer.world().build().unit(this.unitId, levelState.getPlayerTeam());
             Vector3f location = terrainUnderCursor.get().getContactPoint();
-            unit.getControl(GroundVehicleControl.class).setPhysicsLocation(location);
+            unit.getControl(GroundVehicleControl.class).setPhysicsLocation(location.addLocal(0,1,0));
             this.levelState.addUnit(unit);
             worldCursor.clearCursorStrategy();
         }
@@ -50,5 +52,10 @@ public class BuildUnitStrategy implements ICursorStrategy {
     @Override
     public JmeCursor get2DCursor() {
         return this.buildCursor;
+    }
+
+    @Override
+    public Spatial get3dCursor() {
+        return this.exampleBuildTarget;
     }
 }

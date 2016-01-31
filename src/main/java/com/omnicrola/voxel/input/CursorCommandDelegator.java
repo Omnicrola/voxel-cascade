@@ -1,7 +1,11 @@
 package com.omnicrola.voxel.input;
 
 import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.material.Material;
+import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.input.actions.AttackCursorStrategy;
 import com.omnicrola.voxel.input.actions.BuildUnitStrategy;
 import com.omnicrola.voxel.input.actions.MoveSelectedUnitsStrategy;
@@ -51,7 +55,9 @@ public class CursorCommandDelegator {
 
     public void setBuildUnitStrategy(int unitId) {
         JmeCursor buildCursor = this.gameContainer.gui().build().cursor(CursorToken.BUILD);
-        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.gameContainer, this.levelState, unitId, buildCursor);
+        Spatial exampleBuildTarget = this.gameContainer.world().build().unit(unitId, TeamData.NEUTRAL);
+        Material material  = this.gameContainer.world().build().material(MaterialToken.GHOST_BUILDING);
+        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.gameContainer, this.levelState, unitId, buildCursor, exampleBuildTarget);
         this.worldCursor.setCursorStrategy(buildUnitStrategy);
     }
 }

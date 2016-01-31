@@ -19,7 +19,7 @@ public enum GameInputAction implements IActionCode {
     CAMERA_FORWARD,
     CAMERA_BACKWARD,
     CAMERA_LEFT,
-    CAMERA_RIGHT, CAMERA_UP, CAMERA_DOWN;
+    CAMERA_RIGHT, CAMERA_UP, CAMERA_DOWN, DEBUG_SCENE_GRAPH;
 
     @Override
     public String trigger() {

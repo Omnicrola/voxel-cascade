@@ -61,6 +61,8 @@ public class VoxelGameEngineInitializer {
         addKeyMapping(inputManager, GameInputAction.TOGGLE_PHYSICS_DEBUG, KeyInput.KEY_F3);
         addKeyMapping(inputManager, GameInputAction.DEBUG_RELOAD_LEVEL, KeyInput.KEY_R);
         addKeyMapping(inputManager, GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, KeyInput.KEY_F2);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_SCENE_GRAPH, KeyInput.KEY_F6);
+
     }
 
     private static void addMouseMapping(InputManager inputManager, GameInputAction action, int buttonCode) {

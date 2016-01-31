@@ -6,6 +6,7 @@ import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.ui.UiScreen;
@@ -25,8 +26,18 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             if (!isPressed) {
-                levelDefinitions = gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
-                loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
+                LevelDefinition basicLevelDefinition = LevelGeneratorTool.createBasicLevelDefinition();
+                loadLevel(basicLevelDefinition);
+            }
+        }
+    }
+
+    private class DebugSceneGraphListener implements ActionListener {
+
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (!isPressed) {
+                ((JmeApplicationWrapper) gameContainer).debugSceneGraph();
             }
         }
     }
@@ -71,24 +82,28 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     }
 
     public void loadLevel(UUID levelId) {
-        detatchStateNodes();
+        LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
+        loadLevel(levelDefinition);
+    }
+
+    private void loadLevel(LevelDefinition newLevelDefinition) {
         if (this.currentLevelState != null) {
+            this.currentLevelState.detatchFromWorld(this.gameContainer);
             this.currentLevelState.dispose();
         }
-        LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
-        this.currentLevelState = this.levelStateFactory.create(levelDefinition);
+        this.currentLevelState = this.levelStateFactory.create(newLevelDefinition);
+        this.currentLevelState.attachToWorld(this.gameContainer);
 
-        setStateRootNode(new GameStateNode(this.currentLevelState));
-        this.gameContainer.gui().setCameraRotation(levelDefinition.getCameraOrientation());
-        this.gameContainer.gui().setCameraPosition(levelDefinition.getCameraPosition());
+        this.gameContainer.gui().setCameraRotation(newLevelDefinition.getCameraOrientation());
+        this.gameContainer.gui().setCameraPosition(newLevelDefinition.getCameraPosition());
 
-        attachStateNodes();
         notifyObserversLevelChanged();
     }
 
     private void initializeKeybindings(IGameContainer gameContainer) {
         addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener(gameContainer));
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
+        addStateInput(GameInputAction.DEBUG_SCENE_GRAPH, new DebugSceneGraphListener());
 
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this));
 
@@ -121,9 +136,15 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     protected void voxelEnable(IGameContainer gameContainer) {
         gameContainer.input().setCameraMoveSpeed(10);
         gameContainer.gui().changeScreens(UiScreen.ACTIVE_PLAY);
+        if (this.currentLevelState != null) {
+            this.currentLevelState.attachToWorld(this.gameContainer);
+        }
     }
 
     @Override
     protected void voxelDisable(IGameContainer gameContainer) {
+        if (this.currentLevelState != null) {
+            this.currentLevelState.detatchFromWorld(this.gameContainer);
+        }
     }
 }

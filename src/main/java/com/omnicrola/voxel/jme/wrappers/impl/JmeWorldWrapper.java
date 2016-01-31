@@ -15,8 +15,8 @@ import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
 import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -28,7 +28,7 @@ import java.util.stream.Stream;
  * Created by omnic on 1/15/2016.
  */
 public class JmeWorldWrapper implements IGameWorld {
-    private final EntityBuilder geometryBuilder;
+    private final WorldBuilder geometryBuilder;
     private final PhysicsSpace physicsSpace;
     private final ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory;
     private VoxelGameEngine game;
@@ -39,7 +39,7 @@ public class JmeWorldWrapper implements IGameWorld {
         this.game = game;
         this.physicsSpace = game.getPhysicsSpace();
         AssetManager assetManager = game.getAssetManager();
-        this.geometryBuilder = new EntityBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
+        this.geometryBuilder = new WorldBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
         this.screenSelectionEvaluatorFactory = new ScreenSelectionEvaluatorFactory(game.getCamera());
     }
 
@@ -47,6 +47,12 @@ public class JmeWorldWrapper implements IGameWorld {
     public void attach(Spatial spatial) {
         this.game.getRootNode().attachChild(spatial);
         addChildrenToPhysicsSpace(spatial);
+    }
+
+    @Override
+    public void detatch(Spatial spatial) {
+        this.game.getRootNode().detachChild(spatial);
+        removeChildrenFromPhysicsSpace(spatial);
     }
 
     private void addChildrenToPhysicsSpace(Spatial spatial) {
@@ -82,7 +88,7 @@ public class JmeWorldWrapper implements IGameWorld {
     }
 
     @Override
-    public IEntityBuilder build() {
+    public IWorldBuilder build() {
         return this.geometryBuilder;
     }
 

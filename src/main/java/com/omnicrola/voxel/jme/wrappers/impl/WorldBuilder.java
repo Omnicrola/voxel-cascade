@@ -2,6 +2,7 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -17,8 +18,9 @@ import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
+import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
-import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
+import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -27,14 +29,14 @@ import com.omnicrola.voxel.settings.GameConstants;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class EntityBuilder implements IEntityBuilder {
+public class WorldBuilder implements IWorldBuilder {
 
     private final UnitDefinitionRepository definitionRepository;
     private AssetManager assetManager;
     private IGameContainer gameContainer;
     private IParticleBuilder particleBuilder;
 
-    public EntityBuilder(AssetManager assetManager, IGameContainer gameContainer, ParticleBuilder particleBuilder) {
+    public WorldBuilder(AssetManager assetManager, IGameContainer gameContainer, ParticleBuilder particleBuilder) {
         this.assetManager = assetManager;
         this.gameContainer = gameContainer;
         this.particleBuilder = particleBuilder;
@@ -125,6 +127,19 @@ public class EntityBuilder implements IEntityBuilder {
     @Override
     public IParticleBuilder particles() {
         return this.particleBuilder;
+    }
+
+    @Override
+    public Material material(MaterialToken materialToken) {
+        Texture texture = getTexture(materialToken.texture());
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
+        material.setTexture("DiffuseMap", texture);
+        if(materialToken.isTransparent()){
+            material.setBoolean("UseAlpha", true);
+            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        }
+
+        return material;
     }
 
     private Texture getTexture(String texture) {

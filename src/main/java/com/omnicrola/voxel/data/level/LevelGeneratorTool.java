@@ -30,13 +30,13 @@ public class LevelGeneratorTool {
         gameXmlDataParser.writeLevel(new FileOutputStream(outputFile), levelDefinition);
     }
 
-    private static LevelDefinition createBasicLevelDefinition() {
+    public static LevelDefinition createBasicLevelDefinition() {
         LevelDefinition levelDefinition = new LevelDefinition();
         levelDefinition.name = "Basic";
         levelDefinition.uuid = BASIC_LEVEL_UUID;
         levelDefinition.cameraPosition = new Vector3f(17.240665f, 5.812654f, 15.605931f);
         levelDefinition.cameraOrientation = new Quaternion(-0.04802279f, 0.94986904f, -0.24847628f, -0.18358125f);
-        levelDefinition.terrainOffset = new Vec3i(0, -5, 0);
+        levelDefinition.terrainOffset = new Vec3i(0, -1, 0);
         levelDefinition.terrainSize = new Vec3i(40, 5, 40);
         levelDefinition.unitPlacements = createBasicUnits();
         levelDefinition.structurePlacements = createBasicStructures();
@@ -46,8 +46,8 @@ public class LevelGeneratorTool {
 
     private static List<UnitPlacement> createBasicStructures() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
-        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, PLAYER_TEAM_ID, 20, -3.25f, 0));
-        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, OPPONENT_TEAM_ID, -20, -3.25f, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, PLAYER_TEAM_ID, 20, 1f, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, OPPONENT_TEAM_ID, -20, 1f, 0));
         return unitPlacements;
     }
 
@@ -67,15 +67,15 @@ public class LevelGeneratorTool {
     private static ArrayList<UnitPlacement> createBasicUnits() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
 
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -5, -10));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -5, -5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -5, 0));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -5, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -0, -10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -0, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -0, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, -0, 5));
 
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, -5, -5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, -5, 0));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, -5, 5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -5, -5, 10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -1, -0, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -1, -0, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -1, -0, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, -1, -0, 10));
         return unitPlacements;
     }
 

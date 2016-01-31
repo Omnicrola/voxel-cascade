@@ -8,7 +8,7 @@ import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
-import com.omnicrola.voxel.jme.wrappers.IEntityBuilder;
+import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -26,7 +26,7 @@ public class VoxelTerrainGenerator {
 
     public  Node load(LevelDefinition levelData) {
         IGameWorld gameWorld = this.gameContainer.world();
-        IEntityBuilder geometryBuilder = gameWorld.build();
+        IWorldBuilder geometryBuilder = gameWorld.build();
 
         Node terrainRoot = new Node("Terrain");
 

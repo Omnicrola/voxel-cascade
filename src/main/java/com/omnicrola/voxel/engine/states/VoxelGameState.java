@@ -23,7 +23,7 @@ public abstract class VoxelGameState extends AbstractAppState {
 
     private final String stateName;
     protected final Node stateRootUiNode;
-    private GameStateNode stateRootNode;
+    private Node stateRootNode;
 
     private JmeApplicationWrapper jmeApplicationWrapper;
     private ArrayList<Tuple<GameInputAction, ActionListener>> stateInputBindings;
@@ -31,12 +31,8 @@ public abstract class VoxelGameState extends AbstractAppState {
     public VoxelGameState(String stateName) {
         this.stateName = stateName;
         this.stateInputBindings = new ArrayList<>();
-        this.stateRootNode = new GameStateNode();
+        this.stateRootNode = new Node();
         this.stateRootUiNode = new Node();
-    }
-
-    public void setStateRootNode(GameStateNode stateRootNode) {
-        this.stateRootNode = stateRootNode;
     }
 
     @Override
@@ -53,28 +49,12 @@ public abstract class VoxelGameState extends AbstractAppState {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (enabled) {
-            attachStateNodes();
             bindInput();
             voxelEnable(this.jmeApplicationWrapper);
         } else {
-            detatchStateNodes();
             unbindInput();
             voxelDisable(this.jmeApplicationWrapper);
         }
-    }
-
-    protected void attachStateNodes() {
-        this.jmeApplicationWrapper.gui().attach(this.stateRootUiNode);
-        this.jmeApplicationWrapper.world().attachTerrain(this.stateRootNode.getTerrain());
-        this.jmeApplicationWrapper.world().attachUnits(this.stateRootNode.getUnits());
-        this.jmeApplicationWrapper.world().attachLights(this.stateRootNode.getLights());
-    }
-
-    protected void detatchStateNodes() {
-        this.jmeApplicationWrapper.gui().remove(this.stateRootUiNode);
-        this.jmeApplicationWrapper.world().detatchTerrain(this.stateRootNode.getTerrain());
-        this.jmeApplicationWrapper.world().detatchUnits(this.stateRootNode.getUnits());
-        this.jmeApplicationWrapper.world().detatchLights(this.stateRootNode.getLights());
     }
 
     private void bindInput() {
