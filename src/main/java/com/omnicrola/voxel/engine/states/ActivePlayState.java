@@ -1,6 +1,10 @@
 package com.omnicrola.voxel.engine.states;
 
+import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.collision.CollisionResult;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.input.GameInputAction;
@@ -8,12 +12,14 @@ import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -44,16 +50,41 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
 
     private class MouseLookListener implements ActionListener {
 
-        private IGameContainer gameContainer;
-
-        public MouseLookListener(IGameContainer gameContainer) {
-            this.gameContainer = gameContainer;
-        }
+        private boolean isLooking;
 
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
-            currentLevelState.getWorldCursor().setVisible(!isPressed);
-            this.gameContainer.input().setMouseGrabbed(isPressed);
+            if (!isPressed) {
+                this.isLooking = !this.isLooking;
+                currentLevelState.getWorldCursor().setVisible(!this.isLooking);
+                gameContainer.input().setMouseGrabbed(this.isLooking);
+            }
+        }
+    }
+
+    private class DebugTargetListener implements ActionListener {
+
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (!isPressed) {
+                Optional<CollisionResult> terrainUnderCursor = currentLevelState.getWorldCursor().getTerrainUnderCursor(currentLevelState.getTerrain());
+                if (terrainUnderCursor.isPresent()) {
+                    Geometry geometry = terrainUnderCursor.get().getGeometry();
+                    RigidBodyControl control = geometry.getControl(RigidBodyControl.class);
+                    Vector3f physicsLocation = control.getPhysicsLocation();
+                    System.out.println("world: " + geometry.getWorldTranslation() + " physics: " + physicsLocation);
+                }
+            }
+        }
+    }
+
+    private class DebugRebuildTerrainListener implements ActionListener {
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (!isPressed) {
+                VoxelTerrainControl control = currentLevelState.getTerrain().getControl(VoxelTerrainControl.class);
+                control.forceRebuild();
+            }
         }
     }
 
@@ -101,9 +132,11 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     }
 
     private void initializeKeybindings(IGameContainer gameContainer) {
-        addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener(gameContainer));
+        addStateInput(GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, new MouseLookListener());
         addStateInput(GameInputAction.DEBUG_RELOAD_LEVEL, new DebugReloadListener());
         addStateInput(GameInputAction.DEBUG_SCENE_GRAPH, new DebugSceneGraphListener());
+        addStateInput(GameInputAction.DEBUG_TARGET_OBJECT, new DebugTargetListener());
+        addStateInput(GameInputAction.DEBUG_REBUILD_TERRAIN, new DebugRebuildTerrainListener());
 
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this));
 

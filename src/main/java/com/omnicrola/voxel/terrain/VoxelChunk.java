@@ -1,9 +1,12 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.main.VoxelException;
+import com.omnicrola.voxel.physics.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
@@ -36,6 +39,7 @@ public class VoxelChunk extends Node {
     private boolean isDirty;
 
     public VoxelChunk(ChunkId chunkId) {
+        setName("Chunk " + chunkId);
         this.chunkId = chunkId;
         this.voxels = new byte[GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE];
         this.spatials = new Geometry[GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE];
@@ -43,30 +47,20 @@ public class VoxelChunk extends Node {
     }
 
     public Geometry get(int x, int y, int z) {
-        x = localizeX(x);
-        y = localizeY(y);
-        z = localizeZ(z);
+        x = this.chunkId.localizeX(x);
+        y = this.chunkId.localizeY(y);
+        z = this.chunkId.localizeZ(z);
         return this.spatials[x][y][z];
     }
 
     public IChunkSetter set(int x, int y, int z) {
-        x = localizeX(x);
-        y = localizeY(y);
-        z = localizeZ(z);
+        x = this.chunkId.localizeX(x);
+        y = this.chunkId.localizeY(y);
+        z = this.chunkId.localizeZ(z);
         return new ChunkSetter(x, y, z);
     }
 
-    private int localizeX(int x) {
-        return x - this.chunkId.getX() * GameConstants.CHUNK_SIZE;
-    }
 
-    private int localizeY(int y) {
-        return y - this.chunkId.getY() * GameConstants.CHUNK_SIZE;
-    }
-
-    private int localizeZ(int z) {
-        return z - this.chunkId.getZ() * GameConstants.CHUNK_SIZE;
-    }
 
     @Override
     public int attachChild(Spatial child) {
@@ -83,25 +77,36 @@ public class VoxelChunk extends Node {
 
     }
 
-    public boolean isDirty() {
+    public boolean needsRebuilt() {
         return this.isDirty;
     }
 
-    public void rebuild(Node parentNode) {
+    public void flagForRebuild() {
+        this.isDirty = true;
+    }
+
+    public void rebuild(Node parentNode, IGamePhysics physicsSpace) {
         parentNode.detachChild(this);
+        physicsSpace.remove(this);
         super.detachAllChildren();
+
         for (int x = 0; x < this.spatials.length; x++) {
             for (int y = 0; y < this.spatials[x].length; y++) {
                 for (int z = 0; z < this.spatials[x][y].length; z++) {
                     Spatial voxel = this.spatials[x][y][z];
                     if (voxel != null) {
                         super.attachChild(voxel);
-                        voxel.setLocalTranslation(x + chunkId.getX(), y + chunkId.getY(), z + chunkId.getZ());
+
+                        Vector3f location = this.chunkId.globalize(x,y,z);
+                        voxel.setLocalTranslation(location);
+                        System.out.println("set " + voxel.getName() + " to " + location);
+                        voxel.getControl(VoxelPhysicsControl.class).setPhysicsLocation(location);
                     }
                 }
             }
         }
         parentNode.attachChild(this);
+        physicsSpace.add(this);
         this.isDirty = false;
     }
 

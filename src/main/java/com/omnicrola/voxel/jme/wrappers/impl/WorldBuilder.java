@@ -20,9 +20,9 @@ import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
-import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
+import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
 
@@ -134,7 +134,7 @@ public class WorldBuilder implements IWorldBuilder {
         Texture texture = getTexture(materialToken.texture());
         Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
         material.setTexture("DiffuseMap", texture);
-        if(materialToken.isTransparent()){
+        if (materialToken.isTransparent()) {
             material.setBoolean("UseAlpha", true);
             material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         }

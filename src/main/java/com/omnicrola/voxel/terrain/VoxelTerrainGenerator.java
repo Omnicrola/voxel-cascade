@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
@@ -11,6 +10,7 @@ import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
+import com.omnicrola.voxel.physics.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 /**
@@ -44,6 +44,7 @@ public class VoxelTerrainGenerator {
                 }
             }
         }
+
         terrainRoot.addControl(new VoxelTerrainControl(voxelChunkHandler));
 
         return terrainRoot;
@@ -54,7 +55,7 @@ public class VoxelTerrainGenerator {
         cube.setName("voxel " + x + "," + y + "," + z);
         cube.setUserData(EntityDataKeys.IS_TERRAIN, true);
         cube.setLocalTranslation(x + offset.getX(), y + offset.getY(), z + offset.getZ());
-        RigidBodyControl rigidBodyControl = new RigidBodyControl(0f);
+        VoxelPhysicsControl rigidBodyControl = new VoxelPhysicsControl();
         cube.addControl(rigidBodyControl);
         cube.addControl(new CollisionController(new TerrainCollisionHandler(cube, gameWorld)));
         return cube;

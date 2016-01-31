@@ -22,7 +22,7 @@ public class JmeApplicationWrapper implements IGameContainer {
     public JmeApplicationWrapper(VoxelGameEngine game) {
         this.game = game;
         this.guiWrapper = new JmeGuiWrapper(game);
-        this.physicsWrapper = new JmePhysicsWrapper(game);
+        this.physicsWrapper = new JmePhysicsWrapper(game.getPhysicsSpace());
         this.worldWrapper = new JmeWorldWrapper(game, this, this.physicsWrapper);
         this.inputWrapper = new JmeInputWrapper(game);
     }

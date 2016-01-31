@@ -58,9 +58,11 @@ public class VoxelGameEngineInitializer {
         addKeyMapping(inputManager, GameInputAction.ORDER_STOP, KeyInput.KEY_3);
         addKeyMapping(inputManager, GameInputAction.ORDER_BUILD_MODE, KeyInput.KEY_B);
 
-        addKeyMapping(inputManager, GameInputAction.TOGGLE_PHYSICS_DEBUG, KeyInput.KEY_F3);
         addKeyMapping(inputManager, GameInputAction.DEBUG_RELOAD_LEVEL, KeyInput.KEY_R);
         addKeyMapping(inputManager, GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK, KeyInput.KEY_F2);
+        addKeyMapping(inputManager, GameInputAction.TOGGLE_PHYSICS_DEBUG, KeyInput.KEY_F3);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_REBUILD_TERRAIN, KeyInput.KEY_F4);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_TARGET_OBJECT, KeyInput.KEY_F5);
         addKeyMapping(inputManager, GameInputAction.DEBUG_SCENE_GRAPH, KeyInput.KEY_F6);
 
     }

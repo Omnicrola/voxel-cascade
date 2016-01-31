@@ -2,6 +2,7 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -50,13 +51,13 @@ public class VoxelChunkTest extends TestCase {
     @Test
     public void testDirty() throws Exception {
         VoxelChunk voxelChunk = new VoxelChunk(new ChunkId(0, 0, 0));
-        assertFalse(voxelChunk.isDirty());
+        assertFalse(voxelChunk.needsRebuilt());
 
         voxelChunk.set(1, 1, 1).to(mockGeometry());
-        assertTrue(voxelChunk.isDirty());
+        assertTrue(voxelChunk.needsRebuilt());
 
-        voxelChunk.rebuild(new Node());
-        assertFalse(voxelChunk.isDirty());
+        voxelChunk.rebuild(new Node(), mock(IGamePhysics.class));
+        assertFalse(voxelChunk.needsRebuilt());
     }
 
     private Geometry mockGeometry() {

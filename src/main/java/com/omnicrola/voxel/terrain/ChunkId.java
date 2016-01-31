@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
@@ -67,5 +68,24 @@ public class ChunkId {
 
     public int getZ() {
         return z;
+    }
+
+    public int localizeX(int x) {
+        return x - this.x * GameConstants.CHUNK_SIZE;
+    }
+
+    public int localizeY(int y) {
+        return y - this.y * GameConstants.CHUNK_SIZE;
+    }
+
+    public int localizeZ(int z) {
+        return z - this.z * GameConstants.CHUNK_SIZE;
+    }
+
+    public Vector3f globalize(int x, int y, int z) {
+        x = x + this.x * GameConstants.CHUNK_SIZE;
+        y = y + this.y * GameConstants.CHUNK_SIZE;
+        z = z + this.z * GameConstants.CHUNK_SIZE;
+        return new Vector3f(x, y, z);
     }
 }

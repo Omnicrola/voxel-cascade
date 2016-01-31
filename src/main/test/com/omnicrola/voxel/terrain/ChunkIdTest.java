@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.math.Vector3f;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -65,5 +66,21 @@ public class ChunkIdTest extends TestCase {
         assertNotEquals(expectedId, ChunkId.fromGlobal(0, -1, -1));
         assertNotEquals(expectedId, ChunkId.fromGlobal(-1, 0, -1));
         assertNotEquals(expectedId, ChunkId.fromGlobal(-1, -1, 0));
+    }
+
+    @Test
+    public void testLocalize() throws Exception {
+        ChunkId chunkId = new ChunkId(1, 3, 4);
+        assertEquals(4, chunkId.localizeX(20));
+        assertEquals(38, chunkId.localizeX(54));
+        assertEquals(57, chunkId.localizeX(73));
+    }
+
+    @Test
+    public void testGlobalize() throws Exception {
+        ChunkId chunkId = new ChunkId(2, 2, 2);
+
+        assertEquals(new Vector3f(33, 33, 33), chunkId.globalize(1, 1, 1));
+        assertEquals(new Vector3f(37, 39, 43), chunkId.globalize(5, 7, 11));
     }
 }

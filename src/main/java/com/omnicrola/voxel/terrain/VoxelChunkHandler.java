@@ -2,6 +2,7 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -35,10 +36,14 @@ public class VoxelChunkHandler {
         return this.chunks.get(chunkId);
     }
 
-    public void update(Node parentNode) {
+    public void update(Node parentNode, IGamePhysics gamePhysics) {
         this.chunks.values()
                 .stream()
-                .filter(c -> c.isDirty())
-                .forEach(c -> c.rebuild(parentNode));
+                .filter(c -> c.needsRebuilt())
+                .forEach(c -> c.rebuild(parentNode, gamePhysics));
+    }
+
+    public void flagAllChunksAsDirty() {
+        this.chunks.values().forEach(c -> c.flagForRebuild());
     }
 }
