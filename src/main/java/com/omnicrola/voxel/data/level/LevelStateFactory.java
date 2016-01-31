@@ -8,7 +8,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.input.CursorStrategySetter;
+import com.omnicrola.voxel.input.CursorCommandDelegator;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -42,7 +42,7 @@ public class LevelStateFactory {
         addUnits(levelState, levelDefinition);
         addStructures(levelState, levelDefinition);
 
-        CursorStrategySetter cursorStrategyFactory = new CursorStrategySetter(this.gameContainer, levelState, worldCursor);
+        CursorCommandDelegator cursorStrategyFactory = new CursorCommandDelegator(this.gameContainer, levelState, worldCursor);
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = cursorStrategyFactory.setSelectStrategy();
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
         worldCursor.clearCursorStrategy();

@@ -1,9 +1,8 @@
 package com.omnicrola.voxel.entities.commands;
 
 import com.omnicrola.voxel.input.CommandGroup;
-import com.omnicrola.voxel.input.CursorStrategySetter;
+import com.omnicrola.voxel.input.CursorCommandDelegator;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.input.actions.BuildUnitStrategy;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.List;
@@ -16,36 +15,36 @@ import java.util.List;
 public enum EntityCommand implements IEntityCommand {
     NONE(99) {
         @Override
-        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter) {
+        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
             return null;
         }
     },
     MOVE(1) {
         @Override
-        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter) {
-            cursorStrategySetter.setMoveStrategy();
+        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
+            cursorCommandDelegator.setMoveStrategy();
             return null;
         }
     },
     ATTACK(2) {
         @Override
-        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter) {
-            cursorStrategySetter.setAttackStrategy();
+        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
+            cursorCommandDelegator.setAttackStrategy();
             return null;
         }
     },
     STOP(3) {
         @Override
-        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter) {
+        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
             selectionGroup.orderStop();
             return null;
         }
     },
     BUILD(4) {
         @Override
-        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter) {
-            BuildUnitStrategy buildUnitStrategy = cursorStrategySetter.setBuildStrategy(selectionGroup);
-            return selectionGroup.getBuildCommands(buildUnitStrategy);
+        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
+            cursorCommandDelegator.setBuildStrategy(selectionGroup);
+            return selectionGroup.getBuildCommands();
         }
     };
 

@@ -6,7 +6,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.input.CursorStrategySetter;
+import com.omnicrola.voxel.input.CursorCommandDelegator;
 import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.input.WorldCursor;
@@ -22,17 +22,17 @@ import java.util.Optional;
  */
 public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     private final IGameContainer gameContainer;
-    private final CursorStrategySetter cursorStrategyFactory;
+    private final CursorCommandDelegator cursorCommandDelegator;
     private final LevelState levelState;
     private final WorldCursor worldCursor;
     private final JmeCursor defaultCursor;
     private boolean wasPressed;
     private Vector2f lastCursorPosition;
 
-    public SelectUnitsCursorStrategy(IGameContainer gameContainer, CursorStrategySetter cursorStrategyFactory, LevelState levelState, WorldCursor worldCursor, JmeCursor defaultCursor) {
+    public SelectUnitsCursorStrategy(IGameContainer gameContainer, CursorCommandDelegator cursorCommandDelegator, LevelState levelState, WorldCursor worldCursor, JmeCursor defaultCursor) {
         super(levelState, worldCursor, defaultCursor);
         this.gameContainer = gameContainer;
-        this.cursorStrategyFactory = cursorStrategyFactory;
+        this.cursorCommandDelegator = cursorCommandDelegator;
         this.levelState = levelState;
         this.worldCursor = worldCursor;
         this.defaultCursor = defaultCursor;
@@ -48,13 +48,13 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
             if (mouseHasBeenDragged()) {
                 ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, input.getCursorPosition());
                 List<Spatial> spatials = this.gameContainer.world().selectAllUnitsIn(screenRectangle);
-                SelectionGroup selectionGroup = new SelectionGroup(this.cursorStrategyFactory, spatials);
+                SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, spatials);
                 this.worldCursor.setCurrentSelection(selectionGroup);
             } else {
                 Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor(this.levelState.getUnits());
                 if (unitUnderCursor.isPresent()) {
                     Geometry unit = unitUnderCursor.get().getGeometry();
-                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorStrategyFactory, Arrays.asList(unit));
+                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, Arrays.asList(unit));
                     this.worldCursor.setCurrentSelection(selectionGroup);
                 }
             }

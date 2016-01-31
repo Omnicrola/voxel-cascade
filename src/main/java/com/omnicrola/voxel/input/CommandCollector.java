@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.input;
 
-import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 
 import java.util.HashMap;
@@ -28,11 +27,11 @@ public class CommandCollector {
         this.commandCounters.put(command, count);
     }
 
-    public List<CommandGroup> getCommandsCommonToAllEntities(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter) {
+    public List<CommandGroup> getCommandsCommonToAllEntities(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
         return this.commandCounters.entrySet()
                 .stream()
                 .filter(e -> e.getValue() == this.totalUnitsSelected)
-                .map(e -> new CommandGroup(selectionGroup, cursorStrategySetter, e.getKey()))
+                .map(e -> new CommandGroup(selectionGroup, cursorCommandDelegator, e.getKey()))
                 .sorted(new CommandSorter())
                 .collect(Collectors.toList());
     }

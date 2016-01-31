@@ -8,7 +8,6 @@ import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
-import com.omnicrola.voxel.input.actions.BuildUnitStrategy;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 
 import java.util.ArrayList;
@@ -22,11 +21,11 @@ import java.util.stream.Collectors;
  */
 public class SelectionGroup {
     private final NavigationGridDistributor gridDistributor;
-    private CursorStrategySetter cursorStrategySetter;
+    private CursorCommandDelegator cursorCommandDelegator;
     private List<Spatial> selection;
 
-    public SelectionGroup(CursorStrategySetter cursorStrategyFactory, List<Spatial> selection) {
-        this.cursorStrategySetter = cursorStrategyFactory;
+    public SelectionGroup(CursorCommandDelegator cursorStrategyFactory, List<Spatial> selection) {
+        this.cursorCommandDelegator = cursorStrategyFactory;
         this.selection = selection;
         this.gridDistributor = new NavigationGridDistributor(this);
     }
@@ -104,15 +103,15 @@ public class SelectionGroup {
                 .map(u -> u.getControl(EntityCommandController.class))
                 .filter(cc -> cc != null)
                 .forEach(cc -> cc.collectCommands(commandCollector));
-        return commandCollector.getCommandsCommonToAllEntities(this, this.cursorStrategySetter);
+        return commandCollector.getCommandsCommonToAllEntities(this, this.cursorCommandDelegator);
     }
 
-    public List<CommandGroup> getBuildCommands(BuildUnitStrategy buildUnitStrategy) {
+    public List<CommandGroup> getBuildCommands() {
         CommandCollector commandCollector = new CommandCollector(this.count());
         this.selection.stream()
                 .map(u -> u.getControl(EntityCommandController.class))
                 .filter(cc -> cc != null)
                 .forEach(cc -> cc.collectBuildCommands(commandCollector));
-        return commandCollector.getCommandsCommonToAllEntities(this, cursorStrategySetter);
+        return commandCollector.getCommandsCommonToAllEntities(this, cursorCommandDelegator);
     }
 }

@@ -123,11 +123,12 @@ public class LevelState implements ILevelStateRead, IDisposable {
     private void recursivelyDisposeNode(Node node) {
         Iterator<Spatial> children = node.getChildren().iterator();
         node.detachAllChildren();
-        while(children.hasNext()){
+        while (children.hasNext()) {
             Spatial child = children.next();
-            if(child instanceof Node){
+            if (child instanceof Node) {
                 recursivelyDisposeNode((Node) child);
             }
         }
     }
+
 }

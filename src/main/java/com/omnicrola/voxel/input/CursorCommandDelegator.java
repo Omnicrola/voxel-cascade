@@ -12,12 +12,12 @@ import com.omnicrola.voxel.ui.CursorToken;
 /**
  * Created by omnic on 1/30/2016.
  */
-public class CursorStrategySetter {
+public class CursorCommandDelegator {
     private IGameContainer gameContainer;
     private LevelState levelState;
     private WorldCursor worldCursor;
 
-    public CursorStrategySetter(IGameContainer gameContainer, LevelState levelState, WorldCursor worldCursor) {
+    public CursorCommandDelegator(IGameContainer gameContainer, LevelState levelState, WorldCursor worldCursor) {
         this.gameContainer = gameContainer;
         this.levelState = levelState;
         this.worldCursor = worldCursor;
@@ -43,10 +43,15 @@ public class CursorStrategySetter {
         this.worldCursor.setCursorStrategy(moveSelectedUnitsStrategy);
     }
 
-    public BuildUnitStrategy setBuildStrategy(SelectionGroup selectionGroup) {
+    public void setBuildStrategy(SelectionGroup selectionGroup) {
         JmeCursor buildCursor = this.gameContainer.gui().build().cursor(CursorToken.BUILD);
-        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.levelState, this.worldCursor, selectionGroup, buildCursor);
+        EmptyBuildStrategy emptyBuildStrategy = new EmptyBuildStrategy(buildCursor);
+        this.worldCursor.setCursorStrategy(emptyBuildStrategy);
+    }
+
+    public void setBuildUnitStrategy(int unitId) {
+        JmeCursor buildCursor = this.gameContainer.gui().build().cursor(CursorToken.BUILD);
+        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.gameContainer, this.levelState, unitId, buildCursor);
         this.worldCursor.setCursorStrategy(buildUnitStrategy);
-        return buildUnitStrategy;
     }
 }

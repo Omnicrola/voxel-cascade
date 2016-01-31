@@ -9,17 +9,17 @@ import java.util.List;
  */
 public class CommandGroup {
     private SelectionGroup selectionGroup;
-    private CursorStrategySetter cursorStrategySetter;
+    private CursorCommandDelegator cursorCommandDelegator;
     private IEntityCommand command;
 
-    public CommandGroup(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter, IEntityCommand command) {
+    public CommandGroup(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator, IEntityCommand command) {
         this.selectionGroup = selectionGroup;
-        this.cursorStrategySetter = cursorStrategySetter;
+        this.cursorCommandDelegator = cursorCommandDelegator;
         this.command = command;
     }
 
     public List<CommandGroup> execute() {
-        return this.command.execute(this.selectionGroup, this.cursorStrategySetter);
+        return this.command.execute(this.selectionGroup, this.cursorCommandDelegator);
     }
 
     public int priority() {
