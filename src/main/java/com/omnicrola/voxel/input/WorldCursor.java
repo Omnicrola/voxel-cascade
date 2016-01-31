@@ -57,7 +57,7 @@ public class WorldCursor extends Node implements IDisposable {
     }
 
     public void setCursorStrategy(ICursorStrategy cursorStrategy) {
-        System.out.println("Set Cursor: "+cursorStrategy.getClass().getSimpleName());
+        System.out.println("Set Cursor: " + cursorStrategy.getClass().getSimpleName());
         this.cursorStrategy = cursorStrategy;
         this.inputManager.setCursor(cursorStrategy.get2DCursor());
     }
@@ -134,8 +134,9 @@ public class WorldCursor extends Node implements IDisposable {
     private boolean isSelectableUnit(CollisionResult collision) {
         Geometry geometry = collision.getGeometry();
         boolean isUnit = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_UNIT);
+        boolean isStructure = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_STRUCTURE);
         boolean isSelectable = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_SELECTABLE);
-        return isUnit && isSelectable;
+        return isSelectable && (isUnit || isStructure);
     }
 
     public void setCurrentSelection(SelectionGroup currentSelection) {

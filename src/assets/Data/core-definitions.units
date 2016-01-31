@@ -26,6 +26,7 @@
                 <command>ATTACK</command>
                 <command>STOP</command>
             </commands>
+            <build-targets/>
             <weapon-offset x="0.0" y="1.0" z="0.0"/>
         </unit>
     </units>
@@ -59,7 +60,12 @@
                 <a>1.0</a>
             </color>
             <hitpoints>500.0</hitpoints>
-            <commands/>
+            <commands>
+                <command>BUILD</command>
+            </commands>
+            <build-targets>
+                <unit unit-id="1" priority="1"/>
+            </build-targets>
             <controls/>
         </structure>
     </structures>

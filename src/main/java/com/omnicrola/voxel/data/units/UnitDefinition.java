@@ -3,7 +3,7 @@ package com.omnicrola.voxel.data.units;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
-import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
@@ -60,7 +60,11 @@ public class UnitDefinition {
 
     @XmlElementWrapper(name = "commands")
     @XmlAnyElement(lax = true)
-    protected List<EntityCommand> commands  = new ArrayList<>();
+    protected List<IEntityCommand> commands  = new ArrayList<>();
+
+    @XmlElementWrapper(name="build-targets")
+    @XmlAnyElement(lax = true)
+    protected List<IEntityCommand> buildCommands = new ArrayList<>();
 
     @XmlElement(name = "weapon-offset")
     @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
@@ -108,7 +112,7 @@ public class UnitDefinition {
         ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
         controlFactories.add(new UnitPhysicsControlFactory(this.mass));
         controlFactories.add(new CollisionControlFactory(gameContainer.world()));
-        controlFactories.add(new CommandControlFactory(this.commands));
+        controlFactories.add(new CommandControlFactory(this.commands, this.buildCommands));
         controlFactories.add(new EntityAiControlFactory(gameContainer, weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
         return controlFactories;
     }

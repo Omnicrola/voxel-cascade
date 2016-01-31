@@ -8,6 +8,7 @@ import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.input.actions.BuildUnitStrategy;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 
 import java.util.ArrayList;
@@ -102,7 +103,16 @@ public class SelectionGroup {
         this.selection.stream()
                 .map(u -> u.getControl(EntityCommandController.class))
                 .filter(cc -> cc != null)
-                .forEach(cc -> cc.collect(commandCollector));
+                .forEach(cc -> cc.collectCommands(commandCollector));
         return commandCollector.getCommandsCommonToAllEntities(this, this.cursorStrategySetter);
+    }
+
+    public List<CommandGroup> getBuildCommands(BuildUnitStrategy buildUnitStrategy) {
+        CommandCollector commandCollector = new CommandCollector(this.count());
+        this.selection.stream()
+                .map(u -> u.getControl(EntityCommandController.class))
+                .filter(cc -> cc != null)
+                .forEach(cc -> cc.collectBuildCommands(commandCollector));
+        return commandCollector.getCommandsCommonToAllEntities(this, cursorStrategySetter);
     }
 }

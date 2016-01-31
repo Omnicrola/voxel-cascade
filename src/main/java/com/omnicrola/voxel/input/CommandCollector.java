@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.input;
 
 import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
 
 import java.util.HashMap;
 import java.util.List;
@@ -10,7 +11,7 @@ import java.util.stream.Collectors;
  * Created by omnic on 1/30/2016.
  */
 public class CommandCollector {
-    private final HashMap<EntityCommand, Integer> commandCounters;
+    private final HashMap<IEntityCommand, Integer> commandCounters;
     private int totalUnitsSelected;
 
     public CommandCollector(int totalUnitsSelected) {
@@ -18,7 +19,7 @@ public class CommandCollector {
         this.commandCounters = new HashMap<>();
     }
 
-    public void collect(EntityCommand command) {
+    public void collect(IEntityCommand command) {
         Integer count = this.commandCounters.get(command);
         if (count == null) {
             count = 0;

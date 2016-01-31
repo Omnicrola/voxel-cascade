@@ -73,14 +73,17 @@ public class ActivePlayScreenController extends AbstractScreenController {
 
     public void setCurrentSelection(SelectionGroup currentSelection) {
         this.currentSelection = currentSelection;
-        this.actionCommands = this.currentSelection.getAvailableCommands();
         updateSelectionList();
-        setCommandLabels();
+        setCommandLabels(this.currentSelection.getAvailableCommands());
     }
 
-    private void setCommandLabels() {
+    private void setCommandLabels(List<CommandGroup> newCommands) {
+        this.actionCommands = newCommands;
         Iterator<IUiButton> buttonIterator = getCommandButtons().iterator();
         this.actionCommands.forEach(c -> buttonIterator.next().setText(c.getName()));
+        while (buttonIterator.hasNext()) {
+            buttonIterator.next().setText("");
+        }
     }
 
     private ArrayList<IUiButton> getCommandButtons() {
@@ -117,7 +120,10 @@ public class ActivePlayScreenController extends AbstractScreenController {
         if (this.actionCommands.size() >= index) {
             index = index - 1;
             CommandGroup commandGroup = this.actionCommands.get(index);
-            commandGroup.execute();
+            List<CommandGroup> newCommands = commandGroup.execute();
+            if (newCommands != null) {
+                setCommandLabels(newCommands);
+            }
         }
     }
 }

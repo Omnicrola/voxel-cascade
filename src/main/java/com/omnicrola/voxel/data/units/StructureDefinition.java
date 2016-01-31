@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
-import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
@@ -43,7 +43,11 @@ public class StructureDefinition {
 
     @XmlElementWrapper(name = "commands")
     @XmlAnyElement(lax = true)
-    protected List<EntityCommand> commands  = new ArrayList<>();
+    protected List<IEntityCommand> commands  = new ArrayList<>();
+
+    @XmlElementWrapper(name="build-targets")
+    @XmlAnyElement(lax = true)
+    protected List<IEntityCommand> buildCommands = new ArrayList<>();
 
     @XmlElementWrapper(name = "controls")
     @XmlAnyElement(lax = true)
@@ -81,7 +85,7 @@ public class StructureDefinition {
         ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
         controlFactories.add(new StructurePhysicsControlFactory());
         controlFactories.add(new CollisionControlFactory(gameContainer.world()));
-        controlFactories.add(new CommandControlFactory(this.commands));
+        controlFactories.add(new CommandControlFactory(this.commands, buildCommands));
         return controlFactories;
     }
 }

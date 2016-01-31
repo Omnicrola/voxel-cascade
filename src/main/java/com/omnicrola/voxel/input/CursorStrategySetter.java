@@ -3,6 +3,7 @@ package com.omnicrola.voxel.input;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.actions.AttackCursorStrategy;
+import com.omnicrola.voxel.input.actions.BuildUnitStrategy;
 import com.omnicrola.voxel.input.actions.MoveSelectedUnitsStrategy;
 import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -40,5 +41,12 @@ public class CursorStrategySetter {
         JmeCursor moveCursor = this.gameContainer.gui().build().cursor(CursorToken.MOVE);
         MoveSelectedUnitsStrategy moveSelectedUnitsStrategy = new MoveSelectedUnitsStrategy(this.levelState, this.worldCursor, moveCursor);
         this.worldCursor.setCursorStrategy(moveSelectedUnitsStrategy);
+    }
+
+    public BuildUnitStrategy setBuildStrategy(SelectionGroup selectionGroup) {
+        JmeCursor buildCursor = this.gameContainer.gui().build().cursor(CursorToken.BUILD);
+        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.levelState, this.worldCursor, selectionGroup, buildCursor);
+        this.worldCursor.setCursorStrategy(buildUnitStrategy);
+        return buildUnitStrategy;
     }
 }

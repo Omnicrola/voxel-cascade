@@ -3,7 +3,7 @@ package com.omnicrola.voxel.entities.control;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.input.CommandCollector;
 
 import java.util.List;
@@ -13,10 +13,12 @@ import java.util.List;
  */
 public class EntityCommandController extends AbstractControl {
 
-    private final List<EntityCommand> commands;
+    private final List<IEntityCommand> commands;
+    private List<IEntityCommand> buildCommands;
 
-    public EntityCommandController(List<EntityCommand> commands) {
+    public EntityCommandController(List<IEntityCommand> commands, List<IEntityCommand> buildCommands) {
         this.commands = commands;
+        this.buildCommands = buildCommands;
     }
 
     @Override
@@ -29,11 +31,13 @@ public class EntityCommandController extends AbstractControl {
 
     }
 
-    public void collect(CommandCollector commandCollector) {
-        this.commands.stream().forEach(c -> getCollect(commandCollector, c));
+    public void collectCommands(CommandCollector commandCollector) {
+        this.commands.stream().forEach(c -> commandCollector.collect(c));
     }
 
-    private void getCollect(CommandCollector commandCollector, EntityCommand c) {
-        commandCollector.collect(c);
+
+    public void collectBuildCommands(CommandCollector commandCollector) {
+        this.buildCommands.stream()
+                .forEach(c -> commandCollector.collect(c));
     }
 }

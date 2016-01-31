@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
+import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 
 /**
@@ -19,6 +20,7 @@ public class StructureGenerator {
         structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;
         structureDefinition.commands.add(EntityCommand.BUILD);
+        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.DEFAULT_TANK_ID));
         return structureDefinition;
     }
 }

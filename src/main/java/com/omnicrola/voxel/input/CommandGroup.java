@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.input;
 
-import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.entities.commands.IEntityCommand;
+
+import java.util.List;
 
 /**
  * Created by omnic on 1/30/2016.
@@ -8,36 +10,16 @@ import com.omnicrola.voxel.entities.commands.EntityCommand;
 public class CommandGroup {
     private SelectionGroup selectionGroup;
     private CursorStrategySetter cursorStrategySetter;
-    private EntityCommand command;
+    private IEntityCommand command;
 
-    public CommandGroup(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter, EntityCommand command) {
+    public CommandGroup(SelectionGroup selectionGroup, CursorStrategySetter cursorStrategySetter, IEntityCommand command) {
         this.selectionGroup = selectionGroup;
         this.cursorStrategySetter = cursorStrategySetter;
         this.command = command;
     }
 
-    public void execute() {
-        switch (this.command) {
-            case NONE:
-                break;
-            case MOVE:
-                setMoveStrategy();
-                break;
-            case ATTACK:
-                setAttackStrategy();
-                break;
-            case STOP:
-                this.selectionGroup.orderStop();
-                break;
-        }
-    }
-
-    private void setAttackStrategy() {
-        this.cursorStrategySetter.setAttackStrategy();
-    }
-
-    private void setMoveStrategy() {
-        this.cursorStrategySetter.setMoveStrategy();
+    public List<CommandGroup> execute() {
+        return this.command.execute(this.selectionGroup, this.cursorStrategySetter);
     }
 
     public int priority() {
