@@ -99,7 +99,7 @@ public abstract class VoxelGameState extends AbstractAppState {
     final public void stateDetached(AppStateManager stateManager) {
     }
 
-    protected void addStateInput(GameInputAction inputToBind, ActionListener inputListener) {
+    public void addStateInput(GameInputAction inputToBind, ActionListener inputListener) {
         this.stateInputBindings.add(new Tuple<>(inputToBind, inputListener));
     }
 

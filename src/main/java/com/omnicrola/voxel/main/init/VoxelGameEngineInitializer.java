@@ -48,10 +48,10 @@ public class VoxelGameEngineInitializer {
         addKeyMapping(inputManager, GameInputAction.SELECT, KeyInput.KEY_RETURN);
         addKeyMapping(inputManager, GameInputAction.CLEAR_SELECTION, KeyInput.KEY_ESCAPE);
 
-        addKeyMapping(inputManager, GameInputAction.ARROW_UP, KeyInput.KEY_UP);
-        addKeyMapping(inputManager, GameInputAction.ARROW_DOWN, KeyInput.KEY_DOWN);
-        addKeyMapping(inputManager, GameInputAction.ARROW_LEFT, KeyInput.KEY_LEFT);
-        addKeyMapping(inputManager, GameInputAction.ARROW_RIGHT, KeyInput.KEY_RIGHT);
+        addKeyMapping(inputManager, GameInputAction.CAMERA_FORWARD, KeyInput.KEY_UP);
+        addKeyMapping(inputManager, GameInputAction.CAMERA_BACKWARD, KeyInput.KEY_DOWN);
+        addKeyMapping(inputManager, GameInputAction.CAMERA_LEFT, KeyInput.KEY_LEFT);
+        addKeyMapping(inputManager, GameInputAction.CAMERA_RIGHT, KeyInput.KEY_RIGHT);
 
         addKeyMapping(inputManager, GameInputAction.ORDER_MOVE, KeyInput.KEY_1);
         addKeyMapping(inputManager, GameInputAction.ORDER_ATTACK, KeyInput.KEY_2);

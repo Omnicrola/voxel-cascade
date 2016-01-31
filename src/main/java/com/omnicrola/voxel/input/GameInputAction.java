@@ -16,10 +16,10 @@ public enum GameInputAction implements IActionCode {
     TOGGLE_PHYSICS_DEBUG,
     ORDER_BUILD_MODE,
     DEBUG_TOGGLE_MOUSE_LOOK,
-    ARROW_UP,
-    ARROW_DOWN,
-    ARROW_LEFT,
-    ARROW_RIGHT;
+    CAMERA_FORWARD,
+    CAMERA_BACKWARD,
+    CAMERA_LEFT,
+    CAMERA_RIGHT, CAMERA_UP, CAMERA_DOWN;
 
     @Override
     public String trigger() {

@@ -15,6 +15,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -40,36 +41,20 @@ public class SelectionGroup {
 
     public void orderMoveToLocation(Vector3f vector3f) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(vector3f);
-        this.selection
-                .stream()
-                .map(u -> getAi(u))
-                .forEach(ai -> ai.moveToLocation(navPoints.next()));
+        getEntityAiControllerStream().forEach(ai -> ai.moveToLocation(navPoints.next()));
     }
 
     public void orderStop() {
-        this.selection
-                .stream()
-                .map(u -> getAi(u))
-                .forEach(ai -> ai.stop());
+        getEntityAiControllerStream().forEach(ai -> ai.stop());
     }
 
     public void orderAttackTarget(Geometry target) {
-        this.selection
-                .stream()
-                .map(u -> getAi(u))
-                .forEach(ai -> ai.attackTarget(target));
+        getEntityAiControllerStream().forEach(ai -> ai.attackTarget(target));
     }
 
     public void orderAttackLocation(Vector3f location) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location);
-        this.selection
-                .stream()
-                .map(u -> getAi(u))
-                .forEach(ai -> ai.attackLocation(navPoints.next()));
-    }
-
-    private EntityAiController getAi(Spatial spatial) {
-        return spatial.getControl(EntityAiController.class);
+        getEntityAiControllerStream().forEach(ai -> ai.attackLocation(navPoints.next()));
     }
 
     public float getLargestUnitSize() {
@@ -87,7 +72,11 @@ public class SelectionGroup {
 
     private float getPersonalRadius(Spatial spatial) {
         MotionGovernorControl motionControl = spatial.getControl(MotionGovernorControl.class);
-        return motionControl.getPersonalRadius();
+        if (motionControl == null) {
+            return 0;
+        } else {
+            return motionControl.getPersonalRadius();
+        }
     }
 
     public List<ISelectedUnit> getSelections() {
@@ -113,5 +102,16 @@ public class SelectionGroup {
                 .filter(cc -> cc != null)
                 .forEach(cc -> cc.collectBuildCommands(commandCollector));
         return commandCollector.getCommandsCommonToAllEntities(this, cursorCommandDelegator);
+    }
+
+    private Stream<EntityAiController> getEntityAiControllerStream() {
+        return this.selection
+                .stream()
+                .map(u -> getAi(u))
+                .filter(ai -> ai != null);
+    }
+
+    private EntityAiController getAi(Spatial spatial) {
+        return spatial.getControl(EntityAiController.class);
     }
 }

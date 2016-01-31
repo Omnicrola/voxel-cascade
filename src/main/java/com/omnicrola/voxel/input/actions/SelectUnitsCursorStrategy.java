@@ -12,10 +12,13 @@ import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
+import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -47,7 +50,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
         } else if (!isPressed) {
             if (mouseHasBeenDragged()) {
                 ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, input.getCursorPosition());
-                List<Spatial> spatials = this.gameContainer.world().selectAllUnitsIn(screenRectangle);
+                List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
                 SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, spatials);
                 this.worldCursor.setCurrentSelection(selectionGroup);
             } else {
@@ -67,6 +70,29 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
         if (!isPressed) {
             this.moveToLocation(currentSelection);
         }
+    }
+
+    private List<Spatial> selectUnitsOrBuilding(ScreenRectangle screenRectangle) {
+        List<Spatial> spatials = this.gameContainer.world().selectAllUnitsIn(screenRectangle);
+        List<Spatial> structures = findStructures(spatials);
+        if (structures.size() > 0) {
+            return structures;
+        } else {
+            List<Spatial> units = findUnits(spatials);
+            return units;
+        }
+    }
+
+    private List<Spatial> findUnits(List<Spatial> spatials) {
+        return spatials.stream()
+                .filter(s -> VoxelUtil.booleanData(s, EntityDataKeys.IS_UNIT))
+                .collect(Collectors.toList());
+    }
+
+    private List<Spatial> findStructures(List<Spatial> spatials) {
+        return spatials.stream()
+                .filter(s -> VoxelUtil.booleanData(s, EntityDataKeys.IS_STRUCTURE))
+                .collect(Collectors.toList());
     }
 
     private boolean mouseHasBeenDragged() {
