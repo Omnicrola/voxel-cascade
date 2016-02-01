@@ -4,10 +4,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
-import com.omnicrola.voxel.entities.control.CollisionControlFactory;
-import com.omnicrola.voxel.entities.control.EntityAiControlFactory;
-import com.omnicrola.voxel.entities.control.IControlFactory;
-import com.omnicrola.voxel.entities.control.UnitPhysicsControlFactory;
+import com.omnicrola.voxel.entities.control.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 import javax.xml.bind.annotation.*;
@@ -114,6 +111,7 @@ public class UnitDefinition {
         controlFactories.add(new CollisionControlFactory(gameContainer.world()));
         controlFactories.add(new CommandControlFactory(this.commands, this.buildCommands));
         controlFactories.add(new EntityAiControlFactory(gameContainer, weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
+        controlFactories.add(new DeathControllerFactory());
         return controlFactories;
     }
 }

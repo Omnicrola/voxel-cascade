@@ -10,6 +10,7 @@ import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.Optional;
 
@@ -40,16 +41,21 @@ public class TargetingController extends AbstractControl {
             Vector3f position = this.spatial.getWorldTranslation();
 
             Optional<Geometry> closestTarget = world.getUnitsInRange(position, SCAN_RADIUS)
+                    .filter(c -> isTargetable(c))
                     .filter(c -> isEnemy(c))
                     .sorted(this.distanceSorter)
                     .map(c -> c.getGeometry())
                     .findFirst();
-            if(closestTarget.isPresent()){
+            if (closestTarget.isPresent()) {
                 this.closestTarget = closestTarget.get();
             } else {
                 this.closestTarget = null;
             }
         }
+    }
+
+    private boolean isTargetable(CollisionResult s) {
+        return VoxelUtil.booleanData(s.getGeometry(), EntityDataKeys.IS_TARGETABLE);
     }
 
     private boolean isEnemy(CollisionResult collisionResult) {

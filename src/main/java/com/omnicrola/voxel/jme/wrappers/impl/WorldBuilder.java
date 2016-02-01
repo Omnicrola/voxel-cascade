@@ -74,6 +74,7 @@ public class WorldBuilder implements IWorldBuilder {
             factory.build(spatial);
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
+        spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
         spatial.setUserData(EntityDataKeys.IS_UNIT, true);
         spatial.setUserData(EntityDataKeys.HITPOINTS, entityDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
@@ -86,21 +87,22 @@ public class WorldBuilder implements IWorldBuilder {
         if (structureDefinition == StructureDefinition.NONE) {
             throw new IllegalArgumentException("Structure with ID of " + definitionId + " is not defined");
         }
-        Spatial spatial = getModel(structureDefinition.getModel());
-        spatial.setName(structureDefinition.getName());
+        Spatial structure = getModel(structureDefinition.getModel());
+        structure.setName(structureDefinition.getName());
         Material material = createMaterial(structureDefinition.getTexture());
-        spatial.setMaterial(material);
+        structure.setMaterial(material);
 
         for (IControlFactory factory : structureDefinition.getControlFactories(this.gameContainer)) {
-            factory.build(spatial);
+            factory.build(structure);
         }
 
-        spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
-        spatial.setUserData(EntityDataKeys.IS_STRUCTURE, true);
-        spatial.setUserData(EntityDataKeys.HITPOINTS, structureDefinition.getHitpoints());
-        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
+        structure.setUserData(EntityDataKeys.IS_SELECTABLE, true);
+        structure.setUserData(EntityDataKeys.IS_STRUCTURE, true);
+        structure.setUserData(EntityDataKeys.IS_TARGETABLE, true);
+        structure.setUserData(EntityDataKeys.HITPOINTS, structureDefinition.getHitpoints());
+        structure.setUserData(EntityDataKeys.TEAM_DATA, teamData);
 
-        return spatial;
+        return structure;
     }
 
     @Override

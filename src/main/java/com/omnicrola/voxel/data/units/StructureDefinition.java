@@ -3,6 +3,7 @@ package com.omnicrola.voxel.data.units;
 import com.jme3.math.ColorRGBA;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.CollisionControlFactory;
+import com.omnicrola.voxel.entities.control.DeathControllerFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -86,6 +87,7 @@ public class StructureDefinition {
         controlFactories.add(new StructurePhysicsControlFactory());
         controlFactories.add(new CollisionControlFactory(gameContainer.world()));
         controlFactories.add(new CommandControlFactory(this.commands, buildCommands));
+        controlFactories.add(new DeathControllerFactory());
         return controlFactories;
     }
 }

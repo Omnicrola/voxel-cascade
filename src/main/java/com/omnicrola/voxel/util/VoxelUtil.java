@@ -29,4 +29,13 @@ public class VoxelUtil {
             System.out.println(control.getClass().getSimpleName());
         }
     }
+
+    public static float floatData(Spatial spatial, String key) {
+        Float value = spatial.getUserData(key);
+        if (value == null) {
+            return 0;
+        } else {
+            return value.floatValue();
+        }
+    }
 }
