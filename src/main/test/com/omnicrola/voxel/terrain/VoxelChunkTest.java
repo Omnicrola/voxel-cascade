@@ -2,6 +2,7 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import junit.framework.TestCase;
@@ -32,8 +33,8 @@ public class VoxelChunkTest extends TestCase {
         int y = randInt(15);
         int z = randInt(15);
         Geometry geometry1 = mockGeometry();
-        voxelChunk.set(x, y, z).to(geometry1);
-        assertSame(geometry1, voxelChunk.get(x, y, z));
+        voxelChunk.set(new Vec3i(x, y, z)).to(geometry1);
+        assertSame(geometry1, voxelChunk.get(new Vec3i(x, y, z)));
     }
 
     @Test
@@ -44,8 +45,8 @@ public class VoxelChunkTest extends TestCase {
         int y = randInt(15) + 2 * GameConstants.CHUNK_SIZE;
         int z = randInt(15) + 1 * GameConstants.CHUNK_SIZE;
         Geometry geometry1 = mockGeometry();
-        voxelChunk.set(x, y, z).to(geometry1);
-        assertSame(geometry1, voxelChunk.get(x, y, z));
+        voxelChunk.set(new Vec3i(x, y, z)).to(geometry1);
+        assertSame(geometry1, voxelChunk.get(new Vec3i(x, y, z)));
     }
 
     @Test
@@ -53,7 +54,7 @@ public class VoxelChunkTest extends TestCase {
         VoxelChunk voxelChunk = new VoxelChunk(new ChunkId(0, 0, 0));
         assertFalse(voxelChunk.needsRebuilt());
 
-        voxelChunk.set(1, 1, 1).to(mockGeometry());
+        voxelChunk.set(new Vec3i(1, 1, 1)).to(mockGeometry());
         assertTrue(voxelChunk.needsRebuilt());
 
         voxelChunk.rebuild(new Node(), mock(IGamePhysics.class));

@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.main.VoxelException;
 import com.omnicrola.voxel.physics.VoxelPhysicsControl;
@@ -15,21 +16,18 @@ import com.omnicrola.voxel.settings.GameConstants;
 public class VoxelChunk extends Node {
 
     private class ChunkSetter implements IChunkSetter {
+        private Vec3i localize;
 
-        private final int x;
-        private final int y;
-        private final int z;
-
-        public ChunkSetter(int x, int y, int z) {
-            this.x = x;
-            this.y = y;
-            this.z = z;
+        public ChunkSetter(Vec3i localize) {
+            this.localize = localize;
         }
 
         public void to(Geometry geometry) {
-            voxels[x][y][z] = (byte) 1;
-            spatials[x][y][z] = geometry;
-            isDirty = true;
+            if (getVoxel(this.localize) == 0) {
+                setVoxel(this.localize, (byte) 1);
+                setSpatial(this.localize, geometry);
+                isDirty = true;
+            }
         }
     }
 
@@ -46,20 +44,15 @@ public class VoxelChunk extends Node {
         this.isDirty = false;
     }
 
-    public Geometry get(int x, int y, int z) {
-        x = this.chunkId.localizeX(x);
-        y = this.chunkId.localizeY(y);
-        z = this.chunkId.localizeZ(z);
-        return this.spatials[x][y][z];
+    public Geometry get(Vec3i location) {
+        Vec3i localize = this.chunkId.localize(location);
+        return this.spatials[localize.getX()][localize.getY()][localize.getZ()];
     }
 
-    public IChunkSetter set(int x, int y, int z) {
-        x = this.chunkId.localizeX(x);
-        y = this.chunkId.localizeY(y);
-        z = this.chunkId.localizeZ(z);
-        return new ChunkSetter(x, y, z);
+    public IChunkSetter set(Vec3i location) {
+        Vec3i localize = this.chunkId.localize(location);
+        return new ChunkSetter(localize);
     }
-
 
 
     @Override
@@ -72,9 +65,16 @@ public class VoxelChunk extends Node {
         throw new VoxelException("Cannot attach spatials directly to a terrain chunk");
     }
 
-    @Override
-    public void updateLogicalState(float tpf) {
+    private byte getVoxel(Vec3i index) {
+        return this.voxels[index.getX()][index.getY()][index.getZ()];
+    }
 
+    private void setVoxel(Vec3i index, byte value) {
+        this.voxels[index.getX()][index.getY()][index.getZ()] = value;
+    }
+
+    private void setSpatial(Vec3i index, Geometry geometry) {
+        this.spatials[index.getX()][index.getY()][index.getZ()] = geometry;
     }
 
     public boolean needsRebuilt() {
@@ -96,7 +96,7 @@ public class VoxelChunk extends Node {
                     Spatial voxel = this.spatials[x][y][z];
                     if (voxel != null) {
                         super.attachChild(voxel);
-                        Vector3f location = this.chunkId.globalize(x,y,z);
+                        Vector3f location = this.chunkId.globalize(x, y, z).asVector3f();
                         voxel.setLocalTranslation(location);
                         voxel.getControl(VoxelPhysicsControl.class).setPhysicsLocation(location);
                     }
@@ -110,5 +110,18 @@ public class VoxelChunk extends Node {
 
     public ChunkId getChunkId() {
         return this.chunkId;
+    }
+
+    public ChunkIterator iterator(VoxelChunkHandler voxelChunkHandler) {
+        return new ChunkIterator(voxelChunkHandler, this);
+    }
+
+    public byte getVoxelLocal(int x, int y, int z) {
+        return this.voxels[x][y][z];
+    }
+
+    public byte getVoxelGlobal(Vec3i global) {
+        Vec3i localize = this.chunkId.localize(global);
+        return getVoxel(localize);
     }
 }

@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.math.Vector3f;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
@@ -8,10 +8,10 @@ import com.omnicrola.voxel.settings.GameConstants;
  */
 public class ChunkId {
 
-    public static ChunkId fromGlobal(int x, int y, int z) {
-        x = alignToGrid(x);
-        y = alignToGrid(y);
-        z = alignToGrid(z);
+    public static ChunkId fromGlobal(Vec3i location) {
+        int x = alignToGrid(location.getX());
+        int y = alignToGrid(location.getY());
+        int z = alignToGrid(location.getZ());
         return new ChunkId(x, y, z);
     }
 
@@ -70,22 +70,17 @@ public class ChunkId {
         return z;
     }
 
-    public int localizeX(int x) {
-        return x - this.x * GameConstants.CHUNK_SIZE;
-    }
-
-    public int localizeY(int y) {
-        return y - this.y * GameConstants.CHUNK_SIZE;
-    }
-
-    public int localizeZ(int z) {
-        return z - this.z * GameConstants.CHUNK_SIZE;
-    }
-
-    public Vector3f globalize(int x, int y, int z) {
+    public Vec3i globalize(int x, int y, int z) {
         x = x + this.x * GameConstants.CHUNK_SIZE;
         y = y + this.y * GameConstants.CHUNK_SIZE;
         z = z + this.z * GameConstants.CHUNK_SIZE;
-        return new Vector3f(x, y, z);
+        return new Vec3i(x, y, z);
+    }
+
+    public Vec3i localize(Vec3i location) {
+        int x = location.getX() - this.x * GameConstants.CHUNK_SIZE;
+        int y = location.getY() - this.y * GameConstants.CHUNK_SIZE;
+        int z = location.getZ() - this.z * GameConstants.CHUNK_SIZE;
+        return new Vec3i(x, y, z);
     }
 }

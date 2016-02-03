@@ -14,23 +14,21 @@ import java.util.Map;
 public class VoxelChunkHandler {
 
     private final Map<ChunkId, VoxelChunk> chunks;
+    private VoxelChunkRebuilder voxelChunkRebuilder;
 
-    public VoxelChunkHandler() {
+    public VoxelChunkHandler(VoxelChunkRebuilder voxelChunkRebuilder) {
+        this.voxelChunkRebuilder = voxelChunkRebuilder;
         this.chunks = new HashMap<>();
     }
 
-    public void create(Geometry geometry, int x, int y, int z) {
-        ChunkId chunkId = ChunkId.fromGlobal(x, y, z);
+    public void create(Geometry geometry, Vec3i location) {
+        ChunkId chunkId = ChunkId.fromGlobal(location);
         VoxelChunk voxelChunk = findChunk(chunkId);
-        voxelChunk.set(x, y, z).to(geometry);
+        voxelChunk.set(location).to(geometry);
     }
 
-    public void create(Geometry voxel, Vec3i location) {
-        create(voxel, location.getX(), location.getY(), location.getZ());
-    }
-
-    public VoxelChunk getChunkContaining(int x, int y, int z) {
-        ChunkId chunkId = ChunkId.fromGlobal(x, y, z);
+    public VoxelChunk getChunkContaining(Vec3i location) {
+        ChunkId chunkId = ChunkId.fromGlobal(location);
         return this.chunks.get(chunkId);
     }
 
@@ -45,10 +43,13 @@ public class VoxelChunkHandler {
         this.chunks.values()
                 .stream()
                 .filter(c -> c.needsRebuilt())
-                .forEach(c -> c.rebuild(parentNode, gamePhysics));
+                .forEach(c -> {
+                    this.voxelChunkRebuilder.rebuild(c, this);
+                    c.rebuild(parentNode, gamePhysics);
+                });
     }
 
-    public void flagAllChunksAsDirty() {
+    public void flagAllChunksForRebuild() {
         this.chunks.values().forEach(c -> c.flagForRebuild());
     }
 }

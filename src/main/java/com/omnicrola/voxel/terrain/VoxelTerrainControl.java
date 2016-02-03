@@ -80,7 +80,7 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
 
     public void forceRebuild() {
         System.out.println("rebuilding terrain");
-        this.voxelChunkHandler.flagAllChunksAsDirty();
+        this.voxelChunkHandler.flagAllChunksForRebuild();
     }
 
     public void createVoxel(Geometry voxel, Vec3i location) {
