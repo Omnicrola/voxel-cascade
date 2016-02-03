@@ -7,19 +7,15 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.jme.wrappers.impl.JmePhysicsWrapper;
 
 /**
  * Created by omnic on 1/31/2016.
  */
 public class VoxelTerrainControl extends AbstractPhysicsControl {
     private VoxelChunkHandler voxelChunkHandler;
-    private Node parentNode;
-    private JmePhysicsWrapper physicsSpace;
 
     public VoxelTerrainControl(VoxelChunkHandler voxelChunkHandler) {
         this.voxelChunkHandler = voxelChunkHandler;
@@ -47,12 +43,12 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
 
     @Override
     protected void addPhysics(PhysicsSpace space) {
-        this.physicsSpace = new JmePhysicsWrapper(space);
+
     }
 
     @Override
     protected void removePhysics(PhysicsSpace space) {
-        this.physicsSpace = null;
+
     }
 
     @Override
@@ -61,16 +57,8 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
     }
 
     @Override
-    public void setSpatial(Spatial spatial) {
-        super.setSpatial(spatial);
-        this.parentNode = (Node) spatial;
-    }
-
-    @Override
     public void update(float tpf) {
-        if (this.physicsSpace != null) {
-            this.voxelChunkHandler.update(this.parentNode, this.physicsSpace);
-        }
+        this.voxelChunkHandler.update();
     }
 
     @Override
@@ -79,7 +67,6 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
     }
 
     public void forceRebuild() {
-        System.out.println("rebuilding terrain");
         this.voxelChunkHandler.flagAllChunksForRebuild();
     }
 

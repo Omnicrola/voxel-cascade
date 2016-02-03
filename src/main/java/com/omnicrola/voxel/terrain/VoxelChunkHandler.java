@@ -1,9 +1,8 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.material.Material;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -15,9 +14,11 @@ public class VoxelChunkHandler {
 
     private final Map<ChunkId, VoxelChunk> chunks;
     private VoxelChunkRebuilder voxelChunkRebuilder;
+    private Material chunkMaterial;
 
-    public VoxelChunkHandler(VoxelChunkRebuilder voxelChunkRebuilder) {
+    public VoxelChunkHandler(VoxelChunkRebuilder voxelChunkRebuilder, Material chunkMaterial) {
         this.voxelChunkRebuilder = voxelChunkRebuilder;
+        this.chunkMaterial = chunkMaterial;
         this.chunks = new HashMap<>();
     }
 
@@ -25,28 +26,38 @@ public class VoxelChunkHandler {
         ChunkId chunkId = ChunkId.fromGlobal(location);
         VoxelChunk voxelChunk = findChunk(chunkId);
         voxelChunk.set(location).to(geometry);
-        System.out.println("create: " + location);
     }
 
-    public VoxelChunk getChunkContaining(Vec3i location) {
+    public void set(Vec3i location, IVoxelType voxelType) {
         ChunkId chunkId = ChunkId.fromGlobal(location);
-        return this.chunks.get(chunkId);
+        VoxelChunk chunk = findChunk(chunkId);
+        chunk.set(location).to(voxelType);
+    }
+
+    public VoxelChunk getChunkContaining(Vec3i globalLocation) {
+        ChunkId chunkId = ChunkId.fromGlobal(globalLocation);
+        VoxelChunk voxelChunk = this.chunks.get(chunkId);
+        if (voxelChunk == null) {
+            return EmptyVoxelChunk.NO_OP;
+        }
+        return voxelChunk;
     }
 
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
-            this.chunks.put(chunkId, new VoxelChunk(chunkId));
+            VoxelChunk chunk = new VoxelChunk(chunkId);
+            chunk.setMaterial(this.chunkMaterial);
+            this.chunks.put(chunkId, chunk);
         }
         return this.chunks.get(chunkId);
     }
 
-    public void update(Node parentNode, IGamePhysics gamePhysics) {
+    public void update() {
         this.chunks.values()
                 .stream()
                 .filter(c -> c.needsRebuilt())
                 .forEach(c -> {
                     this.voxelChunkRebuilder.rebuild(c, this);
-                    c.rebuild(parentNode, gamePhysics);
                 });
     }
 

@@ -1,19 +1,13 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
-import com.omnicrola.voxel.main.VoxelException;
-import com.omnicrola.voxel.physics.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
  * Created by omnic on 1/31/2016.
  */
-public class VoxelChunk extends Node {
+public class VoxelChunk extends Geometry {
 
     private class ChunkSetter implements IChunkSetter {
         private Vec3i localize;
@@ -29,6 +23,15 @@ public class VoxelChunk extends Node {
                 isDirty = true;
             }
         }
+
+        @Override
+        public void to(IVoxelType voxelType) {
+            byte voxelValue = voxelType.uniqueId();
+            if (getVoxel(this.localize) != voxelValue) {
+                setVoxel(this.localize, voxelValue);
+                isDirty = true;
+            }
+        }
     }
 
     private final byte[][][] voxels;
@@ -37,7 +40,7 @@ public class VoxelChunk extends Node {
     private boolean isDirty;
 
     public VoxelChunk(ChunkId chunkId) {
-        setName("Chunk " + chunkId);
+        setName("Chunk ID:" + chunkId);
         this.chunkId = chunkId;
         this.voxels = new byte[GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE];
         this.spatials = new Geometry[GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE];
@@ -52,16 +55,6 @@ public class VoxelChunk extends Node {
     public IChunkSetter set(Vec3i location) {
         Vec3i localize = this.chunkId.localize(location);
         return new ChunkSetter(localize);
-    }
-
-    @Override
-    public int attachChild(Spatial child) {
-        throw new VoxelException("Cannot attach spatials directly to a terrain chunk");
-    }
-
-    @Override
-    public int attachChildAt(Spatial child, int index) {
-        throw new VoxelException("Cannot attach spatials directly to a terrain chunk");
     }
 
     private byte getVoxel(Vec3i index) {
@@ -84,26 +77,7 @@ public class VoxelChunk extends Node {
         this.isDirty = true;
     }
 
-    public void rebuild(Node parentNode, IGamePhysics physicsSpace) {
-        parentNode.detachChild(this);
-        physicsSpace.remove(this);
-        super.detachAllChildren();
-
-        for (int x = 0; x < this.spatials.length; x++) {
-            for (int y = 0; y < this.spatials[x].length; y++) {
-                for (int z = 0; z < this.spatials[x][y].length; z++) {
-                    Spatial voxel = this.spatials[x][y][z];
-                    if (voxel != null) {
-                        super.attachChild(voxel);
-                        Vector3f location = this.chunkId.globalize(x, y, z).asVector3f();
-                        voxel.setLocalTranslation(location);
-                        voxel.getControl(VoxelPhysicsControl.class).setPhysicsLocation(location);
-                    }
-                }
-            }
-        }
-        parentNode.attachChild(this);
-        physicsSpace.add(this);
+    public void clearRebuildFlag() {
         this.isDirty = false;
     }
 
@@ -116,11 +90,7 @@ public class VoxelChunk extends Node {
     }
 
     public byte getVoxelLocal(int x, int y, int z) {
-        try {
-            return this.voxels[x][y][z];
-        } catch (ArrayIndexOutOfBoundsException e) {
-            throw e;
-        }
+        return this.voxels[x][y][z];
     }
 
     public byte getVoxelGlobal(Vec3i global) {
@@ -128,3 +98,4 @@ public class VoxelChunk extends Node {
         return getVoxel(localize);
     }
 }
+

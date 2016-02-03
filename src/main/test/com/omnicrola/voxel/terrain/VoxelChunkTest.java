@@ -1,9 +1,7 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -57,7 +55,7 @@ public class VoxelChunkTest extends TestCase {
         voxelChunk.set(new Vec3i(1, 1, 1)).to(mockGeometry());
         assertTrue(voxelChunk.needsRebuilt());
 
-        voxelChunk.rebuild(new Node(), mock(IGamePhysics.class));
+        voxelChunk.clearRebuildFlag();
         assertFalse(voxelChunk.needsRebuilt());
     }
 

@@ -7,4 +7,6 @@ import com.jme3.scene.Geometry;
  */
 public interface IChunkSetter {
     void to(Geometry geometry);
+
+    void to(IVoxelType voxelType);
 }

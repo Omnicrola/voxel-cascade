@@ -11,7 +11,6 @@ import java.util.BitSet;
 public class VoxelFaceParser {
     private static final int CUBIC_CHUNK_SIZE = GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE;
 
-
     public VoxelFaceParser() {
     }
 
@@ -19,16 +18,19 @@ public class VoxelFaceParser {
         BitSet activeFaces = new BitSet(CUBIC_CHUNK_SIZE);
         ChunkIterator iterator = chunk.iterator(voxelChunkHandler);
         int index = 0;
+        int found = 0;
         while (iterator.hasNext()) {
             iterator.advance();
             byte value = iterator.value();
             byte neighbor = iterator.neighborValue(normalDirection);
             if (isSolid(value) && !isSolid(neighbor)) {
                 activeFaces.set(index, true);
+                found++;
             } else {
                 activeFaces.set(index, false);
             }
         }
+        System.out.println("found " + found + " faces");
         return activeFaces;
     }
 

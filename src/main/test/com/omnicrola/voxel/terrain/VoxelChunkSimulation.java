@@ -8,6 +8,7 @@ import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import com.omnicrola.util.Vec3i;
@@ -25,6 +26,7 @@ public class VoxelChunkSimulation extends VoxelGameEngine {
     public static final String RELOAD_TERRAIN = "ReloadTerrain";
     public static final String PRINT_GRAPH = "PrintGraph";
     private JmeApplicationWrapper jmeApplicationWrapper;
+    private Node terrainNode;
 
     private class DebugSceneGraphListener implements ActionListener {
 
@@ -38,26 +40,17 @@ public class VoxelChunkSimulation extends VoxelGameEngine {
 
     private class ReloadTerrainListener implements ActionListener {
 
-        private final VoxelTerrainGenerator voxelTerrainGenerator;
-        private final LevelDefinition levelData;
-        private Node terrainNode;
-
-        public ReloadTerrainListener(VoxelTerrainGenerator voxelTerrainGenerator, LevelDefinition levelData) {
-            this.voxelTerrainGenerator = voxelTerrainGenerator;
-            this.levelData = levelData;
-        }
-
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
-            reload();
+            if (!isPressed)
+                reload();
         }
 
         private void reload() {
-            if (this.terrainNode != null) {
-                jmeApplicationWrapper.world().detatchTerrain(this.terrainNode);
+            System.out.println("rebuilding...");
+            if (terrainNode != null) {
+                terrainNode.getControl(VoxelTerrainControl.class).forceRebuild();
             }
-            this.terrainNode = this.voxelTerrainGenerator.load(levelData);
-            jmeApplicationWrapper.world().attachTerrain(this.terrainNode);
         }
     }
 
@@ -95,9 +88,15 @@ public class VoxelChunkSimulation extends VoxelGameEngine {
             this.terrainOffset = new Vec3i();
             this.terrainSize = new Vec3i(16, 16, 16);
         }};
-        ReloadTerrainListener reloadTerrainListener = new ReloadTerrainListener(voxelTerrainGenerator, levelData);
+
+        terrainNode = voxelTerrainGenerator.load(levelData);
+        jmeApplicationWrapper.world().attachTerrain(terrainNode);
+
+        ReloadTerrainListener reloadTerrainListener = new ReloadTerrainListener();
+
         this.inputManager.addMapping(RELOAD_TERRAIN, new KeyTrigger(KeyInput.KEY_2));
         this.inputManager.addListener(reloadTerrainListener, RELOAD_TERRAIN);
+
         this.inputManager.addMapping(PRINT_GRAPH, new KeyTrigger(KeyInput.KEY_1));
         this.inputManager.addListener(new DebugSceneGraphListener(), PRINT_GRAPH);
 
@@ -108,6 +107,10 @@ public class VoxelChunkSimulation extends VoxelGameEngine {
         ambientLight.setColor(ColorRGBA.White.mult(0.3f));
         jmeApplicationWrapper.world().addLight(sun);
         jmeApplicationWrapper.world().addLight(ambientLight);
+
+        Geometry spacer = jmeApplicationWrapper.world().build().terrainVoxel(ColorRGBA.randomColor());
+        spacer.setName("spacer");
+        this.rootNode.attachChild(spacer);
 
         reloadTerrainListener.reload();
     }

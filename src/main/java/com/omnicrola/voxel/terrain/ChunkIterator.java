@@ -22,7 +22,7 @@ public class ChunkIterator {
     }
 
     public boolean hasNext() {
-        return isInBounds(this.x, this.y, this.z);
+        return this.x < GameConstants.CHUNK_SIZE - 1;
     }
 
     public byte value() {
@@ -42,24 +42,20 @@ public class ChunkIterator {
     }
 
     private boolean isInBounds(int nX, int nY, int nZ) {
-        int chunkSize = GameConstants.CHUNK_SIZE - 1;
+        int chunkSize = GameConstants.CHUNK_SIZE;
         return nX < chunkSize &&
                 nY < chunkSize &&
                 nZ < chunkSize;
     }
 
     public void advance() {
-        if (this.z < GameConstants.CHUNK_SIZE - 1) {
-            this.z++;
-        } else {
+        this.z++;
+        if (this.z >= GameConstants.CHUNK_SIZE) {
             this.z = 0;
-            if (this.y < GameConstants.CHUNK_SIZE - 1) {
-                this.y++;
-            } else {
+            this.y++;
+            if (this.y >= GameConstants.CHUNK_SIZE) {
                 this.y = 0;
-                if (this.x < GameConstants.CHUNK_SIZE - 1) {
-                    this.x++;
-                }
+                this.x++;
             }
         }
     }

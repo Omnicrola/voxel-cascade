@@ -141,14 +141,16 @@ public class WorldBuilder implements IWorldBuilder {
 
     @Override
     public Material material(MaterialToken materialToken) {
-        Texture texture = getTexture(materialToken.texture());
-        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
-        material.setTexture("DiffuseMap", texture);
+        Material material;
+        if (materialToken.color() != null) {
+            material = createMaterial(materialToken.color());
+        } else {
+            material = createMaterial(materialToken.texture());
+        }
         if (materialToken.isTransparent()) {
             material.setBoolean("UseAlpha", true);
             material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         }
-
         return material;
     }
 
