@@ -24,7 +24,7 @@ public class VoxelChunkHandlerTest extends TestCase {
     public void testCreateCreatesAChunkWithTheCorrectId() throws Exception {
         Geometry mockGeometry = mockGeometry();
 
-        VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(mockChunkRebuilder, null);
+        VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(mockChunkRebuilder);
         assertNull(voxelChunkHandler.getChunkContaining(new Vec3i(1, 1, 1)));
 
         voxelChunkHandler.create(mockGeometry, new Vec3i(2, 3, 5));

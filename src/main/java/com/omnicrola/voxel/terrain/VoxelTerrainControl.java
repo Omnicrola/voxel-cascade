@@ -7,6 +7,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.omnicrola.util.Vec3i;
@@ -49,6 +50,12 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
     @Override
     protected void removePhysics(PhysicsSpace space) {
 
+    }
+
+    @Override
+    public void setSpatial(Spatial spatial) {
+        super.setSpatial(spatial);
+        this.voxelChunkHandler.setParentNode((Node) spatial);
     }
 
     @Override

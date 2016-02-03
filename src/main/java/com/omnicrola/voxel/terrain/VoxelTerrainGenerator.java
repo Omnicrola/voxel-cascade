@@ -22,8 +22,8 @@ public class VoxelTerrainGenerator {
     public Node load(LevelDefinition levelData) {
         Node terrainRoot = new Node("Terrain");
         Material chunkMaterial = this.gameContainer.world().build().material(MaterialToken.TERRAIN_VOXEL);
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(this.gameContainer, new VoxelFaceParser(), new VoxelFaceCreator());
-        VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder, chunkMaterial);
+        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(this.gameContainer, chunkMaterial);
+        VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
 
         Vec3iRead size = levelData.getTerrainSize();
         for (int x = 0; x < size.getX(); x++) {
@@ -37,5 +37,4 @@ public class VoxelTerrainGenerator {
         terrainRoot.addControl(new VoxelTerrainControl(voxelChunkHandler));
         return terrainRoot;
     }
-
 }

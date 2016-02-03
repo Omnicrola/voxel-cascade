@@ -1,13 +1,41 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
  * Created by omnic on 1/31/2016.
  */
-public class VoxelChunk extends Geometry {
+public class VoxelChunk extends Node {
+    public static final int SIDE_SOUTH = 0;
+    public static final int SIDE_NORTH = 1;
+    public static final int SIDE_EAST = 2;
+    public static final int SIDE_WEST = 3;
+    public static final int SIDE_TOP = 4;
+    public static final int SIDE_BOTTOM = 5;
+
+    private class VoxelFace implements IVoxelFace {
+
+        private final byte type;
+        private final int side;
+
+        public VoxelFace(byte type, int side) {
+            this.type = type;
+            this.side = side;
+        }
+
+        @Override
+        public boolean transparent() {
+            return false;
+        }
+
+        @Override
+        public int type() {
+            return this.type;
+        }
+    }
 
     private class ChunkSetter implements IChunkSetter {
         private Vec3i localize;
@@ -96,6 +124,10 @@ public class VoxelChunk extends Geometry {
     public byte getVoxelGlobal(Vec3i global) {
         Vec3i localize = this.chunkId.localize(global);
         return getVoxel(localize);
+    }
+
+    public IVoxelFace getVoxelFace(int x, int y, int z, int side) {
+        return new VoxelFace(this.voxels[x][y][z], side);
     }
 }
 
