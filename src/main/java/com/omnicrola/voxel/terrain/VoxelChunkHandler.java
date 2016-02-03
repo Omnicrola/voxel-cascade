@@ -25,6 +25,7 @@ public class VoxelChunkHandler {
         ChunkId chunkId = ChunkId.fromGlobal(location);
         VoxelChunk voxelChunk = findChunk(chunkId);
         voxelChunk.set(location).to(geometry);
+        System.out.println("create: " + location);
     }
 
     public VoxelChunk getChunkContaining(Vec3i location) {

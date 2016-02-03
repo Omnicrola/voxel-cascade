@@ -54,7 +54,6 @@ public class VoxelChunk extends Node {
         return new ChunkSetter(localize);
     }
 
-
     @Override
     public int attachChild(Spatial child) {
         throw new VoxelException("Cannot attach spatials directly to a terrain chunk");
@@ -117,7 +116,11 @@ public class VoxelChunk extends Node {
     }
 
     public byte getVoxelLocal(int x, int y, int z) {
-        return this.voxels[x][y][z];
+        try {
+            return this.voxels[x][y][z];
+        } catch (ArrayIndexOutOfBoundsException e) {
+            throw e;
+        }
     }
 
     public byte getVoxelGlobal(Vec3i global) {

@@ -36,7 +36,7 @@ public class VoxelTerrainGenerator {
         for (int x = -xSize; x < xSize; x++) {
             for (int y = -ySize; y < ySize; y++) {
                 for (int z = -zSize; z < zSize; z++) {
-                    Geometry cube = createVoxelSpatial(gameWorld, geometryBuilder, offset, x, y, z);
+                    Geometry cube = createVoxelSpatial(geometryBuilder, x, y, z);
                     voxelChunkHandler.create(cube, new Vec3i(x, y, z));
                 }
             }
@@ -47,7 +47,7 @@ public class VoxelTerrainGenerator {
         return terrainRoot;
     }
 
-    private Geometry createVoxelSpatial(IGameWorld gameWorld, IWorldBuilder geometryBuilder, Vec3iRead offset, int x, int y, int z) {
+    private Geometry createVoxelSpatial(IWorldBuilder geometryBuilder, int x, int y, int z) {
         Geometry voxel = geometryBuilder.terrainVoxel(ColorRGBA.randomColor());
         voxel.setName("voxel " + x + "," + y + "," + z);
         return voxel;

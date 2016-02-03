@@ -18,7 +18,7 @@ import de.lessvoid.nifty.Nifty;
  */
 public class VoxelGameEngine extends SimpleApplication {
 
-    private BulletAppState bulletAppState;
+    protected BulletAppState bulletAppState;
     private Nifty niftyGui;
 
     public VoxelGameEngine(BulletAppState bulletAppState) {
