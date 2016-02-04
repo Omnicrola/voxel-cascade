@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.util.Vec3iRead;
@@ -21,18 +22,16 @@ public class VoxelTerrainGenerator {
 
     public Node load(LevelDefinition levelData) {
         Node terrainRoot = new Node("Terrain");
-        QuadFactory quadFactory = new QuadFactory(new MaterialRepository(this.gameContainer.getAssetManager()));
+        AssetManager assetManager = this.gameContainer.getAssetManager();
+        QuadFactory quadFactory = new QuadFactory(new MaterialRepository(assetManager));
         VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory);
         VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
 
         Vec3iRead size = levelData.getTerrainSize();
-        int halfX = size.getX() / 2;
-        int halfY = size.getY() / 2;
-        int halfZ = size.getZ() / 2;
-        for (int x = -halfX; x <= halfX; x++) {
-            for (int y = -halfY; y <= halfY; y++) {
-                for (int z = -halfZ; z <= halfZ; z++) {
-                    VoxelType type = (Math.random() < 0.95) ? VoxelType.BLUE : VoxelType.GREY;
+        for (int x = 0; x <= size.getX(); x++) {
+            for (int y = 0; y <= size.getY(); y++) {
+                for (int z = 0; z <= size.getZ(); z++) {
+                    VoxelType type = (Math.random() < 0.97) ? VoxelType.BLUE : VoxelType.GREY;
                     voxelChunkHandler.set(new Vec3i(x, y, z), type);
                 }
             }

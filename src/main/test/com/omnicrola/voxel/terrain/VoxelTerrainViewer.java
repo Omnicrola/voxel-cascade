@@ -102,7 +102,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(jmeApplicationWrapper);
         LevelDefinition levelData = new LevelDefinition() {{
             this.terrainOffset = new Vec3i();
-            this.terrainSize = new Vec3i(4,4,4);
+            this.terrainSize = new Vec3i(16,16,16);
         }};
 
         terrainNode = voxelTerrainGenerator.load(levelData);
