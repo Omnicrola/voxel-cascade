@@ -1,4 +1,6 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.data;
+
+import com.omnicrola.voxel.terrain.IVoxelType;
 
 /**
  * Created by Eric on 2/3/2016.

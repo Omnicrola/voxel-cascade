@@ -1,8 +1,9 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.IVoxelType;
 
 import java.util.Arrays;
 
@@ -17,22 +18,6 @@ public class VoxelChunk extends Node {
     public static final int SIDE_Y_POS = 4;
     public static final int SIDE_Y_NEG = 5;
 
-    private class ChunkSetter implements IChunkSetter {
-        private Vec3i localize;
-
-        public ChunkSetter(Vec3i localize) {
-            this.localize = localize;
-        }
-
-        @Override
-        public void to(IVoxelType voxelType) {
-            byte voxelValue = voxelType.uniqueId();
-            if (getVoxel(this.localize) != voxelValue) {
-                setVoxel(this.localize, voxelValue);
-                isDirty = true;
-            }
-        }
-    }
 
     private final byte[][][] voxels;
     private ChunkId chunkId;
@@ -45,9 +30,9 @@ public class VoxelChunk extends Node {
         this.isDirty = false;
     }
 
-    public IChunkSetter set(Vec3i location) {
+    public void set(Vec3i location, IVoxelType type) {
         Vec3i localize = this.chunkId.localize(location);
-        return new ChunkSetter(localize);
+        setVoxel(localize, type.uniqueId());
     }
 
     private byte getVoxel(Vec3i index) {

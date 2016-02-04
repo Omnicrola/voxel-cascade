@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;

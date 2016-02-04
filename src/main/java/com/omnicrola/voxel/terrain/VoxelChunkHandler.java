@@ -2,6 +2,9 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.terrain.data.ChunkId;
+import com.omnicrola.voxel.terrain.data.EmptyVoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -23,7 +26,7 @@ public class VoxelChunkHandler {
     public void set(Vec3i location, IVoxelType voxelType) {
         ChunkId chunkId = ChunkId.fromGlobal(location);
         VoxelChunk chunk = findChunk(chunkId);
-        chunk.set(location).to(voxelType);
+        chunk.set(location, voxelType);
     }
 
     public VoxelChunk getChunkContaining(Vec3i globalLocation) {

@@ -2,6 +2,8 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelFace;
 
 public class VoxelChunkRebuilder {
 

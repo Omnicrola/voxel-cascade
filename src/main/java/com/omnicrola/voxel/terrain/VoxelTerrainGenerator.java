@@ -6,6 +6,7 @@ import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
  * Created by omnic on 1/16/2016.

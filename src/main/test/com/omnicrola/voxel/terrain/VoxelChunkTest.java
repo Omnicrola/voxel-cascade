@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.terrain;
 
+import com.omnicrola.voxel.terrain.data.ChunkId;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import junit.framework.TestCase;
 import org.junit.Test;
 import org.junit.runner.RunWith;

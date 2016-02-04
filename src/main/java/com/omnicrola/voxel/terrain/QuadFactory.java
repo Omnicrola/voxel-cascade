@@ -8,6 +8,8 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 import com.omnicrola.voxel.engine.MaterialRepository;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelFace;
 
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;

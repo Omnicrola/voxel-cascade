@@ -1,6 +1,7 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.math.ColorRGBA;
+import com.omnicrola.voxel.terrain.IVoxelType;
 
 /**
  * Created by omnic on 2/2/2016.
