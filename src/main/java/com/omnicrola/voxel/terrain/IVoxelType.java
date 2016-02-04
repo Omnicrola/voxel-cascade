@@ -5,4 +5,6 @@ package com.omnicrola.voxel.terrain;
  */
 public interface IVoxelType {
     public byte uniqueId();
+
+    String texture();
 }

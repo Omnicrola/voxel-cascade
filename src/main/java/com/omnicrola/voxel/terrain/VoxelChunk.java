@@ -5,6 +5,8 @@ import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
 
+import java.util.Arrays;
+
 /**
  * Created by omnic on 1/31/2016.
  */
@@ -15,27 +17,6 @@ public class VoxelChunk extends Node {
     public static final int SIDE_WEST = 3;
     public static final int SIDE_TOP = 4;
     public static final int SIDE_BOTTOM = 5;
-
-    private class VoxelFace implements IVoxelFace {
-
-        private final byte type;
-        private final int side;
-
-        public VoxelFace(byte type, int side) {
-            this.type = type;
-            this.side = side;
-        }
-
-        @Override
-        public boolean transparent() {
-            return false;
-        }
-
-        @Override
-        public int type() {
-            return this.type;
-        }
-    }
 
     private class ChunkSetter implements IChunkSetter {
         private Vec3i localize;
@@ -113,9 +94,6 @@ public class VoxelChunk extends Node {
         return this.chunkId;
     }
 
-    public ChunkIterator iterator(VoxelChunkHandler voxelChunkHandler) {
-        return new ChunkIterator(voxelChunkHandler, this);
-    }
 
     public byte getVoxelLocal(int x, int y, int z) {
         return this.voxels[x][y][z];
@@ -126,8 +104,12 @@ public class VoxelChunk extends Node {
         return getVoxel(localize);
     }
 
-    public IVoxelFace getVoxelFace(int x, int y, int z, int side) {
-        return new VoxelFace(this.voxels[x][y][z], side);
+    public VoxelFace getVoxelFace(int x, int y, int z, int side) {
+        return new VoxelFace(getType(this.voxels[x][y][z]), side);
+    }
+
+    private IVoxelType getType(byte type) {
+        return Arrays.asList(VoxelType.values()).stream().filter(t -> t.uniqueId() == type).findFirst().get();
     }
 }
 

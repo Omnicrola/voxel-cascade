@@ -18,4 +18,7 @@ public class GameConstants {
     public static final byte TERRAIN_TYPE_1 = 1;
     public static final float VOXEL_SIZE = 0.5f;
     public static final int CHUNK_SIZE_CUBED = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
+    
+    public static final String DIR_TEXTURES = "Textures/";
+    public static final String DIR_MODELS = "Models/";
 }

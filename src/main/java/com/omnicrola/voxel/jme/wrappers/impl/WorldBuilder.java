@@ -155,7 +155,7 @@ public class WorldBuilder implements IWorldBuilder {
     }
 
     private Texture getTexture(String texture) {
-        return this.assetManager.loadTexture("Textures/" + texture);
+        return this.assetManager.loadTexture(GameConstants.DIR_TEXTURES + texture);
     }
 
     private Spatial getModel(String modelName) {
@@ -163,7 +163,7 @@ public class WorldBuilder implements IWorldBuilder {
             Box box = new Box(0.4f, 0.4f, 0.4f);
             return new Geometry("cube", box);
         }
-        return this.assetManager.loadModel("Models/" + modelName);
+        return this.assetManager.loadModel(GameConstants.DIR_MODELS + modelName);
     }
 
     private Material createMaterial(String textureName) {

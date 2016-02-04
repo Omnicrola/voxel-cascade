@@ -1,11 +1,7 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Mesh;
-import com.jme3.scene.VertexBuffer;
-import com.jme3.util.BufferUtils;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
 
@@ -16,12 +12,14 @@ public class VoxelChunkRebuilder {
 
     private static final int CHUNK_WIDTH = GameConstants.CHUNK_SIZE;
     private static final int CHUNK_HEIGHT = GameConstants.CHUNK_SIZE;
-    private static final float VOXEL_SIZE = 1.0f;
+    public static final float VOXEL_SIZE = 1.0f;
 
     private IGameContainer gameContainer;
+    private QuadFactory quadFactory;
 
-    public VoxelChunkRebuilder(IGameContainer gameContainer, Material chunkMaterial) {
+    public VoxelChunkRebuilder(IGameContainer gameContainer, QuadFactory quadFactory) {
         this.gameContainer = gameContainer;
+        this.quadFactory = quadFactory;
     }
 
     public void rebuild(VoxelChunk chunk) {
@@ -34,8 +32,8 @@ public class VoxelChunkRebuilder {
         final int[] du = new int[]{0, 0, 0};
         final int[] dv = new int[]{0, 0, 0};
 
-        final IVoxelFace[] mask = new IVoxelFace[GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE];
-        IVoxelFace voxelFace, voxelFace1;
+        final VoxelFace[] mask = new VoxelFace[GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE];
+        VoxelFace voxelFace, voxelFace1;
 
         for (boolean backFace = true, b = false; b != backFace; backFace = backFace && b, b = !b) {
 
@@ -170,12 +168,10 @@ public class VoxelChunkRebuilder {
                                      * all the attributes of the face - which allows for variables to be passed to shaders - for
                                      * example lighting values used to create ambient occlusion.
                                      */
-                                    Geometry quad = quad(new Vector3f(x[0], x[1], x[2]),
+                                    Geometry quad = this.quadFactory.build(new Vector3f(x[0], x[1], x[2]),
                                             new Vector3f(x[0] + du[0], x[1] + du[1], x[2] + du[2]),
                                             new Vector3f(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]),
                                             new Vector3f(x[0] + dv[0], x[1] + dv[1], x[2] + dv[2]),
-                                            w,
-                                            h,
                                             mask[n],
                                             backFace);
                                     chunk.attachChild(quad);
@@ -209,72 +205,5 @@ public class VoxelChunkRebuilder {
         chunk.clearRebuildFlag();
     }
 
-    private Geometry quad(final Vector3f bottomLeft,
-                          final Vector3f topLeft,
-                          final Vector3f topRight,
-                          final Vector3f bottomRight,
-                          final int width,
-                          final int height,
-                          final IVoxelFace voxel,
-                          final boolean backFace) {
 
-        final Vector3f[] vertices = new Vector3f[4];
-
-        vertices[2] = topLeft.multLocal(VOXEL_SIZE);
-        vertices[3] = topRight.multLocal(VOXEL_SIZE);
-        vertices[0] = bottomLeft.multLocal(VOXEL_SIZE);
-        vertices[1] = bottomRight.multLocal(VOXEL_SIZE);
-
-        final int[] indexes = backFace ? new int[]{2, 0, 1, 1, 3, 2} : new int[]{2, 3, 1, 1, 0, 2};
-
-        final float[] colorArray = new float[4 * 4];
-
-        for (int i = 0; i < colorArray.length; i += 4) {
-
-            /*
-             * Here I set different colors for quads depending on the "type" attribute, just
-             * so that the different groups of voxels can be clearly seen.
-             *
-             */
-            if (voxel.type() == 1) {
-
-                colorArray[i] = 1.0f;
-                colorArray[i + 1] = 0.0f;
-                colorArray[i + 2] = 0.0f;
-                colorArray[i + 3] = 1.0f;
-            } else if (voxel.type() == 2) {
-
-                colorArray[i] = 0.0f;
-                colorArray[i + 1] = 1.0f;
-                colorArray[i + 2] = 0.0f;
-                colorArray[i + 3] = 1.0f;
-            } else {
-
-                colorArray[i] = 0.0f;
-                colorArray[i + 1] = 0.0f;
-                colorArray[i + 2] = 1.0f;
-                colorArray[i + 3] = 1.0f;
-            }
-        }
-
-        Mesh mesh = new Mesh();
-
-        mesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
-        mesh.setBuffer(VertexBuffer.Type.Color, 4, colorArray);
-        mesh.setBuffer(VertexBuffer.Type.Index, 3, BufferUtils.createIntBuffer(indexes));
-        mesh.updateBound();
-
-        Geometry geometry = new Geometry("ColoredMesh", mesh);
-        Material mat = new Material(this.gameContainer.getAssetManager(), "Common/MatDefs/Misc/Unshaded.j3md");
-        mat.setBoolean("VertexColor", true);
-
-        /*
-         * To see the actual rendered quads rather than the wireframe, just comment outthis line.
-         */
-        mat.getAdditionalRenderState().setWireframe(true);
-
-        geometry.setMaterial(mat);
-        System.out.println("new geometry");
-        return geometry;
-    }
 }
