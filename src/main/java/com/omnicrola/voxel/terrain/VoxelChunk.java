@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -11,26 +10,18 @@ import java.util.Arrays;
  * Created by omnic on 1/31/2016.
  */
 public class VoxelChunk extends Node {
-    public static final int SIDE_SOUTH = 0;
-    public static final int SIDE_NORTH = 1;
-    public static final int SIDE_EAST = 2;
-    public static final int SIDE_WEST = 3;
-    public static final int SIDE_TOP = 4;
-    public static final int SIDE_BOTTOM = 5;
+    public static final int SIDE_Z_NEG = 0;
+    public static final int SIDE_Z_POS = 1;
+    public static final int SIDE_X_POS = 2;
+    public static final int SIDE_X_NEG = 3;
+    public static final int SIDE_Y_POS = 4;
+    public static final int SIDE_Y_NEG = 5;
 
     private class ChunkSetter implements IChunkSetter {
         private Vec3i localize;
 
         public ChunkSetter(Vec3i localize) {
             this.localize = localize;
-        }
-
-        public void to(Geometry geometry) {
-            if (getVoxel(this.localize) == 0) {
-                setVoxel(this.localize, (byte) 1);
-                setSpatial(this.localize, geometry);
-                isDirty = true;
-            }
         }
 
         @Override
@@ -44,7 +35,6 @@ public class VoxelChunk extends Node {
     }
 
     private final byte[][][] voxels;
-    private final Geometry[][][] spatials;
     private ChunkId chunkId;
     private boolean isDirty;
 
@@ -52,13 +42,7 @@ public class VoxelChunk extends Node {
         setName("Chunk ID:" + chunkId);
         this.chunkId = chunkId;
         this.voxels = new byte[GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE];
-        this.spatials = new Geometry[GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE][GameConstants.CHUNK_SIZE];
         this.isDirty = false;
-    }
-
-    public Geometry get(Vec3i location) {
-        Vec3i localize = this.chunkId.localize(location);
-        return this.spatials[localize.getX()][localize.getY()][localize.getZ()];
     }
 
     public IChunkSetter set(Vec3i location) {
@@ -72,10 +56,6 @@ public class VoxelChunk extends Node {
 
     private void setVoxel(Vec3i index, byte value) {
         this.voxels[index.getX()][index.getY()][index.getZ()] = value;
-    }
-
-    private void setSpatial(Vec3i index, Geometry geometry) {
-        this.spatials[index.getX()][index.getY()][index.getZ()] = geometry;
     }
 
     public boolean needsRebuilt() {
@@ -93,7 +73,6 @@ public class VoxelChunk extends Node {
     public ChunkId getChunkId() {
         return this.chunkId;
     }
-
 
     public byte getVoxelLocal(int x, int y, int z) {
         return this.voxels[x][y][z];

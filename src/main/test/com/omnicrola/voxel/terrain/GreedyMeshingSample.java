@@ -72,9 +72,9 @@ public class GreedyMeshingSample extends SimpleApplication {
      *
      * Each face can contain vertex data - for example, int[] sunlight, in order to compare vertex attributes.
      *
-     * Since it's optimal to combine greedy meshing with face culling, I have included a "transparent" attribute here
-     * and the mesher skips transparent voxel faces.  The getVoxelData function below - or whatever it's equivalent
-     * might be when this algorithm is used in a real engine - could set the transparent attribute on faces based
+     * Since it's optimal to combine greedy meshing with face culling, I have included a "isTransparent" attribute here
+     * and the mesher skips isTransparent voxel faces.  The getVoxelData function below - or whatever it's equivalent
+     * might be when this algorithm is used in a real engine - could set the isTransparent attribute on faces based
      * on whether they should be visible or not.
      */
     class VoxelFace {
@@ -132,7 +132,7 @@ public class GreedyMeshingSample extends SimpleApplication {
                          * To see an example of face culling being used in combination with
                          * greedy meshing, you could set the trasparent attribute to true.
                          */
-//                        face.transparent = true;
+//                        face.isTransparent = true;
 
                     } else if (i == 0) {
 
@@ -294,7 +294,7 @@ public class GreedyMeshingSample extends SimpleApplication {
                                 }
 
                                 /*
-                                 * Here we check the "transparent" attribute in the VoxelFace class to ensure that we don't mesh
+                                 * Here we check the "isTransparent" attribute in the VoxelFace class to ensure that we don't mesh
                                  * any culled faces.
                                  */
                                 if (!mask[n].transparent) {

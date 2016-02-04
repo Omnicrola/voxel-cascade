@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.scene.Geometry;
 import com.omnicrola.util.Vec3i;
 
 /**
@@ -27,9 +26,6 @@ public class EmptyVoxelChunk extends VoxelChunk {
     @Override
     public IChunkSetter set(Vec3i location) {
         return new IChunkSetter() {
-            @Override
-            public void to(Geometry geometry) {
-            }
 
             @Override
             public void to(IVoxelType voxelType) {

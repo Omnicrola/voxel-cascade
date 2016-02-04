@@ -120,7 +120,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         this.inputManager.addListener(new DebugSceneGraphListener(), PRINT_GRAPH);
 
         DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White.mult(0.7f));
+        sun.setColor(ColorRGBA.White.mult(0.9f));
         sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setColor(ColorRGBA.White.mult(0.3f));

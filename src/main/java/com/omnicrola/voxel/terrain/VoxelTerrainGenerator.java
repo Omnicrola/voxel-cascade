@@ -21,7 +21,7 @@ public class VoxelTerrainGenerator {
     public Node load(LevelDefinition levelData) {
         Node terrainRoot = new Node("Terrain");
         QuadFactory quadFactory = new QuadFactory(new MaterialRepository(this.gameContainer.getAssetManager()));
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(this.gameContainer, quadFactory);
+        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory);
         VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
 
         Vec3iRead size = levelData.getTerrainSize();

@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 
@@ -19,12 +18,6 @@ public class VoxelChunkHandler {
     public VoxelChunkHandler(VoxelChunkRebuilder voxelChunkRebuilder) {
         this.voxelChunkRebuilder = voxelChunkRebuilder;
         this.chunks = new HashMap<>();
-    }
-
-    public void create(Geometry geometry, Vec3i location) {
-        ChunkId chunkId = ChunkId.fromGlobal(location);
-        VoxelChunk voxelChunk = findChunk(chunkId);
-        voxelChunk.set(location).to(geometry);
     }
 
     public void set(Vec3i location, IVoxelType voxelType) {

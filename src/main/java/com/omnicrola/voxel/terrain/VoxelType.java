@@ -1,18 +1,21 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.math.ColorRGBA;
+
 /**
  * Created by omnic on 2/2/2016.
  */
 public enum VoxelType implements IVoxelType {
-    EMPTY((byte) 0, "ghost.png"),
-    BLUE((byte) 1, "voxel-face-blue.png");
+    EMPTY((byte) 0, ColorRGBA.Black),
+    BLUE((byte) 1, ColorRGBA.Blue),
+    GREY((byte) 2, new ColorRGBA(0.7f, 0.7f, 0.7f, 1f));
 
     private byte value;
-    private String texture;
+    private ColorRGBA color;
 
-    VoxelType(byte value, String texture) {
+    VoxelType(byte value, ColorRGBA color) {
         this.value = value;
-        this.texture = texture;
+        this.color = color;
     }
 
     @Override
@@ -21,7 +24,7 @@ public enum VoxelType implements IVoxelType {
     }
 
     @Override
-    public String texture() {
-        return this.texture;
+    public ColorRGBA color() {
+        return this.color;
     }
 }
