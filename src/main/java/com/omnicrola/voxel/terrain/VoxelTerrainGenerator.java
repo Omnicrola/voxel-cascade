@@ -26,10 +26,13 @@ public class VoxelTerrainGenerator {
         VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
 
         Vec3iRead size = levelData.getTerrainSize();
-        for (int x = 0; x < size.getX(); x++) {
-            for (int y = 0; y < size.getY(); y++) {
-                for (int z = 0; z < size.getZ(); z++) {
-                    VoxelType type = (Math.random() < 0.95) ? VoxelType.BLUE : VoxelType.EMPTY;
+        int halfX = size.getX() / 2;
+        int halfY = size.getY() / 2;
+        int halfZ = size.getZ() / 2;
+        for (int x = -halfX; x <= halfX; x++) {
+            for (int y = -halfY; y <= halfY; y++) {
+                for (int z = -halfZ; z <= halfZ; z++) {
+                    VoxelType type = (Math.random() < 0.95) ? VoxelType.BLUE : VoxelType.GREY;
                     voxelChunkHandler.set(new Vec3i(x, y, z), type);
                 }
             }

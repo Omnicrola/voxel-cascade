@@ -41,6 +41,7 @@ public class VoxelChunkHandler {
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
             VoxelChunk chunk = new VoxelChunk(chunkId);
+            System.out.println("new chunk: " + chunkId);
             this.chunks.put(chunkId, chunk);
         }
         return this.chunks.get(chunkId);

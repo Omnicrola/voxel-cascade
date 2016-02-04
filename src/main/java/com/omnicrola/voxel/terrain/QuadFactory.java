@@ -68,7 +68,7 @@ public class QuadFactory {
 
     private Geometry createGeometry(VoxelFace voxel, Mesh mesh) {
         Geometry geometry = new Geometry("VoxelMesh", mesh);
-        Material material = this.materialRepository.getByType(voxel.type());
+        Material material = this.materialRepository.randomColor();
         geometry.setMaterial(material);
         return geometry;
     }
@@ -85,17 +85,17 @@ public class QuadFactory {
 
     private FloatBuffer createNormals(int side) {
         if (side == VoxelChunk.SIDE_Y_NEG) {
-            return createNormalBuffer(0, 1, 0);
-        } else if (side == VoxelChunk.SIDE_Y_POS) {
             return createNormalBuffer(0, -1, 0);
+        } else if (side == VoxelChunk.SIDE_Y_POS) {
+            return createNormalBuffer(0, 1, 0);
         } else if (side == VoxelChunk.SIDE_X_NEG) {
-            return createNormalBuffer(1, 0, 0);
-        } else if (side == VoxelChunk.SIDE_X_POS) {
             return createNormalBuffer(-1, 0, 0);
+        } else if (side == VoxelChunk.SIDE_X_POS) {
+            return createNormalBuffer(1, 0, 0);
         } else if (side == VoxelChunk.SIDE_Z_NEG) {
-            return createNormalBuffer(0, 0, 1);
-        } else if (side == VoxelChunk.SIDE_Z_POS) {
             return createNormalBuffer(0, 0, -1);
+        } else if (side == VoxelChunk.SIDE_Z_POS) {
+            return createNormalBuffer(0, 0, 1);
         }
         return null;
     }

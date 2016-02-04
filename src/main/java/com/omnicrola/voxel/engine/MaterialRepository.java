@@ -30,10 +30,19 @@ public class MaterialRepository {
 
     private void makeMaterial(IVoxelType type) {
         ColorRGBA color = type.color();
+        Material material = getMaterial(color);
+        this.materials.put(type, material);
+    }
+
+    private Material getMaterial(ColorRGBA color) {
         Material material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         material.setBoolean("UseMaterialColors", true);
         material.setColor("Ambient", color);
         material.setColor("Diffuse", color);
-        this.materials.put(type, material);
+        return material;
+    }
+
+    public Material randomColor() {
+        return getMaterial(ColorRGBA.randomColor());
     }
 }

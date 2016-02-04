@@ -102,7 +102,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(jmeApplicationWrapper);
         LevelDefinition levelData = new LevelDefinition() {{
             this.terrainOffset = new Vec3i();
-            this.terrainSize = new Vec3i(16, 16, 16);
+            this.terrainSize = new Vec3i(4,4,4);
         }};
 
         terrainNode = voxelTerrainGenerator.load(levelData);
@@ -120,8 +120,8 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         this.inputManager.addListener(new DebugSceneGraphListener(), PRINT_GRAPH);
 
         DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White.mult(0.9f));
-        sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
+        sun.setColor(ColorRGBA.White.mult(0.7f));
+        sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
         AmbientLight ambientLight = new AmbientLight();
         ambientLight.setColor(ColorRGBA.White.mult(0.3f));
         jmeApplicationWrapper.world().addLight(sun);
