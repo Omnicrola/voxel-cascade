@@ -65,4 +65,8 @@ public class WireframeProcessor implements SceneProcessor {
     public void toggleEnabled() {
         this.isEnabled = !this.isEnabled;
     }
+
+    public void setEnabled(boolean enabled) {
+        this.isEnabled = enabled;
+    }
 }

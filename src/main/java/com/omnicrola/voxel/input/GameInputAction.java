@@ -4,6 +4,7 @@ package com.omnicrola.voxel.input;
  * Created by omnic on 1/15/2016.
  */
 public enum GameInputAction implements IActionCode {
+    TOGGLE_DEBUG,
     DEBUG_RELOAD_LEVEL,
     DEBUG_TOGGLE_MOUSE_LOOK,
     TOGGLE_PHYSICS_DEBUG,
