@@ -16,7 +16,6 @@ import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.physics.CollisionController;
 import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
-import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.LinearProjectileControl;
 import com.omnicrola.voxel.fx.MaterialToken;
@@ -24,7 +23,6 @@ import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
-import com.omnicrola.voxel.physics.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
 
@@ -47,17 +45,7 @@ public class WorldBuilder implements IWorldBuilder {
 
     @Override
     public Geometry terrainVoxel(ColorRGBA color) {
-        Box box = new Box(GameConstants.VOXEL_SIZE, GameConstants.VOXEL_SIZE, GameConstants.VOXEL_SIZE);
-        Geometry voxel = new Geometry("terrain-voxel", box);
-        Material material = createMaterial(color);
-        voxel.setMaterial(material);
-
-        voxel.setUserData(EntityDataKeys.IS_TERRAIN, true);
-        VoxelPhysicsControl rigidBodyControl = new VoxelPhysicsControl();
-        voxel.addControl(rigidBodyControl);
-        voxel.addControl(new CollisionController(new TerrainCollisionHandler(voxel, this.gameContainer.world())));
-
-        return voxel;
+        return null;
     }
 
     @Override

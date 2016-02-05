@@ -1,9 +1,14 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
+import jme3tools.optimize.GeometryBatchFactory;
 
 public class VoxelChunkRebuilder {
 
@@ -12,19 +17,25 @@ public class VoxelChunkRebuilder {
     public static final float VOXEL_SIZE = 1.0f;
 
     private QuadFactory quadFactory;
+    private IGamePhysics gamePhysics;
 
-    public VoxelChunkRebuilder(QuadFactory quadFactory) {
+    public VoxelChunkRebuilder(QuadFactory quadFactory, IGamePhysics gamePhysics) {
         this.quadFactory = quadFactory;
+        this.gamePhysics = gamePhysics;
     }
 
     public void rebuild(VoxelChunk chunk) {
-        chunk.detachAllChildren();
-        sweepAllThreeAxes(chunk, true);
-        sweepAllThreeAxes(chunk, false);
+        chunk.clearGeometry(this.gamePhysics);
+        Node node = new Node();
+        sweepAllThreeAxes(chunk, node, true);
+        sweepAllThreeAxes(chunk, node, false);
+
+        Spatial optimize = GeometryBatchFactory.optimize(node);
+        chunk.attachChild(optimize);
         chunk.clearRebuildFlag();
     }
 
-    private void sweepAllThreeAxes(VoxelChunk chunk, boolean backFace) {
+    private void sweepAllThreeAxes(VoxelChunk chunk, Node parentNode, boolean backFace) {
         int i, j, k, l, width, height, u, v, n, side = 0;
 
         final int[] x = new int[]{0, 0, 0};
@@ -141,11 +152,15 @@ public class VoxelChunkRebuilder {
                                 Vector3f topLeft = new Vector3f(x[0] + du[0], x[1] + du[1], x[2] + du[2]);
                                 Vector3f topRight = new Vector3f(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]);
                                 Vector3f bottomRight = new Vector3f(x[0] + dv[0], x[1] + dv[1], x[2] + dv[2]);
+                                Geometry quad;
                                 if (backFace) {
-                                    chunk.attachChild(this.quadFactory.buildBack(bottomLeft, topLeft, topRight, bottomRight, mask[n], side));
+                                    quad = this.quadFactory.buildBack(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
                                 } else {
-                                    chunk.attachChild(this.quadFactory.buildFront(bottomLeft, topLeft, topRight, bottomRight, mask[n], side));
+                                    quad = this.quadFactory.buildFront(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
                                 }
+//                                this.gamePhysics.add(quad);
+//                                chunk.attachChild(quad);
+                                parentNode.attachChild(quad);
                             }
 
                             /*

@@ -14,7 +14,14 @@ public class MasterCollisionHandler implements PhysicsCollisionListener {
     public void collision(PhysicsCollisionEvent event) {
         Spatial nodeA = event.getNodeA();
         Spatial nodeB = event.getNodeB();
-        nodeA.getControl(CollisionController.class).collideWith(nodeB);
-        nodeB.getControl(CollisionController.class).collideWith(nodeA);
+        collideNodes(nodeA, nodeB);
+        collideNodes(nodeB, nodeA);
+    }
+
+    private void collideNodes(Spatial primary, Spatial secondary) {
+        CollisionController collisionControl = primary.getControl(CollisionController.class);
+        if (collisionControl != null) {
+            collisionControl.collideWith(secondary);
+        }
     }
 }

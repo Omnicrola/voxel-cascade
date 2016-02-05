@@ -51,11 +51,11 @@ public class LevelStateFactory {
 
     private static void addLights(LevelState levelState, LevelDefinition levelDefinition) {
         DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White.mult(0.7f));
-        sun.setDirection(new Vector3f(-0.5f, -0.5f, -0.5f).normalizeLocal());
+        sun.setColor(ColorRGBA.White.mult(0.65f));
+        sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
 
         AmbientLight ambientLight = new AmbientLight();
-        ambientLight.setColor(ColorRGBA.White.mult(0.3f));
+        ambientLight.setColor(ColorRGBA.White.mult(0.2f));
 
         levelState.addLight(sun);
         levelState.addLight(ambientLight);

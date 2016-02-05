@@ -68,8 +68,9 @@ public class QuadFactory {
 
     private Geometry createGeometry(VoxelFace voxel, Mesh mesh) {
         Geometry geometry = new Geometry("VoxelMesh", mesh);
-        Material material = this.materialRepository.randomColor();
+        Material material = this.materialRepository.getByType(voxel.type());
         geometry.setMaterial(material);
+//        geometry.addControl(new VoxelPhysicsControl(mesh));
         return geometry;
     }
 

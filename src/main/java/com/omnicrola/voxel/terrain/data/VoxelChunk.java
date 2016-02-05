@@ -1,9 +1,12 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.IVoxelType;
+import jme3tools.optimize.GeometryBatchFactory;
 
 import java.util.Arrays;
 
@@ -41,7 +44,7 @@ public class VoxelChunk extends Node {
 
     private void setVoxel(Vec3i index, byte value) {
         this.voxels[index.getX()][index.getY()][index.getZ()] = value;
-        System.out.println(this.chunkId + " -> " + index);
+        this.isDirty = true;
     }
 
     public boolean needsRebuilt() {
@@ -75,6 +78,14 @@ public class VoxelChunk extends Node {
 
     private IVoxelType getType(byte type) {
         return Arrays.asList(VoxelType.values()).stream().filter(t -> t.uniqueId() == type).findFirst().get();
+    }
+
+    public void clearGeometry(IGamePhysics gamePhysics) {
+        this.getChildren().forEach(spatial -> gamePhysics.remove(spatial));
+    }
+
+    public void optimize() {
+        Spatial optimize = GeometryBatchFactory.optimize(this);
     }
 }
 

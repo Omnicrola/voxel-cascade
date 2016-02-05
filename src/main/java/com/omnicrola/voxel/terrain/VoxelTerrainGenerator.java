@@ -24,7 +24,7 @@ public class VoxelTerrainGenerator {
         Node terrainRoot = new Node("Terrain");
         AssetManager assetManager = this.gameContainer.getAssetManager();
         QuadFactory quadFactory = new QuadFactory(new MaterialRepository(assetManager));
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory);
+        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, this.gameContainer.physics());
         VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
 
         Vec3iRead size = levelData.getTerrainSize();
@@ -34,7 +34,7 @@ public class VoxelTerrainGenerator {
         for (int x = -halfX; x <= halfX; x++) {
             for (int y = -halfY; y <= halfY; y++) {
                 for (int z = -halfZ; z <= halfZ; z++) {
-                    VoxelType type = (Math.random() < 0.97) ? VoxelType.BLUE : VoxelType.GREY;
+                    VoxelType type = (Math.random() < 0.97) ? VoxelType.BLUE : VoxelType.EMPTY;
                     voxelChunkHandler.set(new Vec3i(x, y, z), type);
                 }
             }
