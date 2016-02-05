@@ -1,12 +1,10 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.IVoxelType;
-import jme3tools.optimize.GeometryBatchFactory;
 
 import java.util.Arrays;
 
@@ -84,8 +82,5 @@ public class VoxelChunk extends Node {
         this.getChildren().forEach(spatial -> gamePhysics.remove(spatial));
     }
 
-    public void optimize() {
-        Spatial optimize = GeometryBatchFactory.optimize(this);
-    }
 }
 

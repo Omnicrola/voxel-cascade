@@ -70,7 +70,6 @@ public class QuadFactory {
         Geometry geometry = new Geometry("VoxelMesh", mesh);
         Material material = this.materialRepository.getByType(voxel.type());
         geometry.setMaterial(material);
-//        geometry.addControl(new VoxelPhysicsControl(mesh));
         return geometry;
     }
 

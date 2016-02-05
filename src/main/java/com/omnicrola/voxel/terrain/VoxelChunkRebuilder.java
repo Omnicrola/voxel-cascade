@@ -5,6 +5,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.physics.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
@@ -30,8 +31,11 @@ public class VoxelChunkRebuilder {
         sweepAllThreeAxes(chunk, node, true);
         sweepAllThreeAxes(chunk, node, false);
 
-        Spatial optimize = GeometryBatchFactory.optimize(node);
-        chunk.attachChild(optimize);
+        Spatial batchNode = GeometryBatchFactory.optimize(node);
+        batchNode.addControl(new VoxelPhysicsControl());
+        gamePhysics.add(batchNode);
+
+        chunk.attachChild(batchNode);
         chunk.clearRebuildFlag();
     }
 
@@ -158,7 +162,6 @@ public class VoxelChunkRebuilder {
                                 } else {
                                     quad = this.quadFactory.buildFront(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
                                 }
-//                                this.gamePhysics.add(quad);
 //                                chunk.attachChild(quad);
                                 parentNode.attachChild(quad);
                             }
