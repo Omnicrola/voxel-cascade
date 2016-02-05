@@ -27,6 +27,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     public static final String RELOAD_TERRAIN = "ReloadTerrain";
     public static final String PRINT_GRAPH = "PrintGraph";
     public static final String TOGGLE_WIREFRAME = "toggle-wireframe";
+    public static final String RELOAD_LEVEL = "reload-level";
     private JmeApplicationWrapper jmeApplicationWrapper;
     private Node terrainNode;
     private WireframeProcessor wireframeProcessor;
@@ -41,7 +42,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         }
     }
 
-    private class ReloadTerrainListener implements ActionListener {
+    private class RebuildTerrainListener implements ActionListener {
 
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
@@ -49,12 +50,6 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
                 reload();
         }
 
-        private void reload() {
-            System.out.println("rebuilding...");
-            if (terrainNode != null) {
-                terrainNode.getControl(VoxelTerrainControl.class).forceRebuild();
-            }
-        }
     }
 
     private class ToggleWireframeListener implements ActionListener {
@@ -63,6 +58,17 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         public void onAction(String name, boolean isPressed, float tpf) {
             if (!isPressed) {
                 wireframeProcessor.toggleEnabled();
+            }
+        }
+    }
+
+    private class ReloadLevelListener implements ActionListener {
+
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (!isPressed) {
+                jmeApplicationWrapper.world().detatchTerrain(terrainNode);
+                loadLevel();
             }
         }
     }
@@ -99,25 +105,21 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         getViewPort().addProcessor(this.wireframeProcessor);
 
         jmeApplicationWrapper = new JmeApplicationWrapper(this);
-        VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(jmeApplicationWrapper);
-        LevelDefinition levelData = new LevelDefinition() {{
-            this.terrainOffset = new Vec3i();
-            this.terrainSize = new Vec3i(16,16,16);
-        }};
+        loadLevel();
 
-        terrainNode = voxelTerrainGenerator.load(levelData);
-        jmeApplicationWrapper.world().attachTerrain(terrainNode);
+        RebuildTerrainListener rebuildTerrainListener = new RebuildTerrainListener();
 
-        ReloadTerrainListener reloadTerrainListener = new ReloadTerrainListener();
+        this.inputManager.addMapping(PRINT_GRAPH, new KeyTrigger(KeyInput.KEY_1));
+        this.inputManager.addListener(new DebugSceneGraphListener(), PRINT_GRAPH);
 
         this.inputManager.addMapping(RELOAD_TERRAIN, new KeyTrigger(KeyInput.KEY_2));
-        this.inputManager.addListener(reloadTerrainListener, RELOAD_TERRAIN);
+        this.inputManager.addListener(rebuildTerrainListener, RELOAD_TERRAIN);
 
         this.inputManager.addMapping(TOGGLE_WIREFRAME, new KeyTrigger(KeyInput.KEY_3));
         this.inputManager.addListener(new ToggleWireframeListener(), TOGGLE_WIREFRAME);
 
-        this.inputManager.addMapping(PRINT_GRAPH, new KeyTrigger(KeyInput.KEY_1));
-        this.inputManager.addListener(new DebugSceneGraphListener(), PRINT_GRAPH);
+        this.inputManager.addMapping(RELOAD_LEVEL, new KeyTrigger(KeyInput.KEY_4));
+        this.inputManager.addListener(new ReloadLevelListener(), RELOAD_LEVEL);
 
         DirectionalLight sun = new DirectionalLight();
         sun.setColor(ColorRGBA.White.mult(0.7f));
@@ -131,6 +133,23 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         spacer.setName("spacer");
         this.rootNode.attachChild(spacer);
 
-        reloadTerrainListener.reload();
+    }
+
+    private void loadLevel() {
+        VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(jmeApplicationWrapper);
+        LevelDefinition levelData = new LevelDefinition() {{
+            this.terrainOffset = new Vec3i();
+            this.terrainSize = new Vec3i(18,18,18);
+        }};
+
+        terrainNode = voxelTerrainGenerator.load(levelData);
+        jmeApplicationWrapper.world().attachTerrain(terrainNode);
+    }
+
+    private void reload() {
+        System.out.println("rebuilding...");
+        if (terrainNode != null) {
+            terrainNode.getControl(VoxelTerrainControl.class).forceRebuild();
+        }
     }
 }

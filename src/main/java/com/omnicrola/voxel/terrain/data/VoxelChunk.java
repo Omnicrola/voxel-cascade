@@ -41,6 +41,7 @@ public class VoxelChunk extends Node {
 
     private void setVoxel(Vec3i index, byte value) {
         this.voxels[index.getX()][index.getY()][index.getZ()] = value;
+        System.out.println(this.chunkId + " -> " + index);
     }
 
     public boolean needsRebuilt() {
