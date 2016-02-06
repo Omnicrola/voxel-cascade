@@ -21,12 +21,12 @@
             <location x="6.0" y="10.0" z="-5.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>2</unit-id>
             <team-id>1</team-id>
             <location x="6.0" y="10.0" z="0.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>2</unit-id>
             <team-id>1</team-id>
             <location x="6.0" y="10.0" z="5.0"/>
         </placement>

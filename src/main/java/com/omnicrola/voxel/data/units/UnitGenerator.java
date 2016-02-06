@@ -10,9 +10,9 @@ import com.omnicrola.voxel.settings.GameConstants;
  * Created by Eric on 1/20/2016.
  */
 public class UnitGenerator {
-    public static final int ID_RED_TANK= 1;
-    public static final int ID_GREEN_TANK= 2;
-    public static final int ID_BLUE_TANK= 3;
+    public static final int ID_RED_TANK = 1;
+    public static final int ID_GREEN_TANK = 2;
+    public static final int ID_BLUE_TANK = 3;
 
     public static UnitDefinition createBlueTank() {
         UnitDefinition unitDefinition = buildTank();
@@ -21,13 +21,16 @@ public class UnitGenerator {
         unitDefinition.modelTexture = "voxel-face-blue.png";
         return unitDefinition;
     }
+
     public static UnitDefinition createGreenTank() {
         UnitDefinition unitDefinition = buildTank();
         unitDefinition.globalId = ID_GREEN_TANK;
+        unitDefinition.weaponId = WeaponGenerator.ID_MACHINEGUN_WEAPON;
         unitDefinition.name = "Green Tank";
         unitDefinition.modelTexture = "voxel-face-green.png";
         return unitDefinition;
     }
+
     public static UnitDefinition createRedTank() {
         UnitDefinition unitDefinition = buildTank();
         unitDefinition.globalId = ID_RED_TANK;
@@ -53,7 +56,6 @@ public class UnitGenerator {
         unitDefinition.buildCommands.add(new BuildVoxelCommand(GameConstants.TERRAIN_TYPE_1));
         return unitDefinition;
     }
-
 
     private static MovementDefinition movementDef(float turnspeed, float maxVelocity, float accelleration) {
         MovementDefinition movementDefinition = new MovementDefinition();

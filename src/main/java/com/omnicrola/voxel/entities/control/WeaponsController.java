@@ -75,7 +75,7 @@ public class WeaponsController extends AbstractControl {
         Vector3f ourLocation = this.spatial.getWorldTranslation().add(this.projectileOffset);
         Vector3f attackVector = targetLocation.subtract(ourLocation);
 
-        Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.projectileId, attackVector);
+        Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.projectileId, attackVector, this.weaponDefinition.getRange());
         this.gameWorld.attach(projectile);
         projectile.getControl(GhostControl.class).setPhysicsLocation(ourLocation);
         projectile.setLocalTranslation(ourLocation);

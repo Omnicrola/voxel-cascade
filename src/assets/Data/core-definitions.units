@@ -32,7 +32,7 @@
             </build-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
-        <unit global-id="2" weapon-id="1000">
+        <unit global-id="2" weapon-id="1001">
             <name>Green Tank</name>
             <description>It resembles every tank, and yet is less than half as effective as less than half of them.</description>
             <color>

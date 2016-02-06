@@ -11,24 +11,23 @@ public class WeaponDefinition {
     @XmlTransient
     public static final WeaponDefinition NULL = new WeaponDefinition();
 
-    @XmlAttribute(name="global-id", required = true)
+    @XmlAttribute(name = "global-id", required = true)
     protected int globalId;
 
-    @XmlAttribute(name="projectile-id", required = true)
+    @XmlAttribute(name = "projectile-id", required = true)
     protected int projectileId;
 
-    @XmlElement(name="name",required = true)
+    @XmlElement(name = "name", required = true)
     protected String name;
 
-    @XmlElement(name="description")
+    @XmlElement(name = "description")
     protected String description;
 
-    @XmlElement(name="range",required = true)
+    @XmlElement(name = "range", required = true)
     protected float range;
 
-    @XmlElement(name="rounds-per-minute",required = true)
+    @XmlElement(name = "rounds-per-minute", required = true)
     protected float rateOfFire;
-
 
     public int getId() {
         return globalId;
