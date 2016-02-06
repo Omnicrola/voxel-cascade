@@ -56,7 +56,7 @@ public class WeaponsController extends AbstractControl {
     }
 
     private boolean targetIsAlive() {
-        Float hitpoints = this.spatial.getUserData(EntityDataKeys.HITPOINTS);
+        Float hitpoints = this.currentTarget.getUserData(EntityDataKeys.HITPOINTS);
         boolean alive = hitpoints != null && hitpoints.floatValue() > 0f;
         return alive;
     }

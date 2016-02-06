@@ -31,6 +31,8 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
         IGameWorld gameWorld = gameContainer.world();
         WeaponsController weaponsController = new WeaponsController(gameWorld, weaponDefinition, weaponOffset);
         TargetingController targetingController = new TargetingController(gameWorld);
+        EntityAiController entityAiController = new EntityAiController(NullMotionController.NO_OP, weaponsController, targetingController);
+        spatial.addControl(entityAiController);
         spatial.addControl(weaponsController);
         spatial.addControl(targetingController);
     }

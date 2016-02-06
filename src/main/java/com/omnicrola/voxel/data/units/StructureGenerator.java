@@ -50,7 +50,7 @@ public class StructureGenerator {
         structureDefinition.hitpoints = 250;
         structureDefinition.controlFactories.add(new AutomatedWeaponControlFactory() {{
             this.weaponId = WeaponGenerator.ID_CANNON_WEAPON;
-            this.weaponOffset = new Vector3f(0, 3, 0);
+            this.weaponOffset = new Vector3f(0, 1, 0);
         }});
         return structureDefinition;
     }

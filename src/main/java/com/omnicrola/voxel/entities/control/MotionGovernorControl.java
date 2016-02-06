@@ -16,13 +16,11 @@ public class MotionGovernorControl extends AbstractControl {
     public static final Vector3f MAX_VELOCITY = new Vector3f(2, 2, 2);
 
     private final Vector3f masterSteering;
-    private final float floorOffset;
     private MovementDefinition movementDefinition;
 
     public MotionGovernorControl(MovementDefinition movementDefinition) {
         this.movementDefinition = movementDefinition;
         this.masterSteering = new Vector3f();
-        this.floorOffset = 0.5f;
     }
 
     private void addSteering(Vector3f steering) {
@@ -48,8 +46,8 @@ public class MotionGovernorControl extends AbstractControl {
         Vector3f steering = this.masterSteering
                 .normalize()
                 .mult(this.movementDefinition.getMaxVelocity());
-        physicsControl.setLinearVelocity(steering.mult(4));
         if (steering.length() > 0) {
+            physicsControl.setLinearVelocity(steering.mult(4));
 //            physicsControl.setViewDirection(steering.setY(0).normalize().mult(0.5f));
         }
         this.masterSteering.set(0, 0, 0);
