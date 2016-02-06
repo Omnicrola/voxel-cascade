@@ -26,7 +26,6 @@ public class VoxelTerrainGenerator {
         TerrainDefinition terrainDefinition = levelData.getTerrain();
         int width = terrainDefinition.getWidth();
         int depth = terrainDefinition.getDepth();
-        int seed = terrainDefinition.getSeed();
         this.perlinNoiseGenerator.setOctaves(terrainDefinition.getOctaves());
         this.perlinNoiseGenerator.setSeed(terrainDefinition.getSeed());
         float[][] noise = this.perlinNoiseGenerator.generate(width, depth);
@@ -49,7 +48,7 @@ public class VoxelTerrainGenerator {
 
     private void fillZ(VoxelChunkHandler voxelChunkHandler, int x, int z, float height) {
         for (int y = 0; y <= height; y++) {
-            voxelChunkHandler.set(new Vec3i(x, y, z), VoxelType.BLUE);
+            voxelChunkHandler.set(new Vec3i(x, y, z), VoxelType.GREY);
         }
     }
 }

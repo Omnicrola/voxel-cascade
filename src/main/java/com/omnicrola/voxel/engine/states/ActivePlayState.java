@@ -66,8 +66,8 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
         this.currentLevelState = this.levelStateFactory.create(newLevelDefinition);
         this.currentLevelState.attachToWorld(this.gameContainer);
 
-        this.gameContainer.gui().setCameraRotation(newLevelDefinition.getCameraOrientation());
-        this.gameContainer.gui().setCameraPosition(newLevelDefinition.getCameraPosition());
+//        this.gameContainer.gui().setCameraRotation(newLevelDefinition.getCameraOrientation());
+//        this.gameContainer.gui().setCameraPosition(newLevelDefinition.getCameraPosition());
 
         notifyObserversLevelChanged();
     }

@@ -32,7 +32,7 @@ public class VoxelChunkRebuilder {
         sweepAllThreeAxes(chunk, node, false);
 
         Spatial batchNode = GeometryBatchFactory.optimize(node);
-        batchNode.addControl(new VoxelPhysicsControl());
+        batchNode.addControl(new VoxelPhysicsControl(chunk.getWorldTranslation(),batchNode));
         gamePhysics.add(batchNode);
 
         chunk.attachChild(batchNode);
