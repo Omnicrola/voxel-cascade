@@ -32,7 +32,6 @@ public class VoxelGameEngine extends SimpleApplication {
         VoxelGameEngineInitializer.initializeGame(this.stateManager);
         loadNiftyGui();
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
-        addPhysicsToggle();
     }
 
     private void loadNiftyGui() {
@@ -47,16 +46,6 @@ public class VoxelGameEngine extends SimpleApplication {
         niftyGui.loadControlFile("nifty-default-controls.xml");
     }
 
-    private void addPhysicsToggle() {
-        this.inputManager.addListener(new ActionListener() {
-            @Override
-            public void onAction(String name, boolean isPressed, float tpf) {
-                if (!isPressed) {
-                    bulletAppState.setDebugEnabled(!bulletAppState.isDebugEnabled());
-                }
-            }
-        }, GameInputAction.TOGGLE_PHYSICS_DEBUG.trigger());
-    }
 
     @Override
     public void simpleRender(RenderManager rm) {

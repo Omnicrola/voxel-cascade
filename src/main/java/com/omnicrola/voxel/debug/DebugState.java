@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.states;
+package com.omnicrola.voxel.debug;
 
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
@@ -13,31 +13,49 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.Node;
 import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.debug.Grid;
+import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.processors.WireframeProcessor;
 import com.omnicrola.voxel.input.GameInputAction;
+
+import java.util.ArrayList;
 
 /**
  * Created by Eric on 2/4/2016.
  */
 public class DebugState extends AbstractAppState {
 
-    private VoxelGameEngine game;
-    private WireframeProcessor wireframeProcessor;
 
     private class ToggleDebugListener implements ActionListener {
 
         @Override
         public void onAction(String name, boolean isPressed, float tpf) {
             if (!isPressed) {
-                System.out.println("toggle debug");
                 setEnabled(!isEnabled());
+                System.out.println("Debug " + isEnabled());
             }
         }
     }
 
+    private class DebugToggleWireframeListener implements ActionListener {
+
+        @Override
+        public void onAction(String name, boolean isPressed, float tpf) {
+            if (isPressed) {
+                wireframeProcessor.toggleEnabled();
+            }
+        }
+    }
+
+
+    private final ArrayList<Tuple<ActionListener, GameInputAction>> listeners;
+    private VoxelGameEngine game;
+    private WireframeProcessor wireframeProcessor;
     private Node rootNode;
     private AssetManager assetManager;
+
+    public DebugState() {
+        this.listeners = new ArrayList<>();
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application game) {
@@ -51,16 +69,25 @@ public class DebugState extends AbstractAppState {
         this.wireframeProcessor = new WireframeProcessor(game.getAssetManager());
         game.getViewPort().addProcessor(wireframeProcessor);
 
-        game.getInputManager().addListener(new ToggleDebugListener(), GameInputAction.TOGGLE_DEBUG.toString());
+        game.getInputManager().addListener(new ToggleDebugListener(), GameInputAction.TOGGLE_DEBUG_MODE.toString());
+        this.listeners.add(new Tuple(new DebugSceneGraphListener(this.game), GameInputAction.TOGGLE_DEBUG_MODE));
+        this.listeners.add(new Tuple(new DebugTargetListener(this.game), GameInputAction.DEBUG_TARGET_OBJECT));
+        this.listeners.add(new Tuple(new DebugReloadLevelListener(this.game), GameInputAction.DEBUG_RELOAD_LEVEL));
+        this.listeners.add(new Tuple(new DebugRebuildTerrainListener(this.game), GameInputAction.DEBUG_REBUILD_TERRAIN));
+        this.listeners.add(new Tuple(new DebugMouseLookListener(this.game), GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK));
+        this.listeners.add(new Tuple(new DebugPhysicsListener(this.game), GameInputAction.DEBUG_TOGGLE_PHYSICS));
+        this.listeners.add(new Tuple(new DebugToggleWireframeListener(), GameInputAction.DEBUG_TOGGLE_WIREFRAME));
+
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
-            this.wireframeProcessor.setEnabled(enabled);
         if (enabled) {
+            this.listeners.forEach((t) -> this.game.getInputManager().addListener(t.getLeft(), t.getRight().toString()));
             this.game.getRootNode().attachChild(this.rootNode);
         } else {
+            this.listeners.forEach((t) -> this.game.getInputManager().removeListener(t.getLeft()));
             this.game.getRootNode().detachChild(this.rootNode);
         }
     }
@@ -99,4 +126,6 @@ public class DebugState extends AbstractAppState {
         rootNode.attachChild(g);
         return g;
     }
+
+
 }

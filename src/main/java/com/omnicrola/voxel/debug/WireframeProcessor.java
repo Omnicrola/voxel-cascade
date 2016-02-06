@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.processors;
+package com.omnicrola.voxel.debug;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
