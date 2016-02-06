@@ -32,10 +32,12 @@ public class BuildVoxelStrategy implements ICursorStrategy {
 
     @Override
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
-        Vec3i snappedLocation = this.levelState.getWorldCursor().getSnappedLocation();
-        this.levelState.createVoxel(this.voxelType, snappedLocation);
-        if (!gameMouseEvent.isMultiSelecting()) {
-            this.levelState.getWorldCursor().clearCursorStrategy();
+        if (!gameMouseEvent.isPressed()) {
+            Vec3i snappedLocation = this.levelState.getWorldCursor().getSnappedLocation();
+            this.levelState.createVoxel(this.voxelType, snappedLocation);
+            if (!gameMouseEvent.isMultiSelecting()) {
+                this.levelState.getWorldCursor().clearCursorStrategy();
+            }
         }
     }
 

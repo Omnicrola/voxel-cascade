@@ -58,9 +58,29 @@
             <location x="20.0" y="2.0" z="0.0"/>
         </placement>
         <placement>
+            <unit-id>100</unit-id>
+            <team-id>1</team-id>
+            <location x="20.0" y="2.0" z="6.0"/>
+        </placement>
+        <placement>
+            <unit-id>100</unit-id>
+            <team-id>1</team-id>
+            <location x="20.0" y="2.0" z="-6.0"/>
+        </placement>
+        <placement>
             <unit-id>2</unit-id>
             <team-id>2</team-id>
             <location x="-20.0" y="2.0" z="0.0"/>
+        </placement>
+        <placement>
+            <unit-id>100</unit-id>
+            <team-id>2</team-id>
+            <location x="-20.0" y="2.0" z="6.0"/>
+        </placement>
+        <placement>
+            <unit-id>100</unit-id>
+            <team-id>2</team-id>
+            <location x="-20.0" y="2.0" z="-6.0"/>
         </placement>
     </structure-placements>
     <teams>

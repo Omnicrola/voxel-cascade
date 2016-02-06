@@ -166,5 +166,19 @@
             </build-targets>
             <controls/>
         </structure>
+        <structure global-id="100">
+            <name>Turret</name>
+            <description>Static defense</description>
+            <texture>voxel-face-red.png</texture>
+            <model>turret.obj</model>
+            <hitpoints>250.0</hitpoints>
+            <commands/>
+            <build-targets/>
+            <controls>
+                <weapon-control weapon-id="1000">
+                    <weapon-offset x="0.0" y="3.0" z="0.0"/>
+                </weapon-control>
+            </controls>
+        </structure>
     </structures>
 </GameDefinitions>

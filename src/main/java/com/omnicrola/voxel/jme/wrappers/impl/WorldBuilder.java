@@ -67,8 +67,8 @@ public class WorldBuilder implements IWorldBuilder {
         Material material = createMaterial(entityDefinition.getTexture());
         spatial.setMaterial(material);
 
-        for (IControlFactory factory : entityDefinition.getControlFactories(this.gameContainer, this.definitionRepository)) {
-            factory.build(spatial);
+        for (IControlFactory factory : entityDefinition.getControlFactories()) {
+            factory.build(spatial, this.gameContainer, this.definitionRepository);
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
@@ -89,8 +89,8 @@ public class WorldBuilder implements IWorldBuilder {
         Material material = createMaterial(structureDefinition.getTexture());
         structure.setMaterial(material);
 
-        for (IControlFactory factory : structureDefinition.getControlFactories(this.gameContainer)) {
-            factory.build(structure);
+        for (IControlFactory factory : structureDefinition.getControlFactories()) {
+            factory.build(structure, this.gameContainer, this.definitionRepository);
         }
 
         structure.setUserData(EntityDataKeys.IS_SELECTABLE, true);

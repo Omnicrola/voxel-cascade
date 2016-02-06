@@ -22,16 +22,14 @@ public class WeaponsController extends AbstractControl {
     private IGameWorld gameWorld;
     private WeaponDefinition weaponDefinition;
     private Vector3f projectileOffset;
-    private int projectileId;
 
     public WeaponsController(IGameWorld gameWorld,
                              WeaponDefinition weaponDefinition,
-                             Vector3f projectileOffset,
-                             int projectileId) {
+                             Vector3f projectileOffset
+    ) {
         this.gameWorld = gameWorld;
         this.weaponDefinition = weaponDefinition;
         this.projectileOffset = projectileOffset;
-        this.projectileId = projectileId;
     }
 
     public boolean isInRangeOfTarget(Spatial target) {
@@ -75,7 +73,7 @@ public class WeaponsController extends AbstractControl {
         Vector3f ourLocation = this.spatial.getWorldTranslation().add(this.projectileOffset);
         Vector3f attackVector = targetLocation.subtract(ourLocation);
 
-        Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.projectileId, attackVector, this.weaponDefinition.getRange());
+        Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.weaponDefinition.getProjectileId(), attackVector, this.weaponDefinition.getRange());
         this.gameWorld.attach(projectile);
         projectile.getControl(GhostControl.class).setPhysicsLocation(ourLocation);
         projectile.setLocalTranslation(ourLocation);

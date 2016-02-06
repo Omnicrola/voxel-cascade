@@ -7,6 +7,7 @@ import com.omnicrola.voxel.data.units.XmlGameDefinitions;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
+import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -118,7 +119,8 @@ public class GameXmlDataParser {
                     LevelDefinition.class,
                     EntityCommand.class,
                     BuildUnitCommand.class,
-                    BuildVoxelCommand.class
+                    BuildVoxelCommand.class,
+                    AutomatedWeaponControlFactory.class
             );
         } catch (JAXBException e) {
             e.printStackTrace();

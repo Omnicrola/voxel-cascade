@@ -5,7 +5,6 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.*;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -102,15 +101,12 @@ public class UnitDefinition {
         return modelTexture;
     }
 
-    public List<IControlFactory> getControlFactories(IGameContainer gameContainer, UnitDefinitionRepository repository) {
-        WeaponDefinition weaponDefinition = repository.getWeaponDefinition(this.weaponId);
-        ProjectileDefinition projectileDefinition = repository.getProjectileDefinition(weaponDefinition.getProjectileId());
-
+    public List<IControlFactory> getControlFactories() {
         ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
-        controlFactories.add(new GroundVehicleControlFactory(gameContainer.world(), this.mass));
-        controlFactories.add(new CollisionControlFactory(gameContainer.world()));
+        controlFactories.add(new GroundVehicleControlFactory(this.mass));
+        controlFactories.add(new CollisionControlFactory());
         controlFactories.add(new CommandControlFactory(this.commands, this.buildCommands));
-        controlFactories.add(new EntityAiControlFactory(gameContainer, weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));
+        controlFactories.add(new EntityAiControlFactory(this.weaponEmissionOffset, this.movementDefinition, this.weaponId));
         controlFactories.add(new DeathControllerFactory());
         return controlFactories;
     }

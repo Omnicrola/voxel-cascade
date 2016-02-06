@@ -51,7 +51,12 @@ public class LevelGeneratorTool {
     private static List<UnitPlacement> createBasicStructures() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
         unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_PLAYER_CORE_ID, PLAYER_TEAM_ID, 20, 2f, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, PLAYER_TEAM_ID, 20, 2f, 6));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, PLAYER_TEAM_ID, 20, 2f, -6));
+
         unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_ENEMY_CORE_ID, OPPONENT_TEAM_ID, -20, 2f, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, OPPONENT_TEAM_ID, -20, 2f, 6));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, OPPONENT_TEAM_ID, -20, 2f, -6));
         return unitPlacements;
     }
 

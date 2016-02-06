@@ -35,15 +35,17 @@ public class BuildUnitStrategy implements ICursorStrategy {
 
     @Override
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
-        WorldCursor worldCursor = this.levelState.getWorldCursor();
-        Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.levelState.getTerrain());
-        if (terrainUnderCursor.isPresent()) {
-            Spatial unit = this.gameContainer.world().build().unit(this.unitId, levelState.getPlayerTeam());
-            Vector3f location = terrainUnderCursor.get().getContactPoint();
+        if (!gameMouseEvent.isPressed()) {
+            WorldCursor worldCursor = this.levelState.getWorldCursor();
+            Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.levelState.getTerrain());
+            if (terrainUnderCursor.isPresent()) {
+                Spatial unit = this.gameContainer.world().build().unit(this.unitId, levelState.getPlayerTeam());
+                Vector3f location = terrainUnderCursor.get().getContactPoint();
 
-            unit.getControl(GroundVehicleControl.class).setPhysicsLocation(location.addLocal(0,1,0));
-            this.levelState.addUnit(unit);
-            worldCursor.clearCursorStrategy();
+                unit.getControl(GroundVehicleControl.class).setPhysicsLocation(location.addLocal(0, 1, 0));
+                this.levelState.addUnit(unit);
+                worldCursor.clearCursorStrategy();
+            }
         }
     }
 
