@@ -6,7 +6,9 @@ import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Mesh;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.debug.Arrow;
 import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.omnicrola.voxel.data.TeamData;
@@ -58,6 +60,7 @@ public class WorldBuilder implements IWorldBuilder {
         spatial.setName(entityDefinition.getName());
         Material material = createMaterial(entityDefinition.getTexture());
         spatial.setMaterial(material);
+
         for (IControlFactory factory : entityDefinition.getControlFactories(this.gameContainer, this.definitionRepository)) {
             factory.build(spatial);
         }
@@ -168,4 +171,20 @@ public class WorldBuilder implements IWorldBuilder {
         material.setColor("Diffuse", color);
         return material;
     }
+
+    @Override
+    public Spatial arrow(Vector3f direction, ColorRGBA color) {
+        Arrow arrow = new Arrow(direction);
+        arrow.setLineWidth(4);
+        return buildShape(arrow, color);
+    }
+    private Geometry buildShape(Mesh shape, ColorRGBA color) {
+        Geometry geometry = new Geometry("coordinate axis", shape);
+        Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
+        mat.getAdditionalRenderState().setWireframe(true);
+        mat.setColor("Color", color);
+        geometry.setMaterial(mat);
+        return geometry;
+    }
+
 }

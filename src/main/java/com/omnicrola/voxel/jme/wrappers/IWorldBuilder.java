@@ -23,4 +23,6 @@ public interface IWorldBuilder {
     Spatial structure(int unitId, TeamData teamData);
 
     Material material(MaterialToken materialToken);
+
+    Spatial arrow(Vector3f direction, ColorRGBA blue);
 }

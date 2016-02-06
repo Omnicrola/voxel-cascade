@@ -50,7 +50,7 @@ public class MotionGovernorControl extends AbstractControl {
                 .mult(this.movementDefinition.getMaxVelocity());
         physicsControl.setWalkDirection(steering);
         if (steering.length() > 0) {
-            physicsControl.setViewDirection(steering.setY(0));
+            physicsControl.setViewDirection(steering.setY(0).normalize().mult(0.5f));
         }
         this.masterSteering.set(0, 0, 0);
     }

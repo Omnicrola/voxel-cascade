@@ -7,6 +7,7 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.light.Light;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
@@ -17,6 +18,7 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.List;
@@ -54,6 +56,13 @@ public class JmeWorldWrapper implements IGameWorld {
     public void detatch(Spatial spatial) {
         this.game.getRootNode().detachChild(spatial);
         removeChildrenFromPhysicsSpace(spatial);
+    }
+
+    @Override
+    public boolean isBelowTerrain(Geometry geometry) {
+        Vector3f location = geometry.getWorldTranslation();
+        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
+        return control.isVoxelSolidAt(location);
     }
 
     private void addChildrenToPhysicsSpace(Spatial spatial) {

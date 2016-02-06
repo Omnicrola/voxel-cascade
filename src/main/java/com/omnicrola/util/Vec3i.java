@@ -34,6 +34,10 @@ public class Vec3i implements Vec3iRead {
         this.z = (int) z;
     }
 
+    public Vec3i(Vector3f location) {
+        this(location.x, location.y, location.z);
+    }
+
     @Override
     public int getX() {
         return x;

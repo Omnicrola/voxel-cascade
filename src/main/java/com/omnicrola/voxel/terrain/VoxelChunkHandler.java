@@ -94,4 +94,9 @@ public class VoxelChunkHandler {
         }
         return true;
     }
+
+    public boolean isVoxelSolidAt(Vector3f location) {
+        Vec3i voxelLocation = new Vec3i(location);
+        return isSolid(voxelLocation);
+    }
 }

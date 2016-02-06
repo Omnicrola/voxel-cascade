@@ -78,4 +78,8 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
     public Vector3f getSpawnPointFor(Vector3f location) {
         return this.voxelChunkHandler.adjustLocationForHeight(location);
     }
+
+    public boolean isVoxelSolidAt(Vector3f location) {
+        return this.voxelChunkHandler.isVoxelSolidAt(location);
+    }
 }

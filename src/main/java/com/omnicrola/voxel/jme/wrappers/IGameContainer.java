@@ -21,4 +21,5 @@ public interface IGameContainer {
     IGamePhysics physics();
 
     AssetManager getAssetManager();
+
 }

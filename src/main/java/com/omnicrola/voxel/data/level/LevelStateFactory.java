@@ -8,6 +8,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.entities.control.DebugOrientationControl;
+import com.omnicrola.voxel.entities.control.DebugVelocityControl;
 import com.omnicrola.voxel.input.CursorCommandDelegator;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
@@ -82,10 +84,24 @@ public class LevelStateFactory {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
             Vector3f position = terrainControl.getSpawnPointFor(unitPlacement.getLocation());
-            System.out.println(position);
-            entity.getControl(GroundVehicleControl.class).setPhysicsLocation(position);
+            entity.getControl(GroundVehicleControl.class).warp(position);
             levelState.addUnit(entity);
+
+            addOrientationArrow(levelState, entity);
+            addVelocityArrow(levelState, entity);
         }
+    }
+
+    private void addOrientationArrow(LevelState levelState, Spatial entity) {
+        Spatial arrow = this.gameContainer.world().build().arrow(Vector3f.UNIT_Z, ColorRGBA.Blue);
+        arrow.addControl(new DebugOrientationControl(entity));
+        levelState.addUnit(arrow);
+    }
+
+    private void addVelocityArrow(LevelState levelState, Spatial entity) {
+        Spatial arrow = this.gameContainer.world().build().arrow(Vector3f.UNIT_Z, ColorRGBA.Green);
+        arrow.addControl(new DebugVelocityControl(entity));
+        levelState.addUnit(arrow);
     }
 
     private WorldCursor createWorldCursor(Node terrain) {
