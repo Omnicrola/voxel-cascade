@@ -37,9 +37,9 @@ public class LevelGeneratorTool {
         levelDefinition.cameraPosition = new Vector3f(17.240665f, 5.812654f, 15.605931f);
         levelDefinition.cameraOrientation = new Quaternion(-0.04802279f, 0.94986904f, -0.24847628f, -0.18358125f);
         levelDefinition.terrain.terrainOffset = new Vec3i(0, -1, 0);
-        levelDefinition.terrain.width = 40;
-        levelDefinition.terrain.depth = 40;
-        levelDefinition.terrain.verticalScale = 10;
+        levelDefinition.terrain.width = 100;
+        levelDefinition.terrain.depth = 100;
+        levelDefinition.terrain.verticalScale = 15;
         levelDefinition.terrain.octaves = 8;
         levelDefinition.terrain.seed = 12345;
         levelDefinition.unitPlacements = createBasicUnits();
@@ -50,8 +50,8 @@ public class LevelGeneratorTool {
 
     private static List<UnitPlacement> createBasicStructures() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
-        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, PLAYER_TEAM_ID, 20, 2f, 0));
-        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_CORE_ID, OPPONENT_TEAM_ID, -20, 2f, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_PLAYER_CORE_ID, PLAYER_TEAM_ID, 20, 2f, 0));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_ENEMY_CORE_ID, OPPONENT_TEAM_ID, -20, 2f, 0));
         return unitPlacements;
     }
 
@@ -71,15 +71,15 @@ public class LevelGeneratorTool {
     private static ArrayList<UnitPlacement> createBasicUnits() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
 
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, -10));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, -5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, 0));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_RED_TANK, PLAYER_TEAM_ID, 6, 10, -10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_RED_TANK, PLAYER_TEAM_ID, 6, 10, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_RED_TANK, PLAYER_TEAM_ID, 6, 10, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_RED_TANK, PLAYER_TEAM_ID, 6, 10, 5));
 
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, -5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, 0));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, 5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, 10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_BLUE_TANK, OPPONENT_TEAM_ID, 1, 10, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_BLUE_TANK, OPPONENT_TEAM_ID, 1, 10, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_BLUE_TANK, OPPONENT_TEAM_ID, 1, 10, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.ID_BLUE_TANK, OPPONENT_TEAM_ID, 1, 10, 10));
         return unitPlacements;
     }
 

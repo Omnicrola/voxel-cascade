@@ -17,7 +17,7 @@ public class ChunkHandlerFactory {
     public VoxelChunkHandler build() {
         AssetManager assetManager = this.gameContainer.getAssetManager();
         QuadFactory quadFactory = new QuadFactory(new MaterialRepository(assetManager));
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, this.gameContainer.physics());
+        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, this.gameContainer.physics(), this.gameContainer.world());
         VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
         return voxelChunkHandler;
     }

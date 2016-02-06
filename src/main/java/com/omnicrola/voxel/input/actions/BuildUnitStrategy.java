@@ -10,6 +10,7 @@ import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 import java.util.Optional;
 
@@ -40,7 +41,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
             Spatial unit = this.gameContainer.world().build().unit(this.unitId, levelState.getPlayerTeam());
             Vector3f location = terrainUnderCursor.get().getContactPoint();
 
-//            unit.getControl(GroundVehicleControl.class).setsetPhysicsLocation(location.addLocal(0,1,0));
+            unit.getControl(GroundVehicleControl.class).setPhysicsLocation(location.addLocal(0,1,0));
             this.levelState.addUnit(unit);
             worldCursor.clearCursorStrategy();
         }

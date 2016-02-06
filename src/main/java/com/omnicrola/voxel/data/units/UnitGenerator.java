@@ -10,18 +10,39 @@ import com.omnicrola.voxel.settings.GameConstants;
  * Created by Eric on 1/20/2016.
  */
 public class UnitGenerator {
-    public static final int DEFAULT_TANK_ID = 1;
+    public static final int ID_RED_TANK= 1;
+    public static final int ID_GREEN_TANK= 2;
+    public static final int ID_BLUE_TANK= 3;
 
-    public static UnitDefinition createDefaultTank() {
+    public static UnitDefinition createBlueTank() {
+        UnitDefinition unitDefinition = buildTank();
+        unitDefinition.globalId = ID_BLUE_TANK;
+        unitDefinition.name = "Blue Tank";
+        unitDefinition.modelTexture = "voxel-face-blue.png";
+        return unitDefinition;
+    }
+    public static UnitDefinition createGreenTank() {
+        UnitDefinition unitDefinition = buildTank();
+        unitDefinition.globalId = ID_GREEN_TANK;
+        unitDefinition.name = "Green Tank";
+        unitDefinition.modelTexture = "voxel-face-green.png";
+        return unitDefinition;
+    }
+    public static UnitDefinition createRedTank() {
+        UnitDefinition unitDefinition = buildTank();
+        unitDefinition.globalId = ID_RED_TANK;
+        unitDefinition.name = "Red Tank";
+        unitDefinition.modelTexture = "voxel-face-red.png";
+        return unitDefinition;
+    }
+
+    private static UnitDefinition buildTank() {
         UnitDefinition unitDefinition = new UnitDefinition();
-        unitDefinition.globalId = DEFAULT_TANK_ID;
-        unitDefinition.name = "Generic Tank AA-11";
         unitDefinition.description = "It resembles every tank, and yet is less than half as effective as less than half of them.";
         unitDefinition.modelGeometry = "tank.obj";
-        unitDefinition.modelTexture = "voxel-face-red.png";
         unitDefinition.color = ColorRGBA.Green;
         unitDefinition.hitpoints = 100;
-        unitDefinition.weaponId = WeaponGenerator.DEFAULT_WEAPON_ID;
+        unitDefinition.weaponId = WeaponGenerator.ID_CANNON_WEAPON;
         unitDefinition.weaponEmissionOffset = new Vector3f(0, 0.5f, 0);
         unitDefinition.mass = 1f;
         unitDefinition.movementDefinition = movementDef(1.0f, 0.2f, 0.01f);
@@ -32,6 +53,7 @@ public class UnitGenerator {
         unitDefinition.buildCommands.add(new BuildVoxelCommand(GameConstants.TERRAIN_TYPE_1));
         return unitDefinition;
     }
+
 
     private static MovementDefinition movementDef(float turnspeed, float maxVelocity, float accelleration) {
         MovementDefinition movementDefinition = new MovementDefinition();

@@ -4,7 +4,7 @@
     <global-id>4ae9ecf5-25e0-477a-9662-46dda8f095c9</global-id>
     <camera-start-position x="17.240665" y="5.812654" z="15.605931"/>
     <camera-orientation x="-0.04802279" y="0.94986904" z="-0.24847628" w="-0.18358125"/>
-    <terrain width="40" depth="40" vertical-scale="10">
+    <terrain width="100" depth="100" vertical-scale="15">
         <offset x="0" y="-1" z="0"/>
         <octaves>8</octaves>
         <seed>12345</seed>
@@ -13,42 +13,42 @@
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="6.0" y="20.0" z="-10.0"/>
+            <location x="6.0" y="10.0" z="-10.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="6.0" y="20.0" z="-5.0"/>
+            <location x="6.0" y="10.0" z="-5.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="6.0" y="20.0" z="0.0"/>
+            <location x="6.0" y="10.0" z="0.0"/>
         </placement>
         <placement>
             <unit-id>1</unit-id>
             <team-id>1</team-id>
-            <location x="6.0" y="20.0" z="5.0"/>
+            <location x="6.0" y="10.0" z="5.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>3</unit-id>
             <team-id>2</team-id>
-            <location x="1.0" y="20.0" z="-5.0"/>
+            <location x="1.0" y="10.0" z="-5.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>3</unit-id>
             <team-id>2</team-id>
-            <location x="1.0" y="20.0" z="0.0"/>
+            <location x="1.0" y="10.0" z="0.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>3</unit-id>
             <team-id>2</team-id>
-            <location x="1.0" y="20.0" z="5.0"/>
+            <location x="1.0" y="10.0" z="5.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>3</unit-id>
             <team-id>2</team-id>
-            <location x="1.0" y="20.0" z="10.0"/>
+            <location x="1.0" y="10.0" z="10.0"/>
         </placement>
     </unit-placements>
     <structure-placements>
@@ -58,7 +58,7 @@
             <location x="20.0" y="2.0" z="0.0"/>
         </placement>
         <placement>
-            <unit-id>1</unit-id>
+            <unit-id>2</unit-id>
             <team-id>2</team-id>
             <location x="-20.0" y="2.0" z="0.0"/>
         </placement>

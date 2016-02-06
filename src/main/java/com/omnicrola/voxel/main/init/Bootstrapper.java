@@ -11,7 +11,7 @@ public class Bootstrapper {
     public static VoxelGameLauncher bootstrap() {
         BulletAppState bulletAppState = new BulletAppState();
         VoxelGameEngine gameEngine = new VoxelGameEngine(bulletAppState);
-        gameEngine.setShowSettings(false);
+//        gameEngine.setShowSettings(false);
 
         AppSettings appSettings = new AppSettings(true);
         appSettings.setSettingsDialogImage("Textures/splash.jpg");

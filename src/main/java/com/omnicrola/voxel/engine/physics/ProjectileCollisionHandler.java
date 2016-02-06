@@ -27,6 +27,11 @@ public class ProjectileCollisionHandler extends AbstractCollisionHandler {
         }
     }
 
+    @Override
+    protected boolean isTerrain(Spatial otherObject) {
+        return super.isTerrain(otherObject);
+    }
+
     private boolean isNotFriendly(Spatial otherObject) {
         TeamData ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
         TeamData theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);

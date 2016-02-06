@@ -10,6 +10,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
@@ -60,7 +61,8 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public boolean isBelowTerrain(Geometry geometry) {
-        Vector3f location = geometry.getWorldTranslation();
+        Vector3f worldLocation = geometry.getWorldTranslation();
+        Vec3i location = Vec3i.floor(worldLocation.add(0, 0.5f, 0));
         VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
         return control.isVoxelSolidAt(location);
     }

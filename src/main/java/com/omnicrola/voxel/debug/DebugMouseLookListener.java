@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.debug;
 
 import com.jme3.input.controls.ActionListener;
+import com.jme3.renderer.Camera;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.ActivePlayState;
@@ -27,6 +28,8 @@ public class DebugMouseLookListener implements ActionListener {
             LevelState currentLevelState = activePlayState.getCurrentLevelState();
             currentLevelState.getWorldCursor().setVisible(!this.isLooking);
             this.jmeInputWrapper.setMouseGrabbed(this.isLooking);
+            Camera camera = this.voxelGameEngine.getCamera();
+            System.out.println(camera.getLocation() + "  " + camera.getRotation());
         }
     }
 }

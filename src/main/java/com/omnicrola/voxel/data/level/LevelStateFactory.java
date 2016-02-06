@@ -69,11 +69,13 @@ public class LevelStateFactory {
     }
 
     private void addStructures(LevelState levelState, LevelDefinition levelDefinition) {
+        VoxelTerrainControl terrainControl = levelState.getTerrain().getControl(VoxelTerrainControl.class);
         List<UnitPlacement> structures = levelDefinition.getStructures();
         for (UnitPlacement placement : structures) {
             TeamData teamData = levelState.getTeamById(placement.getTeamId());
             Spatial structure = this.gameContainer.world().build().structure(placement.getUnitId(), teamData);
-            structure.getControl(RigidBodyControl.class).setPhysicsLocation(placement.getLocation());
+            Vector3f position = terrainControl.getSpawnPointFor(placement.getLocation());
+            structure.getControl(RigidBodyControl.class).setPhysicsLocation(position);
             levelState.addUnit(structure);
         }
     }
@@ -84,7 +86,8 @@ public class LevelStateFactory {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
             Vector3f position = terrainControl.getSpawnPointFor(unitPlacement.getLocation());
-            entity.getControl(GroundVehicleControl.class).warp(position);
+            entity.getControl(GroundVehicleControl.class).setPhysicsLocation(position);
+            entity.setLocalTranslation(position);
             levelState.addUnit(entity);
 
             addOrientationArrow(levelState, entity);

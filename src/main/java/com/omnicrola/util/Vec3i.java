@@ -19,6 +19,18 @@ public class Vec3i implements Vec3iRead {
     @XmlAttribute(name = "z", required = true)
     private int z;
 
+    public static Vec3i round(Vector3f location) {
+        return round(location.x, location.y, location.z);
+    }
+
+    public static Vec3i round(float x, float y, float z) {
+        return new Vec3i(Math.round(x), Math.round(y), Math.round(z));
+    }
+
+    public static Vec3i floor(Vector3f location) {
+        return new Vec3i((int) location.x, (int) location.y, (int) location.z);
+    }
+
     public Vec3i() {
     }
 
@@ -26,16 +38,6 @@ public class Vec3i implements Vec3iRead {
         this.x = x;
         this.y = y;
         this.z = z;
-    }
-
-    public Vec3i(float x, float y, float z) {
-        this.x = (int) x;
-        this.y = (int) y;
-        this.z = (int) z;
-    }
-
-    public Vec3i(Vector3f location) {
-        this(location.x, location.y, location.z);
     }
 
     @Override

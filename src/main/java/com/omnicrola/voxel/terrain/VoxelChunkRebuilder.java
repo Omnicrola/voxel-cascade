@@ -3,9 +3,12 @@ package com.omnicrola.voxel.terrain;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.engine.physics.CollisionController;
+import com.omnicrola.voxel.engine.physics.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.physics.VoxelPhysicsControl;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
@@ -19,10 +22,12 @@ public class VoxelChunkRebuilder {
 
     private QuadFactory quadFactory;
     private IGamePhysics gamePhysics;
+    private IGameWorld gameWorld;
 
-    public VoxelChunkRebuilder(QuadFactory quadFactory, IGamePhysics gamePhysics) {
+    public VoxelChunkRebuilder(QuadFactory quadFactory, IGamePhysics gamePhysics, IGameWorld gameWorld) {
         this.quadFactory = quadFactory;
         this.gamePhysics = gamePhysics;
+        this.gameWorld = gameWorld;
     }
 
     public void rebuild(VoxelChunk chunk) {
@@ -31,8 +36,12 @@ public class VoxelChunkRebuilder {
         sweepAllThreeAxes(chunk, node, true);
         sweepAllThreeAxes(chunk, node, false);
 
-        Spatial batchNode = GeometryBatchFactory.optimize(node);
-        batchNode.addControl(new VoxelPhysicsControl(chunk.getWorldTranslation(),batchNode));
+        Node batchNode = (Node) GeometryBatchFactory.optimize(node);
+        batchNode.getChildren().forEach(c -> {
+            c.setUserData(EntityDataKeys.IS_TERRAIN, true);
+            c.addControl(new CollisionController(new TerrainCollisionHandler(c, this.gameWorld)));
+        });
+        batchNode.addControl(new VoxelPhysicsControl(chunk.getWorldTranslation(), batchNode));
         gamePhysics.add(batchNode);
 
         chunk.attachChild(batchNode);
@@ -233,6 +242,4 @@ public class VoxelChunkRebuilder {
         }
         return side;
     }
-
-
 }

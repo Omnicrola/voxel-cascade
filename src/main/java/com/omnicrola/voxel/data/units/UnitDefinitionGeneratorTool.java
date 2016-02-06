@@ -32,25 +32,30 @@ public class UnitDefinitionGeneratorTool {
 
     private static ArrayList<StructureDefinition> createStructures() {
         ArrayList<StructureDefinition> structures = new ArrayList<>();
-        structures.add(StructureGenerator.createCoreBuilding());
+        structures.add(StructureGenerator.createPlayerCoreBuilding());
+        structures.add(StructureGenerator.createEnemyCoreBuilding());
         return structures;
     }
 
     private static List<UnitDefinition> createUnits() {
         ArrayList<UnitDefinition> unitDefinitions = new ArrayList<>();
-        unitDefinitions.add(UnitGenerator.createDefaultTank());
+        unitDefinitions.add(UnitGenerator.createRedTank());
+        unitDefinitions.add(UnitGenerator.createGreenTank());
+        unitDefinitions.add(UnitGenerator.createBlueTank());
         return unitDefinitions;
     }
 
     private static List<WeaponDefinition> createWeapons() {
         ArrayList<WeaponDefinition> weaponDefinitions = new ArrayList<>();
-        weaponDefinitions.add(WeaponGenerator.createDefaultWeapon());
+        weaponDefinitions.add(WeaponGenerator.createCannon());
+        weaponDefinitions.add(WeaponGenerator.createBbGun());
         return weaponDefinitions;
     }
 
     private static List<ProjectileDefinition> createProjectiles() {
         ArrayList<ProjectileDefinition> projectileDefinitions = new ArrayList<>();
-        projectileDefinitions.add(ProjectileGenerator.createDefaultProjectile());
+        projectileDefinitions.add(ProjectileGenerator.createCannonballProjectile());
+        projectileDefinitions.add(ProjectileGenerator.createSmallBulletProjectile());
         return projectileDefinitions;
     }
 }

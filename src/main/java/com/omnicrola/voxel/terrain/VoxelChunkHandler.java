@@ -77,7 +77,7 @@ public class VoxelChunkHandler {
         float z = location.getZ();
         boolean belowGround = true;
         while (belowGround) {
-            Vec3i voxelPosition = new Vec3i(x, y, z);
+            Vec3i voxelPosition = Vec3i.round(x, y, z);
             if (isSolid(voxelPosition)) {
                 y++;
             } else {
@@ -95,8 +95,8 @@ public class VoxelChunkHandler {
         return true;
     }
 
-    public boolean isVoxelSolidAt(Vector3f location) {
-        Vec3i voxelLocation = new Vec3i(location);
-        return isSolid(voxelLocation);
+    public boolean isVoxelSolidAt(Vec3i location) {
+        boolean solid = isSolid(location);
+        return solid;
     }
 }
