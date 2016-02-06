@@ -15,7 +15,7 @@ public class LoadingState extends VoxelGameState {
     private float timeElapsed;
 
     public LoadingState() {
-        super("Loading");
+
     }
 
     @Override

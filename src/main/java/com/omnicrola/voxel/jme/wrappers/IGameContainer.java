@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.app.state.AppState;
 import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.engine.states.VoxelGameState;
 
@@ -22,4 +23,5 @@ public interface IGameContainer {
 
     AssetManager getAssetManager();
 
+    void addState(AppState voxelGameState);
 }

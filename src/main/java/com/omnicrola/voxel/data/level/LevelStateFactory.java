@@ -69,7 +69,7 @@ public class LevelStateFactory {
     }
 
     private void addStructures(LevelState levelState, LevelDefinition levelDefinition) {
-        VoxelTerrainControl terrainControl = levelState.getTerrain().getControl(VoxelTerrainControl.class);
+        VoxelTerrainControl terrainControl = levelState.getTerrainNode().getControl(VoxelTerrainControl.class);
         List<UnitPlacement> structures = levelDefinition.getStructures();
         for (UnitPlacement placement : structures) {
             TeamData teamData = levelState.getTeamById(placement.getTeamId());
@@ -81,7 +81,7 @@ public class LevelStateFactory {
     }
 
     private void addUnits(LevelState levelState, LevelDefinition levelDefinition) {
-        VoxelTerrainControl terrainControl = levelState.getTerrain().getControl(VoxelTerrainControl.class);
+        VoxelTerrainControl terrainControl = levelState.getTerrainNode().getControl(VoxelTerrainControl.class);
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);

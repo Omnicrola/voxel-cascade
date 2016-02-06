@@ -35,7 +35,6 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     private List<ILevelChangeObserver> observers;
 
     public ActivePlayState(GameXmlDataParser gameDataParser) {
-        super("Active Play");
         this.gameDataParser = gameDataParser;
         this.observers = new ArrayList<>();
     }
@@ -114,4 +113,5 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
             this.currentLevelState.detatchFromWorld(this.gameContainer);
         }
     }
+
 }

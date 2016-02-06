@@ -53,11 +53,11 @@ public class AttackCursorStrategy implements ICursorStrategy {
 
     private void attackTarget(SelectionGroup currentSelection) {
         WorldCursor worldCursor = this.currentLevelState.getWorldCursor();
-        Optional<CollisionResult> unitUnderCursor = worldCursor.getUnitUnderCursor(this.currentLevelState.getUnits());
+        Optional<CollisionResult> unitUnderCursor = worldCursor.getUnitUnderCursor(this.currentLevelState.getUnitsNode());
         if (unitUnderCursor.isPresent()) {
             currentSelection.orderAttackTarget(unitUnderCursor.get().getGeometry());
         } else {
-            Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.currentLevelState.getTerrain());
+            Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.currentLevelState.getTerrainNode());
             if (terrainUnderCursor.isPresent()) {
                 Vector3f terrainLocation = terrainUnderCursor.get().getContactPoint();
                 currentSelection.orderAttackLocation(terrainLocation);

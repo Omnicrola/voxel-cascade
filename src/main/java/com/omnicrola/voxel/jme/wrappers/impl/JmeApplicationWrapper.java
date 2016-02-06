@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers.impl;
 
+import com.jme3.app.state.AppState;
 import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -73,5 +74,10 @@ public class JmeApplicationWrapper implements IGameContainer {
             List<Spatial> children = ((Node) spatial).getChildren();
             children.forEach(c -> recursiveTreePrint(c, prefix + "- "));
         }
+    }
+
+    @Override
+    public void addState(AppState gameState) {
+        this.game.getStateManager().attach(gameState);
     }
 }

@@ -26,7 +26,6 @@ public class MainMenuState extends VoxelGameState {
     private IGameContainer gameContainer;
 
     public MainMenuState(ActivePlayState activePlayState) {
-        super("Main Menu");
         this.activePlayState = activePlayState;
     }
 

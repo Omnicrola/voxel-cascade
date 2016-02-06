@@ -51,7 +51,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
                 SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, spatials);
                 this.worldCursor.setCurrentSelection(selectionGroup);
             } else {
-                Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor(this.levelState.getUnits());
+                Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor(this.levelState.getUnitsNode());
                 if (unitUnderCursor.isPresent()) {
                     Geometry unit = unitUnderCursor.get().getGeometry();
                     SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, Arrays.asList(unit));

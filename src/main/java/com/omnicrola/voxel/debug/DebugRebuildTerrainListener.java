@@ -21,7 +21,7 @@ public class DebugRebuildTerrainListener implements ActionListener{
         if (!isPressed) {
             ActivePlayState activePlayState = this.voxelGameEngine.getStateManager().getState(ActivePlayState.class);
             LevelState currentLevelState = activePlayState.getCurrentLevelState();
-            VoxelTerrainControl control = currentLevelState.getTerrain().getControl(VoxelTerrainControl.class);
+            VoxelTerrainControl control = currentLevelState.getTerrainNode().getControl(VoxelTerrainControl.class);
             control.forceRebuild();
         }
     }

@@ -1,12 +1,12 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.light.Light;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
@@ -14,7 +14,6 @@ import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,6 +22,7 @@ import java.util.Optional;
 public class LevelState implements ILevelStateRead, IDisposable {
     private final ArrayList<TeamData> teams;
     private final ArrayList<Light> lights;
+    private final ArrayList<Spatial> allUnits;
     private Node units;
     private Node terrain;
     private WorldCursor worldCursor;
@@ -39,6 +39,7 @@ public class LevelState implements ILevelStateRead, IDisposable {
         this.units = new Node();
         this.lights = new ArrayList<>();
         this.worldCursor = worldCursor;
+        this.allUnits = new ArrayList<>();
         this.levelName = levelName;
         this.resources = 0;
         this.timeElapsed = 0;
@@ -48,12 +49,17 @@ public class LevelState implements ILevelStateRead, IDisposable {
         this.teams.add(team);
     }
 
-    public Node getUnits() {
+    public Node getUnitsNode() {
         return units;
+    }
+
+    public ArrayList<Spatial> getAllUnits() {
+        return new ArrayList<>(allUnits);
     }
 
     public void addUnit(Spatial unit) {
         this.units.attachChild(unit);
+        this.allUnits.add(unit);
         if (isActive) {
             this.gameContainer.physics().add(unit);
         }
@@ -82,17 +88,13 @@ public class LevelState implements ILevelStateRead, IDisposable {
         return timeElapsed;
     }
 
-    public Node getTerrain() {
+    public Node getTerrainNode() {
         return this.terrain;
     }
 
     @Override
     public WorldCursor getWorldCursor() {
         return worldCursor;
-    }
-
-    public List<Light> getLights() {
-        return this.lights;
     }
 
     public TeamData getPlayerTeam() {
@@ -144,6 +146,7 @@ public class LevelState implements ILevelStateRead, IDisposable {
         this.gameContainer.world().attachTerrain(this.terrain);
         this.gameContainer.world().attachLights(this.lights);
         this.gameContainer.world().attach(this.worldCursor);
+        this.gameContainer.addState(new AnnihilationWinConditionState(this.teams));
     }
 
     public void detatchFromWorld(IGameContainer gameContainer) {
