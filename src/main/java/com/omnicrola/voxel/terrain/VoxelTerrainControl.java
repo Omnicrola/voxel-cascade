@@ -75,4 +75,7 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
         this.voxelChunkHandler.flagAllChunksForRebuild();
     }
 
+    public Vector3f getSpawnPointFor(Vector3f location) {
+        return this.voxelChunkHandler.adjustLocationForHeight(location);
+    }
 }

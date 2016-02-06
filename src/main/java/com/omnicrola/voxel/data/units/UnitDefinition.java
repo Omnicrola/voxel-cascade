@@ -57,9 +57,9 @@ public class UnitDefinition {
 
     @XmlElementWrapper(name = "commands")
     @XmlAnyElement(lax = true)
-    protected List<IEntityCommand> commands  = new ArrayList<>();
+    protected List<IEntityCommand> commands = new ArrayList<>();
 
-    @XmlElementWrapper(name="build-targets")
+    @XmlElementWrapper(name = "build-targets")
     @XmlAnyElement(lax = true)
     protected List<IEntityCommand> buildCommands = new ArrayList<>();
 
@@ -107,7 +107,7 @@ public class UnitDefinition {
         ProjectileDefinition projectileDefinition = repository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
         ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
-        controlFactories.add(new UnitPhysicsControlFactory(this.mass));
+        controlFactories.add(new GroundVehicleControlFactory(gameContainer.world(), this.mass));
         controlFactories.add(new CollisionControlFactory(gameContainer.world()));
         controlFactories.add(new CommandControlFactory(this.commands, this.buildCommands));
         controlFactories.add(new EntityAiControlFactory(gameContainer, weaponDefinition, projectileDefinition.getId(), this.weaponEmissionOffset, this.movementDefinition));

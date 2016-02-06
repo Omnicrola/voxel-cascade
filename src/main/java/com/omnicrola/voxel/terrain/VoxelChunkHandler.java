@@ -6,6 +6,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.data.ChunkId;
 import com.omnicrola.voxel.terrain.data.EmptyVoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -68,5 +69,29 @@ public class VoxelChunkHandler {
 
     public void flagAllChunksForRebuild() {
         this.chunks.values().forEach(c -> c.flagForRebuild());
+    }
+
+    public Vector3f adjustLocationForHeight(Vector3f location) {
+        float x = location.getX();
+        float y = 0;
+        float z = location.getZ();
+        boolean belowGround = true;
+        while (belowGround) {
+            Vec3i voxelPosition = new Vec3i(x, y, z);
+            if (isSolid(voxelPosition)) {
+                y++;
+            } else {
+                belowGround = false;
+            }
+        }
+        return new Vector3f(x, y + 1, z);
+    }
+
+    private boolean isSolid(Vec3i worldPosition) {
+        byte voxel = this.getChunkContaining(worldPosition).getVoxelGlobal(worldPosition);
+        if (voxel == VoxelType.EMPTY.uniqueId()) {
+            return false;
+        }
+        return true;
     }
 }

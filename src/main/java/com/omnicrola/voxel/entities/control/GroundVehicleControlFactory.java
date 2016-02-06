@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.entities.control;
 
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,16 +11,18 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 
 @XmlRootElement(name = "PhysicsControl")
-public class UnitPhysicsControlFactory implements IControlFactory {
+public class GroundVehicleControlFactory implements IControlFactory {
     private float mass;
+    private IGameWorld gameWorld;
 
-    public UnitPhysicsControlFactory(float mass) {
+    public GroundVehicleControlFactory(IGameWorld gameWorld, float mass) {
         this.mass = mass;
+        this.gameWorld = gameWorld;
     }
 
     @Override
     public void build(Spatial spatial) {
-        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(this.mass);
+        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(this.gameWorld, this.mass);
         spatial.addControl(tankVehicleControl);
     }
 }

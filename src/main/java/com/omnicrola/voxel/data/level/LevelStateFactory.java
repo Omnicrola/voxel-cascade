@@ -13,6 +13,7 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
+import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 
 import java.util.List;
@@ -76,10 +77,13 @@ public class LevelStateFactory {
     }
 
     private void addUnits(LevelState levelState, LevelDefinition levelDefinition) {
+        VoxelTerrainControl terrainControl = levelState.getTerrain().getControl(VoxelTerrainControl.class);
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
-            entity.getControl(GroundVehicleControl.class).setPhysicsLocation(unitPlacement.getLocation());
+            Vector3f position = terrainControl.getSpawnPointFor(unitPlacement.getLocation());
+            System.out.println(position);
+            entity.getControl(GroundVehicleControl.class).setPhysicsLocation(position);
             levelState.addUnit(entity);
         }
     }

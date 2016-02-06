@@ -28,6 +28,12 @@ public class Vec3i implements Vec3iRead {
         this.z = z;
     }
 
+    public Vec3i(float x, float y, float z) {
+        this.x = (int) x;
+        this.y = (int) y;
+        this.z = (int) z;
+    }
+
     @Override
     public int getX() {
         return x;

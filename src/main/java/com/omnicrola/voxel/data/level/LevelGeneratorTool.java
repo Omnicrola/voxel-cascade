@@ -71,15 +71,15 @@ public class LevelGeneratorTool {
     private static ArrayList<UnitPlacement> createBasicUnits() {
         ArrayList<UnitPlacement> unitPlacements = new ArrayList<>();
 
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 20, -10));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 20, -5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 20, 0));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 20, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, -10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, PLAYER_TEAM_ID, 6, 10, 5));
 
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 20, -5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 20, 0));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 20, 5));
-        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 20, 10));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, -5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, 0));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, 5));
+        unitPlacements.add(createUnitPlacement(UnitGenerator.DEFAULT_TANK_ID, OPPONENT_TEAM_ID, 1, 10, 10));
         return unitPlacements;
     }
 
