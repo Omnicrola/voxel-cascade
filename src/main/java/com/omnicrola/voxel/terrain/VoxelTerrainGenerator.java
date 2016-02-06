@@ -1,12 +1,9 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.level.LevelDefinition;
-import com.omnicrola.voxel.engine.MaterialRepository;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
@@ -14,33 +11,45 @@ import com.omnicrola.voxel.terrain.data.VoxelType;
  */
 public class VoxelTerrainGenerator {
 
-    private IGameContainer gameContainer;
+    private ChunkHandlerFactory chunkHandlerFactory;
+    private PerlinNoiseGenerator perlinNoiseGenerator;
 
-    public VoxelTerrainGenerator(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
+    public VoxelTerrainGenerator(ChunkHandlerFactory chunkHandlerFactory, PerlinNoiseGenerator perlinNoiseGenerator) {
+        this.chunkHandlerFactory = chunkHandlerFactory;
+        this.perlinNoiseGenerator = perlinNoiseGenerator;
     }
 
     public Node load(LevelDefinition levelData) {
         Node terrainRoot = new Node("Terrain");
-        AssetManager assetManager = this.gameContainer.getAssetManager();
-        QuadFactory quadFactory = new QuadFactory(new MaterialRepository(assetManager));
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, this.gameContainer.physics());
-        VoxelChunkHandler voxelChunkHandler = new VoxelChunkHandler(voxelChunkRebuilder);
+        VoxelChunkHandler voxelChunkHandler = this.chunkHandlerFactory.build();
 
-        Vec3iRead size = levelData.getTerrainSize();
-        int halfX = size.getX() / 2;
-        int halfY = size.getY() / 2;
-        int halfZ = size.getZ() / 2;
-        for (int x = -halfX; x <= halfX; x++) {
-            for (int y = -halfY; y <= halfY; y++) {
-                for (int z = -halfZ; z <= halfZ; z++) {
-                    VoxelType type = (Math.random() < 0.97) ? VoxelType.BLUE : VoxelType.EMPTY;
-                    voxelChunkHandler.set(new Vec3i(x, y, z), type);
-                }
-            }
-        }
+        TerrainDefinition terrainDefinition = levelData.getTerrain();
+        int width = terrainDefinition.getWidth();
+        int depth = terrainDefinition.getDepth();
+        int seed = terrainDefinition.getSeed();
+        this.perlinNoiseGenerator.setOctaves(terrainDefinition.getOctaves());
+        this.perlinNoiseGenerator.setSeed(terrainDefinition.getSeed());
+        float[][] noise = this.perlinNoiseGenerator.generate(width, depth);
+        setVoxels(voxelChunkHandler, terrainDefinition, noise);
 
         terrainRoot.addControl(new VoxelTerrainControl(voxelChunkHandler));
         return terrainRoot;
+    }
+
+    private void setVoxels(VoxelChunkHandler voxelChunkHandler, TerrainDefinition terrain, float[][] noise) {
+        int halfWidth = terrain.getWidth() / 2;
+        int halfDepth = terrain.getDepth() / 2;
+        for (int x = 0; x < noise.length; x++) {
+            for (int z = 0; z < noise[x].length; z++) {
+                float height = noise[x][z] * terrain.getVerticalScale();
+                fillZ(voxelChunkHandler, x - halfWidth, z - halfDepth, height);
+            }
+        }
+    }
+
+    private void fillZ(VoxelChunkHandler voxelChunkHandler, int x, int z, float height) {
+        for (int y = 0; y <= height; y++) {
+            voxelChunkHandler.set(new Vec3i(x, y, z), VoxelType.BLUE);
+        }
     }
 }

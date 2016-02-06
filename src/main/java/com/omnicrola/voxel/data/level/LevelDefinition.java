@@ -2,8 +2,6 @@ package com.omnicrola.voxel.data.level;
 
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
-import com.omnicrola.util.Vec3i;
-import com.omnicrola.util.Vec3iRead;
 import com.omnicrola.voxel.data.QuaternionXmlTypeAdapter;
 import com.omnicrola.voxel.data.UuidXmlTypeAdapter;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
@@ -29,19 +27,16 @@ public class LevelDefinition {
     @XmlJavaTypeAdapter(UuidXmlTypeAdapter.class)
     protected UUID uuid;
 
-    @XmlElement(name="camera-start-position", required = true)
+    @XmlElement(name = "camera-start-position", required = true)
     @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
     protected Vector3f cameraPosition;
 
-    @XmlElement(name="camera-orientation")
+    @XmlElement(name = "camera-orientation")
     @XmlJavaTypeAdapter(QuaternionXmlTypeAdapter.class)
     protected Quaternion cameraOrientation;
 
-    @XmlElement(name = "terrain-dimensions", required = true)
-    protected Vec3i terrainSize = new Vec3i(40, 5, 40);
-
-    @XmlElement(name = "terrain-offset", required = true)
-    protected Vec3i terrainOffset = new Vec3i(0, -5, 0);
+    @XmlElement(name="terrain")
+    protected TerrainDefinition terrain = new TerrainDefinition();
 
     @XmlElementWrapper(name = "unit-placements", required = true)
     @XmlElement(name = "placement")
@@ -61,14 +56,6 @@ public class LevelDefinition {
 
     public String getName() {
         return name;
-    }
-
-    public Vec3iRead getTerrainOffset() {
-        return terrainOffset;
-    }
-
-    public Vec3iRead getTerrainSize() {
-        return terrainSize;
     }
 
     public List<UnitPlacement> getUnitPlacements() {
@@ -93,5 +80,9 @@ public class LevelDefinition {
 
     public Quaternion getCameraOrientation() {
         return this.cameraOrientation;
+    }
+
+    public TerrainDefinition getTerrain() {
+        return terrain;
     }
 }

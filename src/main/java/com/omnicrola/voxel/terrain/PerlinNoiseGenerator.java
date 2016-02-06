@@ -10,6 +10,7 @@ public class PerlinNoiseGenerator {
     private Random random;
     private int octaveCount;
     private float amplitude;
+    private int randomSeed;
 
     public PerlinNoiseGenerator() {
         this.random = new Random();
@@ -17,8 +18,8 @@ public class PerlinNoiseGenerator {
         this.octaveCount = 4;
     }
 
-    public float[][] generate(int width, int height, int seed) {
-        this.random = new Random(seed);
+    public float[][] generate(int width, int height) {
+        this.random = new Random(this.randomSeed);
         final float[][] whiteNoise = generateWhiteNoise(width, height);
         return generatePerlinNoise(whiteNoise, this.octaveCount);
     }
@@ -26,6 +27,7 @@ public class PerlinNoiseGenerator {
     private float[][] generatePerlinNoise(float[][] baseNoise, int octaveCount) {
         final int width = baseNoise.length;
         final int height = baseNoise[0].length;
+        float workingAmplitude = this.amplitude;
 
         final float[][][] smoothNoise = new float[octaveCount][][]; // an array
         // of 2D
@@ -40,18 +42,17 @@ public class PerlinNoiseGenerator {
         }
 
         final float[][] perlinNoise = new float[width][height];
-        this.amplitude = 1.0f;
         float totalAmplitude = 0.0f;
 
         // blend noise together
         for (int octave = octaveCount - 1; octave >= 0; octave--) {
-            this.amplitude *= persistance;
-            totalAmplitude += this.amplitude;
+            workingAmplitude *= persistance;
+            totalAmplitude += workingAmplitude;
 
             for (int i = 0; i < width; i++) {
                 for (int j = 0; j < height; j++) {
                     perlinNoise[i][j] += smoothNoise[octave][i][j]
-                            * this.amplitude;
+                            * workingAmplitude;
                 }
             }
         }
@@ -59,7 +60,6 @@ public class PerlinNoiseGenerator {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 perlinNoise[i][j] /= totalAmplitude;
-                perlinNoise[i][j] = (float) (Math.floor(perlinNoise[i][j] * 25));
             }
         }
 
@@ -128,5 +128,17 @@ public class PerlinNoiseGenerator {
 
     public void setOctaves(int octaveCount) {
         this.octaveCount = octaveCount;
+    }
+
+    public float getAmplitude() {
+        return amplitude;
+    }
+
+    public int getOctaves() {
+        return this.octaveCount;
+    }
+
+    public void setSeed(int seed) {
+        this.randomSeed = seed;
     }
 }

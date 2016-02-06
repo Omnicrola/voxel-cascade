@@ -12,6 +12,8 @@ import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
 import com.omnicrola.voxel.input.listeners.PanCameraListener;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.ChunkHandlerFactory;
+import com.omnicrola.voxel.terrain.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
@@ -42,7 +44,9 @@ public class ActivePlayState extends VoxelGameState implements ICurrentLevelProv
     protected void voxelInitialize(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
-        this.levelStateFactory = new LevelStateFactory(new VoxelTerrainGenerator(gameContainer), gameContainer);
+        ChunkHandlerFactory chunkHandlerFactory = new ChunkHandlerFactory(gameContainer);
+        VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(chunkHandlerFactory, new PerlinNoiseGenerator());
+        this.levelStateFactory = new LevelStateFactory(voxelTerrainGenerator, gameContainer);
 
         initializeKeybindings(gameContainer);
 
