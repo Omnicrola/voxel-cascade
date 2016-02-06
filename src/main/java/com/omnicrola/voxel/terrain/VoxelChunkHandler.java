@@ -25,7 +25,7 @@ public class VoxelChunkHandler {
         this.chunks = new HashMap<>();
     }
 
-    public void set(Vec3i location, IVoxelType voxelType) {
+    public void set(Vec3i location, byte voxelType) {
         ChunkId chunkId = ChunkId.fromGlobal(location);
         VoxelChunk chunk = findChunk(chunkId);
         chunk.set(location, voxelType);

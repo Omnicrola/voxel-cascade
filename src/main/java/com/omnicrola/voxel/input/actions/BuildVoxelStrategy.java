@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.input.actions;
 
 import com.jme3.cursors.plugins.JmeCursor;
-import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -29,14 +28,12 @@ public class BuildVoxelStrategy implements ICursorStrategy {
         this.buildCursor = buildCursor;
         this.cursor3d = new Node();
         this.cursor3d.attachChild(ghostVoxel);
-        ghostVoxel.setLocalTranslation(0, 1, 0);
     }
 
     @Override
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
-        Vec3i snappedLocation = this.levelState.getWorldCursor().getSnappedLocation().translate(0, 1, 0);
-        Geometry voxel = this.gameContainer.world().build().terrainVoxel(ColorRGBA.randomColor());
-        this.levelState.createVoxel(voxel, snappedLocation);
+        Vec3i snappedLocation = this.levelState.getWorldCursor().getSnappedLocation();
+        this.levelState.createVoxel(this.voxelType, snappedLocation);
         if (!gameMouseEvent.isMultiSelecting()) {
             this.levelState.getWorldCursor().clearCursorStrategy();
         }

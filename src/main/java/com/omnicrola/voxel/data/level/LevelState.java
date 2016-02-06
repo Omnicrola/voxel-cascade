@@ -10,6 +10,7 @@ import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
+import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -153,8 +154,8 @@ public class LevelState implements ILevelStateRead, IDisposable {
         this.gameContainer.world().detatch(this.worldCursor);
     }
 
-    public void createVoxel(Geometry voxel, Vec3i location) {
-//        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
-//        control.createVoxel(voxel, location);
+    public void createVoxel(byte voxel, Vec3i location) {
+        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
+        control.setVoxel(voxel, location);
     }
 }

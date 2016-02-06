@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.terrain.IVoxelType;
 
 /**
  * Created by omnic on 2/2/2016.
@@ -25,7 +24,7 @@ public class EmptyVoxelChunk extends VoxelChunk {
     }
 
     @Override
-    public void set(Vec3i location, IVoxelType type) {
+    public void set(Vec3i location, byte type) {
     }
 
     @Override

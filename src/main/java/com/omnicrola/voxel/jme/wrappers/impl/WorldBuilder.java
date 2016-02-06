@@ -47,7 +47,12 @@ public class WorldBuilder implements IWorldBuilder {
 
     @Override
     public Geometry terrainVoxel(ColorRGBA color) {
-        return null;
+        Box box = new Box(0.5f, 0.5f, 0.5f);
+        Geometry geometry = new Geometry("voxel", box);
+        Material material = createMaterial(color);
+        geometry.setMaterial(material);
+        geometry.setLocalTranslation(0.5f, 0.5f, 0.5f);
+        return geometry;
     }
 
     @Override
@@ -178,6 +183,7 @@ public class WorldBuilder implements IWorldBuilder {
         arrow.setLineWidth(4);
         return buildShape(arrow, color);
     }
+
     private Geometry buildShape(Mesh shape, ColorRGBA color) {
         Geometry geometry = new Geometry("coordinate axis", shape);
         Material mat = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
@@ -186,5 +192,4 @@ public class WorldBuilder implements IWorldBuilder {
         geometry.setMaterial(mat);
         return geometry;
     }
-
 }

@@ -9,6 +9,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
+import com.omnicrola.util.Vec3i;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -81,5 +82,9 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
 
     public boolean isVoxelSolidAt(Vector3f location) {
         return this.voxelChunkHandler.isVoxelSolidAt(location);
+    }
+
+    public void setVoxel(byte voxel, Vec3i location) {
+        this.voxelChunkHandler.set(location, voxel);
     }
 }

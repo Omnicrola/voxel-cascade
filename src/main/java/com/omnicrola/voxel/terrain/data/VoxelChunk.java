@@ -31,9 +31,9 @@ public class VoxelChunk extends Node {
         this.isDirty = false;
     }
 
-    public void set(Vec3i location, IVoxelType type) {
+    public void set(Vec3i location, byte type) {
         Vec3i localize = this.chunkId.localize(location);
-        setVoxel(localize, type.uniqueId());
+        setVoxel(localize, type);
     }
 
     private byte getVoxel(Vec3i index) {
