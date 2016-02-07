@@ -15,44 +15,57 @@ public class MotionGovernorControl extends AbstractControl {
     public static final float DAMPENING = 0.0001f;
     public static final Vector3f MAX_VELOCITY = new Vector3f(2, 2, 2);
 
-    private final Vector3f masterSteering;
+    private final Vector3f desiredVelocity;
     private MovementDefinition movementDefinition;
 
     public MotionGovernorControl(MovementDefinition movementDefinition) {
         this.movementDefinition = movementDefinition;
-        this.masterSteering = new Vector3f();
+        this.desiredVelocity = new Vector3f();
     }
 
-    private void addSteering(Vector3f steering) {
-        this.masterSteering.x += steering.x;
-        this.masterSteering.y += steering.y;
-        this.masterSteering.z += steering.z;
+    private void addDesiredVelocity(Vector3f vel) {
+        this.desiredVelocity.x += vel.x;
+        this.desiredVelocity.y += vel.y;
+        this.desiredVelocity.z += vel.z;
     }
 
     public void moveToward(Vector3f targetPosition) {
         GroundVehicleControl physicsControl = getPhysicsControl();
-        final Vector3f desiredVelocity = targetPosition.subtract(physicsControl.getPhysicsLocation());
-        final Vector3f steering = desiredVelocity.subtract(physicsControl.getWalkDirection());
-        addSteering(steering);
+        Vector3f ourLocation = physicsControl.getPhysicsLocation();
+        final Vector3f desiredVelocity = targetPosition
+                .subtract(ourLocation)
+                .normalize()
+                .mult(this.movementDefinition.getMaxVelocity());
+        addDesiredVelocity(desiredVelocity);
     }
 
-    private GroundVehicleControl getPhysicsControl() {
-        return this.spatial.getControl(GroundVehicleControl.class);
-    }
 
     @Override
     protected void controlUpdate(float tpf) {
+        float maxVelocity = this.movementDefinition.getMaxVelocity();
+        float maxTurnSpeed = this.movementDefinition.getTurnspeed();
         GroundVehicleControl physicsControl = getPhysicsControl();
-        Vector3f steering = this.masterSteering
-                .normalize()
-                .mult(this.movementDefinition.getMaxVelocity());
-        if (steering.length() > 0) {
-            physicsControl.setWalkDirection(steering);
-            physicsControl.setViewDirection(steering.setY(0).normalize().mult(0.5f));
+
+        Vector3f currentVelocity = physicsControl.getWalkDirection();
+        Vector3f steering = this.desiredVelocity.subtract(currentVelocity);
+        truncate(steering, maxTurnSpeed);
+        Vector3f newVelocity = currentVelocity.add(steering);
+        truncate(newVelocity, maxVelocity);
+
+        if (newVelocity.length() > 0) {
+            physicsControl.setWalkDirection(newVelocity);
+            physicsControl.setViewDirection(newVelocity.setY(0));
         } else {
             physicsControl.setWalkDirection(Vector3f.ZERO);
         }
-        this.masterSteering.set(0, 0, 0);
+        this.desiredVelocity.set(0, 0, 0);
+    }
+
+    private void truncate(Vector3f vector3f, float max) {
+        if (vector3f.length() > max) {
+            Vector3f truncated = vector3f.normalize().mult(max);
+            vector3f.set(truncated);
+        }
     }
 
     @Override
@@ -61,10 +74,14 @@ public class MotionGovernorControl extends AbstractControl {
     }
 
     public void holdPosition() {
-        this.masterSteering.set(0, 0, 0);
+        this.desiredVelocity.set(0, 0, 0);
     }
 
     public float getPersonalRadius() {
         return this.movementDefinition.getPersonalRadius();
+    }
+
+    private GroundVehicleControl getPhysicsControl() {
+        return this.spatial.getControl(GroundVehicleControl.class);
     }
 }

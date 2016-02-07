@@ -48,7 +48,7 @@ public class UnitGenerator {
         unitDefinition.weaponId = WeaponGenerator.ID_CANNON_WEAPON;
         unitDefinition.weaponEmissionOffset = new Vector3f(0, 0.5f, 0);
         unitDefinition.mass = 1f;
-        unitDefinition.movementDefinition = movementDef(1.0f, 0.2f, 0.01f);
+        unitDefinition.movementDefinition = movementDef(0.0005f, 0.05f);
         unitDefinition.commands.add(EntityCommand.MOVE);
         unitDefinition.commands.add(EntityCommand.ATTACK);
         unitDefinition.commands.add(EntityCommand.STOP);
@@ -57,11 +57,10 @@ public class UnitGenerator {
         return unitDefinition;
     }
 
-    private static MovementDefinition movementDef(float turnspeed, float maxVelocity, float accelleration) {
+    private static MovementDefinition movementDef(float turnspeed, float maxVelocity) {
         MovementDefinition movementDefinition = new MovementDefinition();
         movementDefinition.turnspeed = turnspeed;
         movementDefinition.maxVelocity = maxVelocity;
-        movementDefinition.accelleration = accelleration;
         movementDefinition.personalRadius = 1.0f;
         return movementDefinition;
     }

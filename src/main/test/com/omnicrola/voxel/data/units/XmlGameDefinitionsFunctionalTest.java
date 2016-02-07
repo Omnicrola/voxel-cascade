@@ -117,7 +117,6 @@ public class XmlGameDefinitionsFunctionalTest extends TestTools {
 
     private MovementDefinition createMovementDefinition() {
         MovementDefinition movementDefinition = new MovementDefinition();
-        movementDefinition.accelleration = randF();
         movementDefinition.maxVelocity = randF();
         movementDefinition.turnspeed = randF();
         return movementDefinition;

@@ -16,17 +16,10 @@ public class MovementDefinition {
     @XmlElement(name="turnspeed")
     protected float turnspeed;
 
-    @XmlElement(name="acceleration")
-    protected float accelleration;
-
     @XmlElement(name = "personal-radius")
     protected float personalRadius;
 
     public MovementDefinition() {
-    }
-
-    public float getAccelleration() {
-        return accelleration;
     }
 
     public float getMaxVelocity() {
