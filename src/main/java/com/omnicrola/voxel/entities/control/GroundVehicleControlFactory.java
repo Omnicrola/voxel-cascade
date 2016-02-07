@@ -21,7 +21,7 @@ public class GroundVehicleControlFactory implements IControlFactory {
 
     @Override
     public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
-        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(gameContainer.world(), this.mass);
+        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(gameContainer, this.mass);
         spatial.addControl(tankVehicleControl);
     }
 }

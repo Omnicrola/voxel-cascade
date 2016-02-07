@@ -46,4 +46,6 @@ public interface IGameWorld {
     void detatch(Spatial spatial);
 
     boolean isBelowTerrain(Geometry spatial);
+
+    Vector3f getSpawnPointFor(Vector3f location);
 }

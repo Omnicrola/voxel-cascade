@@ -67,6 +67,11 @@ public class JmeWorldWrapper implements IGameWorld {
         return control.isVoxelSolidAt(location);
     }
 
+    @Override
+    public Vector3f getSpawnPointFor(Vector3f location) {
+        return this.terrain.getControl(VoxelTerrainControl.class).getSpawnPointFor(location);
+    }
+
     private void addChildrenToPhysicsSpace(Spatial spatial) {
         this.physicsWrapper.add(spatial);
     }

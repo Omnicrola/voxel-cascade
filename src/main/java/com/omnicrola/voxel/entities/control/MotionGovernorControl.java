@@ -32,7 +32,7 @@ public class MotionGovernorControl extends AbstractControl {
     public void moveToward(Vector3f targetPosition) {
         GroundVehicleControl physicsControl = getPhysicsControl();
         final Vector3f desiredVelocity = targetPosition.subtract(physicsControl.getPhysicsLocation());
-        final Vector3f steering = desiredVelocity.subtract(physicsControl.getLinearVelocity());
+        final Vector3f steering = desiredVelocity.subtract(physicsControl.getWalkDirection());
         addSteering(steering);
     }
 
@@ -47,8 +47,10 @@ public class MotionGovernorControl extends AbstractControl {
                 .normalize()
                 .mult(this.movementDefinition.getMaxVelocity());
         if (steering.length() > 0) {
-            physicsControl.setLinearVelocity(steering.mult(4));
-//            physicsControl.setViewDirection(steering.setY(0).normalize().mult(0.5f));
+            physicsControl.setWalkDirection(steering);
+            physicsControl.setViewDirection(steering.setY(0).normalize().mult(0.5f));
+        } else {
+            physicsControl.setWalkDirection(Vector3f.ZERO);
         }
         this.masterSteering.set(0, 0, 0);
     }

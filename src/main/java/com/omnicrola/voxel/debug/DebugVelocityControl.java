@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control;
+package com.omnicrola.voxel.debug;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
@@ -21,7 +21,7 @@ public class DebugVelocityControl extends AbstractControl {
     protected void controlUpdate(float tpf) {
         GroundVehicleControl vehicleControl = this.target.getControl(GroundVehicleControl.class);
         if (vehicleControl != null) {
-            Vector3f walkDirection = vehicleControl.getLinearVelocity();
+            Vector3f walkDirection = vehicleControl.getWalkDirection();
 
             Vector3f lookTarget = walkDirection.add(this.spatial.getWorldTranslation());
             this.spatial.lookAt(lookTarget, Vector3f.UNIT_Y);
