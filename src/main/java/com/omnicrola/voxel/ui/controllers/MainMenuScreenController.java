@@ -1,7 +1,8 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
-import com.omnicrola.voxel.engine.states.ActivePlayState;
+import com.omnicrola.voxel.engine.states.ActivePlayInputState;
+import com.omnicrola.voxel.engine.states.CurrentLevelState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.SubscriberLink;
@@ -16,19 +17,18 @@ import de.lessvoid.nifty.controls.ButtonClickedEvent;
 public class MainMenuScreenController extends AbstractScreenController {
 
     private IGameContainer gameContainer;
-    private ActivePlayState activePlayState;
 
-    public MainMenuScreenController(IGameContainer gameContainer, ActivePlayState activePlayState) {
+    public MainMenuScreenController(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
-        this.activePlayState = activePlayState;
     }
 
     @NiftyEventSubscriber(id = "BUTTON_START")
     @SubscriberLink(UiToken.BUTTON_START)
     public void start(String id, ButtonClickedEvent buttonClickedEvent) {
         this.gameContainer.disableState(MainMenuState.class);
-        this.activePlayState.loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
-        this.gameContainer.enableState(ActivePlayState.class);
+        this.gameContainer.getState(CurrentLevelState.class).loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
+        this.gameContainer.enableState(CurrentLevelState.class);
+        this.gameContainer.enableState(ActivePlayInputState.class);
 
     }
 

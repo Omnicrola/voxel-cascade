@@ -76,7 +76,7 @@ public class LevelStateFactory {
             Spatial structure = this.gameContainer.world().build().structure(placement.getUnitId(), teamData);
             Vector3f position = terrainControl.getSpawnPointFor(placement.getLocation());
             structure.getControl(RigidBodyControl.class).setPhysicsLocation(position);
-            levelState.addUnit(structure);
+            levelState.addEntity(structure);
         }
     }
 
@@ -88,7 +88,7 @@ public class LevelStateFactory {
             Vector3f position = terrainControl.getSpawnPointFor(unitPlacement.getLocation());
             entity.getControl(GroundVehicleControl.class).setPhysicsLocation(position);
             entity.setLocalTranslation(position);
-            levelState.addUnit(entity);
+            levelState.addEntity(entity);
 
             addOrientationArrow(levelState, entity);
             addVelocityArrow(levelState, entity);
@@ -98,13 +98,13 @@ public class LevelStateFactory {
     private void addOrientationArrow(LevelState levelState, Spatial entity) {
         Spatial arrow = this.gameContainer.world().build().arrow(Vector3f.UNIT_Z, ColorRGBA.Blue);
         arrow.addControl(new DebugOrientationControl(entity));
-        levelState.addUnit(arrow);
+        levelState.addEntity(arrow);
     }
 
     private void addVelocityArrow(LevelState levelState, Spatial entity) {
         Spatial arrow = this.gameContainer.world().build().arrow(Vector3f.UNIT_Z, ColorRGBA.Green);
         arrow.addControl(new DebugVelocityControl(entity));
-        levelState.addUnit(arrow);
+        levelState.addEntity(arrow);
     }
 
     private WorldCursor createWorldCursor(Node terrain) {

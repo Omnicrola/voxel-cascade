@@ -43,7 +43,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
                 Vector3f location = terrainUnderCursor.get().getContactPoint();
 
                 unit.getControl(GroundVehicleControl.class).setPhysicsLocation(location.addLocal(0, 1, 0));
-                this.levelState.addUnit(unit);
+                this.levelState.addEntity(unit);
                 worldCursor.clearCursorStrategy();
             }
         }

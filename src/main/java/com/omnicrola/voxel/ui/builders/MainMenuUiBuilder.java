@@ -1,10 +1,9 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.ui.controllers.MainMenuScreenController;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
+import com.omnicrola.voxel.ui.controllers.MainMenuScreenController;
 import de.lessvoid.nifty.builder.*;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 
@@ -13,9 +12,9 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
  */
 public class MainMenuUiBuilder {
 
-    public static void build(IGameContainer gameContainer, ActivePlayState activePlayState) {
+    public static void build(IGameContainer gameContainer) {
         String screenName = UiScreen.MAIN_MENU.toString();
-        final MainMenuScreenController mainMenuScreenController = new MainMenuScreenController(gameContainer, activePlayState);
+        final MainMenuScreenController mainMenuScreenController = new MainMenuScreenController(gameContainer);
 
         gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
             controller(mainMenuScreenController);

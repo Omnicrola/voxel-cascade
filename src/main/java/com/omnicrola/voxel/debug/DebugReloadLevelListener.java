@@ -4,7 +4,7 @@ import com.jme3.input.controls.ActionListener;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.states.ActivePlayState;
+import com.omnicrola.voxel.engine.states.CurrentLevelState;
 
 /**
  * Created by Eric on 2/5/2016.
@@ -19,9 +19,9 @@ public class DebugReloadLevelListener implements ActionListener {
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
-            ActivePlayState activePlayState = voxelGameEngine.getStateManager().getState(ActivePlayState.class);
+            CurrentLevelState currentLevelState = voxelGameEngine.getStateManager().getState(CurrentLevelState.class);
             LevelDefinition basicLevelDefinition = LevelGeneratorTool.createBasicLevelDefinition();
-            activePlayState.loadLevel(basicLevelDefinition);
+            currentLevelState.loadLevel(basicLevelDefinition);
         }
     }
 }

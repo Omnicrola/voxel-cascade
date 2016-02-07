@@ -23,7 +23,7 @@ public class ExecutePrimaryCursorListener implements ActionListener {
         if (name.equals(GameInputAction.MULTI_SELECT.toString())) {
             this.isMultiSelecting = isPressed;
         } else if (name.equals(GameInputAction.MOUSE_PRIMARY.toString())) {
-            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevelState();
+            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
             WorldCursor worldCursor = currentLevelState.getWorldCursor();
             GameMouseEvent gameMouseEvent = new GameMouseEvent(isPressed, isMultiSelecting);
             worldCursor.executePrimary(gameMouseEvent);

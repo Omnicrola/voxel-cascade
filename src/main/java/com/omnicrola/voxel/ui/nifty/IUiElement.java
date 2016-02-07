@@ -11,4 +11,8 @@ public interface IUiElement {
     void addElement(ElementBuilder elementBuilder);
 
     void setText(String name);
+
+    void setWidth(int width);
+
+    int getWidth();
 }

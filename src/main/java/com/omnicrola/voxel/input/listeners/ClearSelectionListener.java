@@ -18,7 +18,7 @@ public class ClearSelectionListener implements ActionListener {
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
-            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevelState();
+            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
             WorldCursor worldCursor = currentLevelState.getWorldCursor();
             worldCursor.clearCursorStrategy();
             worldCursor.clearSelection();

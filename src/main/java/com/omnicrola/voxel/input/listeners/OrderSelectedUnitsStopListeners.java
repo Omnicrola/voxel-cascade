@@ -17,7 +17,7 @@ public class OrderSelectedUnitsStopListeners implements ActionListener {
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
             this.currentLevelProvider
-                    .getCurrentLevelState()
+                    .getCurrentLevel()
                     .getWorldCursor()
                     .getCurrentSelection()
                     .orderStop();

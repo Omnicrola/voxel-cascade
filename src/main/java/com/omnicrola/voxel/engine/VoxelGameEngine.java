@@ -4,11 +4,11 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
-import com.jme3.input.controls.ActionListener;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
-import com.omnicrola.voxel.input.GameInputAction;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeGuiWrapper;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
 import de.lessvoid.nifty.Nifty;
@@ -27,10 +27,11 @@ public class VoxelGameEngine extends SimpleApplication {
 
     @Override
     public void simpleInitApp() {
+        loadNiftyGui();
         this.stateManager.attach(this.bulletAppState);
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
-        VoxelGameEngineInitializer.initializeGame(this.stateManager);
-        loadNiftyGui();
+        JmeApplicationWrapper jmeApplicationWrapper = new JmeApplicationWrapper(this);
+        VoxelGameEngineInitializer.initializeGame(jmeApplicationWrapper, this.inputManager);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
     }
 

@@ -10,7 +10,7 @@ import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 public class DeathControllerFactory implements IControlFactory {
     @Override
     public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
-        DeathController deathController = new DeathController();
+        DeathController deathController = new DeathController(gameContainer);
         spatial.addControl(deathController);
     }
 }

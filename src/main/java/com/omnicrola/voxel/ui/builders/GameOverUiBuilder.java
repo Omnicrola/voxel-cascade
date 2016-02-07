@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.engine.states.IGameStatisticProvider;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
+import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.GameOverScreenController;
@@ -13,11 +13,11 @@ import de.lessvoid.nifty.tools.Color;
  * Created by Eric on 2/6/2016.
  */
 public class GameOverUiBuilder {
-    public static void build(IGameContainer gameContainer, IGameStatisticProvider statisticProvider) {
+    public static void build(IGameGui gameGui, ICurrentLevelProvider currentLevelProvider) {
         String screenName = UiScreen.GAME_OVER.toString();
-        GameOverScreenController gameOverScreenController = new GameOverScreenController(statisticProvider);
+        GameOverScreenController gameOverScreenController = new GameOverScreenController(currentLevelProvider);
 
-        gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
+        gameGui.build().screen(screenName, new ScreenBuilder(screenName) {{
             controller(gameOverScreenController);
             layer(new LayerBuilder("foreground") {{
                 backgroundColor(UiConstants.Colors.TRANSPARENT);
@@ -50,7 +50,21 @@ public class GameOverUiBuilder {
                         width(percentage(100));
                         height(pixels(20));
                     }});
-                    control(new ScrollPanelBuilder("scroll-panel") {{
+                    panel(new PanelBuilder() {{
+                        childLayoutHorizontal();
+                        alignCenter();
+                        width(percentage(90));
+                        height(pixels(20));
+                        text(new TextBuilder() {{
+                            text("Elapsed: ");
+                            font(UiConstants.DEFAULT_FONT);
+                        }});
+                        text(new TextBuilder(UiToken.ELAPSED_TIME.toString()) {{
+                            text("--:--:--");
+                            font(UiConstants.DEFAULT_FONT);
+                        }});
+                    }});
+                    control(new ScrollPanelBuilder(UiToken.TEAM_RESULTS_CONTAINER.toString()) {{
                         parameter("horizontal", "false");
                         childLayoutVertical();
                         height("*");

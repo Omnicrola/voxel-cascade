@@ -15,5 +15,8 @@ public enum UiToken implements IUiToken {
     ACTION_6,
     ACTION_7,
     ACTION_8,
-    ACTION_9;
+    ACTION_9,
+    ELAPSED_TIME,
+    TEAM_RESULTS_CONTAINER;
+
 }

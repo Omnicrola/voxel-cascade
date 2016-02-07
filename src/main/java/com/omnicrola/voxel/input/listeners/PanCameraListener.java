@@ -2,7 +2,7 @@ package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
-import com.omnicrola.voxel.engine.states.ActivePlayState;
+import com.omnicrola.voxel.engine.states.ActivePlayInputState;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
@@ -41,12 +41,12 @@ public class PanCameraListener implements ActionListener, AnalogListener {
         }
     }
 
-    public void registerInputs(ActivePlayState activePlayState) {
-        activePlayState.addStateInput(GameInputAction.CAMERA_FORWARD, this);
-        activePlayState.addStateInput(GameInputAction.CAMERA_BACKWARD, this);
-        activePlayState.addStateInput(GameInputAction.CAMERA_LEFT, this);
-        activePlayState.addStateInput(GameInputAction.CAMERA_RIGHT, this);
-        activePlayState.addStateInput(GameInputAction.CAMERA_UP, this);
-        activePlayState.addStateInput(GameInputAction.CAMERA_DOWN, this);
+    public void registerInputs(ActivePlayInputState activePlayInputState) {
+        activePlayInputState.addStateInput(GameInputAction.CAMERA_FORWARD, this);
+        activePlayInputState.addStateInput(GameInputAction.CAMERA_BACKWARD, this);
+        activePlayInputState.addStateInput(GameInputAction.CAMERA_LEFT, this);
+        activePlayInputState.addStateInput(GameInputAction.CAMERA_RIGHT, this);
+        activePlayInputState.addStateInput(GameInputAction.CAMERA_UP, this);
+        activePlayInputState.addStateInput(GameInputAction.CAMERA_DOWN, this);
     }
 }

@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.ui.controllers;
 
-import com.omnicrola.voxel.engine.states.IGameStatisticProvider;
+import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
@@ -16,40 +16,53 @@ import java.util.List;
  */
 public class GameOverScreenController extends AbstractScreenController {
 
-    private IGameStatisticProvider statisticProvider;
+    private ICurrentLevelProvider currentLevelProvider;
 
-    public GameOverScreenController(IGameStatisticProvider statisticProvider) {
-        this.statisticProvider = statisticProvider;
+    public GameOverScreenController(ICurrentLevelProvider currentLevelProvider) {
+        this.currentLevelProvider = currentLevelProvider;
     }
 
     @Override
     public void onStartScreen() {
         IUiElement resultsPanel = ui().getElement(UiToken.TEAM_RESULTS_PANEL);
+        IUiElement resultsContainer = ui().getElement(UiToken.TEAM_RESULTS_CONTAINER);
+        IUiElement elapsedTimeLabel = ui().getElement(UiToken.ELAPSED_TIME);
         resultsPanel.removeAllChildren();
+        resultsPanel.setWidth(resultsContainer.getWidth());
 
-        List<TeamStatistics> teamStatistics = this.statisticProvider.getTeamStatistics();
-        resultsPanel.addElement(teamRow("Team", "Units", "Structures", ""));
+        elapsedTimeLabel.setText(formatTime(currentLevelProvider.getCurrentLevel().getTimeElapsed()));
+        List<TeamStatistics> teamStatistics = this.currentLevelProvider.getTeamStatistics();
+        resultsPanel.addElement(teamRow("Team", "Units Built", "Units Lost", "Structures Built", "Structures Lost", ""));
         teamStatistics.forEach(s -> addStats(resultsPanel, s));
     }
+
 
     private void addStats(IUiElement resultsPanel, TeamStatistics teamStatistics) {
         resultsPanel.addElement(teamRow(
                 teamStatistics.getName(),
                 teamStatistics.getUnitsBuilt(),
+                teamStatistics.getUnitsLost(),
                 teamStatistics.getStructuresBuilt(),
+                teamStatistics.getStructuresLost(),
                 teamStatistics.isWinner()
         ));
     }
 
-    private PanelBuilder teamRow(String teamName, String unitCount, String structureCount, String isWinner) {
+    private PanelBuilder teamRow(String teamName,
+                                 String unitCount, String unitLost,
+                                 String structureCount, String structureLost,
+                                 String isWinner) {
         return new PanelBuilder() {
             {
                 width(percentage(100));
                 height(pixels(30));
                 childLayoutHorizontal();
+
                 text(cell(10, teamName));
                 text(cell(15, unitCount));
+                text(cell(15, unitLost));
                 text(cell(15, structureCount));
+                text(cell(15, structureLost));
                 text(cell(15, isWinner));
             }
         };
@@ -61,5 +74,17 @@ public class GameOverScreenController extends AbstractScreenController {
             font(UiConstants.DEFAULT_FONT);
             width(percentage(percentWidth));
         }};
+    }
+
+    private String formatTime(float timeElapsed) {
+        int hourInSeconds = 60 * 60;
+        int minuteInSeconds = 60;
+        int hours = (int) Math.floor(timeElapsed / hourInSeconds);
+        timeElapsed = timeElapsed - (hours * hourInSeconds);
+        int minutes = (int) Math.floor(timeElapsed / minuteInSeconds);
+        timeElapsed = timeElapsed - (minutes * minuteInSeconds);
+        int seconds = (int) Math.floor(timeElapsed);
+        String time = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        return time;
     }
 }

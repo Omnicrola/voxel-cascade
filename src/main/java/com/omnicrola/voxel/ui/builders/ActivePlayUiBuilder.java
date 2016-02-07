@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.ui.UiLevelChangeObserver;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -17,13 +17,13 @@ import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
  * Created by Eric on 1/25/2016.
  */
 public class ActivePlayUiBuilder {
-    public static void build(IGameContainer gameContainer, ICurrentLevelProvider levelProvider) {
+    public static void build(IGameGui gameGui, ICurrentLevelProvider levelProvider) {
         String screenName = UiScreen.ACTIVE_PLAY.toString();
 
         final ActivePlayScreenController activePlayScreenController = new ActivePlayScreenController();
-        levelProvider.subscribe(new UiLevelChangeObserver(activePlayScreenController));
+        levelProvider.addObserver(new UiLevelChangeObserver(activePlayScreenController));
 
-        gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
+        gameGui.build().screen(screenName, new ScreenBuilder(screenName) {{
             controller(activePlayScreenController);
             layer(new LayerBuilder("foreground") {{
                 childLayoutVertical();

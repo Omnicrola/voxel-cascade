@@ -24,7 +24,7 @@ public class SetAttackCursorStrategyListener implements ActionListener {
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
         if(!isPressed){
-            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevelState();
+            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
             WorldCursor worldCursor = currentLevelState.getWorldCursor();
             JmeCursor attackCursor = this.gameGui.build().cursor(CursorToken.ATTACK);
             worldCursor.setCursorStrategy(new AttackCursorStrategy(currentLevelState, attackCursor));

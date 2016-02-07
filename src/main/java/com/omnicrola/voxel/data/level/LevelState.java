@@ -11,24 +11,25 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
+import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
  */
-public class LevelState implements ILevelStateRead, IDisposable {
+public class LevelState implements IDisposable {
     private final ArrayList<TeamData> teams;
     private final ArrayList<Light> lights;
-    private final ArrayList<Spatial> allUnits;
+    private final ArrayList<Spatial> allEntities;
+    private final LevelStatistics statistics;
     private Node units;
     private Node terrain;
     private WorldCursor worldCursor;
     private String levelName;
-    private float resources;
-    private float timeElapsed;
     private IGameContainer gameContainer;
     private boolean isActive;
 
@@ -39,10 +40,9 @@ public class LevelState implements ILevelStateRead, IDisposable {
         this.units = new Node();
         this.lights = new ArrayList<>();
         this.worldCursor = worldCursor;
-        this.allUnits = new ArrayList<>();
+        this.allEntities = new ArrayList<>();
         this.levelName = levelName;
-        this.resources = 0;
-        this.timeElapsed = 0;
+        this.statistics = new LevelStatistics();
     }
 
     public void addTeam(TeamData team) {
@@ -53,46 +53,27 @@ public class LevelState implements ILevelStateRead, IDisposable {
         return units;
     }
 
-    public ArrayList<Spatial> getAllUnits() {
-        return new ArrayList<>(allUnits);
+    public ArrayList<Spatial> getAllEntities() {
+        return new ArrayList<>(allEntities);
     }
 
-    public void addUnit(Spatial unit) {
+    public void addEntity(Spatial unit) {
         this.units.attachChild(unit);
-        this.allUnits.add(unit);
+        this.allEntities.add(unit);
+        this.statistics.addEntity(unit);
         if (isActive) {
             this.gameContainer.physics().add(unit);
         }
     }
 
-    public void setResources(float resources) {
-        this.resources = resources;
-    }
-
-    public void setTimeElapsed(float timeElapsed) {
-        this.timeElapsed = timeElapsed;
-    }
-
-    @Override
     public String getLevelName() {
         return levelName;
-    }
-
-    @Override
-    public float getResources() {
-        return resources;
-    }
-
-    @Override
-    public float getTimeElapsed() {
-        return timeElapsed;
     }
 
     public Node getTerrainNode() {
         return this.terrain;
     }
 
-    @Override
     public WorldCursor getWorldCursor() {
         return worldCursor;
     }
@@ -160,5 +141,23 @@ public class LevelState implements ILevelStateRead, IDisposable {
     public void createVoxel(byte voxel, Vec3i location) {
         VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
         control.setVoxel(voxel, location);
+    }
+
+    public List<TeamStatistics> getTeamStatistics() {
+        return this.statistics.getTeamStatistics();
+    }
+
+    public void unitDestroyed(Spatial spatial) {
+        this.units.detachChild(spatial);
+        this.allEntities.remove(spatial);
+        this.statistics.entityDied(spatial);
+    }
+
+    public void addTime(float seconds) {
+        this.statistics.addTime(seconds);
+    }
+
+    public float getTimeElapsed() {
+        return this.statistics.getTimeElapsed();
     }
 }

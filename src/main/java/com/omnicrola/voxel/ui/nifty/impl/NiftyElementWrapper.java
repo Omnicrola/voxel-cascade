@@ -28,6 +28,16 @@ public class NiftyElementWrapper implements IUiElement {
     }
 
     @Override
+    public void setWidth(int width) {
+        this.element.setWidth(width);
+    }
+
+    @Override
+    public int getWidth(){
+        return this.element.getWidth();
+    }
+
+    @Override
     public void addElement(ElementBuilder elementBuilder) {
         this.element.add(elementBuilder.build(this.nifty, this.screen, this.element));
     }

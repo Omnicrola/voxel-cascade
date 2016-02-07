@@ -17,7 +17,7 @@ public class ExecuteSecondaryCursorListener implements ActionListener {
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
-            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevelState();
+            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
             WorldCursor worldCursor = currentLevelState.getWorldCursor();
             worldCursor.executeSecondary(isPressed);
     }

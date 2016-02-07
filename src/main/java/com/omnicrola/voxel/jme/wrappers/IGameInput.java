@@ -22,4 +22,5 @@ public interface IGameInput {
     Vector2f getCursorPosition();
 
     void setCursor(JmeCursor newCursor);
+
 }

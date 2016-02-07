@@ -4,8 +4,11 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.engine.states.CurrentLevelState;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
 import com.omnicrola.voxel.entities.commands.NullDeathAction;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -14,13 +17,11 @@ import com.omnicrola.voxel.util.VoxelUtil;
  */
 public class DeathController extends AbstractControl {
     private IDeathAction deathAction;
+    private IGameContainer gameContainer;
 
-    public DeathController() {
+    public DeathController(IGameContainer gameContainer) {
+        this.gameContainer = gameContainer;
         this.deathAction = NullDeathAction.NULL;
-    }
-
-    public DeathController(IDeathAction deathAction) {
-        this.deathAction = deathAction;
     }
 
     @Override
@@ -31,8 +32,15 @@ public class DeathController extends AbstractControl {
             if (parent != null) {
                 this.deathAction.destruct(this.spatial);
                 parent.detachChild(this.spatial);
+                recordDeathStats();
             }
         }
+    }
+
+    private void recordDeathStats() {
+        CurrentLevelState currentLevelState = this.gameContainer.getState(CurrentLevelState.class);
+        LevelState currentLevel = currentLevelState.getCurrentLevel();
+        currentLevel.unitDestroyed(this.spatial);
     }
 
     @Override

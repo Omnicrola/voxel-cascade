@@ -1,10 +1,8 @@
 package com.omnicrola.voxel.engine.states;
 
-import com.jme3.app.Application;
-import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -14,28 +12,37 @@ import java.util.stream.Collectors;
 /**
  * Created by omnic on 2/6/2016.
  */
-public class AnnihilationWinConditionState extends AbstractAppState {
+public class AnnihilationWinConditionState extends VoxelGameState {
 
-    private AppStateManager stateManager;
     private ArrayList<TeamData> teams;
+    private IGameContainer gameContainer;
 
     public AnnihilationWinConditionState(ArrayList<TeamData> teams) {
         this.teams = teams;
     }
 
     @Override
-    public void initialize(AppStateManager stateManager, Application app) {
-        super.initialize(stateManager, app);
-        this.stateManager = stateManager;
-        this.setEnabled(true);
+    protected void voxelInitialize(IGameContainer gameContainer) {
+        this.gameContainer = gameContainer;
+        setEnabled(true);
+    }
+
+    @Override
+    protected void voxelEnable(IGameContainer gameContainer) {
+
+    }
+
+    @Override
+    protected void voxelDisable(IGameContainer gameContainer) {
+
     }
 
     @Override
     public void update(float tpf) {
         gameOver();
-//        ActivePlayState activePlayState = this.stateManager.getState(ActivePlayState.class);
-//        if (activePlayState != null) {
-//            ArrayList<Spatial> allUnits = activePlayState.getCurrentLevelState().getAllUnits();
+//        CurrentLevelState currentLevelState = this.gameContainer.getState(CurrentLevelState.class);
+//        if (currentLevelState != null) {
+//            ArrayList<Spatial> allUnits = currentLevelState.getCurrentLevel().getAllEntities();
 //            Optional<TeamData> firstTeamEliminated = this.teams.stream()
 //                    .filter(t -> isEliminated(allUnits, t))
 //                    .findFirst();
@@ -55,9 +62,8 @@ public class AnnihilationWinConditionState extends AbstractAppState {
     }
 
     private void gameOver() {
-        this.stateManager.detach(this);
-        GameOverState gameOverState = this.stateManager.getState(GameOverState.class);
-        gameOverState.setEnabled(true);
+        setEnabled(false);
+        this.gameContainer.enableState(GameOverState.class);
     }
 
     private boolean isOnTeam(Spatial s, TeamData teamData) {

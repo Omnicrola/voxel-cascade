@@ -8,12 +8,11 @@ public class TeamStatistics {
     private int unitsBuilt;
     private int structuresBuilt;
     private boolean winner;
+    private int unitsLost;
+    private int structuresLost;
 
-    public TeamStatistics(String name, int unitsBuilt, int structuresBuilt, boolean winner) {
+    public TeamStatistics(String name) {
         this.name = name;
-        this.unitsBuilt = unitsBuilt;
-        this.structuresBuilt = structuresBuilt;
-        this.winner = winner;
     }
 
     public String getName() {
@@ -24,11 +23,35 @@ public class TeamStatistics {
         return String.valueOf(unitsBuilt);
     }
 
+    public String getUnitsLost() {
+        return String.valueOf(unitsLost);
+    }
+
     public String getStructuresBuilt() {
         return String.valueOf(structuresBuilt);
     }
 
+    public String getStructuresLost() {
+        return String.valueOf(structuresLost);
+    }
+
     public String isWinner() {
         return winner ? "WIN" : "LOSS";
+    }
+
+    public void incrementUnitsBuilt() {
+        this.unitsBuilt++;
+    }
+
+    public void increaseStructuresBuilt() {
+        this.structuresBuilt++;
+    }
+
+    public void increaseUnitsLost() {
+        this.unitsLost++;
+    }
+
+    public void increaseStructuresLost() {
+        this.structuresLost++;
     }
 }

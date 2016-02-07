@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.SimpleApplication;
-import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -12,34 +11,48 @@ import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.debug.DebugState;
 import com.omnicrola.voxel.engine.states.*;
 import com.omnicrola.voxel.input.GameInputAction;
+import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IGameGui;
+import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
+import com.omnicrola.voxel.ui.builders.GameOverUiBuilder;
+import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
 
 /**
  * Created by omnic on 1/15/2016.
  */
 public class VoxelGameEngineInitializer {
-    public static void initializeGame(AppStateManager stateManager) {
-        createStates(stateManager);
-        createInputMappings(stateManager);
+    public static void initializeGame(IGameContainer gameContainer, InputManager inputManager) {
+        createStates(gameContainer);
+        createGui(gameContainer);
+        createInputMappings(inputManager);
     }
 
-    private static void createStates(AppStateManager stateManager) {
+    private static void createStates(IGameContainer stateManager) {
         DebugState debugState = new DebugState();
         LoadingState loadingState = new LoadingState();
-        CurrentLevelState currentLevelState = new CurrentLevelState();
-        ActivePlayState playState = new ActivePlayState(new GameXmlDataParser());
-        MainMenuState mainMenuState = new MainMenuState(playState);
+        CurrentLevelState currentLevelState = new CurrentLevelState(new GameXmlDataParser());
+        ActivePlayInputState playState = new ActivePlayInputState();
+        MainMenuState mainMenuState = new MainMenuState();
         GameOverState gameOverState = new GameOverState();
 
-        stateManager.attach(debugState);
-        stateManager.attach(loadingState);
-        stateManager.attach(currentLevelState);
-        stateManager.attach(mainMenuState);
-        stateManager.attach(playState);
-        stateManager.attach(gameOverState);
+        stateManager.addState(debugState);
+        stateManager.addState(loadingState);
+        stateManager.addState(currentLevelState);
+        stateManager.addState(mainMenuState);
+        stateManager.addState(playState);
+        stateManager.addState(gameOverState);
     }
 
-    private static void createInputMappings(AppStateManager stateManager) {
-        InputManager inputManager = stateManager.getApplication().getInputManager();
+    private static void createGui(IGameContainer gameContainer) {
+        CurrentLevelState currentLevelState = gameContainer.getState(CurrentLevelState.class);
+        IGameGui gameGui = gameContainer.gui();
+        ActivePlayUiBuilder.build(gameGui, currentLevelState);
+
+        GameOverUiBuilder.build(gameGui, currentLevelState);
+        MainMenuUiBuilder.build(gameContainer);
+    }
+
+    private static void createInputMappings(InputManager inputManager) {
         inputManager.deleteMapping(SimpleApplication.INPUT_MAPPING_EXIT);
 
         addMouseMapping(inputManager, GameInputAction.MOUSE_SECONDARY, MouseInput.BUTTON_RIGHT);

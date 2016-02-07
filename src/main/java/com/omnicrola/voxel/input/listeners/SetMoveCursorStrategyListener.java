@@ -24,7 +24,7 @@ public class SetMoveCursorStrategyListener implements ActionListener {
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
-            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevelState();
+            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
             WorldCursor worldCursor = currentLevelState.getWorldCursor();
             JmeCursor moveCursor = this.gameGui.build().cursor(CursorToken.MOVE);
             worldCursor.setCursorStrategy(new MoveSelectedUnitsStrategy(currentLevelState, worldCursor, moveCursor));
