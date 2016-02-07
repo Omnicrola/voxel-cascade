@@ -5,6 +5,7 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.input.SelectionGroup;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Iterator;
 
 /**
@@ -22,6 +23,9 @@ public class NavigationGridDistributor {
     public Iterator<Vector3f> distribute(Vector3f target) {
         int gridSize = (int) Math.ceil(FastMath.sqrt(this.selectionGroup.count()));
         float largestUnitSize = this.selectionGroup.getLargestUnitSize();
+        if (largestUnitSize <= 0) {
+            return Arrays.asList(target).iterator();
+        }
         float gridDimension = gridSize * largestUnitSize;
         float halfOfGrid = gridDimension / 2f;
 
