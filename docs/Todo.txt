@@ -1,0 +1,35 @@
+TODO List
+------------------
+ - Think of a name
+ - Sketch some unit designs
+
+World
+------
+ [ ] Enable harvesting terrain cubes for resources
+ [ ] Create a construction Unit
+
+UI
+-----
+ [ ] Add resource tracker
+ [ ] Make selection list update if units die
+ [ ] Disable selecting non-player units
+ [ ] Add an options screen (video settings, etc)
+
+Effects
+--------
+ [ ] Add muzzle flashes
+ [ ] Add particle trails to projectiles
+
+Units
+--------
+ [ ] Fix movement and freeze vertical orientation
+ [ ] Implement a maximum turn speed
+ [ ] Add parabolic weapons
+ [ ] Add line-of-sight check to targeting system
+
+Audio
+------
+ [ ] Add audio effects to weapons
+ [ ] Play sound when unit dies
+ [ ] Add game over sound
+ [ ] Add gameplay music
