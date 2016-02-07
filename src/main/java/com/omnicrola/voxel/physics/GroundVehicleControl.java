@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.physics;
 
-import com.jme3.bullet.collision.shapes.BoxCollisionShape;
+import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
+import com.jme3.bullet.collision.shapes.CollisionShape;
+import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -15,8 +17,11 @@ public class GroundVehicleControl extends CharacterControl {
     private final IGameContainer gameContainer;
     private Geometry geometry;
 
-    private static BoxCollisionShape getShape() {
-        return new BoxCollisionShape(new Vector3f(0.5f, 0.25f, 0.5f));
+    private static CollisionShape getShape() {
+        CapsuleCollisionShape capsuleCollisionShape = new CapsuleCollisionShape(0.25f, 0.25f);
+        CompoundCollisionShape compoundCollisionShape = new CompoundCollisionShape();
+        compoundCollisionShape.addChildShape(capsuleCollisionShape, new Vector3f(0, -0.25f, 0));
+        return capsuleCollisionShape;
     }
 
 
@@ -37,7 +42,7 @@ public class GroundVehicleControl extends CharacterControl {
         Vector3f physicsLocation = this.getPhysicsLocation();
         boolean isBelowTerrain = this.gameContainer.world().isBelowTerrain(this.geometry);
         if (isBelowTerrain) {
-            Vector3f newPosition = this.gameContainer.world().getSpawnPointFor(physicsLocation);
+            Vector3f newPosition = this.gameContainer.world().getSpawnPointFor(physicsLocation).add(0, 0.1f, 0);
             this.warp(newPosition);
         }
     }

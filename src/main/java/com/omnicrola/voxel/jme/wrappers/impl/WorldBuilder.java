@@ -122,7 +122,7 @@ public class WorldBuilder implements IWorldBuilder {
         projectileCollisionHandler.setDeathAction(new VoxelShowerSpawnAction(this, 100));
         projectile.addControl(new CollisionController(projectileCollisionHandler));
         float projectileLife = range / projectileDefinition.getMuzzleVelocity();
-        projectile.addControl(new SelfDestructControl(projectileLife));
+        projectile.addControl(new SelfDestructControl(this.gameContainer.physics(), projectileLife));
 
         Vector3f velocity = attackVector.normalize().mult(projectileDefinition.getMuzzleVelocity());
         LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), velocity);
