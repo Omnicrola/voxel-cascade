@@ -59,6 +59,17 @@ public class JmeApplicationWrapper implements IGameContainer {
     }
 
     @Override
+    public void addState(AppState gameState) {
+        this.game.getStateManager().attach(gameState);
+    }
+
+    @Override
+    public <T extends AppState> T getState(Class<T> stateClass) {
+        return this.game.getStateManager().getState(stateClass);
+    }
+
+
+    @Override
     public AssetManager getAssetManager() {
         return this.game.getAssetManager();
     }
@@ -77,12 +88,7 @@ public class JmeApplicationWrapper implements IGameContainer {
     }
 
     @Override
-    public void addState(AppState gameState) {
-        this.game.getStateManager().attach(gameState);
-    }
-
-    @Override
-    public <T extends AppState> T  getState(Class<T> stateClass) {
-        return this.game.getStateManager().getState(stateClass);
+    public void quitAndExit() {
+        this.game.stop();
     }
 }

@@ -29,7 +29,12 @@ public class MainMenuScreenController extends AbstractScreenController {
         this.gameContainer.getState(CurrentLevelState.class).loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
         this.gameContainer.enableState(CurrentLevelState.class);
         this.gameContainer.enableState(ActivePlayInputState.class);
+    }
 
+    @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")
+    @SubscriberLink(UiToken.BUTTON_QUIT_GAME)
+    public void quitGame(String id, ButtonClickedEvent buttonClickedEvent) {
+        this.gameContainer.quitAndExit();
     }
 
 

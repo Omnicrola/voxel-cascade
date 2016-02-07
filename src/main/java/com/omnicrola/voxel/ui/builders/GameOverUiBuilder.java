@@ -2,10 +2,12 @@ package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
+import com.omnicrola.voxel.jme.wrappers.IStateManager;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.GameOverScreenController;
 import de.lessvoid.nifty.builder.*;
+import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 import de.lessvoid.nifty.tools.Color;
 
@@ -13,9 +15,9 @@ import de.lessvoid.nifty.tools.Color;
  * Created by Eric on 2/6/2016.
  */
 public class GameOverUiBuilder {
-    public static void build(IGameGui gameGui, ICurrentLevelProvider currentLevelProvider) {
+    public static void build(IGameGui gameGui, IStateManager stateManager, ICurrentLevelProvider currentLevelProvider) {
         String screenName = UiScreen.GAME_OVER.toString();
-        GameOverScreenController gameOverScreenController = new GameOverScreenController(currentLevelProvider);
+        GameOverScreenController gameOverScreenController = new GameOverScreenController(stateManager,currentLevelProvider);
 
         gameGui.build().screen(screenName, new ScreenBuilder(screenName) {{
             controller(gameOverScreenController);
@@ -74,6 +76,16 @@ public class GameOverUiBuilder {
                             childLayoutVertical();
                             x(pixels(0));
                             y(pixels(0));
+                        }});
+                    }});
+                    panel(new PanelBuilder("button-panel") {{
+                        width(percentage(100));
+                        childLayoutVertical();
+                        control(new ButtonBuilder(UiToken.BUTTON_MAIN_MENU.toString()) {{
+                            label("Main Menu");
+                            alignRight();
+                            width(pixels(100));
+                            height(pixels(40));
                         }});
                     }});
 

@@ -91,7 +91,7 @@ public class MainMenuUiBuilder {
                         width("50%");
 
                         // add control
-                        control(new ButtonBuilder("QuitButton", "Quit") {{
+                        control(new ButtonBuilder(UiToken.BUTTON_QUIT_GAME.toString(), "Quit") {{
                             alignCenter();
                             valignCenter();
                             height("50%");

@@ -48,7 +48,7 @@ public class VoxelGameEngineInitializer {
         IGameGui gameGui = gameContainer.gui();
         ActivePlayUiBuilder.build(gameGui, currentLevelState);
 
-        GameOverUiBuilder.build(gameGui, currentLevelState);
+        GameOverUiBuilder.build(gameGui, gameContainer, currentLevelState);
         MainMenuUiBuilder.build(gameContainer);
     }
 
