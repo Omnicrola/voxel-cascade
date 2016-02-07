@@ -78,18 +78,27 @@ public class DebugState extends AbstractAppState {
         this.listeners.add(new Tuple(new DebugPhysicsListener(this.game), GameInputAction.DEBUG_TOGGLE_PHYSICS));
         this.listeners.add(new Tuple(new DebugToggleWireframeListener(), GameInputAction.DEBUG_TOGGLE_WIREFRAME));
 
+        enableDebug();
     }
 
     @Override
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (enabled) {
-            this.listeners.forEach((t) -> this.game.getInputManager().addListener(t.getLeft(), t.getRight().toString()));
-            this.game.getRootNode().attachChild(this.rootNode);
+            enableDebug();
         } else {
-            this.listeners.forEach((t) -> this.game.getInputManager().removeListener(t.getLeft()));
-            this.game.getRootNode().detachChild(this.rootNode);
+            disableDebug();
         }
+    }
+
+    private void disableDebug() {
+        this.listeners.forEach((t) -> this.game.getInputManager().removeListener(t.getLeft()));
+        this.game.getRootNode().detachChild(this.rootNode);
+    }
+
+    private void enableDebug() {
+        this.listeners.forEach((t) -> this.game.getInputManager().addListener(t.getLeft(), t.getRight().toString()));
+        this.game.getRootNode().attachChild(this.rootNode);
     }
 
     private void buildCoordinateAxes(Vector3f pos) {

@@ -34,8 +34,8 @@ public class LevelGeneratorTool {
         LevelDefinition levelDefinition = new LevelDefinition();
         levelDefinition.name = "Basic";
         levelDefinition.uuid = BASIC_LEVEL_UUID;
-        levelDefinition.cameraPosition = new Vector3f(17.240665f, 5.812654f, 15.605931f);
-        levelDefinition.cameraOrientation = new Quaternion(-0.04802279f, 0.94986904f, -0.24847628f, -0.18358125f);
+        levelDefinition.cameraPosition = new Vector3f(20.622938f, 10.9329195f, 14.671596f);
+        levelDefinition.cameraOrientation = new Quaternion(-0.03322258f, 0.96265626f, -0.13914569f, -0.22984262f);
         levelDefinition.terrain.terrainOffset = new Vec3i(0, -1, 0);
         levelDefinition.terrain.width = 100;
         levelDefinition.terrain.depth = 100;

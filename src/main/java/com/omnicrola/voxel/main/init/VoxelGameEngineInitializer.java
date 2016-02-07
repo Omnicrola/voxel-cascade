@@ -9,11 +9,8 @@ import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
 import com.omnicrola.voxel.data.GameXmlDataParser;
-import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.debug.DebugState;
-import com.omnicrola.voxel.engine.states.GameOverState;
-import com.omnicrola.voxel.engine.states.LoadingState;
-import com.omnicrola.voxel.engine.states.MainMenuState;
+import com.omnicrola.voxel.engine.states.*;
 import com.omnicrola.voxel.input.GameInputAction;
 
 /**
@@ -28,12 +25,14 @@ public class VoxelGameEngineInitializer {
     private static void createStates(AppStateManager stateManager) {
         DebugState debugState = new DebugState();
         LoadingState loadingState = new LoadingState();
+        CurrentLevelState currentLevelState = new CurrentLevelState();
         ActivePlayState playState = new ActivePlayState(new GameXmlDataParser());
         MainMenuState mainMenuState = new MainMenuState(playState);
         GameOverState gameOverState = new GameOverState();
 
         stateManager.attach(debugState);
         stateManager.attach(loadingState);
+        stateManager.attach(currentLevelState);
         stateManager.attach(mainMenuState);
         stateManager.attach(playState);
         stateManager.attach(gameOverState);

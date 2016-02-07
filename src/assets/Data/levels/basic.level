@@ -2,8 +2,8 @@
 <Level>
     <name>Basic</name>
     <global-id>4ae9ecf5-25e0-477a-9662-46dda8f095c9</global-id>
-    <camera-start-position x="17.240665" y="5.812654" z="15.605931"/>
-    <camera-orientation x="-0.04802279" y="0.94986904" z="-0.24847628" w="-0.18358125"/>
+    <camera-start-position x="20.622938" y="10.9329195" z="14.671596"/>
+    <camera-orientation x="-0.03322258" y="0.96265626" z="-0.13914569" w="-0.22984262"/>
     <terrain width="100" depth="100" vertical-scale="15">
         <offset x="0" y="-1" z="0"/>
         <octaves>8</octaves>

@@ -80,4 +80,9 @@ public class JmeApplicationWrapper implements IGameContainer {
     public void addState(AppState gameState) {
         this.game.getStateManager().attach(gameState);
     }
+
+    @Override
+    public <T extends AppState> T  getState(Class<T> stateClass) {
+        return this.game.getStateManager().getState(stateClass);
+    }
 }

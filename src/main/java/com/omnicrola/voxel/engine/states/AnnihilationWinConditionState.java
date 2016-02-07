@@ -9,7 +9,6 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -33,16 +32,17 @@ public class AnnihilationWinConditionState extends AbstractAppState {
 
     @Override
     public void update(float tpf) {
-        ActivePlayState activePlayState = this.stateManager.getState(ActivePlayState.class);
-        if (activePlayState != null) {
-            ArrayList<Spatial> allUnits = activePlayState.getCurrentLevelState().getAllUnits();
-            Optional<TeamData> firstTeamEliminated = this.teams.stream()
-                    .filter(t -> isEliminated(allUnits, t))
-                    .findFirst();
-            if (firstTeamEliminated.isPresent()) {
-                gameOver();
-            }
-        }
+        gameOver();
+//        ActivePlayState activePlayState = this.stateManager.getState(ActivePlayState.class);
+//        if (activePlayState != null) {
+//            ArrayList<Spatial> allUnits = activePlayState.getCurrentLevelState().getAllUnits();
+//            Optional<TeamData> firstTeamEliminated = this.teams.stream()
+//                    .filter(t -> isEliminated(allUnits, t))
+//                    .findFirst();
+//            if (firstTeamEliminated.isPresent()) {
+//                gameOver();
+//            }
+//        }
     }
 
     private boolean isEliminated(ArrayList<Spatial> allUnits, TeamData teamData) {

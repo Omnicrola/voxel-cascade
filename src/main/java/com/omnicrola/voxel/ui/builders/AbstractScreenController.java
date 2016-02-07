@@ -25,17 +25,6 @@ public abstract class AbstractScreenController implements ScreenController {
     public void bind(Nifty nifty, Screen screen) {
         this.niftyUiWrapper = new NiftyUiWrapper(nifty, screen);
         assertEventSubscribers(this, UiToken.BUTTON_START);
-//        nifty.setNiftyInputConsumerNotify(new NiftyInputConsumerNotify() {
-//            @Override
-//            public void processedMouseEvent(int mouseX, int mouseY, int mouseWheel, int button, boolean buttonDown, boolean processed) {
-//                System.out.println("mouseX: " + mouseX + " mouseY: " + mouseY+ " processed: "+processed);
-//            }
-//
-//            @Override
-//            public void processKeyboardEvent(KeyboardInputEvent keyboardInputEvent, boolean b) {
-//
-//            }
-//        });
     }
 
     protected IUi ui() {

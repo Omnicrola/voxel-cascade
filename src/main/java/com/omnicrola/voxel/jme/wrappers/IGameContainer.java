@@ -24,4 +24,6 @@ public interface IGameContainer {
     AssetManager getAssetManager();
 
     void addState(AppState voxelGameState);
+
+    <T extends AppState> T getState(Class<T> activePlayStateClass);
 }

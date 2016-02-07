@@ -6,6 +6,7 @@ package com.omnicrola.voxel.ui;
 public enum UiToken implements IUiToken {
     BUTTON_START,
     SELECTION_PANEL,
+    TEAM_RESULTS_PANEL,
     ACTION_1,
     ACTION_2,
     ACTION_3,
