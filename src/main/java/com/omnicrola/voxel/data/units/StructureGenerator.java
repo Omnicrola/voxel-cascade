@@ -36,7 +36,7 @@ public class StructureGenerator {
         structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;
         structureDefinition.commands.add(EntityCommand.BUILD);
-        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK));
+        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK, 10f));
         return structureDefinition;
     }
 

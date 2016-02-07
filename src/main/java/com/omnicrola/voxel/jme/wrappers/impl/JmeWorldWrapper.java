@@ -69,7 +69,7 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public Vector3f getSpawnPointFor(Vector3f location) {
-        return this.terrain.getControl(VoxelTerrainControl.class).getSpawnPointFor(location);
+        return this.terrain.getControl(VoxelTerrainControl.class).findLowestNonSolidVoxel(location);
     }
 
     private void addChildrenToPhysicsSpace(Spatial spatial) {

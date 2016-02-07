@@ -25,4 +25,6 @@ public interface IWorldBuilder {
     Material material(MaterialToken materialToken);
 
     Spatial arrow(Vector3f direction, ColorRGBA blue);
+
+    Spatial unitCursor(int unitId);
 }

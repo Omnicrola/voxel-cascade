@@ -17,15 +17,12 @@ public class BuildUnitCommand implements IEntityCommand {
     @XmlAttribute(name = "unit-id", required = true)
     private int unitId;
 
+    @XmlAttribute(name="build-range")
+    private float buildRadius = 1.0f;
+
     @XmlAttribute(name = "priority")
     private int priority = 1;
 
-    public BuildUnitCommand() {
-    }
-
-    public BuildUnitCommand(int unitId) {
-        this.unitId = unitId;
-    }
 
     @Override
     public String getIcon() {
@@ -42,9 +39,17 @@ public class BuildUnitCommand implements IEntityCommand {
         return this.priority;
     }
 
+    public BuildUnitCommand() {
+    }
+
+    public BuildUnitCommand(int unitId, float buildRadius) {
+        this.unitId = unitId;
+        this.buildRadius = buildRadius;
+    }
+
     @Override
     public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
-        cursorCommandDelegator.setBuildUnitStrategy(this.unitId);
+        cursorCommandDelegator.setBuildUnitStrategy(this.unitId, this.buildRadius, selectionGroup);
         return null;
     }
 }

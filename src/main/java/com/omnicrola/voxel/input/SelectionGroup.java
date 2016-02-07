@@ -14,6 +14,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -113,5 +114,20 @@ public class SelectionGroup {
 
     private EntityAiController getAi(Spatial spatial) {
         return spatial.getControl(EntityAiController.class);
+    }
+
+    public Vector3f getCenterPoint() {
+        float averageX = getAsDouble(Vector3f::getX);
+        float averageY = getAsDouble(Vector3f::getY);
+        float averageZ = getAsDouble(Vector3f::getZ);
+        return new Vector3f(averageX, averageY, averageZ);
+    }
+
+    private float getAsDouble(ToDoubleFunction<Vector3f> axis) {
+        return (float) this.selection.stream()
+                .map(s -> s.getWorldTranslation())
+                .mapToDouble(axis)
+                .average()
+                .getAsDouble();
     }
 }

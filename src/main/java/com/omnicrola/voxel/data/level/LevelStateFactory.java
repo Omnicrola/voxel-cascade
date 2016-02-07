@@ -74,7 +74,7 @@ public class LevelStateFactory {
         for (UnitPlacement placement : structures) {
             TeamData teamData = levelState.getTeamById(placement.getTeamId());
             Spatial structure = this.gameContainer.world().build().structure(placement.getUnitId(), teamData);
-            Vector3f position = terrainControl.getSpawnPointFor(placement.getLocation());
+            Vector3f position = terrainControl.findLowestNonSolidVoxel(placement.getLocation());
             structure.getControl(RigidBodyControl.class).setPhysicsLocation(position);
             levelState.addEntity(structure);
         }
@@ -85,7 +85,7 @@ public class LevelStateFactory {
         for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
             TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
             Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
-            Vector3f position = terrainControl.getSpawnPointFor(unitPlacement.getLocation());
+            Vector3f position = terrainControl.findLowestNonSolidVoxel(unitPlacement.getLocation());
             entity.getControl(GroundVehicleControl.class).setPhysicsLocation(position);
             entity.setLocalTranslation(position);
             levelState.addEntity(entity);

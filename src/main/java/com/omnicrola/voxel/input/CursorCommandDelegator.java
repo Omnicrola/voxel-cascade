@@ -5,8 +5,9 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.jme3.scene.control.Control;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.entities.control.BuildCursorValidityControl;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -52,13 +53,34 @@ public class CursorCommandDelegator {
         this.worldCursor.setCursorStrategy(emptyBuildStrategy);
     }
 
-    public void setBuildUnitStrategy(int unitId) {
+    public void setBuildUnitStrategy(int unitId, float buildRadius, SelectionGroup selectionGroup) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
-        Spatial exampleBuildTarget = this.gameContainer.world().build().unit(unitId, TeamData.NEUTRAL);
-        Material material = this.gameContainer.world().build().material(MaterialToken.GHOST_BUILDING);
-        exampleBuildTarget.setMaterial(material);
-        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(this.gameContainer, this.levelState, unitId, buildCursor, exampleBuildTarget);
+        Spatial exampleBuildTarget = createValidityCheckingModel(unitId, buildRadius, selectionGroup);
+
+        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(
+                this.gameContainer,
+                this.levelState,
+                unitId,
+                buildCursor,
+                exampleBuildTarget);
         this.worldCursor.setCursorStrategy(buildUnitStrategy);
+    }
+
+    private Spatial createValidityCheckingModel(int unitId, float buildRadius, SelectionGroup selectionGroup) {
+        Spatial exampleBuildTarget = this.gameContainer.world().build().unitCursor(unitId);
+        Material validBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_VALID);
+        Material invalidBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_NOT_VALID);
+        BuildCursorValidityControl buildCursorValidityControl = new BuildCursorValidityControl(selectionGroup, buildRadius, validBuildMaterial, invalidBuildMaterial);
+        exampleBuildTarget.addControl(buildCursorValidityControl);
+        return exampleBuildTarget;
+    }
+
+    private void removeControls(Spatial spatial) {
+        int numControls = spatial.getNumControls();
+        for (int i = 0; i < numControls - 1; i++) {
+            Class<? extends Control> controlClass = spatial.getControl(i).getClass();
+            spatial.removeControl(controlClass);
+        }
     }
 
     public void setBuildVoxelStrategy(byte voxelType) {

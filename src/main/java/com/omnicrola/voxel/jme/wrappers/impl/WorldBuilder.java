@@ -57,37 +57,34 @@ public class WorldBuilder implements IWorldBuilder {
     }
 
     @Override
-    public Spatial unit(int definitionId, TeamData teamData) {
-        UnitDefinition entityDefinition = this.definitionRepository.getUnitDefinition(definitionId);
-        if (entityDefinition == UnitDefinition.NONE) {
-            throw new IllegalArgumentException("Unit with ID of " + definitionId + " is not defined.");
-        }
+    public Spatial unitCursor(int definitionId) {
+        UnitDefinition entityDefinition = getUnitDefinition(definitionId);
         Spatial spatial = getModel(entityDefinition.getModel());
         spatial.setName(entityDefinition.getName());
         Material material = createMaterial(entityDefinition.getTexture());
         spatial.setMaterial(material);
+        return spatial;
+    }
 
-        for (IControlFactory factory : entityDefinition.getControlFactories()) {
+    @Override
+    public Spatial unit(int definitionId, TeamData teamData) {
+        UnitDefinition unitDefinition = getUnitDefinition(definitionId);
+        Spatial spatial = unitCursor(definitionId);
+        for (IControlFactory factory : unitDefinition.getControlFactories()) {
             factory.build(spatial, this.gameContainer, this.definitionRepository);
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
         spatial.setUserData(EntityDataKeys.IS_UNIT, true);
-        spatial.setUserData(EntityDataKeys.HITPOINTS, entityDefinition.getHitpoints());
+        spatial.setUserData(EntityDataKeys.HITPOINTS, unitDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
         return spatial;
     }
 
     @Override
     public Spatial structure(int definitionId, TeamData teamData) {
-        StructureDefinition structureDefinition = this.definitionRepository.getBuildingDefinition(definitionId);
-        if (structureDefinition == StructureDefinition.NONE) {
-            throw new IllegalArgumentException("Structure with ID of " + definitionId + " is not defined");
-        }
-        Spatial structure = getModel(structureDefinition.getModel());
-        structure.setName(structureDefinition.getName());
-        Material material = createMaterial(structureDefinition.getTexture());
-        structure.setMaterial(material);
+        StructureDefinition structureDefinition = getStructureDefinition(definitionId);
+        Spatial structure = buildStructureModel(structureDefinition);
 
         for (IControlFactory factory : structureDefinition.getControlFactories()) {
             factory.build(structure, this.gameContainer, this.definitionRepository);
@@ -101,6 +98,7 @@ public class WorldBuilder implements IWorldBuilder {
 
         return structure;
     }
+
 
     @Override
     public Spatial projectile(Spatial emittingEntity, int projectileId, Vector3f attackVector, float range) {
@@ -194,5 +192,30 @@ public class WorldBuilder implements IWorldBuilder {
         mat.setColor("Color", color);
         geometry.setMaterial(mat);
         return geometry;
+    }
+
+
+    private UnitDefinition getUnitDefinition(int definitionId) {
+        UnitDefinition entityDefinition = this.definitionRepository.getUnitDefinition(definitionId);
+        if (entityDefinition == UnitDefinition.NONE) {
+            throw new IllegalArgumentException("Unit with ID of " + definitionId + " is not defined.");
+        }
+        return entityDefinition;
+    }
+
+    private Spatial buildStructureModel(StructureDefinition structureDefinition) {
+        Spatial structure = getModel(structureDefinition.getModel());
+        structure.setName(structureDefinition.getName());
+        Material material = createMaterial(structureDefinition.getTexture());
+        structure.setMaterial(material);
+        return structure;
+    }
+
+    private StructureDefinition getStructureDefinition(int definitionId) {
+        StructureDefinition structureDefinition = this.definitionRepository.getBuildingDefinition(definitionId);
+        if (structureDefinition == StructureDefinition.NONE) {
+            throw new IllegalArgumentException("Structure with ID of " + definitionId + " is not defined");
+        }
+        return structureDefinition;
     }
 }

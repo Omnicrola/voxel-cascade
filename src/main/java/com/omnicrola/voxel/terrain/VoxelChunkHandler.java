@@ -71,7 +71,7 @@ public class VoxelChunkHandler {
         this.chunks.values().forEach(c -> c.flagForRebuild());
     }
 
-    public Vector3f adjustLocationForHeight(Vector3f location) {
+    public Vector3f findLowestNonSolidVoxel(Vector3f location) {
         float x = location.getX();
         float y = 0;
         float z = location.getZ();
@@ -84,7 +84,7 @@ public class VoxelChunkHandler {
                 belowGround = false;
             }
         }
-        return new Vector3f(x, y + 1, z);
+        return new Vector3f(x, y, z);
     }
 
     private boolean isSolid(Vec3i worldPosition) {

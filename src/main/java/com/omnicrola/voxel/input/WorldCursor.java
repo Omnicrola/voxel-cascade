@@ -53,6 +53,7 @@ public class WorldCursor extends Node implements IDisposable {
 
     @Override
     public void updateLogicalState(float tpf) {
+        super.updateLogicalState(tpf);
         Ray pickRay = getPickRay();
         setPositionToNearestVoxel(pickRay);
     }

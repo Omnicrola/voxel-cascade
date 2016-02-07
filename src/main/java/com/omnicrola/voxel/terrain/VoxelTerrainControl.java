@@ -76,8 +76,8 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
         this.voxelChunkHandler.flagAllChunksForRebuild();
     }
 
-    public Vector3f getSpawnPointFor(Vector3f location) {
-        return this.voxelChunkHandler.adjustLocationForHeight(location);
+    public Vector3f findLowestNonSolidVoxel(Vector3f location) {
+        return this.voxelChunkHandler.findLowestNonSolidVoxel(location);
     }
 
     public boolean isVoxelSolidAt(Vec3i location) {

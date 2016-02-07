@@ -139,7 +139,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="1" priority="1"/>
+                <unit unit-id="1" build-range="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>
@@ -159,7 +159,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="1" priority="1"/>
+                <unit unit-id="1" build-range="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>
