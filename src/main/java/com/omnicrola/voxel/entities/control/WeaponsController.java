@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.entities.control;
 
-import com.jme3.bullet.control.GhostControl;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
@@ -22,14 +21,16 @@ public class WeaponsController extends AbstractControl {
     private IGameWorld gameWorld;
     private WeaponDefinition weaponDefinition;
     private Vector3f projectileOffset;
+    private IProjectileFactory projectileFactory;
 
     public WeaponsController(IGameWorld gameWorld,
                              WeaponDefinition weaponDefinition,
-                             Vector3f projectileOffset
-    ) {
+                             Vector3f projectileOffset,
+                             IProjectileFactory projectileFactory) {
         this.gameWorld = gameWorld;
         this.weaponDefinition = weaponDefinition;
         this.projectileOffset = projectileOffset;
+        this.projectileFactory = projectileFactory;
     }
 
     public boolean isInRangeOfTarget(Spatial target) {
@@ -70,13 +71,9 @@ public class WeaponsController extends AbstractControl {
         this.timeSinceLastShot = 0;
 
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
-        Vector3f ourLocation = this.spatial.getWorldTranslation().add(this.projectileOffset);
-        Vector3f attackVector = targetLocation.subtract(ourLocation);
-
-        Spatial projectile = this.gameWorld.build().projectile(this.spatial, this.weaponDefinition.getProjectileId(), attackVector, this.weaponDefinition.getRange());
+        Spatial projectile = this.projectileFactory.spawnProjectile(this.spatial, targetLocation);
         this.gameWorld.attach(projectile);
-        projectile.getControl(GhostControl.class).setPhysicsLocation(ourLocation);
-        projectile.setLocalTranslation(ourLocation);
+        projectile.setLocalTranslation(this.spatial.getWorldTranslation());
     }
 
     @Override

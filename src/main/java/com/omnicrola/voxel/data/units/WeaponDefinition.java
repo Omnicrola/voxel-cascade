@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
+import com.omnicrola.voxel.data.WeaponType;
+
 import javax.xml.bind.annotation.*;
 
 /**
@@ -22,6 +24,9 @@ public class WeaponDefinition {
 
     @XmlElement(name = "description")
     protected String description;
+
+    @XmlElement(name = "type")
+    protected WeaponType weaponType = WeaponType.LINEAR;
 
     @XmlElement(name = "range", required = true)
     protected float range;
@@ -51,5 +56,9 @@ public class WeaponDefinition {
 
     public String getDescription() {
         return description;
+    }
+
+    public WeaponType type() {
+        return weaponType;
     }
 }

@@ -23,7 +23,7 @@ Effects
 Units
 --------
  [X] Fix movement and freeze vertical orientation
- [ ] Implement a maximum turn speed
+ [X] Implement a maximum turn speed
  [ ] Add parabolic weapons
  [ ] Add line-of-sight check to targeting system
 

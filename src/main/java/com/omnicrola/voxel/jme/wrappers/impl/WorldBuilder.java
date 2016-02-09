@@ -16,13 +16,8 @@ import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.StructureDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
-import com.omnicrola.voxel.engine.physics.CollisionController;
-import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
 import com.omnicrola.voxel.entities.control.IControlFactory;
-import com.omnicrola.voxel.entities.control.LinearProjectileControl;
-import com.omnicrola.voxel.entities.control.SelfDestructControl;
 import com.omnicrola.voxel.fx.MaterialToken;
-import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
@@ -101,7 +96,7 @@ public class WorldBuilder implements IWorldBuilder {
 
 
     @Override
-    public Spatial projectile(Spatial emittingEntity, int projectileId, Vector3f attackVector, float range) {
+    public Spatial projectile(Spatial emittingEntity, int projectileId) {
         ProjectileDefinition projectileDefinition = this.definitionRepository.getProjectileDefinition(projectileId);
         if (projectileDefinition == ProjectileDefinition.NONE) {
             throw new IllegalArgumentException("Projectile with ID of " + projectileId + " is not defined");
@@ -117,16 +112,6 @@ public class WorldBuilder implements IWorldBuilder {
         projectile.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, projectileDefinition.getDamage());
         projectile.setUserData(EntityDataKeys.TEAM_DATA, emittingEntity.getUserData(EntityDataKeys.TEAM_DATA));
         projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
-
-        ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, this.gameContainer.world());
-        projectileCollisionHandler.setDeathAction(new VoxelShowerSpawnAction(this, 100));
-        projectile.addControl(new CollisionController(projectileCollisionHandler));
-        float projectileLife = range / projectileDefinition.getMuzzleVelocity();
-        projectile.addControl(new SelfDestructControl(this.gameContainer.physics(), projectileLife));
-
-        Vector3f velocity = attackVector.normalize().mult(projectileDefinition.getMuzzleVelocity());
-        LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), velocity);
-        projectile.addControl(linearProjectileControl);
 
         return projectile;
     }

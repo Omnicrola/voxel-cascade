@@ -2,7 +2,9 @@ package com.omnicrola.voxel.entities.control;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.data.WeaponType;
 import com.omnicrola.voxel.data.units.MovementDefinition;
+import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -29,13 +31,25 @@ public class EntityAiControlFactory implements IControlFactory {
     public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
         IGameWorld gameWorld = gameContainer.world();
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
+        ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
+
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
-        WeaponsController weaponsController = new WeaponsController(gameWorld, weaponDefinition, this.projectileOffset);
+        IProjectileFactory projectileFactory = createProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
+        WeaponsController weaponsController = new WeaponsController(gameContainer.world(), weaponDefinition, this.projectileOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
         EntityAiController entityAi = new EntityAiController(motionGovernor, weaponsController, targetingController);
+
         spatial.addControl(motionGovernor);
         spatial.addControl(targetingController);
         spatial.addControl(weaponsController);
         spatial.addControl(entityAi);
+    }
+
+    private IProjectileFactory createProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
+        if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
+            return new ParabolicProjectileFactory();
+        } else {
+            return new LinearProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
+        }
     }
 }
