@@ -17,6 +17,7 @@ public class EntityCollisionHandler extends AbstractCollisionHandler {
     public void collideWith(Spatial otherObject) {
         if (isProjectile(otherObject)) {
             if (isEnemyProjectile(otherObject)) {
+                System.out.println(this.parentSpatial.getName()+ " hit by: " + otherObject.getName() + " " + otherObject.hashCode());
                 takeDamage(otherObject);
             }
         } else if (isTerrain(otherObject)) {

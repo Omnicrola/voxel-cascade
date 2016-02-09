@@ -21,12 +21,12 @@ public class WeaponsController extends AbstractControl {
     private IGameWorld gameWorld;
     private WeaponDefinition weaponDefinition;
     private Vector3f projectileOffset;
-    private IProjectileFactory projectileFactory;
+    private IProjectileStrategy projectileFactory;
 
     public WeaponsController(IGameWorld gameWorld,
                              WeaponDefinition weaponDefinition,
                              Vector3f projectileOffset,
-                             IProjectileFactory projectileFactory) {
+                             IProjectileStrategy projectileFactory) {
         this.gameWorld = gameWorld;
         this.weaponDefinition = weaponDefinition;
         this.projectileOffset = projectileOffset;

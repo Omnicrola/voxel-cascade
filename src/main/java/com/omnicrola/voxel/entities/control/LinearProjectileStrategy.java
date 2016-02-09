@@ -14,14 +14,14 @@ import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 /**
  * Created by Eric on 2/8/2016.
  */
-public class LinearProjectileFactory implements IProjectileFactory {
+public class LinearProjectileStrategy implements IProjectileStrategy {
     private WeaponDefinition weaponDefinition;
     private ProjectileDefinition projectileDefinition;
     private IGameContainer gameContainer;
 
-    public LinearProjectileFactory(IGameContainer gameContainer,
-                                   WeaponDefinition weaponDefinition,
-                                   ProjectileDefinition projectileDefinition) {
+    public LinearProjectileStrategy(IGameContainer gameContainer,
+                                    WeaponDefinition weaponDefinition,
+                                    ProjectileDefinition projectileDefinition) {
         this.gameContainer = gameContainer;
         this.weaponDefinition = weaponDefinition;
         this.projectileDefinition = projectileDefinition;

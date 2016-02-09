@@ -6,7 +6,7 @@ import com.jme3.scene.Spatial;
 /**
  * Created by Eric on 2/8/2016.
  */
-public class ParabolicProjectileFactory implements IProjectileFactory {
+public class ParabolicProjectileStrategy implements IProjectileStrategy {
     @Override
     public Spatial spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
         return null;

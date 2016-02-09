@@ -34,7 +34,7 @@ public class EntityAiControlFactory implements IControlFactory {
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
-        IProjectileFactory projectileFactory = createProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
+        IProjectileStrategy projectileFactory = createProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(gameContainer.world(), weaponDefinition, this.projectileOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
         EntityAiController entityAi = new EntityAiController(motionGovernor, weaponsController, targetingController);
@@ -45,11 +45,11 @@ public class EntityAiControlFactory implements IControlFactory {
         spatial.addControl(entityAi);
     }
 
-    private IProjectileFactory createProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
+    private IProjectileStrategy createProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
         if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
-            return new ParabolicProjectileFactory();
+            return new ParabolicProjectileStrategy();
         } else {
-            return new LinearProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
+            return new LinearProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
         }
     }
 }

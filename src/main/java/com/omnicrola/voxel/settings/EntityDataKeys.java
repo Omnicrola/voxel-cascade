@@ -15,4 +15,5 @@ public class EntityDataKeys {
     public static final String PROJECTILE_DAMAGE = "projectile-damage";
     public static final String HITPOINTS = "hitpoints";
     public static final String PROJECTILE_EMITTING_ENTITY = "emitting-entity";
+    public static final String IS_COLLIDABLE = "is-collidable";
 }

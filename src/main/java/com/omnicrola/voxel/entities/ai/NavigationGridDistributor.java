@@ -33,14 +33,16 @@ public class NavigationGridDistributor {
         float startX = target.x - halfOfGrid + halfUnitSize;
         float startZ = target.z - halfOfGrid + halfUnitSize;
         ArrayList<Vector3f> gridPoints = new ArrayList<>(gridSize * gridSize);
-        float maxX = startX + halfOfGrid + halfUnitSize;
-        float maxZ = startZ + halfOfGrid + halfUnitSize;
+        float maxX = startX + gridDimension + halfUnitSize;
+        float maxZ = startZ + gridDimension + halfUnitSize;
 
         for (float x = startX; x <= maxX; x += largestUnitSize) {
             for (float z = startZ; z <= maxZ; z += largestUnitSize) {
                 gridPoints.add(new Vector3f(x, target.y, z));
             }
         }
+        System.out.println("selections: "+selectionGroup.getSelections().size());
+        System.out.println("navpoints: "+gridPoints.size());
         return gridPoints.iterator();
     }
 }

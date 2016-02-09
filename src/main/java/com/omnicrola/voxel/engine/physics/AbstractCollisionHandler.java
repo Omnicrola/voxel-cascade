@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.engine.physics;
 
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
@@ -41,20 +40,16 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
 
     protected void selfTerminate() {
         Node parent = this.parentSpatial.getParent();
-        Vector3f worldTranslation = this.parentSpatial.getWorldTranslation();
         if (parent != null) {
             this.deathAction.destruct(this.parentSpatial);
             parent.detachChild(this.parentSpatial);
         }
+        this.parentSpatial.setUserData(EntityDataKeys.IS_COLLIDABLE, false);
         gameWorld.remove(this.parentSpatial);
     }
 
     public void setDeathAction(IDeathAction deathAction){
         this.deathAction = deathAction;
-    }
-
-    protected boolean getBoolean(String dataKey) {
-        return getBoolean(this.parentSpatial, dataKey);
     }
 
     protected boolean getBoolean(Spatial spatial, String dataKey) {

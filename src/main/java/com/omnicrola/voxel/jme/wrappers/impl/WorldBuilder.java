@@ -70,6 +70,7 @@ public class WorldBuilder implements IWorldBuilder {
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
+        spatial.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
         spatial.setUserData(EntityDataKeys.IS_UNIT, true);
         spatial.setUserData(EntityDataKeys.HITPOINTS, unitDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
@@ -87,6 +88,7 @@ public class WorldBuilder implements IWorldBuilder {
 
         structure.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         structure.setUserData(EntityDataKeys.IS_STRUCTURE, true);
+        structure.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
         structure.setUserData(EntityDataKeys.IS_TARGETABLE, true);
         structure.setUserData(EntityDataKeys.HITPOINTS, structureDefinition.getHitpoints());
         structure.setUserData(EntityDataKeys.TEAM_DATA, teamData);
@@ -109,6 +111,7 @@ public class WorldBuilder implements IWorldBuilder {
         projectile.setMaterial(material);
 
         projectile.setUserData(EntityDataKeys.IS_PROJECTILE, true);
+        projectile.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
         projectile.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, projectileDefinition.getDamage());
         projectile.setUserData(EntityDataKeys.TEAM_DATA, emittingEntity.getUserData(EntityDataKeys.TEAM_DATA));
         projectile.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);

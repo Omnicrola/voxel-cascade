@@ -6,6 +6,6 @@ import com.jme3.scene.Spatial;
 /**
  * Created by Eric on 2/8/2016.
  */
-public interface IProjectileFactory {
+public interface IProjectileStrategy {
     Spatial spawnProjectile(Spatial emittingEntity, Vector3f targetLocation);
 }
