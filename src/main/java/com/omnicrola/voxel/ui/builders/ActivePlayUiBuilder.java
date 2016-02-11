@@ -2,7 +2,7 @@ package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
-import com.omnicrola.voxel.ui.UiLevelChangeObserver;
+import com.omnicrola.voxel.ui.controllers.UiLevelChangeObserver;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.ActivePlayScreenController;
@@ -26,13 +26,33 @@ public class ActivePlayUiBuilder {
         gameGui.build().screen(screenName, new ScreenBuilder(screenName) {{
             controller(activePlayScreenController);
             layer(new LayerBuilder("foreground") {{
-                childLayoutVertical();
+                childLayoutHorizontal();
                 backgroundColor(UiConstants.Colors.TRANSPARENT);
+
+                panel(new PanelBuilder("panel-main") {{
+                    childLayoutVertical();
+                    width(percentage(80));
+
+                    panel(new PanelBuilder("header-panel") {{
+                        width(percentage(100));
+                        height(pixels(50));
+                        childLayoutHorizontal();
+
+                        text(new TextBuilder() {{
+                            text("Resources: ");
+                            font(UiConstants.DEFAULT_FONT);
+                        }});
+                        text(new TextBuilder(UiToken.RESOURCE_AMOUNT.toString()) {{
+                            text("0");
+                            font(UiConstants.DEFAULT_FONT);
+                        }});
+                    }});
+                }});
 
                 panel(new PanelBuilder("panel-right") {{
                     childLayoutVertical();
                     alignRight();
-                    width("20%");
+                    width(percentage(20));
                     height(UiConstants.Size.ONE_HUNDRED);
 
                     text(new TextBuilder() {{

@@ -39,11 +39,10 @@ public class MotionGovernorControl extends AbstractControl {
         addDesiredVelocity(desiredVelocity);
     }
 
-
     @Override
     protected void controlUpdate(float tpf) {
-        float maxVelocity = this.movementDefinition.getMaxVelocity();
-        float maxTurnSpeed = this.movementDefinition.getTurnspeed();
+        float maxVelocity = this.movementDefinition.getMaxVelocity() * tpf;
+        float maxTurnSpeed = this.movementDefinition.getTurnspeed() * tpf;
         GroundVehicleControl physicsControl = getPhysicsControl();
 
         Vector3f currentVelocity = physicsControl.getWalkDirection();

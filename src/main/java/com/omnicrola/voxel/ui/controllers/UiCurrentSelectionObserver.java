@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.ui;
+package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.input.IUserInteractionObserver;
 import com.omnicrola.voxel.input.SelectionGroup;

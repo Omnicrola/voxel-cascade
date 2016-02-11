@@ -1,11 +1,11 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 import com.omnicrola.voxel.ui.SubscriberLink;
-import com.omnicrola.voxel.ui.UiCurrentSelectionObserver;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
@@ -27,9 +27,11 @@ public class ActivePlayScreenController extends AbstractScreenController {
     private LevelState currentLevel;
     private SelectionGroup currentSelection;
     private List<CommandGroup> actionCommands;
+    private UiLevelObserver levelObserver;
 
     public ActivePlayScreenController() {
         this.currentSelectionObserver = new UiCurrentSelectionObserver(this);
+        this.levelObserver = new UiLevelObserver(this);
     }
 
     @NiftyEventSubscriber(id = "ACTION_1")
@@ -37,7 +39,6 @@ public class ActivePlayScreenController extends AbstractScreenController {
     public void triggerActionButton_1(String id, ButtonClickedEvent buttonClickedEvent) {
         triggerCommandGroup(1);
     }
-
 
     @NiftyEventSubscriber(id = "ACTION_2")
     @SubscriberLink(UiToken.ACTION_2)
@@ -68,6 +69,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
             this.currentLevel.getWorldCursor().removeSelectionObserver(this.currentSelectionObserver);
         }
         newLevel.getWorldCursor().addSelectionObserver(this.currentSelectionObserver);
+        newLevel.addObserver(this.levelObserver);
         this.currentLevel = newLevel;
     }
 
@@ -75,6 +77,13 @@ public class ActivePlayScreenController extends AbstractScreenController {
         this.currentSelection = currentSelection;
         updateSelectionList();
         setCommandLabels(this.currentSelection.getAvailableCommands());
+    }
+
+    public void updateStats() {
+        TeamData playerTeam = this.currentLevel.getPlayerTeam();
+        float resources = this.currentLevel.getResources(playerTeam);
+        IUiElement resourceLabel = ui().getElement(UiToken.RESOURCE_AMOUNT);
+        resourceLabel.setText(String.valueOf(resources));
     }
 
     private void setCommandLabels(List<CommandGroup> newCommands) {

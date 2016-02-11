@@ -20,21 +20,8 @@ public class ResourceHarvestController extends AbstractControl {
         this.currentLevel = currentLevel;
     }
 
-    public void harvest(float tpf, IHarvestTarget harvestTarget) {
-        float resources = harvestTarget.removeResources();
-        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        this.currentLevel.addResouces(teamData, resources);
-    }
-
     public void setTarget(IHarvestTarget target) {
         this.harvestTarget = target;
-    }
-
-    private boolean isWithinHarvestRange() {
-        float harvestRange = VoxelUtil.floatData(this.spatial, EntityDataKeys.HARVEST_RANGE);
-        Vector3f worldLocation = this.spatial.getWorldTranslation();
-        float distance = worldLocation.distance(this.harvestTarget.getLocation());
-        return distance < harvestRange;
     }
 
     public boolean isHarvesting() {
@@ -42,11 +29,15 @@ public class ResourceHarvestController extends AbstractControl {
     }
 
     public boolean isInRange() {
-        Vector3f position = this.spatial.getWorldTranslation();
-        Vector3f target = this.harvestTarget.getLocation();
-        float range = VoxelUtil.floatData(this.spatial, EntityDataKeys.HARVEST_RANGE);
-        float distance = position.distance(target);
-        return distance < range;
+        if (this.harvestTarget != null) {
+            Vector3f position = this.spatial.getWorldTranslation();
+            Vector3f target = this.harvestTarget.getLocation();
+            float range = VoxelUtil.floatData(this.spatial, EntityDataKeys.HARVEST_RANGE);
+            float distance = position.distance(target);
+            return distance < range;
+        } else {
+            return false;
+        }
     }
 
     public Vector3f getTargetLocation() {
@@ -55,7 +46,19 @@ public class ResourceHarvestController extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        if (isInRange()) {
+            if (this.harvestTarget.hasResources()) {
+                harvest(tpf);
+            } else {
+                this.harvestTarget = null;
+            }
+        }
+    }
 
+    public void harvest(float tpf) {
+        float resources = harvestTarget.removeResources(tpf);
+        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        this.currentLevel.addResouces(teamData, resources);
     }
 
     @Override

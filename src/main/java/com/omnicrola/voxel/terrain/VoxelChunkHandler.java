@@ -33,6 +33,11 @@ public class VoxelChunkHandler {
         chunk.set(location, voxelType);
     }
 
+    public void setResource(Vec3i location, float amount) {
+        VoxelChunk chunk = getChunkContaining(location);
+        chunk.setResourceGlobal(location, amount);
+    }
+
     public VoxelChunk getChunkContaining(Vec3i globalLocation) {
         ChunkId chunkId = ChunkId.fromGlobal(globalLocation);
         VoxelChunk voxelChunk = this.chunks.get(chunkId);
@@ -107,4 +112,6 @@ public class VoxelChunkHandler {
         byte voxel = chunk.getVoxelGlobal(location);
         return this.voxelTypeLibrary.lookup(voxel);
     }
+
+
 }

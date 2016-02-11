@@ -19,6 +19,7 @@ public enum UiToken implements IUiToken {
     ACTION_9,
     ELAPSED_TIME,
     BUTTON_MAIN_MENU,
-    TEAM_RESULTS_CONTAINER;
+    TEAM_RESULTS_CONTAINER,
+    RESOURCE_AMOUNT;
 
 }

@@ -17,11 +17,11 @@ public class VoxelData {
         this.voxel = voxel;
     }
 
-    public short getResources() {
+    public float getResources() {
         return this.chunk.getResourceGlobal(this.location);
     }
 
-    public void setResources(short amount) {
+    public void setResources(float amount) {
         this.chunk.setResourceGlobal(this.location, amount);
     }
 }

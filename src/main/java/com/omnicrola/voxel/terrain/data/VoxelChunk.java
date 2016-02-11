@@ -21,7 +21,7 @@ public class VoxelChunk extends Node {
 
 
     private final byte[][][] voxels;
-    private final short[][][] resources;
+    private final float[][][] resources;
     private ChunkId chunkId;
     private boolean isDirty;
 
@@ -30,7 +30,7 @@ public class VoxelChunk extends Node {
         this.chunkId = chunkId;
         int size = GameConstants.CHUNK_SIZE;
         this.voxels = new byte[size][size][size];
-        this.resources = new short[size][size][size];
+        this.resources = new float[size][size][size];
         this.isDirty = false;
     }
 
@@ -85,12 +85,12 @@ public class VoxelChunk extends Node {
         this.getChildren().forEach(spatial -> gamePhysics.remove(spatial));
     }
 
-    public short getResourceGlobal(Vec3i globalLocation) {
+    public float getResourceGlobal(Vec3i globalLocation) {
         Vec3i localize = this.chunkId.localize(globalLocation);
         return this.resources[localize.getX()][localize.getY()][localize.getZ()];
     }
 
-    public void setResourceGlobal(Vec3i globalLocation, short amount) {
+    public void setResourceGlobal(Vec3i globalLocation, float amount) {
         Vec3i localize = this.chunkId.localize(globalLocation);
         this.resources[localize.getX()][localize.getY()][localize.getZ()] = amount;
     }

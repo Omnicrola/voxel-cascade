@@ -5,6 +5,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
+import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
 import com.omnicrola.voxel.input.WorldCursor;
@@ -24,6 +25,7 @@ public class LevelState implements IDisposable {
     private final ArrayList<Spatial> allEntities;
     private final LevelStatistics statistics;
     private final HashMap<TeamData, Float> resources;
+    private final ArrayList<ILevelObserver> observers;
     private Node units;
     private Node terrain;
     private WorldCursor worldCursor;
@@ -37,6 +39,7 @@ public class LevelState implements IDisposable {
         this.terrain = terrain;
         this.units = new Node();
         this.lights = new ArrayList<>();
+        this.observers = new ArrayList<>();
         this.worldCursor = worldCursor;
         this.allEntities = new ArrayList<>();
         this.levelName = levelName;
@@ -105,6 +108,7 @@ public class LevelState implements IDisposable {
     @Override
     public void dispose() {
         this.getWorldCursor().dispose();
+        this.observers.clear();
         recursivelyDisposeNode(this.terrain);
         recursivelyDisposeNode(this.units);
     }
@@ -165,5 +169,19 @@ public class LevelState implements IDisposable {
         this.statistics.addResources(teamData, additionalResources);
         float currentResources = this.resources.get(teamData);
         this.resources.put(teamData, currentResources + additionalResources);
+        System.out.println(additionalResources);
+        notifyObservers();
+    }
+
+    public float getResources(TeamData playerTeam) {
+        return this.resources.get(playerTeam);
+    }
+
+    private void notifyObservers() {
+        this.observers.forEach(o -> o.levelChanged());
+    }
+
+    public void addObserver(ILevelObserver levelObserver) {
+        this.observers.add(levelObserver);
     }
 }

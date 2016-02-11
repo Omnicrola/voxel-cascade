@@ -48,7 +48,9 @@ public class VoxelTerrainGenerator {
 
     private void fillZ(VoxelChunkHandler voxelChunkHandler, int x, int z, float height) {
         for (int y = 0; y <= height; y++) {
-            voxelChunkHandler.set(new Vec3i(x, y, z), VoxelType.GREY.uniqueId());
+            Vec3i location = new Vec3i(x, y, z);
+            voxelChunkHandler.set(location, VoxelType.GREY.uniqueId());
+            voxelChunkHandler.setResource(location, 1f);
         }
     }
 }

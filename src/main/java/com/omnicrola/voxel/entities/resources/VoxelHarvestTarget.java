@@ -6,8 +6,9 @@ import com.omnicrola.voxel.terrain.VoxelData;
 /**
  * Created by Eric on 2/11/2016.
  */
-public class VoxelHarvestTarget implements IHarvestTarget{
+public class VoxelHarvestTarget implements IHarvestTarget {
 
+    public static final float BASE_HARVEST_RATE = 1f;
     private VoxelData voxelData;
     private Vector3f targetLocation;
 
@@ -26,10 +27,10 @@ public class VoxelHarvestTarget implements IHarvestTarget{
     }
 
     @Override
-    public float removeResources() {
-        short amountRemoved = 1;
-        short resources = this.voxelData.getResources();
-        this.voxelData.setResources((short) (resources - amountRemoved));
+    public float removeResources(float tpf) {
+        float amountRemoved = BASE_HARVEST_RATE * tpf;
+        float resources = this.voxelData.getResources();
+        this.voxelData.setResources(resources - amountRemoved);
         return amountRemoved;
     }
 }
