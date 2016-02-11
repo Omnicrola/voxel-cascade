@@ -72,6 +72,7 @@ public class WorldBuilder implements IWorldBuilder {
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
         spatial.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
         spatial.setUserData(EntityDataKeys.IS_UNIT, true);
+        spatial.setUserData(EntityDataKeys.HARVEST_RANGE, 2f);
         spatial.setUserData(EntityDataKeys.HITPOINTS, unitDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
         return spatial;

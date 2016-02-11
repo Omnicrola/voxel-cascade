@@ -58,7 +58,7 @@ public class UnitGenerator {
         return unitDefinition;
     }
 
-    private static MovementDefinition movementDef(float turnspeed, float maxVelocity) {
+    private static MovementDefinition movementDef(float maxVelocity, float turnspeed) {
         MovementDefinition movementDefinition = new MovementDefinition();
         movementDefinition.turnspeed = turnspeed;
         movementDefinition.maxVelocity = maxVelocity;

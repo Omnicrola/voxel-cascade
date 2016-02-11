@@ -43,7 +43,7 @@ public class ActivePlayUiBuilder {
                             font(UiConstants.DEFAULT_FONT);
                         }});
                         text(new TextBuilder(UiToken.RESOURCE_AMOUNT.toString()) {{
-                            text("0");
+                            text("000000000");
                             font(UiConstants.DEFAULT_FONT);
                         }});
                     }});

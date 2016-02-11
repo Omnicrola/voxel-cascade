@@ -3,7 +3,6 @@ package com.omnicrola.voxel.entities.control;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.WeaponType;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
@@ -36,13 +35,12 @@ public class EntityAiControlFactory implements IControlFactory {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
         CurrentLevelState currentLevelState = gameContainer.getState(CurrentLevelState.class);
-        LevelState currentLevel = currentLevelState.getCurrentLevel();
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
         IProjectileStrategy projectileFactory = createProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(gameContainer.world(), weaponDefinition, this.projectileOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
-        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevel);
+        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevelState);
         EntityAiController entityAi = new EntityAiController(
                 motionGovernor,
                 weaponsController,

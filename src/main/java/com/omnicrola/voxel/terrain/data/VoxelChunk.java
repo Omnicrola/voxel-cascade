@@ -87,7 +87,8 @@ public class VoxelChunk extends Node {
 
     public float getResourceGlobal(Vec3i globalLocation) {
         Vec3i localize = this.chunkId.localize(globalLocation);
-        return this.resources[localize.getX()][localize.getY()][localize.getZ()];
+        float resources = this.resources[localize.getX()][localize.getY()][localize.getZ()];
+        return resources;
     }
 
     public void setResourceGlobal(Vec3i globalLocation, float amount) {

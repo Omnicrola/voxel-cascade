@@ -5,7 +5,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.engine.states.CurrentLevelState;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -13,11 +13,11 @@ import com.omnicrola.voxel.util.VoxelUtil;
  * Created by Eric on 2/11/2016.
  */
 public class ResourceHarvestController extends AbstractControl {
-    private LevelState currentLevel;
     private IHarvestTarget harvestTarget;
+    private CurrentLevelState currentLevelState;
 
-    public ResourceHarvestController(LevelState currentLevel) {
-        this.currentLevel = currentLevel;
+    public ResourceHarvestController(CurrentLevelState currentLevelState) {
+        this.currentLevelState = currentLevelState;
     }
 
     public void setTarget(IHarvestTarget target) {
@@ -58,7 +58,7 @@ public class ResourceHarvestController extends AbstractControl {
     public void harvest(float tpf) {
         float resources = harvestTarget.removeResources(tpf);
         TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        this.currentLevel.addResouces(teamData, resources);
+        this.currentLevelState.getCurrentLevel().addResouces(teamData, resources);
     }
 
     @Override

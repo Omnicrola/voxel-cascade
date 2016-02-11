@@ -4,7 +4,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.data.WeaponType;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
@@ -34,13 +33,13 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
-        LevelState currentLevel = gameContainer.getState(CurrentLevelState.class).getCurrentLevel();
+        CurrentLevelState currentLevelState = gameContainer.getState(CurrentLevelState.class);
         IGameWorld gameWorld = gameContainer.world();
 
         IProjectileStrategy projectileFactory = buildProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(gameWorld, weaponDefinition, weaponOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
-        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevel);
+        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevelState);
         EntityAiController entityAiController = new EntityAiController(
                 NullMotionController.NO_OP,
                 weaponsController,

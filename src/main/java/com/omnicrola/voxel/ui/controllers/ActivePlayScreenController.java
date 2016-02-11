@@ -83,7 +83,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
         TeamData playerTeam = this.currentLevel.getPlayerTeam();
         float resources = this.currentLevel.getResources(playerTeam);
         IUiElement resourceLabel = ui().getElement(UiToken.RESOURCE_AMOUNT);
-        resourceLabel.setText(String.valueOf(resources));
+        resourceLabel.setText(String.valueOf((int)resources));
     }
 
     private void setCommandLabels(List<CommandGroup> newCommands) {

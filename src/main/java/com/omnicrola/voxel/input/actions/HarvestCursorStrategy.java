@@ -35,8 +35,8 @@ public class HarvestCursorStrategy implements ICursorStrategy {
     public void executePrimary(GameMouseEvent mouseEvent, SelectionGroup currentSelection) {
         if (!mouseEvent.isPressed()) {
             Optional<CollisionResult> terrainPositionUnderCursor = this.levelState.getWorldCursor().getTerrainPositionUnderCursor();
-            if(terrainPositionUnderCursor.isPresent()){
-                Vector3f contactPoint = terrainPositionUnderCursor.get().getContactPoint();
+            if (terrainPositionUnderCursor.isPresent()) {
+                Vector3f contactPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
                 VoxelData voxelData = this.gameContainer.world().getVoxelAt(contactPoint);
                 VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelData, contactPoint);
                 currentSelection.orderHarvest(voxelHarvestTarget);
