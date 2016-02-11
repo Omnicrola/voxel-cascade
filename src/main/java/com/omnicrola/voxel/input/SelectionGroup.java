@@ -8,6 +8,7 @@ import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.entities.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -57,6 +58,11 @@ public class SelectionGroup {
     public void orderAttackLocation(Vector3f location) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location);
         getEntityAiControllerStream().forEach(ai -> ai.attackLocation(navPoints.next()));
+    }
+
+
+    public void orderHarvest(VoxelHarvestTarget voxelHarvestTarget) {
+        getEntityAiControllerStream().forEach(ai -> ai.harvest(voxelHarvestTarget));
     }
 
     public float getLargestUnitSize() {

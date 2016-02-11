@@ -57,7 +57,7 @@ public class AttackCursorStrategy implements ICursorStrategy {
         if (unitUnderCursor.isPresent()) {
             currentSelection.orderAttackTarget(unitUnderCursor.get().getGeometry());
         } else {
-            Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.currentLevelState.getTerrainNode());
+            Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainPositionUnderCursor();
             if (terrainUnderCursor.isPresent()) {
                 Vector3f terrainLocation = terrainUnderCursor.get().getContactPoint();
                 currentSelection.orderAttackLocation(terrainLocation);

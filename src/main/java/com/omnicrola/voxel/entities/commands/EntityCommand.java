@@ -46,6 +46,13 @@ public enum EntityCommand implements IEntityCommand {
             cursorCommandDelegator.setBuildStrategy(selectionGroup);
             return selectionGroup.getBuildCommands();
         }
+    },
+    HARVEST(5){
+        @Override
+        public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
+            cursorCommandDelegator.setHarvestStrategy(selectionGroup);
+            return null;
+        }
     };
 
     private int priority;

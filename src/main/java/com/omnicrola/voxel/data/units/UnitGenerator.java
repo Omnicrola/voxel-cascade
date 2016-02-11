@@ -52,6 +52,7 @@ public class UnitGenerator {
         unitDefinition.commands.add(EntityCommand.MOVE);
         unitDefinition.commands.add(EntityCommand.ATTACK);
         unitDefinition.commands.add(EntityCommand.STOP);
+        unitDefinition.commands.add(EntityCommand.HARVEST);
         unitDefinition.commands.add(EntityCommand.BUILD);
         unitDefinition.buildCommands.add(new BuildVoxelCommand(GameConstants.TERRAIN_TYPE_1));
         return unitDefinition;

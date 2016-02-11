@@ -11,7 +11,7 @@ World
 UI
 -----
  [ ] Add resource tracker
- [ ] Make selection list update if units die
+ [X] Make selection list update if units die
  [ ] Disable selecting non-player units
  [ ] Add an options screen (video settings, etc)
 

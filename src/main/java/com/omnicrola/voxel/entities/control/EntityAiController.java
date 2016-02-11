@@ -6,6 +6,8 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.entities.resources.IHarvestTarget;
+import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 import java.util.Optional;
@@ -15,12 +17,14 @@ import java.util.Optional;
  */
 public class EntityAiController extends AbstractControl {
 
+
     private enum Goal {
         HOLD_POSITION,
         ATTACK_TARGET,
         ATTACK_LOCATION,
         MOVE_TO_POSITION,
-        STOP;
+        STOP,
+        HARVEST;
     }
 
     private Vector3f currentTargetLocation;
@@ -28,14 +32,17 @@ public class EntityAiController extends AbstractControl {
     private Geometry currentTarget;
     private WeaponsController weaponsController;
     private TargetingController targetingController;
+    private ResourceHarvestController harvestController;
     private MotionGovernorControl motionGovernor;
 
     public EntityAiController(MotionGovernorControl motionGovernor,
                               WeaponsController weaponsController,
-                              TargetingController targetingController) {
+                              TargetingController targetingController,
+                              ResourceHarvestController resourceHarvester) {
         this.motionGovernor = motionGovernor;
         this.weaponsController = weaponsController;
         this.targetingController = targetingController;
+        this.harvestController = resourceHarvester;
         setGoal(Goal.STOP);
     }
 
@@ -56,6 +63,9 @@ public class EntityAiController extends AbstractControl {
                 break;
             case MOVE_TO_POSITION:
                 updateMoveToLocation();
+                break;
+            case HARVEST:
+                updateHarvest(tpf);
                 break;
             default:
         }
@@ -109,6 +119,19 @@ public class EntityAiController extends AbstractControl {
         this.motionGovernor.holdPosition();
     }
 
+    private void updateHarvest(float tpf) {
+        if (this.harvestController.isHarvesting()) {
+            if (this.harvestController.isInRange()) {
+                this.motionGovernor.holdPosition();
+            } else {
+                Vector3f location = this.harvestController.getTargetLocation();
+                this.motionGovernor.moveToward(location);
+            }
+        } else {
+            setGoal(Goal.HOLD_POSITION);
+        }
+    }
+
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
     }
@@ -135,6 +158,11 @@ public class EntityAiController extends AbstractControl {
         setGoal(Goal.ATTACK_TARGET);
         this.currentTarget = targetEntity;
         this.weaponsController.setTarget(targetEntity);
+    }
+
+    public void harvest(IHarvestTarget harvestTarget) {
+        this.harvestController.setTarget(harvestTarget);
+        setGoal(Goal.HARVEST);
     }
 
     private void clearTarget() {

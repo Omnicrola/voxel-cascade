@@ -17,10 +17,12 @@ import java.util.Map;
 public class VoxelChunkHandler {
 
     private final Map<ChunkId, VoxelChunk> chunks;
+    private VoxelTypeLibrary voxelTypeLibrary;
     private VoxelChunkRebuilder voxelChunkRebuilder;
     private Node parentNode;
 
-    public VoxelChunkHandler(VoxelChunkRebuilder voxelChunkRebuilder) {
+    public VoxelChunkHandler(VoxelTypeLibrary voxelTypeLibrary, VoxelChunkRebuilder voxelChunkRebuilder) {
+        this.voxelTypeLibrary = voxelTypeLibrary;
         this.voxelChunkRebuilder = voxelChunkRebuilder;
         this.chunks = new HashMap<>();
     }
@@ -98,5 +100,11 @@ public class VoxelChunkHandler {
     public boolean isVoxelSolidAt(Vec3i location) {
         boolean solid = isSolid(location);
         return solid;
+    }
+
+    public IVoxelType getVoxelAt(Vec3i location) {
+        VoxelChunk chunk = getChunkContaining(location);
+        byte voxel = chunk.getVoxelGlobal(location);
+        return this.voxelTypeLibrary.lookup(voxel);
     }
 }

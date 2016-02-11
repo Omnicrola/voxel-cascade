@@ -10,6 +10,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -86,5 +87,11 @@ public class VoxelTerrainControl extends AbstractPhysicsControl {
 
     public void setVoxel(byte voxel, Vec3i location) {
         this.voxelChunkHandler.set(location, voxel);
+    }
+
+    public VoxelData getVoxelAt(Vec3i location) {
+        IVoxelType voxel = this.voxelChunkHandler.getVoxelAt(location);
+        VoxelChunk chunk = this.voxelChunkHandler.getChunkContaining(location);
+        return new VoxelData(chunk, location, voxel);
     }
 }

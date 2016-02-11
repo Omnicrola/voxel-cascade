@@ -8,6 +8,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.terrain.VoxelData;
 
 import java.util.List;
 import java.util.stream.Stream;
@@ -48,4 +49,6 @@ public interface IGameWorld {
     boolean isBelowTerrain(Geometry spatial);
 
     Vector3f getSpawnPointFor(Vector3f location);
+
+    VoxelData getVoxelAt(Vector3f contactPoint);
 }

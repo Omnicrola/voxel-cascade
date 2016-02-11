@@ -5,7 +5,6 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.jme3.scene.control.Control;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.control.BuildCursorValidityControl;
 import com.omnicrola.voxel.fx.MaterialToken;
@@ -75,19 +74,17 @@ public class CursorCommandDelegator {
         return exampleBuildTarget;
     }
 
-    private void removeControls(Spatial spatial) {
-        int numControls = spatial.getNumControls();
-        for (int i = 0; i < numControls - 1; i++) {
-            Class<? extends Control> controlClass = spatial.getControl(i).getClass();
-            spatial.removeControl(controlClass);
-        }
-    }
-
     public void setBuildVoxelStrategy(byte voxelType) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
         Geometry ghostVoxel = createVoxel(new ColorRGBA(1, 1, 1, 0.5f));
         BuildVoxelStrategy buildVoxelStrategy = new BuildVoxelStrategy(this.gameContainer, this.levelState, voxelType, buildCursor, ghostVoxel);
         this.worldCursor.setCursorStrategy(buildVoxelStrategy);
+    }
+
+    public void setHarvestStrategy(SelectionGroup selectionGroup) {
+        JmeCursor harvestCursor = getCursor(CursorToken.HARVEST);
+        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(this.gameContainer, this.levelState, harvestCursor);
+        this.worldCursor.setCursorStrategy(harvestStrategy);
     }
 
     private Geometry createVoxel(ColorRGBA color) {
@@ -97,4 +94,5 @@ public class CursorCommandDelegator {
     private JmeCursor getCursor(CursorToken cursorToken) {
         return this.gameContainer.gui().build().cursor(cursorToken);
     }
+
 }

@@ -13,10 +13,7 @@ import com.omnicrola.voxel.main.VoxelException;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -26,6 +23,7 @@ public class LevelState implements IDisposable {
     private final ArrayList<Light> lights;
     private final ArrayList<Spatial> allEntities;
     private final LevelStatistics statistics;
+    private final HashMap<TeamData, Float> resources;
     private Node units;
     private Node terrain;
     private WorldCursor worldCursor;
@@ -43,10 +41,12 @@ public class LevelState implements IDisposable {
         this.allEntities = new ArrayList<>();
         this.levelName = levelName;
         this.statistics = new LevelStatistics();
+        this.resources = new HashMap<>();
     }
 
     public void addTeam(TeamData team) {
         this.teams.add(team);
+        this.resources.put(team, 0f);
     }
 
     public Node getUnitsNode() {
@@ -159,5 +159,11 @@ public class LevelState implements IDisposable {
 
     public float getTimeElapsed() {
         return this.statistics.getTimeElapsed();
+    }
+
+    public void addResouces(TeamData teamData, float additionalResources) {
+        this.statistics.addResources(teamData, additionalResources);
+        float currentResources = this.resources.get(teamData);
+        this.resources.put(teamData, currentResources + additionalResources);
     }
 }

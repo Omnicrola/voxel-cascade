@@ -19,6 +19,7 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.terrain.VoxelData;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -165,5 +166,11 @@ public class JmeWorldWrapper implements IGameWorld {
     public void detatchUnits(Spatial units) {
         this.units = null;
         remove(units);
+    }
+
+    @Override
+    public VoxelData getVoxelAt(Vector3f location) {
+        VoxelTerrainControl terrainControl = this.terrain.getControl(VoxelTerrainControl.class);
+        return terrainControl.getVoxelAt(Vec3i.round(location));
     }
 }

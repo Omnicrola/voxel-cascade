@@ -10,6 +10,7 @@ public class TeamStatistics {
     private boolean winner;
     private int unitsLost;
     private int structuresLost;
+    private float resourcesAcquired;
 
     public TeamStatistics(String name) {
         this.name = name;
@@ -53,5 +54,9 @@ public class TeamStatistics {
 
     public void increaseStructuresLost() {
         this.structuresLost++;
+    }
+
+    public void addResourcesAcquired(float additionalResources) {
+        this.resourcesAcquired += additionalResources;
     }
 }

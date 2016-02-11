@@ -4,9 +4,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.data.WeaponType;
+import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.engine.states.CurrentLevelState;
+import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
@@ -31,12 +34,19 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
-
+        LevelState currentLevel = gameContainer.getState(CurrentLevelState.class).getCurrentLevel();
         IGameWorld gameWorld = gameContainer.world();
+
         IProjectileStrategy projectileFactory = buildProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(gameWorld, weaponDefinition, weaponOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
-        EntityAiController entityAiController = new EntityAiController(NullMotionController.NO_OP, weaponsController, targetingController);
+        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevel);
+        EntityAiController entityAiController = new EntityAiController(
+                NullMotionController.NO_OP,
+                weaponsController,
+                targetingController,
+                resourceHarvester);
+
         spatial.addControl(entityAiController);
         spatial.addControl(weaponsController);
         spatial.addControl(targetingController);

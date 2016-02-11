@@ -13,6 +13,7 @@ import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
@@ -128,10 +129,10 @@ public class WorldCursor extends Node implements IDisposable {
                 .findFirst();
     }
 
-    public Optional<CollisionResult> getTerrainUnderCursor(Node terrain) {
+    public Optional<CollisionResult> getTerrainPositionUnderCursor() {
         CollisionResults results = new CollisionResults();
         Ray pickRay = getPickRay();
-        terrain.collideWith(pickRay, results);
+        this.terrainNode.collideWith(pickRay, results);
         return VoxelUtil.convertToStream(results)
                 .sorted(this.collisionDistanceComparator)
                 .findFirst();
@@ -170,4 +171,6 @@ public class WorldCursor extends Node implements IDisposable {
         Vector3f p = this.getLocalTranslation();
         return new Vec3i((int) p.x, (int) p.y, (int) p.z);
     }
+
+
 }

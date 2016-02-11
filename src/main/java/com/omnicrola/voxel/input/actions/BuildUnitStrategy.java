@@ -43,7 +43,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
         if (!gameMouseEvent.isPressed()) {
             if (isValidBuildLocation()) {
                 WorldCursor worldCursor = this.levelState.getWorldCursor();
-                Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainUnderCursor(this.levelState.getTerrainNode());
+                Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainPositionUnderCursor();
                 if (terrainUnderCursor.isPresent()) {
                     Spatial unit = this.gameContainer.world().build().unit(this.unitId, levelState.getPlayerTeam());
                     Vector3f location = terrainUnderCursor.get().getContactPoint();

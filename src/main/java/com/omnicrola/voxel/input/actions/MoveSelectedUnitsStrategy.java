@@ -59,8 +59,7 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
     }
 
     protected void moveToLocation(SelectionGroup currentSelection) {
-        Node terrain = levelState.getTerrainNode();
-        Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainUnderCursor(terrain);
+        Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             Vector3f location = terrainUnderCursor.get().getContactPoint();
             currentSelection.orderMoveToLocation(location);

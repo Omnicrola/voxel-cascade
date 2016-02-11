@@ -30,7 +30,7 @@ public class DebugTargetListener implements ActionListener {
 
     private void findTerrain() {
         LevelState currentLevelState = this.voxelGameEngine.getStateManager().getState(CurrentLevelState.class).getCurrentLevel();
-        Optional<CollisionResult> terrainUnderCursor = currentLevelState.getWorldCursor().getTerrainUnderCursor(currentLevelState.getTerrainNode());
+        Optional<CollisionResult> terrainUnderCursor = currentLevelState.getWorldCursor().getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             Geometry geometry = terrainUnderCursor.get().getGeometry();
             RigidBodyControl control = geometry.getControl(RigidBodyControl.class);

@@ -81,4 +81,8 @@ public class LevelStatistics {
     public void addTime(float seconds) {
         this.timeElapsed += seconds;
     }
+
+    public void addResources(TeamData teamData, float additionalResources) {
+        this.teamStatistics.get(teamData).addResourcesAcquired(additionalResources);
+    }
 }
