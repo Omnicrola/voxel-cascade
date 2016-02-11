@@ -41,8 +41,6 @@ public class NavigationGridDistributor {
                 gridPoints.add(new Vector3f(x, target.y, z));
             }
         }
-        System.out.println("selections: "+selectionGroup.getSelections().size());
-        System.out.println("navpoints: "+gridPoints.size());
         return gridPoints.iterator();
     }
 }

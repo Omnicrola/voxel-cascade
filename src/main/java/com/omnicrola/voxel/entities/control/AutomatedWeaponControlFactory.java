@@ -44,7 +44,7 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
 
     private IProjectileStrategy buildProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
         if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
-            return new ParabolicProjectileStrategy();
+            return new ParabolicProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
         } else {
             return new LinearProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
         }

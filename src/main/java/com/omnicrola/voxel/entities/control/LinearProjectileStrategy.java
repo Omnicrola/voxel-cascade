@@ -4,17 +4,12 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
-import com.omnicrola.voxel.engine.physics.CollisionController;
-import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
-import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 
 /**
  * Created by Eric on 2/8/2016.
  */
-public class LinearProjectileStrategy implements IProjectileStrategy {
+public class LinearProjectileStrategy extends ProjectileStrategy {
     private WeaponDefinition weaponDefinition;
     private ProjectileDefinition projectileDefinition;
     private IGameContainer gameContainer;
@@ -29,9 +24,11 @@ public class LinearProjectileStrategy implements IProjectileStrategy {
 
     @Override
     public Spatial spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
-        IWorldBuilder worldBuilder = this.gameContainer.world().build();
-        Spatial projectile = worldBuilder.projectile(emittingEntity, this.projectileDefinition.getId());
-        addCollisionControl(projectile);
+        Spatial projectile = this.gameContainer
+                .world()
+                .build()
+                .projectile(emittingEntity, this.projectileDefinition.getId());
+        addCollisionControl(this.gameContainer.world(), projectile);
         addRangeControl(projectile);
         addProjectileControl(emittingEntity, targetLocation, projectile);
         return projectile;
@@ -51,10 +48,4 @@ public class LinearProjectileStrategy implements IProjectileStrategy {
         projectile.addControl(new SelfDestructControl(this.gameContainer.physics(), projectileLife));
     }
 
-    private void addCollisionControl(Spatial projectile) {
-        IGameWorld gameWorld = this.gameContainer.world();
-        ProjectileCollisionHandler projectileCollisionHandler = new ProjectileCollisionHandler(projectile, gameWorld);
-        projectileCollisionHandler.setDeathAction(new VoxelShowerSpawnAction(gameWorld.build(), 100));
-        projectile.addControl(new CollisionController(projectileCollisionHandler));
-    }
 }

@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.physics;
 
-import com.jme3.bullet.collision.shapes.CapsuleCollisionShape;
 import com.jme3.bullet.collision.shapes.CollisionShape;
 import com.jme3.bullet.collision.shapes.CompoundCollisionShape;
 import com.jme3.bullet.control.CharacterControl;
@@ -18,7 +17,7 @@ public class GroundVehicleControl extends CharacterControl {
     private Geometry geometry;
 
     private static CollisionShape getShape() {
-        CapsuleCollisionShape capsuleCollisionShape = new CapsuleCollisionShape(0.25f, 0.25f);
+        BetterCapsuleCollisionShape capsuleCollisionShape = new BetterCapsuleCollisionShape(0.25f, 0.25f);
         CompoundCollisionShape compoundCollisionShape = new CompoundCollisionShape();
         compoundCollisionShape.addChildShape(capsuleCollisionShape, new Vector3f(0, -0.25f, 0));
         return capsuleCollisionShape;

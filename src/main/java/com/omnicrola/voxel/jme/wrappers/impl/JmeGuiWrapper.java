@@ -12,7 +12,7 @@ import com.omnicrola.voxel.ui.UiScreen;
  * Created by omnic on 1/15/2016.
  */
 public class JmeGuiWrapper implements IGameGui {
-    private static final float CAMERA_MOVE_SPEED = 3f;
+    private static final float CAMERA_MOVE_SPEED = 10f;
     private VoxelGameEngine game;
     private GuiBuilder guiBuilder;
 
@@ -52,12 +52,15 @@ public class JmeGuiWrapper implements IGameGui {
         Vector3f velocity = new Vector3f();
         Vector3f location = camera.getLocation().clone();
         if (sideways) {
-            camera.getLeft(velocity);
+//            camera.getLeft(velocity);
+            location = camera.getLocation().add(amount * CAMERA_MOVE_SPEED, 0, 0);
         } else {
-            camera.getDirection(velocity);
+            location = camera.getLocation().add(0, 0, amount * CAMERA_MOVE_SPEED);
+//            camera.getDirection(velocity);
         }
-        velocity.multLocal(amount * CAMERA_MOVE_SPEED);
-        location.addLocal(velocity);
+
+//        velocity.multLocal(amount * CAMERA_MOVE_SPEED);
+//        location.addLocal(velocity);
         camera.setLocation(location);
     }
 

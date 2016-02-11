@@ -31,13 +31,13 @@ public class PanCameraListener implements ActionListener, AnalogListener {
     @Override
     public void onAnalog(String name, float value, float tpf) {
         if (name.equals(GameInputAction.CAMERA_LEFT.toString())) {
-            moveCamera(value, true);
-        } else if (name.equals(GameInputAction.CAMERA_RIGHT.toString())) {
             moveCamera(-value, true);
+        } else if (name.equals(GameInputAction.CAMERA_RIGHT.toString())) {
+            moveCamera(value, true);
         } else if (name.equals(GameInputAction.CAMERA_FORWARD.toString())) {
-            moveCamera(value, false);
-        } else if (name.equals(GameInputAction.CAMERA_BACKWARD.toString())) {
             moveCamera(-value, false);
+        } else if (name.equals(GameInputAction.CAMERA_BACKWARD.toString())) {
+            moveCamera(value, false);
         }
     }
 

@@ -96,12 +96,14 @@
         <weapon global-id="1000" projectile-id="2000">
             <name>Slug Thrower</name>
             <description>Slightly more effective than garden slugs</description>
+            <type>LINEAR</type>
             <range>10.0</range>
             <rounds-per-minute>60.0</rounds-per-minute>
         </weapon>
         <weapon global-id="1001" projectile-id="2001">
             <name>BB Shooter</name>
             <description>Slightly more effective than garden slugs</description>
+            <type>LINEAR</type>
             <range>11.0</range>
             <rounds-per-minute>240.0</rounds-per-minute>
         </weapon>

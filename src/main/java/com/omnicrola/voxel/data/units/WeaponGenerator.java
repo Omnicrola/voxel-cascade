@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
+import com.omnicrola.voxel.data.WeaponType;
+
 /**
  * Created by Eric on 1/20/2016.
  */
@@ -15,8 +17,10 @@ public class WeaponGenerator {
         weaponDefinition.description = "Slightly more effective than garden slugs";
         weaponDefinition.range = 10;
         weaponDefinition.rateOfFire = 60;
+        weaponDefinition.weaponType = WeaponType.LINEAR;
         return weaponDefinition;
     }
+
     public static WeaponDefinition createBbGun() {
         WeaponDefinition weaponDefinition = new WeaponDefinition();
         weaponDefinition.globalId = ID_MACHINEGUN_WEAPON;

@@ -90,8 +90,8 @@ public class LevelStateFactory {
             entity.setLocalTranslation(position);
             levelState.addEntity(entity);
 
-            addOrientationArrow(levelState, entity);
-            addVelocityArrow(levelState, entity);
+//            addOrientationArrow(levelState, entity);
+//            addVelocityArrow(levelState, entity);
         }
     }
 

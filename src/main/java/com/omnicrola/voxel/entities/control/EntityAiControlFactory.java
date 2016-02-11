@@ -47,7 +47,7 @@ public class EntityAiControlFactory implements IControlFactory {
 
     private IProjectileStrategy createProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
         if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
-            return new ParabolicProjectileStrategy();
+            return new ParabolicProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
         } else {
             return new LinearProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
         }
