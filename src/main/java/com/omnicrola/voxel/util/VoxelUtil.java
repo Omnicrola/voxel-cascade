@@ -4,6 +4,7 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 
 import java.util.stream.Stream;
 import java.util.stream.StreamSupport;
@@ -37,5 +38,9 @@ public class VoxelUtil {
         } else {
             return value.floatValue();
         }
+    }
+
+    public static boolean isAlive(Spatial spatial) {
+        return floatData(spatial, EntityDataKeys.HITPOINTS) > 0f;
     }
 }

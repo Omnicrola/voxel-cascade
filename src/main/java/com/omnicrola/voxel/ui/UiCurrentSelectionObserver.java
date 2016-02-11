@@ -18,4 +18,9 @@ public class UiCurrentSelectionObserver implements IUserInteractionObserver {
     public void notifyNewSelection(SelectionGroup selectionGroup) {
         this.activePlayScreenController.setCurrentSelection(selectionGroup);
     }
+
+    @Override
+    public void notifySelectionUpdated(SelectionGroup currentSelection) {
+        this.activePlayScreenController.selectionHasUpdated();
+    }
 }

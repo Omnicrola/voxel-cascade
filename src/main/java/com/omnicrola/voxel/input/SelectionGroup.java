@@ -9,6 +9,7 @@ import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.ui.ISelectedUnit;
+import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -130,4 +131,14 @@ public class SelectionGroup {
                 .average()
                 .getAsDouble();
     }
+
+    public boolean update(float tpf) {
+        int currentSize = this.selection.size();
+        this.selection = this.selection
+                .stream()
+                .filter(s -> VoxelUtil.isAlive(s))
+                .collect(Collectors.toList());
+        return currentSize != this.selection.size();
+    }
+
 }

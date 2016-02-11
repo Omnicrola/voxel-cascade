@@ -5,4 +5,6 @@ package com.omnicrola.voxel.input;
  */
 public interface IUserInteractionObserver {
     void notifyNewSelection(SelectionGroup selectionGroup);
+
+    void notifySelectionUpdated(SelectionGroup currentSelection);
 }

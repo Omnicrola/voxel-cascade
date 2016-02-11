@@ -56,6 +56,10 @@ public class WorldCursor extends Node implements IDisposable {
         super.updateLogicalState(tpf);
         Ray pickRay = getPickRay();
         setPositionToNearestVoxel(pickRay);
+        boolean hasChanged = this.currentSelection.update(tpf);
+        if (hasChanged) {
+            notifySelectionUpdated();
+        }
     }
 
     private void setPositionToNearestVoxel(Ray pickRay) {
@@ -103,11 +107,15 @@ public class WorldCursor extends Node implements IDisposable {
 
     public void clearSelection() {
         this.currentSelection = new SelectionGroup();
-        notifySelectionObservers();
+        notifySelectionChanged();
     }
 
-    private void notifySelectionObservers() {
+    private void notifySelectionChanged() {
         this.observers.forEach(o -> o.notifyNewSelection(this.currentSelection));
+    }
+
+    private void notifySelectionUpdated() {
+        this.observers.forEach(o -> o.notifySelectionUpdated(this.currentSelection));
     }
 
     public Optional<CollisionResult> getUnitUnderCursor(Node targetNode) {
@@ -147,7 +155,7 @@ public class WorldCursor extends Node implements IDisposable {
 
     public void setCurrentSelection(SelectionGroup currentSelection) {
         this.currentSelection = currentSelection;
-        notifySelectionObservers();
+        notifySelectionChanged();
     }
 
     public SelectionGroup getCurrentSelection() {

@@ -126,4 +126,9 @@ public class ActivePlayScreenController extends AbstractScreenController {
             }
         }
     }
+
+    public void selectionHasUpdated() {
+        updateSelectionList();
+        setCommandLabels(this.currentSelection.getAvailableCommands());
+    }
 }
