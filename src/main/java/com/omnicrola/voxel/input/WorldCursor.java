@@ -13,7 +13,6 @@ import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
@@ -68,9 +67,9 @@ public class WorldCursor extends Node implements IDisposable {
         this.terrainNode.collideWith(pickRay, results);
         if (results.size() > 0) {
             Vector3f contactPoint = results.getClosestCollision().getContactPoint();
-            contactPoint.setX((float) Math.floor(contactPoint.x));
-            contactPoint.setY((float) Math.floor(contactPoint.y));
-            contactPoint.setZ((float) Math.floor(contactPoint.z));
+            contactPoint.setX((float) Math.round(contactPoint.x));
+            contactPoint.setY((float) Math.round(contactPoint.y));
+            contactPoint.setZ((float) Math.round(contactPoint.z));
             this.setLocalTranslation(contactPoint);
         }
     }

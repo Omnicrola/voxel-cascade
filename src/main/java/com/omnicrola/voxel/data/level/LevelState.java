@@ -169,7 +169,6 @@ public class LevelState implements IDisposable {
         this.statistics.addResources(teamData, additionalResources);
         float currentResources = this.resources.get(teamData);
         this.resources.put(teamData, currentResources + additionalResources);
-        System.out.println(additionalResources);
         notifyObservers();
     }
 

@@ -10,6 +10,7 @@ import com.omnicrola.voxel.entities.control.BuildCursorValidityControl;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.ui.CursorToken;
 
 /**
@@ -83,7 +84,14 @@ public class CursorCommandDelegator {
 
     public void setHarvestStrategy(SelectionGroup selectionGroup) {
         JmeCursor harvestCursor = getCursor(CursorToken.HARVEST);
-        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(this.gameContainer, this.levelState, harvestCursor);
+        IWorldBuilder worldBuilder = this.gameContainer.world().build();
+
+        Geometry cube = worldBuilder.terrainVoxel(ColorRGBA.White);
+        cube.getMaterial().getAdditionalRenderState().setWireframe(true);
+        cube.setLocalTranslation(0.5f, -0.5f, 0.5f);
+        cube.setLocalScale(1.1f);
+
+        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(this.gameContainer, this.levelState, harvestCursor, cube);
         this.worldCursor.setCursorStrategy(harvestStrategy);
     }
 

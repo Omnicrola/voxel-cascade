@@ -3,7 +3,7 @@ package com.omnicrola.voxel.input.actions;
 import com.jme3.collision.CollisionResult;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.resources.VoxelHarvestTarget;
@@ -21,14 +21,14 @@ import java.util.Optional;
 public class HarvestCursorStrategy implements ICursorStrategy {
     private final IGameContainer gameContainer;
     private LevelState levelState;
-    private final JmeCursor harvestCursor;
-    private final Node empty3dCursor;
+    private final JmeCursor cursor2d;
+    private final Geometry cursor3d;
 
-    public HarvestCursorStrategy(IGameContainer gameContainer, LevelState levelState, JmeCursor harvestCursor) {
+    public HarvestCursorStrategy(IGameContainer gameContainer, LevelState levelState, JmeCursor cursor2d, Geometry cube) {
         this.gameContainer = gameContainer;
         this.levelState = levelState;
-        this.harvestCursor = harvestCursor;
-        this.empty3dCursor = new Node();
+        this.cursor2d = cursor2d;
+        this.cursor3d = cube;
     }
 
     @Override
@@ -54,11 +54,11 @@ public class HarvestCursorStrategy implements ICursorStrategy {
 
     @Override
     public JmeCursor get2DCursor() {
-        return this.harvestCursor;
+        return this.cursor2d;
     }
 
     @Override
     public Spatial get3dCursor() {
-        return this.empty3dCursor;
+        return this.cursor3d;
     }
 }
