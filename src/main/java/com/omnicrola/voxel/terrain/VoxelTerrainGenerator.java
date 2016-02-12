@@ -19,9 +19,9 @@ public class VoxelTerrainGenerator {
         this.perlinNoiseGenerator = perlinNoiseGenerator;
     }
 
-    public Node load(LevelDefinition levelData) {
+    public Node load(LevelDefinition levelData, VoxelTypeLibrary voxelTypeLibrary) {
         Node terrainRoot = new Node("Terrain");
-        VoxelChunkHandler voxelChunkHandler = this.chunkHandlerFactory.build();
+        VoxelChunkHandler voxelChunkHandler = this.chunkHandlerFactory.build(voxelTypeLibrary);
 
         TerrainDefinition terrainDefinition = levelData.getTerrain();
         int width = terrainDefinition.getWidth();

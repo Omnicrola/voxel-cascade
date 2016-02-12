@@ -182,7 +182,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
             }};
         }};
 
-        terrainNode = voxelTerrainGenerator.load(levelData);
+        terrainNode = voxelTerrainGenerator.load(levelData, new VoxelTypeLibrary());
         jmeApplicationWrapper.world().attachTerrain(terrainNode);
     }
 

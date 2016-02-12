@@ -11,7 +11,9 @@ import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
+import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
+import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.*;
@@ -32,8 +34,10 @@ public class LevelState implements IDisposable {
     private String levelName;
     private IGameContainer gameContainer;
     private boolean isActive;
+    private VoxelTypeLibrary voxelTypeLibrary;
 
-    public LevelState(Node terrain, WorldCursor worldCursor, String levelName) {
+    public LevelState(Node terrain, WorldCursor worldCursor, String levelName, VoxelTypeLibrary voxelTypeLibrary) {
+        this.voxelTypeLibrary = voxelTypeLibrary;
         this.isActive = false;
         this.teams = new ArrayList<>();
         this.terrain = terrain;
@@ -142,9 +146,9 @@ public class LevelState implements IDisposable {
         this.gameContainer.world().detatch(this.worldCursor);
     }
 
-    public void createVoxel(byte voxel, Vec3i location) {
+    public void setVoxel(IVoxelType voxel, Vec3i location) {
         VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
-        control.setVoxel(voxel, location);
+        control.setVoxel(voxel.uniqueId(), location);
     }
 
     public List<TeamStatistics> getTeamStatistics() {
@@ -167,8 +171,18 @@ public class LevelState implements IDisposable {
 
     public void addResouces(TeamData teamData, float additionalResources) {
         this.statistics.addResources(teamData, additionalResources);
+        modifyResources(teamData, additionalResources);
+        notifyObservers();
+    }
+
+    private void modifyResources(TeamData teamData, float amount) {
         float currentResources = this.resources.get(teamData);
-        this.resources.put(teamData, currentResources + additionalResources);
+        this.resources.put(teamData, currentResources + amount);
+    }
+
+    public void removeResources(TeamData teamData, float resourcesUsed) {
+        this.statistics.useResources(teamData, resourcesUsed);
+        modifyResources(teamData, -resourcesUsed);
         notifyObservers();
     }
 
@@ -182,5 +196,9 @@ public class LevelState implements IDisposable {
 
     public void addObserver(ILevelObserver levelObserver) {
         this.observers.add(levelObserver);
+    }
+
+    public VoxelTypeLibrary getVoxelTypeLibrary() {
+        return this.voxelTypeLibrary;
     }
 }

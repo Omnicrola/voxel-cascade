@@ -11,6 +11,7 @@ public class TeamStatistics {
     private int unitsLost;
     private int structuresLost;
     private float resourcesAcquired;
+    private float resourcesUsed;
 
     public TeamStatistics(String name) {
         this.name = name;
@@ -58,5 +59,9 @@ public class TeamStatistics {
 
     public void addResourcesAcquired(float additionalResources) {
         this.resourcesAcquired += additionalResources;
+    }
+
+    public void useResources(float resourcesUsed) {
+        this.resourcesUsed += resourcesUsed;
     }
 }

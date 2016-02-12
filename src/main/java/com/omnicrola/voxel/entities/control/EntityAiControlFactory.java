@@ -41,16 +41,19 @@ public class EntityAiControlFactory implements IControlFactory {
         WeaponsController weaponsController = new WeaponsController(gameContainer.world(), weaponDefinition, this.projectileOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
         ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevelState, gameContainer);
+        BuildController buildController = new BuildController(gameContainer, currentLevelState);
         EntityAiController entityAi = new EntityAiController(
                 motionGovernor,
                 weaponsController,
                 targetingController,
-                resourceHarvester);
+                resourceHarvester,
+                buildController);
 
         spatial.addControl(motionGovernor);
         spatial.addControl(targetingController);
         spatial.addControl(weaponsController);
         spatial.addControl(resourceHarvester);
+        spatial.addControl(buildController);
         spatial.addControl(entityAi);
     }
 

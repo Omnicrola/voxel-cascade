@@ -85,4 +85,8 @@ public class LevelStatistics {
     public void addResources(TeamData teamData, float additionalResources) {
         this.teamStatistics.get(teamData).addResourcesAcquired(additionalResources);
     }
+
+    public void useResources(TeamData teamData, float resourcesUsed) {
+        this.teamStatistics.get(teamData).useResources(resourcesUsed);
+    }
 }

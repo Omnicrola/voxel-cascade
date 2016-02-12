@@ -17,7 +17,10 @@ import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
+import com.omnicrola.voxel.terrain.data.VoxelType;
 
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -35,11 +38,12 @@ public class LevelStateFactory {
     }
 
     public LevelState create(LevelDefinition levelDefinition) {
-        Node terrain = this.voxelTerrainGenerator.load(levelDefinition);
+        VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
+        Node terrain = this.voxelTerrainGenerator.load(levelDefinition, voxelTypeLibrary);
         WorldCursor worldCursor = createWorldCursor(terrain);
 
-        LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName());
-        addLights(levelState, levelDefinition);
+        LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName(), voxelTypeLibrary);
+        addLights(levelState);
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition);
         addStructures(levelState, levelDefinition);
@@ -52,7 +56,7 @@ public class LevelStateFactory {
         return levelState;
     }
 
-    private static void addLights(LevelState levelState, LevelDefinition levelDefinition) {
+    private static void addLights(LevelState levelState) {
         DirectionalLight sun = new DirectionalLight();
         sun.setColor(ColorRGBA.White.mult(0.65f));
         sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
@@ -110,5 +114,11 @@ public class LevelStateFactory {
     private WorldCursor createWorldCursor(Node terrain) {
         WorldCursor worldCursor = this.gameContainer.world().createCursor(terrain);
         return worldCursor;
+    }
+
+    private VoxelTypeLibrary buildVoxelTypeLibrary() {
+        VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
+        Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
+        return voxelTypeLibrary;
     }
 }

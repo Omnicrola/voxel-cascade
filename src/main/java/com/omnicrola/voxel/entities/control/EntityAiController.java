@@ -6,6 +6,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.resources.IHarvestTarget;
 import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -24,7 +25,7 @@ public class EntityAiController extends AbstractControl {
         ATTACK_LOCATION,
         MOVE_TO_POSITION,
         STOP,
-        HARVEST;
+        HARVEST, BUILD;
     }
 
     private Vector3f currentTargetLocation;
@@ -33,17 +34,54 @@ public class EntityAiController extends AbstractControl {
     private WeaponsController weaponsController;
     private TargetingController targetingController;
     private ResourceHarvestController harvestController;
+    private final BuildController buildController;
     private MotionGovernorControl motionGovernor;
 
     public EntityAiController(MotionGovernorControl motionGovernor,
                               WeaponsController weaponsController,
                               TargetingController targetingController,
-                              ResourceHarvestController resourceHarvester) {
+                              ResourceHarvestController resourceHarvester,
+                              BuildController buildController) {
         this.motionGovernor = motionGovernor;
         this.weaponsController = weaponsController;
         this.targetingController = targetingController;
         this.harvestController = resourceHarvester;
+        this.buildController = buildController;
         setGoal(Goal.STOP);
+    }
+
+    public void orderMoveTo(Vector3f location) {
+        this.currentTargetLocation = location;
+        clearTarget();
+        setGoal(Goal.MOVE_TO_POSITION);
+    }
+
+    public void orderStop() {
+        this.currentTargetLocation = null;
+        clearTarget();
+        setGoal(Goal.STOP);
+    }
+
+    public void orderAttackLocation(Vector3f location) {
+        setGoal(Goal.ATTACK_LOCATION);
+        this.currentTargetLocation = location;
+        clearTarget();
+    }
+
+    public void orderAttackTarget(Geometry targetEntity) {
+        setGoal(Goal.ATTACK_TARGET);
+        this.currentTarget = targetEntity;
+        this.weaponsController.setTarget(targetEntity);
+    }
+
+    public void orderHarvest(IHarvestTarget harvestTarget) {
+        this.harvestController.setTarget(harvestTarget);
+        setGoal(Goal.HARVEST);
+    }
+
+    public void orderBuild(IConstructionPackage constructionPackage) {
+        this.buildController.setPackage(constructionPackage);
+        setGoal(Goal.BUILD);
     }
 
     @Override
@@ -66,6 +104,9 @@ public class EntityAiController extends AbstractControl {
                 break;
             case HARVEST:
                 updateHarvest(tpf);
+                break;
+            case BUILD:
+                updateBuild();
                 break;
             default:
         }
@@ -132,37 +173,16 @@ public class EntityAiController extends AbstractControl {
         }
     }
 
+    private void updateBuild() {
+        if(this.buildController.isInRange()){
+            this.motionGovernor.holdPosition();
+        } else {
+            this.motionGovernor.moveToward(this.buildController.getTargetLocation());
+        }
+    }
+
     @Override
     protected void controlRender(RenderManager rm, ViewPort vp) {
-    }
-
-    public void moveToLocation(Vector3f location) {
-        this.currentTargetLocation = location;
-        clearTarget();
-        setGoal(Goal.MOVE_TO_POSITION);
-    }
-
-    public void stop() {
-        this.currentTargetLocation = null;
-        clearTarget();
-        setGoal(Goal.STOP);
-    }
-
-    public void attackLocation(Vector3f location) {
-        setGoal(Goal.ATTACK_LOCATION);
-        this.currentTargetLocation = location;
-        clearTarget();
-    }
-
-    public void attackTarget(Geometry targetEntity) {
-        setGoal(Goal.ATTACK_TARGET);
-        this.currentTarget = targetEntity;
-        this.weaponsController.setTarget(targetEntity);
-    }
-
-    public void harvest(IHarvestTarget harvestTarget) {
-        this.harvestController.setTarget(harvestTarget);
-        setGoal(Goal.HARVEST);
     }
 
     private void clearTarget() {

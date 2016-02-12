@@ -27,9 +27,9 @@
                 <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
-            <build-targets>
+            <orderBuild-targets>
                 <voxel type="1"/>
-            </build-targets>
+            </orderBuild-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
         <unit global-id="2" weapon-id="1001">
@@ -58,9 +58,9 @@
                 <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
-            <build-targets>
+            <orderBuild-targets>
                 <voxel type="1"/>
-            </build-targets>
+            </orderBuild-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
         <unit global-id="3" weapon-id="1000">
@@ -89,9 +89,9 @@
                 <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
-            <build-targets>
+            <orderBuild-targets>
                 <voxel type="1"/>
-            </build-targets>
+            </orderBuild-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
     </units>
@@ -130,7 +130,7 @@
     <structures>
         <structure global-id="1">
             <name>Core</name>
-            <description>Use this to build things</description>
+            <description>Use this to orderBuild things</description>
             <texture>voxel-face-green.png</texture>
             <model>building-core.obj</model>
             <color>
@@ -143,14 +143,14 @@
             <commands>
                 <command>BUILD</command>
             </commands>
-            <build-targets>
-                <unit unit-id="1" build-range="10.0" priority="1"/>
-            </build-targets>
+            <orderBuild-targets>
+                <unit unit-id="1" orderBuild-range="10.0" priority="1"/>
+            </orderBuild-targets>
             <controls/>
         </structure>
         <structure global-id="2">
             <name>Core</name>
-            <description>Use this to build things</description>
+            <description>Use this to orderBuild things</description>
             <texture>voxel-face-red.png</texture>
             <model>building-core.obj</model>
             <color>
@@ -163,9 +163,9 @@
             <commands>
                 <command>BUILD</command>
             </commands>
-            <build-targets>
-                <unit unit-id="1" build-range="10.0" priority="1"/>
-            </build-targets>
+            <orderBuild-targets>
+                <unit unit-id="1" orderBuild-range="10.0" priority="1"/>
+            </orderBuild-targets>
             <controls/>
         </structure>
         <structure global-id="100">
@@ -175,7 +175,7 @@
             <model>turret.obj</model>
             <hitpoints>250.0</hitpoints>
             <commands/>
-            <build-targets/>
+            <orderBuild-targets/>
             <controls>
                 <weapon-control weapon-id="1000">
                     <weapon-offset x="0.0" y="1.0" z="0.0"/>

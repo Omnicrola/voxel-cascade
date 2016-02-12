@@ -5,6 +5,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.SelectedSpatial;
 import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
+import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
@@ -44,25 +45,33 @@ public class SelectionGroup {
 
     public void orderMoveToLocation(Vector3f vector3f) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(vector3f);
-        getEntityAiControllerStream().forEach(ai -> ai.moveToLocation(navPoints.next()));
+        getEntityAiControllerStream().forEach(ai -> ai.orderMoveTo(navPoints.next()));
     }
 
     public void orderStop() {
-        getEntityAiControllerStream().forEach(ai -> ai.stop());
+        getEntityAiControllerStream().forEach(ai -> ai.orderStop());
     }
 
     public void orderAttackTarget(Geometry target) {
-        getEntityAiControllerStream().forEach(ai -> ai.attackTarget(target));
+        getEntityAiControllerStream().forEach(ai -> ai.orderAttackTarget(target));
     }
 
     public void orderAttackLocation(Vector3f location) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location);
-        getEntityAiControllerStream().forEach(ai -> ai.attackLocation(navPoints.next()));
+        getEntityAiControllerStream().forEach(ai -> ai.orderAttackLocation(navPoints.next()));
     }
 
 
     public void orderHarvest(VoxelHarvestTarget voxelHarvestTarget) {
-        getEntityAiControllerStream().forEach(ai -> ai.harvest(voxelHarvestTarget));
+        getEntityAiControllerStream().forEach(ai -> ai.orderHarvest(voxelHarvestTarget));
+    }
+
+    public void orderBuild(IConstructionPackage constructionPackage) {
+        Optional<EntityAiController> firstController = getEntityAiControllerStream().findFirst();
+        if(firstController.isPresent()){
+            EntityAiController entityAiController = firstController.get();
+            entityAiController.orderBuild(constructionPackage);
+        }
     }
 
     public float getLargestUnitSize() {
@@ -146,5 +155,6 @@ public class SelectionGroup {
                 .collect(Collectors.toList());
         return currentSize != this.selection.size();
     }
+
 
 }

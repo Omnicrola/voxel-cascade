@@ -6,7 +6,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.engine.states.CurrentLevelState;
+import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
 import com.omnicrola.voxel.fx.ParticleDurationControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -18,12 +18,12 @@ import com.omnicrola.voxel.util.VoxelUtil;
 public class ResourceHarvestController extends AbstractControl {
     private boolean startedFx;
     private IHarvestTarget harvestTarget;
-    private CurrentLevelState currentLevelState;
+    private ICurrentLevelProvider levelProvider;
     private IGameContainer gameContainer;
     private Spatial harvestFx;
 
-    public ResourceHarvestController(CurrentLevelState currentLevelState, IGameContainer gameContainer) {
-        this.currentLevelState = currentLevelState;
+    public ResourceHarvestController(ICurrentLevelProvider levelProvider, IGameContainer gameContainer) {
+        this.levelProvider = levelProvider;
         this.gameContainer = gameContainer;
         this.startedFx = false;
     }
@@ -87,7 +87,7 @@ public class ResourceHarvestController extends AbstractControl {
     public void harvest(float tpf) {
         float resources = harvestTarget.removeResources(tpf);
         TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        this.currentLevelState.getCurrentLevel().addResouces(teamData, resources);
+        this.levelProvider.getCurrentLevel().addResouces(teamData, resources);
     }
 
     @Override

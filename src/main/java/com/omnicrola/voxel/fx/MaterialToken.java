@@ -6,8 +6,8 @@ import com.jme3.math.ColorRGBA;
  * Created by omnic on 1/31/2016.
  */
 public enum MaterialToken {
-    BUILD_VALID("build-valid.png", true),
-    BUILD_NOT_VALID("build-not-valid.png", true),
+    BUILD_VALID("orderBuild-valid.png", true),
+    BUILD_NOT_VALID("orderBuild-not-valid.png", true),
     TERRAIN_VOXEL(ColorRGBA.randomColor(), false);
 
     private ColorRGBA color;

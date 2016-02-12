@@ -11,6 +11,7 @@ import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
+import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.ui.CursorToken;
 
 /**
@@ -75,11 +76,12 @@ public class CursorCommandDelegator {
         return exampleBuildTarget;
     }
 
-    public void setBuildVoxelStrategy(byte voxelType) {
+    public void setBuildVoxelStrategy(byte type) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
         Geometry ghostVoxel = createVoxel(new ColorRGBA(1, 1, 1, 0.5f));
-        BuildVoxelStrategy buildVoxelStrategy = new BuildVoxelStrategy(this.gameContainer, this.levelState, voxelType, buildCursor, ghostVoxel);
-        this.worldCursor.setCursorStrategy(buildVoxelStrategy);
+        IVoxelType voxelType = this.levelState.getVoxelTypeLibrary().lookup(type);
+        BuildVoxelCursorStrategy buildVoxelCursorStrategy = new BuildVoxelCursorStrategy(this.gameContainer, this.levelState, voxelType, buildCursor, ghostVoxel);
+        this.worldCursor.setCursorStrategy(buildVoxelCursorStrategy);
     }
 
     public void setHarvestStrategy(SelectionGroup selectionGroup) {
