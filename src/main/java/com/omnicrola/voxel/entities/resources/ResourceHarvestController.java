@@ -50,6 +50,7 @@ public class ResourceHarvestController extends AbstractControl {
             if (this.harvestTarget.hasResources()) {
                 harvest(tpf);
             } else {
+                this.harvestTarget.remove();
                 this.harvestTarget = null;
             }
         }

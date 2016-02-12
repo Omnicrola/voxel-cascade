@@ -19,7 +19,6 @@ public class VoxelChunk extends Node {
     public static final int SIDE_Y_POS = 4;
     public static final int SIDE_Y_NEG = 5;
 
-
     private final byte[][][] voxels;
     private final float[][][] resources;
     private ChunkId chunkId;
@@ -83,6 +82,7 @@ public class VoxelChunk extends Node {
 
     public void clearGeometry(IGamePhysics gamePhysics) {
         this.getChildren().forEach(spatial -> gamePhysics.remove(spatial));
+        this.detachAllChildren();
     }
 
     public float getResourceGlobal(Vec3i globalLocation) {

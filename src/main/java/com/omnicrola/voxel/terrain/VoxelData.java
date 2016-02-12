@@ -2,6 +2,7 @@ package com.omnicrola.voxel.terrain;
 
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
  * Created by Eric on 2/11/2016.
@@ -23,5 +24,9 @@ public class VoxelData {
 
     public void setResources(float amount) {
         this.chunk.setResourceGlobal(this.location, amount);
+    }
+
+    public void removeVoxel() {
+        this.chunk.set(location, VoxelType.EMPTY.uniqueId());
     }
 }

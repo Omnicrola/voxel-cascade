@@ -33,4 +33,9 @@ public class VoxelHarvestTarget implements IHarvestTarget {
         this.voxelData.setResources(resources - amountRemoved);
         return amountRemoved;
     }
+
+    @Override
+    public void remove() {
+        this.voxelData.removeVoxel();
+    }
 }

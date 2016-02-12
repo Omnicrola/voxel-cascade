@@ -11,4 +11,6 @@ public interface IHarvestTarget {
     boolean hasResources();
 
     float removeResources(float tpf);
+
+    void remove();
 }
