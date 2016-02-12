@@ -3,6 +3,7 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 import com.jme3.asset.AssetManager;
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.effect.ParticleMesh;
+import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
@@ -72,6 +73,7 @@ public class ParticleBuilder implements IParticleBuilder {
     public Spatial cubicHarvest() {
         int count = 100;
         ParticleEmitter cubicEmitter = new ParticleEmitter("cubic", ParticleMesh.Type.Point, count);
+        cubicEmitter.setShape(new EmitterBoxShape(new Vector3f(), new Vector3f(1, 1, 1)));
         Material material = new Material(this.assetManager, GameConstants.MATERIAL_PARTICLE_SHADER);
         cubicEmitter.setMaterial(material);
 

@@ -75,12 +75,11 @@ public class ResourceHarvestController extends AbstractControl {
                 .particles()
                 .cubicHarvest();
         this.gameContainer.world().attach(this.harvestFx);
-        this.harvestFx.setLocalTranslation(this.spatial.getWorldTranslation());
+        this.harvestFx.setLocalTranslation(getTargetLocation());
         this.startedFx = true;
     }
 
     private void stopFx() {
-//        this.gameContainer.world().detatch(this.harvestFx);
         this.harvestFx.getControl(ParticleDurationControl.class).resetDuration(0.1f);
         this.startedFx = false;
     }
