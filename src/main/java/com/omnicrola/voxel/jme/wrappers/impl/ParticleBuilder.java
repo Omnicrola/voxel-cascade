@@ -67,4 +67,27 @@ public class ParticleBuilder implements IParticleBuilder {
 
         return spray;
     }
+
+    @Override
+    public Spatial cubicHarvest() {
+        int count = 100;
+        ParticleEmitter cubicEmitter = new ParticleEmitter("cubic", ParticleMesh.Type.Point, count);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_PARTICLE_SHADER);
+        cubicEmitter.setMaterial(material);
+
+        cubicEmitter.addControl(new ParticleDurationControl(9999));
+        cubicEmitter.setParticlesPerSec(100);
+        cubicEmitter.setGravity(0, -2, 0);
+        cubicEmitter.setStartColor(new ColorRGBA(0f, 1f, 0f, 1f));
+        cubicEmitter.setEndColor(new ColorRGBA(0f, 1f, 0f, 0f));
+
+        cubicEmitter.setStartSize(1f);
+        cubicEmitter.setEndSize(0f);
+        cubicEmitter.setLowLife(1f);
+        cubicEmitter.setHighLife(3f);
+        cubicEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2f, 0));
+        cubicEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
+
+        return cubicEmitter;
+    }
 }

@@ -44,4 +44,9 @@ public class ParticleDurationControl extends AbstractControl {
     protected void controlRender(RenderManager rm, ViewPort vp) {
 
     }
+
+    public void resetDuration(float time) {
+        this.maximumTime = time;
+        this.elapsedTime = 0f;
+    }
 }

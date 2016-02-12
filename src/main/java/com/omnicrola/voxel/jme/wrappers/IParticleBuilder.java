@@ -10,4 +10,6 @@ public interface IParticleBuilder {
     Spatial voxelFire(float duration, int count);
 
     Spatial voxelSpray(int count);
+
+    Spatial cubicHarvest();
 }
