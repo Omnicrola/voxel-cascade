@@ -28,15 +28,20 @@ public class BuildController extends AbstractControl {
         this.gameContainer = gameContainer;
         this.levelProvider = levelProvider;
         this.startedFx = false;
+        clearConstructionPackage();
+    }
+
+    private void clearConstructionPackage() {
+        this.constructionPackage = NullConstructionPackage.NO_OP;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        if (this.constructionPackage != null) {
+        if (this.constructionPackage != NullConstructionPackage.NO_OP) {
             if (isInRange()) {
                 if (this.constructionPackage.isFinished()) {
                     this.constructionPackage.completeConstruction(this.gameContainer, this.levelProvider.getCurrentLevel());
-                    this.constructionPackage = null;
+                    clearConstructionPackage();
                     stopFx();
                 } else {
                     build(tpf);
@@ -57,8 +62,10 @@ public class BuildController extends AbstractControl {
     }
 
     private void stopFx() {
-        ParticleDurationControl durationControl = this.buildFx.getControl(ParticleDurationControl.class);
-        durationControl.resetDuration(0.1f);
+        if (this.buildFx != null) {
+            ParticleDurationControl durationControl = this.buildFx.getControl(ParticleDurationControl.class);
+            durationControl.resetDuration(0.1f);
+        }
         this.startedFx = false;
     }
 
@@ -86,12 +93,16 @@ public class BuildController extends AbstractControl {
     }
 
     public boolean isInRange() {
-        if (this.constructionPackage != null) {
+        if (this.constructionPackage != NullConstructionPackage.NO_OP) {
             Vector3f target = this.constructionPackage.getLocation();
             Vector3f location = this.spatial.getWorldTranslation();
             float distance = target.distance(location);
             return distance < 3f;
         }
         return false;
+    }
+
+    public boolean isFinished() {
+        return this.constructionPackage.isFinished();
     }
 }

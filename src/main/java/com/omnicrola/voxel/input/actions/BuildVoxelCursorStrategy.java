@@ -2,6 +2,8 @@ package com.omnicrola.voxel.input.actions;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.material.RenderState;
+import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
@@ -49,9 +51,18 @@ public class BuildVoxelCursorStrategy implements ICursorStrategy {
         }
     }
 
+    private Geometry placeGhostVoxel(Vec3i snappedLocation) {
+        Geometry ghostVoxel = this.gameContainer.world().build().terrainVoxel(new ColorRGBA(0f, 1f, 0f, 0.1f));
+        ghostVoxel.getMaterial().getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Additive);
+        this.gameContainer.world().attach(ghostVoxel);
+        ghostVoxel.setLocalTranslation(snappedLocation.asVector3f().add(0.5f, 0.5f, 0.5f));
+        return ghostVoxel;
+    }
+
     private void buildAtMouseLocation(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
         Vec3i snappedLocation = this.levelState.getWorldCursor().getSnappedLocation();
-        VoxelConstructionPackage voxelConstructionPackage = new VoxelConstructionPackage(this.voxelType, snappedLocation);
+        Geometry ghostVoxel = placeGhostVoxel(snappedLocation);
+        VoxelConstructionPackage voxelConstructionPackage = new VoxelConstructionPackage(this.voxelType, snappedLocation, ghostVoxel);
         currentSelection.orderBuild(voxelConstructionPackage);
         if (!gameMouseEvent.isMultiSelecting()) {
             this.levelState.getWorldCursor().clearCursorStrategy();

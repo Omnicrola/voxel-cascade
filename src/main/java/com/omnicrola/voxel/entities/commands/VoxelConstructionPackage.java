@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.entities.commands;
 
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -15,10 +17,12 @@ public class VoxelConstructionPackage implements IConstructionPackage {
     private float resourcesRequired;
     private IVoxelType voxelType;
     private Vec3i location;
+    private Geometry ghostVoxel;
 
-    public VoxelConstructionPackage(IVoxelType voxelType, Vec3i location) {
+    public VoxelConstructionPackage(IVoxelType voxelType, Vec3i location, Geometry ghostVoxel) {
         this.voxelType = voxelType;
         this.location = location;
+        this.ghostVoxel = ghostVoxel;
         this.resourcesRequired = 2f;
     }
 
@@ -29,7 +33,7 @@ public class VoxelConstructionPackage implements IConstructionPackage {
 
     @Override
     public boolean isFinished() {
-        return this.resourcesRequired > 0;
+        return this.resourcesRequired <= 0f;
     }
 
     @Override
@@ -46,6 +50,10 @@ public class VoxelConstructionPackage implements IConstructionPackage {
 
     @Override
     public void completeConstruction(IGameContainer gameContainer, LevelState levelState) {
+        Node parent = this.ghostVoxel.getParent();
+        if (parent != null) {
+            parent.detachChild(this.ghostVoxel);
+        }
         levelState.setVoxel(this.voxelType, this.location);
     }
 }

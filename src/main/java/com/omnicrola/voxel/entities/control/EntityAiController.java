@@ -30,7 +30,7 @@ public class EntityAiController extends AbstractControl {
 
     private Vector3f currentTargetLocation;
     private Goal currentGoal;
-    private Geometry currentTarget;
+    private Spatial currentTarget;
     private WeaponsController weaponsController;
     private TargetingController targetingController;
     private ResourceHarvestController harvestController;
@@ -174,10 +174,14 @@ public class EntityAiController extends AbstractControl {
     }
 
     private void updateBuild() {
-        if(this.buildController.isInRange()){
-            this.motionGovernor.holdPosition();
+        if (this.buildController.isFinished()) {
+            setGoal(Goal.HOLD_POSITION);
         } else {
-            this.motionGovernor.moveToward(this.buildController.getTargetLocation());
+            if (this.buildController.isInRange()) {
+                this.motionGovernor.holdPosition();
+            } else {
+                this.motionGovernor.moveToward(this.buildController.getTargetLocation());
+            }
         }
     }
 
