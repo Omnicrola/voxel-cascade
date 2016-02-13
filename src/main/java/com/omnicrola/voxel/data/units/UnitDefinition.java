@@ -58,7 +58,7 @@ public class UnitDefinition {
     @XmlAnyElement(lax = true)
     protected List<IEntityCommand> commands = new ArrayList<>();
 
-    @XmlElementWrapper(name = "orderBuild-targets")
+    @XmlElementWrapper(name = "build-targets")
     @XmlAnyElement(lax = true)
     protected List<IEntityCommand> buildCommands = new ArrayList<>();
 

@@ -15,7 +15,7 @@
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement>
-                <max-velocity>25.0</max-velocity>
+                <max-velocity>3.0</max-velocity>
                 <turnspeed>0.1</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
@@ -27,9 +27,9 @@
                 <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
-            <orderBuild-targets>
+            <build-targets>
                 <voxel type="1"/>
-            </orderBuild-targets>
+            </build-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
         <unit global-id="2" weapon-id="1001">
@@ -46,7 +46,7 @@
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement>
-                <max-velocity>25.0</max-velocity>
+                <max-velocity>3.0</max-velocity>
                 <turnspeed>0.1</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
@@ -58,9 +58,9 @@
                 <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
-            <orderBuild-targets>
+            <build-targets>
                 <voxel type="1"/>
-            </orderBuild-targets>
+            </build-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
         <unit global-id="3" weapon-id="1000">
@@ -77,7 +77,7 @@
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement>
-                <max-velocity>25.0</max-velocity>
+                <max-velocity>3.0</max-velocity>
                 <turnspeed>0.1</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
@@ -89,9 +89,9 @@
                 <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
-            <orderBuild-targets>
+            <build-targets>
                 <voxel type="1"/>
-            </orderBuild-targets>
+            </build-targets>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
     </units>
@@ -143,9 +143,9 @@
             <commands>
                 <command>BUILD</command>
             </commands>
-            <orderBuild-targets>
-                <unit unit-id="1" orderBuild-range="10.0" priority="1"/>
-            </orderBuild-targets>
+            <build-targets>
+                <unit unit-id="1" build-range="10.0" priority="1"/>
+            </build-targets>
             <controls/>
         </structure>
         <structure global-id="2">
@@ -163,9 +163,9 @@
             <commands>
                 <command>BUILD</command>
             </commands>
-            <orderBuild-targets>
-                <unit unit-id="1" orderBuild-range="10.0" priority="1"/>
-            </orderBuild-targets>
+            <build-targets>
+                <unit unit-id="1" build-range="10.0" priority="1"/>
+            </build-targets>
             <controls/>
         </structure>
         <structure global-id="100">
@@ -175,7 +175,7 @@
             <model>turret.obj</model>
             <hitpoints>250.0</hitpoints>
             <commands/>
-            <orderBuild-targets/>
+            <build-targets/>
             <controls>
                 <weapon-control weapon-id="1000">
                     <weapon-offset x="0.0" y="1.0" z="0.0"/>

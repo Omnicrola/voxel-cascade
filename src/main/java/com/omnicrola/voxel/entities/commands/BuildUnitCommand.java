@@ -17,7 +17,7 @@ public class BuildUnitCommand implements IEntityCommand {
     @XmlAttribute(name = "unit-id", required = true)
     private int unitId;
 
-    @XmlAttribute(name="orderBuild-range")
+    @XmlAttribute(name="build-range")
     private float buildRadius = 1.0f;
 
     @XmlAttribute(name = "priority")

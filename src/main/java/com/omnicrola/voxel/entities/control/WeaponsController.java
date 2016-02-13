@@ -73,16 +73,17 @@ public class WeaponsController extends AbstractControl {
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
         Spatial projectile = this.projectileFactory.spawnProjectile(this.spatial, targetLocation);
         this.gameWorld.attach(projectile);
-        projectile.setLocalTranslation(this.spatial.getWorldTranslation());
+        Vector3f initialPosition = this.spatial
+                .getWorldTranslation()
+                .clone()
+                .add(this.projectileOffset);
+        projectile.setLocalTranslation(initialPosition);
+
     }
 
     @Override
     public void controlRender(RenderManager rm, ViewPort vp) {
 
-    }
-
-    public float getRange() {
-        return this.weaponDefinition.getRange();
     }
 
     public void clearTarget() {
