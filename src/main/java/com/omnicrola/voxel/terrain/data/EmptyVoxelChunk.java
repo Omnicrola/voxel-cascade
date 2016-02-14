@@ -2,8 +2,6 @@ package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.util.Vec3i;
 
-import java.util.BitSet;
-
 /**
  * Created by omnic on 2/2/2016.
  */
@@ -31,6 +29,6 @@ public class EmptyVoxelChunk extends VoxelChunk {
 
     @Override
     public VoxelFace getVoxelFace(int x, int y, int z, int side) {
-        return new VoxelFace(VoxelType.EMPTY, side, new BitSet(8));
+        return new VoxelFace(VoxelType.EMPTY, side, null);
     }
 }

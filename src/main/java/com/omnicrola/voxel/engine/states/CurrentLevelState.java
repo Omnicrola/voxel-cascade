@@ -8,7 +8,7 @@ import com.omnicrola.voxel.data.level.LevelStateFactory;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.ChunkHandlerFactory;
-import com.omnicrola.voxel.terrain.PerlinNoiseGenerator;
+import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 

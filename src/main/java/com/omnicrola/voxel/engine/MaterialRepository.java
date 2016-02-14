@@ -37,6 +37,7 @@ public class MaterialRepository {
     private Material getMaterial(ColorRGBA color) {
         Material material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         material.setBoolean("UseMaterialColors", true);
+        material.setBoolean("UseVertexColor", true);
         material.setColor("Ambient", color);
         material.setColor("Diffuse", color);
         return material;

@@ -1,8 +1,7 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.terrain.data.VoxelChunk;
-import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.terrain.IVoxelType;
 
 /**
  * Created by Eric on 2/11/2016.

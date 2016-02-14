@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.build;
 
 import com.jme3.material.Material;
 import com.jme3.math.Vector2f;
@@ -17,10 +17,10 @@ import java.nio.IntBuffer;
 /**
  * Created by Eric on 2/3/2016.
  */
-public class QuadFactory {
+public class TerrainQuadFactory {
     private MaterialRepository materialRepository;
 
-    public QuadFactory(MaterialRepository materialRepository) {
+    public TerrainQuadFactory(MaterialRepository materialRepository) {
         this.materialRepository = materialRepository;
     }
 
@@ -79,8 +79,22 @@ public class QuadFactory {
         mesh.setBuffer(VertexBuffer.Type.TexCoord, 2, createTextureUv(vertices));
         mesh.setBuffer(VertexBuffer.Type.Index, 3, indicies);
         mesh.setBuffer(VertexBuffer.Type.Normal, 3, createNormals(side));
+        mesh.setBuffer(VertexBuffer.Type.Color, 4, createColors(vertices));
         mesh.updateBound();
         return mesh;
+    }
+
+    private float[] createColors(Vector3f[] vertices) {
+        float[] colors = new float[vertices.length * 4];
+        for (int i = 0; i < colors.length; i += 4) {
+//            float color = (float) Math.random();
+            float color = 0.5f;
+            colors[i] = color;
+            colors[i + 1] = color;
+            colors[i + 2] = color;
+            colors[i + 3] = color;
+        }
+        return colors;
     }
 
     private FloatBuffer createNormals(int side) {

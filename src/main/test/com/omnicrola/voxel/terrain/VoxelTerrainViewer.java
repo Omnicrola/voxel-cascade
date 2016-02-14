@@ -18,6 +18,10 @@ import com.omnicrola.voxel.debug.WireframeProcessor;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
+import com.omnicrola.voxel.terrain.data.VoxelType;
+
+import java.util.Arrays;
 
 /**
  * Created by Eric on 2/2/2016.
@@ -175,14 +179,16 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         LevelDefinition levelData = new LevelDefinition() {{
             this.terrain = new TerrainDefinition() {{
                 this.terrainOffset = new Vec3i();
-                this.width = 200;
-                this.depth = 200;
+                this.width = 80;
+                this.depth = 80;
                 this.verticalScale = 15;
                 this.octaves = 7;
             }};
         }};
 
-        terrainNode = voxelTerrainGenerator.load(levelData, new VoxelTypeLibrary());
+        VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
+        Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
+        terrainNode = voxelTerrainGenerator.load(levelData, voxelTypeLibrary);
         jmeApplicationWrapper.world().attachTerrain(terrainNode);
     }
 

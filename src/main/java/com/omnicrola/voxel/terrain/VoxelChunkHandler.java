@@ -3,6 +3,9 @@ package com.omnicrola.voxel.terrain;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.terrain.build.FaceBuilder;
+import com.omnicrola.voxel.terrain.build.OcclusionCalculatorBuilder;
+import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.data.*;
 
 import java.util.HashMap;
@@ -17,10 +20,12 @@ public class VoxelChunkHandler {
     private VoxelTypeLibrary voxelTypeLibrary;
     private VoxelChunkRebuilder voxelChunkRebuilder;
     private Node parentNode;
+    private FaceBuilder faceBuilder;
 
     public VoxelChunkHandler(VoxelTypeLibrary voxelTypeLibrary, VoxelChunkRebuilder voxelChunkRebuilder) {
         this.voxelTypeLibrary = voxelTypeLibrary;
         this.voxelChunkRebuilder = voxelChunkRebuilder;
+        this.faceBuilder = new FaceBuilder(this, OcclusionCalculatorBuilder.build(this));
         this.chunks = new HashMap<>();
     }
 
@@ -46,7 +51,7 @@ public class VoxelChunkHandler {
 
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
-            VoxelChunk chunk = new VoxelChunk(chunkId, new FaceBuilder(this));
+            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder);
             Vector3f translate = new Vector3f(chunkId.getX(), chunkId.getY(), chunkId.getZ()).multLocal(16);
             chunk.setLocalTranslation(translate);
             if (this.parentNode != null) {

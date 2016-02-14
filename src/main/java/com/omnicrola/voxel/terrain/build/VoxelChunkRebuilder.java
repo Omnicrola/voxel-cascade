@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.build;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -20,17 +20,18 @@ public class VoxelChunkRebuilder {
     private static final int CHUNK_HEIGHT = GameConstants.CHUNK_SIZE;
     public static final float VOXEL_SIZE = 1.0f;
 
-    private QuadFactory quadFactory;
+    private TerrainQuadFactory quadFactory;
     private IGamePhysics gamePhysics;
     private IGameWorld gameWorld;
 
-    public VoxelChunkRebuilder(QuadFactory quadFactory, IGamePhysics gamePhysics, IGameWorld gameWorld) {
+    public VoxelChunkRebuilder(TerrainQuadFactory quadFactory, IGamePhysics gamePhysics, IGameWorld gameWorld) {
         this.quadFactory = quadFactory;
         this.gamePhysics = gamePhysics;
         this.gameWorld = gameWorld;
     }
 
     public void rebuild(VoxelChunk chunk) {
+        long start = System.nanoTime();
         chunk.clearGeometry(this.gamePhysics);
         Node node = new Node();
         sweepAllThreeAxes(chunk, node, true);
@@ -46,6 +47,10 @@ public class VoxelChunkRebuilder {
 
         chunk.attachChild(batchNode);
         chunk.clearRebuildFlag();
+        long elapsed = System.nanoTime() - start;
+        float time = (float) elapsed / 1_000_000f;
+//        Logger.getLogger(getClass().getName()).log(Level.FINE, "Rebuilt chunk " + chunk.getChunkId() + " in " + time + "ms");
+        System.out.println("Rebuilt chunk " + chunk.getChunkId() + " in " + time + "ms");
     }
 
     private void sweepAllThreeAxes(VoxelChunk chunk, Node parentNode, boolean backFace) {

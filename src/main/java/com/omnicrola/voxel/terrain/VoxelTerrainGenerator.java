@@ -4,6 +4,7 @@ import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
+import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
@@ -49,6 +50,7 @@ public class VoxelTerrainGenerator {
     private void fillZ(VoxelChunkHandler voxelChunkHandler, int x, int z, float height) {
         for (int y = 0; y <= height; y++) {
             Vec3i location = new Vec3i(x, y, z);
+//            byte voxelType = (Math.random() <0.5) ? VoxelType.GREY.uniqueId() : VoxelType.BLUE.uniqueId();
             voxelChunkHandler.set(location, VoxelType.GREY.uniqueId());
             voxelChunkHandler.setResource(location, 1f);
         }

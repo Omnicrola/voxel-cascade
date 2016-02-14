@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.resources;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.terrain.VoxelData;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 
 /**
  * Created by Eric on 2/11/2016.

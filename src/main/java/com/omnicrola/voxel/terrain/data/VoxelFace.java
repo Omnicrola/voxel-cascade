@@ -1,8 +1,7 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.voxel.terrain.IVoxelType;
-
-import java.util.BitSet;
+import com.omnicrola.voxel.terrain.build.OcclusionSet;
 
 /**
  * Created by Eric on 2/3/2016.
@@ -11,10 +10,10 @@ public class VoxelFace {
 
     private final IVoxelType type;
     private final int side;
-    private BitSet occlusionSet;
+    private final OcclusionSet occlusionSet;
     private final boolean isTransparent;
 
-    public VoxelFace(IVoxelType type, int side, BitSet occlusionSet) {
+    public VoxelFace(IVoxelType type, int side, OcclusionSet occlusionSet) {
         this.type = type;
         this.side = side;
         this.occlusionSet = occlusionSet;
@@ -38,16 +37,16 @@ public class VoxelFace {
 
         if (side != voxelFace.side) return false;
         if (isTransparent != voxelFace.isTransparent) return false;
-        if (type != null ? !type.equals(voxelFace.type) : voxelFace.type != null) return false;
-        return !(occlusionSet != null ? !occlusionSet.equals(voxelFace.occlusionSet) : voxelFace.occlusionSet != null);
+        if (!type.equals(voxelFace.type)) return false;
+        return occlusionSet.equals(voxelFace.occlusionSet);
 
     }
 
     @Override
     public int hashCode() {
-        int result = type != null ? type.hashCode() : 0;
+        int result = type.hashCode();
         result = 31 * result + side;
-        result = 31 * result + (occlusionSet != null ? occlusionSet.hashCode() : 0);
+        result = 31 * result + occlusionSet.hashCode();
         result = 31 * result + (isTransparent ? 1 : 0);
         return result;
     }

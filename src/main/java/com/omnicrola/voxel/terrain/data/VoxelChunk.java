@@ -5,6 +5,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.IVoxelType;
+import com.omnicrola.voxel.terrain.build.FaceBuilder;
 
 import java.util.Arrays;
 

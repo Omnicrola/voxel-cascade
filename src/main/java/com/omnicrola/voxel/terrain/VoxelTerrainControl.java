@@ -11,6 +11,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 
 /**
  * Created by omnic on 1/31/2016.

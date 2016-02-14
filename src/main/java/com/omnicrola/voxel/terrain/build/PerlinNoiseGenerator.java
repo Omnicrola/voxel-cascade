@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.build;
 
 import java.util.Random;
 

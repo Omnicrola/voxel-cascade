@@ -18,7 +18,7 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.terrain.VoxelData;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.util.VoxelUtil;
 

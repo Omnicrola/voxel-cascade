@@ -11,7 +11,7 @@ import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.terrain.VoxelData;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.Optional;
 
