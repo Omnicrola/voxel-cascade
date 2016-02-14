@@ -2,7 +2,6 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.bounding.BoundingSphere;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.light.Light;
@@ -32,7 +31,6 @@ import java.util.stream.Stream;
  */
 public class JmeWorldWrapper implements IGameWorld {
     private final WorldBuilder geometryBuilder;
-    private final PhysicsSpace physicsSpace;
     private final ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory;
     private VoxelGameEngine game;
     private JmePhysicsWrapper physicsWrapper;
@@ -42,7 +40,6 @@ public class JmeWorldWrapper implements IGameWorld {
     public JmeWorldWrapper(VoxelGameEngine game, JmeApplicationWrapper jmeApplicationWrapper, JmePhysicsWrapper physicsWrapper) {
         this.game = game;
         this.physicsWrapper = physicsWrapper;
-        this.physicsSpace = game.getPhysicsSpace();
         AssetManager assetManager = game.getAssetManager();
         this.geometryBuilder = new WorldBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
         this.screenSelectionEvaluatorFactory = new ScreenSelectionEvaluatorFactory(game.getCamera());

@@ -2,6 +2,8 @@ package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.util.Vec3i;
 
+import java.util.BitSet;
+
 /**
  * Created by omnic on 2/2/2016.
  */
@@ -10,7 +12,7 @@ public class EmptyVoxelChunk extends VoxelChunk {
     public static final EmptyVoxelChunk NO_OP = new EmptyVoxelChunk();
 
     private EmptyVoxelChunk() {
-        super(new ChunkId(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE));
+        super(new ChunkId(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE), null);
     }
 
     @Override
@@ -29,6 +31,6 @@ public class EmptyVoxelChunk extends VoxelChunk {
 
     @Override
     public VoxelFace getVoxelFace(int x, int y, int z, int side) {
-        return new VoxelFace(VoxelType.EMPTY, side);
+        return new VoxelFace(VoxelType.EMPTY, side, new BitSet(8));
     }
 }

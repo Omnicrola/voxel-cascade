@@ -13,7 +13,7 @@ public class VoxelChunkTest extends TestCase {
     @Test
     public void testChunkId() throws Exception {
         ChunkId chunkId = new ChunkId(randInt(15), randInt(15), randInt(15));
-        VoxelChunk voxelChunk = new VoxelChunk(chunkId);
+        VoxelChunk voxelChunk = new VoxelChunk(chunkId, null);
 
         assertEquals(chunkId, voxelChunk.getChunkId());
     }

@@ -23,8 +23,10 @@ public class VoxelChunk extends Node {
     private final float[][][] resources;
     private ChunkId chunkId;
     private boolean isDirty;
+    private FaceBuilder faceBuilder;
 
-    public VoxelChunk(ChunkId chunkId) {
+    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder) {
+        this.faceBuilder = faceBuilder;
         setName("Chunk ID:" + chunkId);
         this.chunkId = chunkId;
         int size = GameConstants.CHUNK_SIZE;
@@ -73,8 +75,10 @@ public class VoxelChunk extends Node {
     }
 
     public VoxelFace getVoxelFace(int x, int y, int z, int side) {
-        return new VoxelFace(getType(this.voxels[x][y][z]), side);
+        Vec3i global = this.chunkId.globalize(x, y, z);
+        return this.faceBuilder.build(global, side);
     }
+
 
     private IVoxelType getType(byte type) {
         return Arrays.asList(VoxelType.values()).stream().filter(t -> t.uniqueId() == type).findFirst().get();

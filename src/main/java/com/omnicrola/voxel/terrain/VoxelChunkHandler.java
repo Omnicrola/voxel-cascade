@@ -3,10 +3,7 @@ package com.omnicrola.voxel.terrain;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.terrain.data.ChunkId;
-import com.omnicrola.voxel.terrain.data.EmptyVoxelChunk;
-import com.omnicrola.voxel.terrain.data.VoxelChunk;
-import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.terrain.data.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +46,7 @@ public class VoxelChunkHandler {
 
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
-            VoxelChunk chunk = new VoxelChunk(chunkId);
+            VoxelChunk chunk = new VoxelChunk(chunkId, new FaceBuilder(this));
             Vector3f translate = new Vector3f(chunkId.getX(), chunkId.getY(), chunkId.getZ()).multLocal(16);
             chunk.setLocalTranslation(translate);
             if (this.parentNode != null) {
