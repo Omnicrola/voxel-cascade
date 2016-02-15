@@ -6,20 +6,10 @@ import com.omnicrola.voxel.terrain.VoxelChunkHandler;
 /**
  * Created by Eric on 2/14/2016.
  */
-public class TopOcclusionCalculator implements IOcclusionCalculator {
-    private static final int SW = 0;
-    private static final int W = 1;
-    private static final int NW = 2;
-    private static final int S = 3;
-    private static final int N = 4;
-    private static final int SE = 5;
-    private static final int E = 6;
-    private static final int NE = 7;
-
-    private VoxelChunkHandler voxelChunkHandler;
+public class TopOcclusionCalculator extends OcclusionCalculator {
 
     public TopOcclusionCalculator(VoxelChunkHandler voxelChunkHandler) {
-        this.voxelChunkHandler = voxelChunkHandler;
+        super(voxelChunkHandler);
     }
 
     @Override
@@ -37,15 +27,15 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
         occluded[NE] = isSolid(globalLocation, 1, 1, 1);     // NE
 
         OcclusionSet occlusionSet = new OcclusionSet();
-        occlusionSet.set(0, vertexOne(occluded));
-        occlusionSet.set(1, vertexFour(occluded));
-        occlusionSet.set(2, vertexTwo(occluded));
-        occlusionSet.set(3, vertexThree(occluded));
+        occlusionSet.set(0, vertex1(occluded));
+        occlusionSet.set(1, vertex2(occluded));
+        occlusionSet.set(2, vertex3(occluded));
+        occlusionSet.set(3, vertex4(occluded));
 
         return occlusionSet;
     }
 
-    private int vertexOne(boolean[] occluded) {
+    private int vertex1(boolean[] occluded) {
         int occlusion = 0;
         occlusion += intValue(occluded[S]);
         occlusion += intValue(occluded[SW]);
@@ -53,7 +43,7 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
         return occlusion;
     }
 
-    private int vertexTwo(boolean[] occluded) {
+    private int vertex3(boolean[] occluded) {
         int occlusion = 0;
         occlusion += intValue(occluded[W]);
         occlusion += intValue(occluded[NW]);
@@ -61,7 +51,7 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
         return occlusion;
     }
 
-    private int vertexThree(boolean[] occluded) {
+    private int vertex4(boolean[] occluded) {
         int occlusion = 0;
         occlusion += intValue(occluded[N]);
         occlusion += intValue(occluded[NE]);
@@ -69,7 +59,7 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
         return occlusion;
     }
 
-    private int vertexFour(boolean[] occluded) {
+    private int vertex2(boolean[] occluded) {
         int occlusion = 0;
         occlusion += intValue(occluded[E]);
         occlusion += intValue(occluded[SE]);
@@ -77,11 +67,4 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
         return occlusion;
     }
 
-    private int intValue(boolean occluded) {
-        return occluded ? 1 : 0;
-    }
-
-    private boolean isSolid(Vec3i globalLocation, int x, int y, int z) {
-        return this.voxelChunkHandler.isVoxelSolidAt(globalLocation.translate(x, y, z));
-    }
 }

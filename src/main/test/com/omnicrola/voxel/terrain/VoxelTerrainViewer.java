@@ -161,11 +161,17 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         this.inputManager.addListener(new AdjustAmplitudeListener(), SUBTRACT_AMPLITUDE);
 
         DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White.mult(0.7f));
+        sun.setColor(new ColorRGBA(1f, 0.98f, 0.98f, 1f).mult(0.7f));
         sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
+
+        DirectionalLight sun2 = new DirectionalLight();
+        sun2.setColor(new ColorRGBA(0.98f, 1f, 0.98f, 1f).mult(0.7f));
+        sun2.setDirection(new Vector3f(0.5f, -0.4f, 0.3f).normalizeLocal());
+
         AmbientLight ambientLight = new AmbientLight();
-        ambientLight.setColor(ColorRGBA.White.mult(0.3f));
+        ambientLight.setColor(ColorRGBA.White.mult(0.4f));
         jmeApplicationWrapper.world().addLight(sun);
+        jmeApplicationWrapper.world().addLight(sun2);
         jmeApplicationWrapper.world().addLight(ambientLight);
 
         jmeApplicationWrapper.gui().setCameraPosition(new Vector3f(0, 40, 40));
@@ -182,7 +188,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
                 this.width = 80;
                 this.depth = 80;
                 this.verticalScale = 15;
-                this.octaves = 7;
+                this.octaves = 5;
             }};
         }};
 
