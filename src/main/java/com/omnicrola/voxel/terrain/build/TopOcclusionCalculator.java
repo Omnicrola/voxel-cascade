@@ -37,10 +37,10 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
         occluded[NE] = isSolid(globalLocation, 1, 1, 1);     // NE
 
         OcclusionSet occlusionSet = new OcclusionSet();
-        occlusionSet.increment(vertexOne(occluded));
-        occlusionSet.increment(vertexTwo(occluded));
-        occlusionSet.increment(vertexThree(occluded));
-        occlusionSet.increment(vertexFour(occluded));
+        occlusionSet.set(0, vertexOne(occluded));
+        occlusionSet.set(1, vertexFour(occluded));
+        occlusionSet.set(2, vertexTwo(occluded));
+        occlusionSet.set(3, vertexThree(occluded));
 
         return occlusionSet;
     }
@@ -78,7 +78,7 @@ public class TopOcclusionCalculator implements IOcclusionCalculator {
     }
 
     private int intValue(boolean occluded) {
-        return occluded ? 0 : 1;
+        return occluded ? 1 : 0;
     }
 
     private boolean isSolid(Vec3i globalLocation, int x, int y, int z) {

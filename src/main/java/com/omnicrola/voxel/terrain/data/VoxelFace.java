@@ -50,4 +50,8 @@ public class VoxelFace {
         result = 31 * result + (isTransparent ? 1 : 0);
         return result;
     }
+
+    public OcclusionSet getOcclusion() {
+        return this.occlusionSet;
+    }
 }

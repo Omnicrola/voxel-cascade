@@ -13,6 +13,11 @@ public class NullOcclusionCalculator implements IOcclusionCalculator{
 
     @Override
     public OcclusionSet calculate(Vec3i globalLocation) {
-        return new OcclusionSet();
+        return new OcclusionSet(){
+            @Override
+            public float vertexValue(int index) {
+                return 1f;
+            }
+        };
     }
 }

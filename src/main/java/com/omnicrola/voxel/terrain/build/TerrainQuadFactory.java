@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.terrain.build;
 
 import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -61,7 +62,7 @@ public class TerrainQuadFactory {
         vertices[2] = topLeft.multLocal(VoxelChunkRebuilder.VOXEL_SIZE);
         vertices[3] = topRight.multLocal(VoxelChunkRebuilder.VOXEL_SIZE);
 
-        Mesh mesh = createMesh(indicies, vertices, side);
+        Mesh mesh = createMesh(voxel, indicies, vertices, side);
         Geometry geometry = createGeometry(voxel, mesh);
         return geometry;
     }
@@ -73,28 +74,35 @@ public class TerrainQuadFactory {
         return geometry;
     }
 
-    private Mesh createMesh(IntBuffer indicies, Vector3f[] vertices, int side) {
+    private Mesh createMesh(VoxelFace voxel, IntBuffer indicies, Vector3f[] vertices, int side) {
         Mesh mesh = new Mesh();
         mesh.setBuffer(VertexBuffer.Type.Position, 3, BufferUtils.createFloatBuffer(vertices));
         mesh.setBuffer(VertexBuffer.Type.TexCoord, 2, createTextureUv(vertices));
         mesh.setBuffer(VertexBuffer.Type.Index, 3, indicies);
         mesh.setBuffer(VertexBuffer.Type.Normal, 3, createNormals(side));
-        mesh.setBuffer(VertexBuffer.Type.Color, 4, createColors(vertices));
+        mesh.setBuffer(VertexBuffer.Type.Color, 4, createColors(voxel, vertices));
         mesh.updateBound();
         return mesh;
     }
 
-    private float[] createColors(Vector3f[] vertices) {
+    private float[] createColors(VoxelFace voxel, Vector3f[] vertices) {
         float[] colors = new float[vertices.length * 4];
-        for (int i = 0; i < colors.length; i += 4) {
-//            float color = (float) Math.random();
-            float color = 0.5f;
-            colors[i] = color;
-            colors[i + 1] = color;
-            colors[i + 2] = color;
-            colors[i + 3] = color;
-        }
+        addColor(colors, voxel, 0);
+        addColor(colors, voxel, 1);
+        addColor(colors, voxel, 2);
+        addColor(colors, voxel, 3);
         return colors;
+    }
+
+    private void addColor(float[] colors, VoxelFace voxel, int vertexIndex) {
+        int bufferIndex = vertexIndex * 4;
+        OcclusionSet occlusionSet = voxel.getOcclusion();
+        float occlusionPercentage = occlusionSet.vertexValue(vertexIndex);
+        ColorRGBA color = voxel.type().color();
+        colors[bufferIndex++] = color.r * occlusionPercentage;
+        colors[bufferIndex++] = color.g * occlusionPercentage;
+        colors[bufferIndex++] = color.b * occlusionPercentage;
+        colors[bufferIndex++] = 1f;
     }
 
     private FloatBuffer createNormals(int side) {

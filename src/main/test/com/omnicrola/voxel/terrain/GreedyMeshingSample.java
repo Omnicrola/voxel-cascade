@@ -340,7 +340,7 @@ public class GreedyMeshingSample extends SimpleApplication {
                                 }
 
                                 /*
-                                 * And then finally increment the counters and continue
+                                 * And then finally set the counters and continue
                                  */
                                 i += w;
                                 n += w;

@@ -190,7 +190,7 @@ public class VoxelChunkRebuilder {
                             }
 
                             /*
-                             * And then finally increment the counters and continue
+                             * And then finally set the counters and continue
                              */
                             i += width;
                             n += width;

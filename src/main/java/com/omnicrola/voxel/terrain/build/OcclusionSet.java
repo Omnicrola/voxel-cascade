@@ -7,14 +7,14 @@ import java.util.Arrays;
  */
 public class OcclusionSet {
 
-    private final byte[] vertexOcclusion;
+    private final int[] vertexOcclusion;
 
     public OcclusionSet() {
-        this.vertexOcclusion = new byte[4];
+        this.vertexOcclusion = new int[4];
     }
 
-    public void increment(int index) {
-        this.vertexOcclusion[index]++;
+    public void set(int index, int value) {
+        this.vertexOcclusion[index] = value;
     }
 
     @Override
@@ -31,5 +31,9 @@ public class OcclusionSet {
     @Override
     public int hashCode() {
         return vertexOcclusion != null ? Arrays.hashCode(vertexOcclusion) : 0;
+    }
+
+    public float vertexValue(int index) {
+        return 1f - (this.vertexOcclusion[index] / 4f);
     }
 }
