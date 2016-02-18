@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.data.level;
 
-import com.jme3.light.Light;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
@@ -23,7 +25,6 @@ import java.util.*;
  */
 public class LevelState implements IDisposable {
     private final ArrayList<TeamData> teams;
-    private final ArrayList<Light> lights;
     private final ArrayList<Spatial> allEntities;
     private final LevelStatistics statistics;
     private final HashMap<TeamData, Float> resources;
@@ -42,7 +43,6 @@ public class LevelState implements IDisposable {
         this.teams = new ArrayList<>();
         this.terrain = terrain;
         this.units = new Node();
-        this.lights = new ArrayList<>();
         this.observers = new ArrayList<>();
         this.worldCursor = worldCursor;
         this.allEntities = new ArrayList<>();
@@ -105,10 +105,6 @@ public class LevelState implements IDisposable {
         return teamData.getId() == teamId;
     }
 
-    public void addLight(Light light) {
-        this.lights.add(light);
-    }
-
     @Override
     public void dispose() {
         this.getWorldCursor().dispose();
@@ -131,9 +127,11 @@ public class LevelState implements IDisposable {
     public void attachToWorld(IGameContainer gameContainer) {
         this.gameContainer = gameContainer;
         this.isActive = true;
+        this.units.setShadowMode(RenderQueue.ShadowMode.Cast);
+        this.terrain.setShadowMode(RenderQueue.ShadowMode.Receive);
+
         this.gameContainer.world().attachUnits(this.units);
         this.gameContainer.world().attachTerrain(this.terrain);
-        this.gameContainer.world().attachLights(this.lights);
         this.gameContainer.world().attach(this.worldCursor);
         this.gameContainer.addState(new AnnihilationWinConditionState(this.teams));
     }
@@ -142,8 +140,12 @@ public class LevelState implements IDisposable {
         this.isActive = false;
         this.gameContainer.world().detatchUnits(this.units);
         this.gameContainer.world().detatchTerrain(this.terrain);
-        this.gameContainer.world().detatchLights(this.lights);
         this.gameContainer.world().detatch(this.worldCursor);
+
+        ColorRGBA sunColor = ColorRGBA.White.mult(0.65f);
+        Vector3f sunDirection = new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal();
+        this.gameContainer.world().lights().setSun(sunColor, sunDirection);
+        this.gameContainer.world().lights().setAmbient(ColorRGBA.White.mult(0.2f));
     }
 
     public void setVoxel(IVoxelType voxel, Vec3i location) {

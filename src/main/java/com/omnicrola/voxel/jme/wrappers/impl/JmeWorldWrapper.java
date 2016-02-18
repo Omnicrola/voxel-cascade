@@ -16,10 +16,11 @@ import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.jme.wrappers.ILightManager;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class JmeWorldWrapper implements IGameWorld {
     private Node terrain;
     private Node units;
 
-    public JmeWorldWrapper(VoxelGameEngine game, JmeApplicationWrapper jmeApplicationWrapper, JmePhysicsWrapper physicsWrapper) {
+    public JmeWorldWrapper(VoxelGameEngine game, JmeGameContainer jmeApplicationWrapper, JmePhysicsWrapper physicsWrapper) {
         this.game = game;
         this.physicsWrapper = physicsWrapper;
         AssetManager assetManager = game.getAssetManager();
@@ -169,5 +170,10 @@ public class JmeWorldWrapper implements IGameWorld {
     public VoxelData getVoxelAt(Vector3f location) {
         VoxelTerrainControl terrainControl = this.terrain.getControl(VoxelTerrainControl.class);
         return terrainControl.getVoxelAt(Vec3i.round(location));
+    }
+
+    @Override
+    public ILightManager lights() {
+        return this.game.getLightManager();
     }
 }

@@ -34,6 +34,7 @@ public class VoxelGameEngineInitializer {
         ActivePlayInputState playState = new ActivePlayInputState();
         MainMenuState mainMenuState = new MainMenuState();
         GameOverState gameOverState = new GameOverState();
+        ShadowState shadowState = new ShadowState();
 
         stateManager.addState(debugState);
         stateManager.addState(loadingState);
@@ -41,6 +42,7 @@ public class VoxelGameEngineInitializer {
         stateManager.addState(mainMenuState);
         stateManager.addState(playState);
         stateManager.addState(gameOverState);
+        stateManager.addState(shadowState);
     }
 
     private static void createGui(IGameContainer gameContainer) {

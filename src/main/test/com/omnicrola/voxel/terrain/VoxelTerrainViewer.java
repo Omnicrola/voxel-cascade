@@ -16,7 +16,7 @@ import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
 import com.omnicrola.voxel.debug.WireframeProcessor;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelType;
@@ -34,7 +34,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     public static final String RELOAD_LEVEL = "reload-level";
     public static final String ADD_AMPLITUDE = "add-amplitude";
     public static final String SUBTRACT_AMPLITUDE = "subtract-amplitude";
-    private JmeApplicationWrapper jmeApplicationWrapper;
+    private JmeGameContainer jmeApplicationWrapper;
     private Node terrainNode;
     private WireframeProcessor wireframeProcessor;
     private VoxelTerrainGenerator voxelTerrainGenerator;
@@ -135,7 +135,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         this.wireframeProcessor = new WireframeProcessor(getAssetManager());
         getViewPort().addProcessor(this.wireframeProcessor);
 
-        jmeApplicationWrapper = new JmeApplicationWrapper(this);
+        jmeApplicationWrapper = new JmeGameContainer(this);
         ChunkHandlerFactory chunkHandlerFactory = new ChunkHandlerFactory(jmeApplicationWrapper);
         perlinNoiseGenerator = new PerlinNoiseGenerator();
         voxelTerrainGenerator = new VoxelTerrainGenerator(chunkHandlerFactory, perlinNoiseGenerator);

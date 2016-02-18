@@ -51,4 +51,6 @@ public interface IGameWorld {
     Vector3f getSpawnPointFor(Vector3f location);
 
     VoxelData getVoxelAt(Vector3f contactPoint);
+
+    ILightManager lights();
 }

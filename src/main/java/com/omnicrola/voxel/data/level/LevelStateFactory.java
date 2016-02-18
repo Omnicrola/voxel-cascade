@@ -1,8 +1,6 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.bullet.control.RigidBodyControl;
-import com.jme3.light.AmbientLight;
-import com.jme3.light.DirectionalLight;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -43,7 +41,6 @@ public class LevelStateFactory {
         WorldCursor worldCursor = createWorldCursor(terrain);
 
         LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName(), voxelTypeLibrary);
-        addLights(levelState);
         addTeams(levelState, levelDefinition);
         addUnits(levelState, levelDefinition);
         addStructures(levelState, levelDefinition);
@@ -54,18 +51,6 @@ public class LevelStateFactory {
         worldCursor.clearCursorStrategy();
 
         return levelState;
-    }
-
-    private static void addLights(LevelState levelState) {
-        DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White.mult(0.65f));
-        sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
-
-        AmbientLight ambientLight = new AmbientLight();
-        ambientLight.setColor(ColorRGBA.White.mult(0.2f));
-
-        levelState.addLight(sun);
-        levelState.addLight(ambientLight);
     }
 
     private void addTeams(LevelState levelState, LevelDefinition levelDefinition) {

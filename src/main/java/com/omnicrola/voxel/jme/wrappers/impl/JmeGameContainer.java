@@ -13,14 +13,14 @@ import java.util.List;
 /**
  * Created by omnic on 1/15/2016.
  */
-public class JmeApplicationWrapper implements IGameContainer {
+public class JmeGameContainer implements IGameContainer {
     private final VoxelGameEngine game;
     private final JmeGuiWrapper guiWrapper;
     private final JmeWorldWrapper worldWrapper;
     private final JmeInputWrapper inputWrapper;
     private final JmePhysicsWrapper physicsWrapper;
 
-    public JmeApplicationWrapper(VoxelGameEngine game) {
+    public JmeGameContainer(VoxelGameEngine game) {
         this.game = game;
         this.guiWrapper = new JmeGuiWrapper(game);
         this.physicsWrapper = new JmePhysicsWrapper(game.getPhysicsSpace());

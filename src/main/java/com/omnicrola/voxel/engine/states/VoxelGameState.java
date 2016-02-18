@@ -10,7 +10,7 @@ import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
-import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 
 import java.util.ArrayList;
 
@@ -22,7 +22,7 @@ public abstract class VoxelGameState extends AbstractAppState {
     protected final Node stateRootUiNode;
     private Node stateRootNode;
 
-    private JmeApplicationWrapper jmeApplicationWrapper;
+    private JmeGameContainer jmeApplicationWrapper;
     private ArrayList<Tuple<GameInputAction, ActionListener>> stateInputBindings;
 
     public VoxelGameState() {
@@ -34,7 +34,7 @@ public abstract class VoxelGameState extends AbstractAppState {
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        this.jmeApplicationWrapper = new JmeApplicationWrapper((VoxelGameEngine) app);
+        this.jmeApplicationWrapper = new JmeGameContainer((VoxelGameEngine) app);
         voxelInitialize(this.jmeApplicationWrapper);
     }
 

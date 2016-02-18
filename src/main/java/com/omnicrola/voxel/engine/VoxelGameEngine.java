@@ -4,11 +4,14 @@ import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
+import com.jme3.light.AmbientLight;
+import com.jme3.light.DirectionalLight;
+import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
-import com.omnicrola.voxel.jme.wrappers.impl.JmeApplicationWrapper;
-import com.omnicrola.voxel.jme.wrappers.impl.JmeGuiWrapper;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
 import de.lessvoid.nifty.Nifty;
@@ -20,6 +23,7 @@ public class VoxelGameEngine extends SimpleApplication {
 
     protected BulletAppState bulletAppState;
     private Nifty niftyGui;
+    private LightManager lightManager;
 
     public VoxelGameEngine(BulletAppState bulletAppState) {
         this.bulletAppState = bulletAppState;
@@ -30,10 +34,25 @@ public class VoxelGameEngine extends SimpleApplication {
         loadNiftyGui();
         this.stateManager.attach(this.bulletAppState);
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
-        JmeApplicationWrapper jmeApplicationWrapper = new JmeApplicationWrapper(this);
+        JmeGameContainer jmeApplicationWrapper = new JmeGameContainer(this);
         VoxelGameEngineInitializer.initializeGame(jmeApplicationWrapper, this.inputManager);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
+        addLights();
     }
+
+    private void addLights() {
+        DirectionalLight sun = new DirectionalLight();
+        sun.setColor(ColorRGBA.White.mult(0.80f));
+        sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
+
+        AmbientLight ambientLight = new AmbientLight();
+        ambientLight.setColor(ColorRGBA.White.mult(0.2f));
+
+        this.rootNode.addLight(sun);
+        this.rootNode.addLight(ambientLight);
+        this.lightManager = new LightManager(sun, ambientLight);
+    }
+
 
     private void loadNiftyGui() {
         NiftyJmeDisplay niftyDisplay = new NiftyJmeDisplay(
@@ -68,5 +87,9 @@ public class VoxelGameEngine extends SimpleApplication {
 
     public Nifty getNiftyGui() {
         return niftyGui;
+    }
+
+    public LightManager getLightManager() {
+        return this.lightManager;
     }
 }
