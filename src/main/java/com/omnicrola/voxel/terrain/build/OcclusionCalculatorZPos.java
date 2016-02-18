@@ -5,45 +5,45 @@ import com.omnicrola.voxel.terrain.VoxelChunkHandler;
 /**
  * Created by Eric on 2/14/2016.
  */
-public class OcclusionCalculatorZNeg extends SideOcclusionCalculator {
-    private static final int[][] zNegMatrix = matrix();
+public class OcclusionCalculatorZPos extends SideOcclusionCalculator {
+    private static final int[][] zPosMatrix = matrix();
 
     private static int[][] matrix() {
         int[][] matrix = new int[5][];
-        matrix[0] = new int[]{-1, -1, -1};  // bottom right
-        matrix[1] = new int[]{0, -1, -1};   // bottom
-        matrix[2] = new int[]{1, -1, -1};   // bottom left
-        matrix[3] = new int[]{-1, 0, -1};   // right
-        matrix[4] = new int[]{1, 0, -1};    // left
+        matrix[0] = new int[]{-1, -1, 1};   // bottom left
+        matrix[1] = new int[]{0, -1, 1};    // bottom
+        matrix[2] = new int[]{1, -1, 1};    // bottom right
+        matrix[3] = new int[]{-1, 0, 1};    // left
+        matrix[4] = new int[]{1, 0, 1};     // right
         return matrix;
     }
 
-    public OcclusionCalculatorZNeg(VoxelChunkHandler voxelChunkHandler) {
-        super(voxelChunkHandler, zNegMatrix);
+    public OcclusionCalculatorZPos(VoxelChunkHandler voxelChunkHandler) {
+        super(voxelChunkHandler, zPosMatrix);
     }
-
 
     @Override
     protected int occlude1(boolean[] occluded) {
-        // bottom right
+        // bottom left
         return occludeTrio(occluded, 0, 1, 3);
     }
 
+
     @Override
     protected int occlude2(boolean[] occluded) {
-        // top right
+        // top left
         return intValue(occluded[3]);
     }
 
     @Override
     protected int occlude3(boolean[] occluded) {
-        // bottom left
+        // bottom right
         return occludeTrio(occluded, 1, 2, 4);
     }
 
     @Override
     protected int occlude4(boolean[] occluded) {
-        // top left
+        // top right
         return intValue(occluded[4]);
     }
 }

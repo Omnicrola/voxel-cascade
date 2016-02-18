@@ -34,6 +34,6 @@ public class OcclusionSet {
     }
 
     public float vertexValue(int index) {
-        return 1f - (this.vertexOcclusion[index] / 4f);
+        return 1f - (this.vertexOcclusion[index] / 5f);
     }
 }

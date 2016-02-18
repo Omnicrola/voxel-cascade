@@ -18,10 +18,12 @@ public abstract class SideOcclusionCalculator extends OcclusionCalculator {
 
     @Override
     public OcclusionSet calculate(Vec3i globalLocation) {
-        boolean[] occluded = new boolean[3];
+        boolean[] occluded = new boolean[5];
         occluded[0] = isSolid(globalLocation, om[0][0], om[0][1], om[0][2]);
         occluded[1] = isSolid(globalLocation, om[1][0], om[1][1], om[1][2]);
         occluded[2] = isSolid(globalLocation, om[2][0], om[2][1], om[2][2]);
+        occluded[3] = isSolid(globalLocation, om[3][0], om[3][1], om[3][2]);
+        occluded[4] = isSolid(globalLocation, om[4][0], om[4][1], om[4][2]);
 
         OcclusionSet occlusionSet = new OcclusionSet();
         occlusionSet.set(0, occlude1(occluded));
@@ -39,6 +41,16 @@ public abstract class SideOcclusionCalculator extends OcclusionCalculator {
     protected abstract int occlude3(boolean[] occluded);
 
     protected abstract int occlude4(boolean[] occluded);
+
+    protected int occludePair(boolean[] occluded, int index1, int index2) {
+        return intValue(occluded[index1]) + intValue(occluded[index2]);
+    }
+
+    protected int occludeTrio(boolean[] occluded, int index1, int index2, int index3) {
+        return intValue(occluded[index1]) +
+                intValue(occluded[index2]) +
+                intValue(occluded[index3]);
+    }
 
 
 }
