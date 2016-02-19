@@ -11,10 +11,12 @@ import com.omnicrola.voxel.jme.wrappers.ILightManager;
  */
 public class LightManager implements ILightManager {
     private final DirectionalLight sun;
+    private DirectionalLight rimLight;
     private final AmbientLight ambientLight;
 
-    public LightManager(DirectionalLight sun, AmbientLight ambientLight) {
+    public LightManager(DirectionalLight sun, DirectionalLight rimLight, AmbientLight ambientLight) {
         this.sun = sun;
+        this.rimLight = rimLight;
         this.ambientLight = ambientLight;
     }
 
@@ -22,6 +24,7 @@ public class LightManager implements ILightManager {
     public void setSun(ColorRGBA sunColor, Vector3f sunDirection) {
         this.sun.setColor(sunColor);
         this.sun.setDirection(sunDirection);
+        this.rimLight.setDirection(sunDirection.mult(-1f));
     }
 
     @Override

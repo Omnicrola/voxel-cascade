@@ -42,15 +42,20 @@ public class VoxelGameEngine extends SimpleApplication {
 
     private void addLights() {
         DirectionalLight sun = new DirectionalLight();
-        sun.setColor(ColorRGBA.White.mult(0.80f));
+
+        sun.setColor(new ColorRGBA(1f, 1f, 0.9843f, 1f).mult(0.9f));
         sun.setDirection(new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal());
 
+        DirectionalLight rimLight = new DirectionalLight();
+        rimLight.setColor(new ColorRGBA(0.2509f, 0.6117f, 1f, 1f).mult(0.3f));
+
         AmbientLight ambientLight = new AmbientLight();
-        ambientLight.setColor(ColorRGBA.White.mult(0.2f));
+        ambientLight.setColor(ColorRGBA.White.mult(0.3f));
 
         this.rootNode.addLight(sun);
+        this.rootNode.addLight(rimLight);
         this.rootNode.addLight(ambientLight);
-        this.lightManager = new LightManager(sun, ambientLight);
+        this.lightManager = new LightManager(sun, rimLight, ambientLight);
     }
 
 
