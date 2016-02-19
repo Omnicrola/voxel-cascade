@@ -22,7 +22,7 @@ public class EntityAiController extends AbstractControl {
     }
 
     public <T extends IAiState> T setState(Class<T> stateToken) {
-            this.currentState = this.states.get(stateToken);
+        this.currentState = this.states.get(stateToken);
         return (T) this.currentState;
     }
 

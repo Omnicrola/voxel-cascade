@@ -33,7 +33,7 @@ public class StructureGenerator {
         structureDefinition.color = ColorRGBA.Blue;
         structureDefinition.modelGeometry = "building-core.obj";
         structureDefinition.name = "Core";
-        structureDefinition.description = "Use this to orderBuild things";
+        structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;
         structureDefinition.commands.add(EntityCommand.BUILD);
         structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK, 10f));

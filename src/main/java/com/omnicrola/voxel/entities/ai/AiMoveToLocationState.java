@@ -32,7 +32,7 @@ public class AiMoveToLocationState implements IAiState {
 
     private boolean hasArrived(EntityAiController entityAiController) {
         Vector3f currentLocation = entityAiController.getSpatial().getWorldTranslation();
-        return currentLocation.distance(currentLocation) <= MINIMUM_DISTANCE;
+        return currentLocation.distance(this.targetLocation) <= MINIMUM_DISTANCE;
     }
 
 
