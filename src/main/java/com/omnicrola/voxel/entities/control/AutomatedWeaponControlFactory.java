@@ -8,7 +8,9 @@ import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.engine.states.CurrentLevelState;
-import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
+import com.omnicrola.voxel.entities.ai.AiHoldPositionState;
+import com.omnicrola.voxel.entities.ai.AiStateMap;
+import com.omnicrola.voxel.entities.ai.EntityAiController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
@@ -39,14 +41,13 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
         IProjectileStrategy projectileFactory = buildProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(gameWorld, weaponDefinition, weaponOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(gameWorld);
-        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevelState, gameContainer);
-        BuildController buildController = new BuildController(gameContainer, currentLevelState);
-        EntityAiController entityAiController = new EntityAiController(
-                NullMotionController.NO_OP,
-                weaponsController,
-                targetingController,
-                resourceHarvester,
-                buildController);
+
+        AiHoldPositionState holdPositionState = new AiHoldPositionState(targetingController, weaponsController, NullMotionController.NO_OP);
+
+        AiStateMap stateMap = new AiStateMap();
+        stateMap.add(holdPositionState);
+
+        EntityAiController entityAiController = new EntityAiController(stateMap, holdPositionState);
 
         spatial.addControl(entityAiController);
         spatial.addControl(weaponsController);

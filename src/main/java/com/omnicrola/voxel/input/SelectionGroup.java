@@ -4,9 +4,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.SelectedSpatial;
-import com.omnicrola.voxel.entities.ai.NavigationGridDistributor;
+import com.omnicrola.voxel.entities.ai.*;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
-import com.omnicrola.voxel.entities.control.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.MotionGovernorControl;
 import com.omnicrola.voxel.entities.resources.VoxelHarvestTarget;
@@ -45,32 +44,31 @@ public class SelectionGroup {
 
     public void orderMoveToLocation(Vector3f vector3f) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(vector3f);
-        getEntityAiControllerStream().forEach(ai -> ai.orderMoveTo(navPoints.next()));
+        getEntityAiControllerStream().forEach(ai -> ai.setState(AiMoveToLocationState.class).setTarget(navPoints.next()));
     }
 
     public void orderStop() {
-        getEntityAiControllerStream().forEach(ai -> ai.orderStop());
+        getEntityAiControllerStream().forEach(ai -> ai.setState(AiStopState.class));
     }
 
     public void orderAttackTarget(Geometry target) {
-        getEntityAiControllerStream().forEach(ai -> ai.orderAttackTarget(target));
+        getEntityAiControllerStream().forEach(ai -> ai.setState(AiAttackTargetState.class).setTarget(target));
     }
 
     public void orderAttackLocation(Vector3f location) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location);
-        getEntityAiControllerStream().forEach(ai -> ai.orderAttackLocation(navPoints.next()));
+        getEntityAiControllerStream().forEach(ai -> ai.setState(AiMoveToLocationState.class).setTarget(navPoints.next()));
     }
 
-
     public void orderHarvest(VoxelHarvestTarget voxelHarvestTarget) {
-        getEntityAiControllerStream().forEach(ai -> ai.orderHarvest(voxelHarvestTarget));
+        getEntityAiControllerStream().forEach(ai -> ai.setState(AiHarvestState.class).setTarget(voxelHarvestTarget));
     }
 
     public void orderBuild(IConstructionPackage constructionPackage) {
         Optional<EntityAiController> firstController = getEntityAiControllerStream().findFirst();
         if(firstController.isPresent()){
             EntityAiController entityAiController = firstController.get();
-            entityAiController.orderBuild(constructionPackage);
+            entityAiController.setState(AiBuildState.class).setPackage(constructionPackage);
         }
     }
 
