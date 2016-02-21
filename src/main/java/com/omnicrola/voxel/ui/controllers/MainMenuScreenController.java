@@ -38,7 +38,7 @@ public class MainMenuScreenController extends AbstractScreenController {
         this.gameContainer.gui().changeScreens(UiScreen.MULTIPLAYER_LOAD);
         this.gameContainer.network().startLocalServer();
         this.gameContainer.network().connectTo("localhost");
-        this.gameContainer.network().loadLevel("basic");
+        this.gameContainer.world().loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
     }
     @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")
     @SubscriberLink(UiToken.BUTTON_QUIT_GAME)

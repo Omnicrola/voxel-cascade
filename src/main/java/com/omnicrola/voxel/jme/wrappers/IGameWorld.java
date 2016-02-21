@@ -11,6 +11,7 @@ import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Stream;
 
 /**
@@ -53,4 +54,6 @@ public interface IGameWorld {
     VoxelData getVoxelAt(Vector3f contactPoint);
 
     ILightManager lights();
+
+    void loadLevel(UUID levelUuid);
 }

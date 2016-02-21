@@ -7,6 +7,8 @@ import com.omnicrola.voxel.network.messages.LoadLevelMessage;
 import com.omnicrola.voxel.server.main.init.ServerBootstrapper;
 import com.omnicrola.voxel.server.main.init.VoxelServerLauncher;
 
+import java.util.UUID;
+
 /**
  * Created by Eric on 2/21/2016.
  */
@@ -25,9 +27,9 @@ public class JmeNetworkWrapper implements IGameNetwork {
     }
 
     @Override
-    public void loadLevel(String levelName) {
+    public void loadLevel(UUID levelId) {
         ClientNetworkState clientNetworkState = this.game.getStateManager().getState(ClientNetworkState.class);
-        LoadLevelMessage loadLevelMessage = new LoadLevelMessage("basic");
+        LoadLevelMessage loadLevelMessage = new LoadLevelMessage(levelId);
         clientNetworkState.message(loadLevelMessage);
     }
 

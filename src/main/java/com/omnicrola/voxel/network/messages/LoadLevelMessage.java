@@ -3,13 +3,15 @@ package com.omnicrola.voxel.network.messages;
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
 
+import java.util.UUID;
+
 /**
  * Created by Eric on 2/21/2016.
  */
 @Serializable
 public class LoadLevelMessage extends AbstractMessage {
 
-    private String levelFilename;
+    private UUID levelId;
 
     {
         setReliable(true);
@@ -18,7 +20,12 @@ public class LoadLevelMessage extends AbstractMessage {
     public LoadLevelMessage() {
     }
 
-    public LoadLevelMessage(String levelFilename) {
-        this.levelFilename = levelFilename;
+    public LoadLevelMessage(UUID levelId) {
+        this.levelId = levelId;
+    }
+
+
+    public UUID getLevelId() {
+        return levelId;
     }
 }

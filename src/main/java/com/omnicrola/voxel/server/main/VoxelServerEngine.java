@@ -10,12 +10,12 @@ import com.omnicrola.voxel.settings.GameConstants;
 /**
  * Created by Eric on 2/21/2016.
  */
-public class VoxelServer extends SimpleApplication {
+public class VoxelServerEngine extends SimpleApplication {
 
     private BulletAppState bulletAppState;
     private ServerInitializer serverInitializer;
 
-    public VoxelServer(BulletAppState bulletAppState, ServerInitializer serverInitializer) {
+    public VoxelServerEngine(BulletAppState bulletAppState, ServerInitializer serverInitializer) {
         this.bulletAppState = bulletAppState;
         this.serverInitializer = serverInitializer;
     }

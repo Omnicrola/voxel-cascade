@@ -24,4 +24,6 @@ public interface IGameContainer extends IStateManager {
     void quitAndExit();
 
     IGameNetwork network();
+
+
 }

@@ -7,7 +7,10 @@ import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.omnicrola.voxel.network.MessageSerializationInitializer;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
+import com.omnicrola.voxel.network.messages.LoadLevelMessage;
+import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.server.network.listeners.ServerHandshakeListener;
+import com.omnicrola.voxel.server.network.listeners.ServerLoadLevelListener;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
@@ -18,10 +21,12 @@ import java.io.IOException;
 public class ServerNetworkState extends AbstractAppState {
 
     private Server networkServer;
+    private VoxelServerEngine game;
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
+        this.game = (VoxelServerEngine) app;
         this.networkServer = createServer();
         this.setEnabled(true);
     }
@@ -59,5 +64,6 @@ public class ServerNetworkState extends AbstractAppState {
 
     private void loadMessageListeners(Server server) {
         server.addMessageListener(new ServerHandshakeListener(this), HandshakeMessage.class);
+        server.addMessageListener(new ServerLoadLevelListener(this, this.game), LoadLevelMessage.class);
     }
 }
