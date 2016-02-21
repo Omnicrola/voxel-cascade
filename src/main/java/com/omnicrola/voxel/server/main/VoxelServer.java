@@ -1,10 +1,10 @@
-package com.omnicrola.voxel.main;
+package com.omnicrola.voxel.server.main;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
 import com.omnicrola.voxel.engine.MasterCollisionHandler;
-import com.omnicrola.voxel.main.init.ServerInitializer;
+import com.omnicrola.voxel.server.main.init.ServerInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**

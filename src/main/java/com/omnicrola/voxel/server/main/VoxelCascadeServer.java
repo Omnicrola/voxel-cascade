@@ -1,7 +1,7 @@
-package com.omnicrola.voxel.main;
+package com.omnicrola.voxel.server.main;
 
-import com.omnicrola.voxel.main.init.ServerBootstrapper;
-import com.omnicrola.voxel.main.init.VoxelServerLauncher;
+import com.omnicrola.voxel.server.main.init.ServerBootstrapper;
+import com.omnicrola.voxel.server.main.init.VoxelServerLauncher;
 
 import java.net.URL;
 import java.net.URLClassLoader;
