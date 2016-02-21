@@ -19,6 +19,7 @@ public class JmeGameContainer implements IGameContainer {
     private final JmeWorldWrapper worldWrapper;
     private final JmeInputWrapper inputWrapper;
     private final JmePhysicsWrapper physicsWrapper;
+    private final JmeNetworkWrapper networkWrapper;
 
     public JmeGameContainer(VoxelGameEngine game) {
         this.game = game;
@@ -26,6 +27,7 @@ public class JmeGameContainer implements IGameContainer {
         this.physicsWrapper = new JmePhysicsWrapper(game.getPhysicsSpace());
         this.worldWrapper = new JmeWorldWrapper(game, this, this.physicsWrapper);
         this.inputWrapper = new JmeInputWrapper(game);
+        this.networkWrapper = new JmeNetworkWrapper(game);
     }
 
     @Override
@@ -85,6 +87,11 @@ public class JmeGameContainer implements IGameContainer {
             List<Spatial> children = ((Node) spatial).getChildren();
             children.forEach(c -> recursiveTreePrint(c, prefix + "- "));
         }
+    }
+
+    @Override
+    public IGameNetwork network() {
+        return this.networkWrapper;
     }
 
     @Override

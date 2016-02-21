@@ -22,6 +22,7 @@ public class ServerHandshakeListener extends AbstractMessageListener<HandshakeMe
         String version = message.getVersion();
         if (version.equals(GameConstants.GAME_VERSION)) {
             connection.send(new HandshakeMessage(GameConstants.GAME_VERSION));
+            System.out.println("Client connected: " + connection.getId() + " " + connection.getAddress());
         } else {
             connection.close("Incompatible version. Required: " + GameConstants.GAME_VERSION);
         }

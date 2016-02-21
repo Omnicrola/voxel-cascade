@@ -22,4 +22,6 @@ public interface IGameContainer extends IStateManager {
     void addState(AppState voxelGameState);
 
     void quitAndExit();
+
+    IGameNetwork network();
 }

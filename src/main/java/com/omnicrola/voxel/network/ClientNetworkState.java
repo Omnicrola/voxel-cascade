@@ -3,6 +3,7 @@ package com.omnicrola.voxel.network;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.network.AbstractMessage;
 import com.jme3.network.Client;
 import com.jme3.network.Network;
 import com.omnicrola.voxel.network.listeners.ClientHandshakeListener;
@@ -29,6 +30,7 @@ public class ClientNetworkState extends AbstractAppState {
             this.networkClient = Network.connectToServer(server, GameConstants.SERVER_PORT);
             addListeners(this.networkClient);
             this.networkClient.start();
+            this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -42,4 +44,9 @@ public class ClientNetworkState extends AbstractAppState {
         this.networkClient.close();
     }
 
+    public void message(AbstractMessage message) {
+        if (this.networkClient != null) {
+            this.networkClient.send(message);
+        }
+    }
 }

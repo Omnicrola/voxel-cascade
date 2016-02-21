@@ -13,9 +13,11 @@ import com.omnicrola.voxel.engine.states.*;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
+import com.omnicrola.voxel.network.ClientNetworkState;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
 import com.omnicrola.voxel.ui.builders.GameOverUiBuilder;
 import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
+import com.omnicrola.voxel.ui.builders.MultiplayerUiBuilder;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -30,6 +32,7 @@ public class VoxelGameEngineInitializer {
     private static void createStates(IGameContainer stateManager) {
         DebugState debugState = new DebugState();
         LoadingState loadingState = new LoadingState();
+        ClientNetworkState clientNetworkState = new ClientNetworkState();
         CurrentLevelState currentLevelState = new CurrentLevelState(new GameXmlDataParser());
         ActivePlayInputState playState = new ActivePlayInputState();
         MainMenuState mainMenuState = new MainMenuState();
@@ -38,6 +41,7 @@ public class VoxelGameEngineInitializer {
 
         stateManager.addState(debugState);
         stateManager.addState(loadingState);
+        stateManager.addState(clientNetworkState);
         stateManager.addState(currentLevelState);
         stateManager.addState(mainMenuState);
         stateManager.addState(playState);
@@ -52,6 +56,7 @@ public class VoxelGameEngineInitializer {
 
         GameOverUiBuilder.build(gameGui, gameContainer, currentLevelState);
         MainMenuUiBuilder.build(gameContainer);
+        MultiplayerUiBuilder.build(gameContainer);
     }
 
     private static void createInputMappings(InputManager inputManager) {

@@ -6,6 +6,7 @@ import com.omnicrola.voxel.engine.states.CurrentLevelState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.SubscriberLink;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -31,6 +32,14 @@ public class MainMenuScreenController extends AbstractScreenController {
         this.gameContainer.enableState(ActivePlayInputState.class);
     }
 
+    @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER")
+    @SubscriberLink(UiToken.BUTTON_MULTIPLAYER)
+    public void launchMultiplayer(String id, ButtonClickedEvent buttonClickedEvent) {
+        this.gameContainer.gui().changeScreens(UiScreen.MULTIPLAYER_LOAD);
+        this.gameContainer.network().startLocalServer();
+        this.gameContainer.network().connectTo("localhost");
+        this.gameContainer.network().loadLevel("basic");
+    }
     @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")
     @SubscriberLink(UiToken.BUTTON_QUIT_GAME)
     public void quitGame(String id, ButtonClickedEvent buttonClickedEvent) {

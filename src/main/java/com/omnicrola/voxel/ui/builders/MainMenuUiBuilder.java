@@ -70,17 +70,20 @@ public class MainMenuUiBuilder {
                     width("75%");
 
                     panel(new PanelBuilder("panel_bottom_left") {{
-                        childLayoutCenter();
+                        childLayoutVertical();
                         valignCenter();
                         height("50%");
                         width("50%");
 
                         // add control
                         control(new ButtonBuilder(UiToken.BUTTON_START.toString(), "Start") {{
-                            alignCenter();
-                            valignCenter();
-                            height("50%");
-                            width("50%");
+                            height(percentage(40));
+                            width(percentage(50));
+                        }});
+                        // add control
+                        control(new ButtonBuilder(UiToken.BUTTON_MULTIPLAYER.toString(), "Multiplayer") {{
+                            height(percentage(40));
+                            width(percentage(50));
                         }});
                     }});
 
