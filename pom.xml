@@ -5,8 +5,11 @@
 
     <groupId>com.omnicrola.voxel-cascade</groupId>
     <artifactId>voxel-cascade</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>voxel-cascade-server</module>
+    </modules>
     <name>Voxel Cascade</name>
 
     <properties>
