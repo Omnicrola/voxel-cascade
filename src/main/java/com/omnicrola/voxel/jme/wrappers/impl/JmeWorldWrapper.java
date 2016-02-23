@@ -33,7 +33,7 @@ import java.util.stream.Stream;
  * Created by omnic on 1/15/2016.
  */
 public class JmeWorldWrapper implements IGameWorld {
-    private final WorldBuilder geometryBuilder;
+    private final OldWorldBuilder geometryBuilder;
     private final ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory;
     private VoxelGameEngine game;
     private JmePhysicsWrapper physicsWrapper;
@@ -44,7 +44,7 @@ public class JmeWorldWrapper implements IGameWorld {
         this.game = game;
         this.physicsWrapper = physicsWrapper;
         AssetManager assetManager = game.getAssetManager();
-        this.geometryBuilder = new WorldBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
+        this.geometryBuilder = new OldWorldBuilder(assetManager, jmeApplicationWrapper, new ParticleBuilder(assetManager));
         this.screenSelectionEvaluatorFactory = new ScreenSelectionEvaluatorFactory(game.getCamera());
     }
 

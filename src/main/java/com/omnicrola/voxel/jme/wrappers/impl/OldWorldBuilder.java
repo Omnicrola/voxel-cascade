@@ -27,14 +27,14 @@ import com.omnicrola.voxel.settings.GameConstants;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class WorldBuilder implements IWorldBuilder {
+public class OldWorldBuilder implements IWorldBuilder {
 
     private final UnitDefinitionRepository definitionRepository;
     private AssetManager assetManager;
     private IGameContainer gameContainer;
     private IParticleBuilder particleBuilder;
 
-    public WorldBuilder(AssetManager assetManager, IGameContainer gameContainer, ParticleBuilder particleBuilder) {
+    public OldWorldBuilder(AssetManager assetManager, IGameContainer gameContainer, ParticleBuilder particleBuilder) {
         this.assetManager = assetManager;
         this.gameContainer = gameContainer;
         this.particleBuilder = particleBuilder;

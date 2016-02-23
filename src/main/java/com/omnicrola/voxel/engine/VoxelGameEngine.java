@@ -19,11 +19,12 @@ import de.lessvoid.nifty.Nifty;
 /**
  * Created by omnic on 1/15/2016.
  */
-public class VoxelGameEngine extends SimpleApplication {
+public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
 
     protected BulletAppState bulletAppState;
     private Nifty niftyGui;
     private LightManager lightManager;
+    private JmeGameContainer gameContainer;
 
     public VoxelGameEngine(BulletAppState bulletAppState) {
         this.bulletAppState = bulletAppState;
@@ -32,10 +33,10 @@ public class VoxelGameEngine extends SimpleApplication {
     @Override
     public void simpleInitApp() {
         loadNiftyGui();
+        this.gameContainer = new JmeGameContainer(this);
         this.stateManager.attach(this.bulletAppState);
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
-        JmeGameContainer jmeApplicationWrapper = new JmeGameContainer(this);
-        VoxelGameEngineInitializer.initializeGame(jmeApplicationWrapper, this.inputManager);
+        VoxelGameEngineInitializer.initializeGame(this.gameContainer, this.inputManager);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
         addLights();
     }
@@ -97,4 +98,5 @@ public class VoxelGameEngine extends SimpleApplication {
     public LightManager getLightManager() {
         return this.lightManager;
     }
+
 }

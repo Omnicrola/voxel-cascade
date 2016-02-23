@@ -32,7 +32,11 @@ public class VoxelGameEngineInitializer {
     private static void createStates(IGameContainer stateManager) {
         DebugState debugState = new DebugState();
         LoadingState loadingState = new LoadingState();
-        ClientNetworkState clientNetworkState = new ClientNetworkState();
+
+        VoxelTerrainState voxelTerrainState = new VoxelTerrainState();
+        WorldManagerState worldManagerState = new WorldManagerState(voxelTerrainState);
+        ClientNetworkState clientNetworkState = new ClientNetworkState(worldManagerState);
+
         CurrentLevelState currentLevelState = new CurrentLevelState(new GameXmlDataParser());
         ActivePlayInputState playState = new ActivePlayInputState();
         MainMenuState mainMenuState = new MainMenuState();
@@ -41,7 +45,11 @@ public class VoxelGameEngineInitializer {
 
         stateManager.addState(debugState);
         stateManager.addState(loadingState);
+
+        stateManager.addState(voxelTerrainState);
+        stateManager.addState(worldManagerState);
         stateManager.addState(clientNetworkState);
+
         stateManager.addState(currentLevelState);
         stateManager.addState(mainMenuState);
         stateManager.addState(playState);

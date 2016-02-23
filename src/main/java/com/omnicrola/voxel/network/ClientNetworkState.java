@@ -6,7 +6,8 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.Client;
 import com.jme3.network.Network;
-import com.omnicrola.voxel.network.listeners.ClientHandshakeListener;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.engine.states.WorldManagerState;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.settings.GameConstants;
 
@@ -18,26 +19,31 @@ import java.io.IOException;
 public class ClientNetworkState extends AbstractAppState {
 
     private Client networkClient;
+    private WorldManagerState worldManagerState;
+    private ListenerMap listeners;
+    private ClientListenerBuilder listenerBuilder;
+
+    public ClientNetworkState(WorldManagerState worldManagerState) {
+        this.worldManagerState = worldManagerState;
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         setEnabled(true);
+        VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
+        this.listeners = this.listenerBuilder.build(this, this.worldManagerState, voxelGameEngine);
     }
 
     public void connect(String server) {
         try {
             this.networkClient = Network.connectToServer(server, GameConstants.SERVER_PORT);
-            addListeners(this.networkClient);
+            this.listeners.attach(this.networkClient);
             this.networkClient.start();
             this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    private void addListeners(Client networkClient) {
-        networkClient.addMessageListener(new ClientHandshakeListener(this), HandshakeMessage.class);
     }
 
     public void disconnect() {
