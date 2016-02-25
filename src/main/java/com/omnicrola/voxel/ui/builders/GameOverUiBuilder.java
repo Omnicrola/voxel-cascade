@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
+import com.omnicrola.voxel.engine.states.IWorldLevelManager;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.jme.wrappers.IStateManager;
 import com.omnicrola.voxel.ui.UiScreen;
@@ -15,7 +15,7 @@ import de.lessvoid.nifty.tools.Color;
  * Created by Eric on 2/6/2016.
  */
 public class GameOverUiBuilder {
-    public static void build(IGameGui gameGui, IStateManager stateManager, ICurrentLevelProvider currentLevelProvider) {
+    public static void build(IGameGui gameGui, IStateManager stateManager, IWorldLevelManager currentLevelProvider) {
         String screenName = UiScreen.GAME_OVER.toString();
         GameOverScreenController gameOverScreenController = new GameOverScreenController(stateManager,currentLevelProvider);
 

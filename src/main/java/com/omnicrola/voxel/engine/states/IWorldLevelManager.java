@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by omnic on 1/24/2016.
  */
-public interface ICurrentLevelProvider {
+public interface IWorldLevelManager {
     public abstract LevelState getCurrentLevel();
 
     void addObserver(ILevelChangeObserver levelChangeObserver);

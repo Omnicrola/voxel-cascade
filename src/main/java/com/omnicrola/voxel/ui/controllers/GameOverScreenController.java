@@ -2,7 +2,7 @@ package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.engine.states.ActivePlayInputState;
 import com.omnicrola.voxel.engine.states.GameOverState;
-import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
+import com.omnicrola.voxel.engine.states.IWorldLevelManager;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 import com.omnicrola.voxel.jme.wrappers.IStateManager;
 import com.omnicrola.voxel.ui.SubscriberLink;
@@ -24,9 +24,9 @@ import java.util.List;
 public class GameOverScreenController extends AbstractScreenController {
 
     private IStateManager stateManager;
-    private ICurrentLevelProvider currentLevelProvider;
+    private IWorldLevelManager currentLevelProvider;
 
-    public GameOverScreenController(IStateManager stateManager, ICurrentLevelProvider currentLevelProvider) {
+    public GameOverScreenController(IStateManager stateManager, IWorldLevelManager currentLevelProvider) {
         this.stateManager = stateManager;
         this.currentLevelProvider = currentLevelProvider;
     }

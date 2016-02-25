@@ -1,15 +1,15 @@
 package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import com.omnicrola.voxel.engine.states.ICurrentLevelProvider;
+import com.omnicrola.voxel.engine.states.IWorldLevelManager;
 
 /**
  * Created by omnic on 1/24/2016.
  */
 public class OrderSelectedUnitsStopListeners implements ActionListener {
-    private ICurrentLevelProvider currentLevelProvider;
+    private IWorldLevelManager currentLevelProvider;
 
-    public OrderSelectedUnitsStopListeners(ICurrentLevelProvider currentLevelProvider) {
+    public OrderSelectedUnitsStopListeners(IWorldLevelManager currentLevelProvider) {
         this.currentLevelProvider = currentLevelProvider;
     }
 

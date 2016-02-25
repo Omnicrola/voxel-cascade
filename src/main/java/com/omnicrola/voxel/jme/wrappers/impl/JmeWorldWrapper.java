@@ -11,7 +11,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.states.CurrentLevelState;
+import com.omnicrola.voxel.engine.states.WorldLevelState;
 import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
@@ -170,7 +170,7 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public void loadLevel(UUID levelUuid) {
-        CurrentLevelState currentLevelState = this.game.getStateManager().getState(CurrentLevelState.class);
+        WorldLevelState currentLevelState = this.game.getStateManager().getState(WorldLevelState.class);
         currentLevelState.loadLevel(levelUuid);
     }
 

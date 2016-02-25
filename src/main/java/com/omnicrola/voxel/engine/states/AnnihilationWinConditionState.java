@@ -40,7 +40,7 @@ public class AnnihilationWinConditionState extends VoxelGameState {
 
     @Override
     public void update(float tpf) {
-        CurrentLevelState currentLevelState = this.gameContainer.getState(CurrentLevelState.class);
+        WorldLevelState currentLevelState = this.gameContainer.getState(WorldLevelState.class);
         if (currentLevelState != null) {
             ArrayList<Spatial> allUnits = currentLevelState.getCurrentLevel().getAllEntities();
             Optional<TeamData> firstTeamEliminated = this.teams.stream()

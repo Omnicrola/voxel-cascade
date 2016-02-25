@@ -7,7 +7,7 @@ import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
-import com.omnicrola.voxel.engine.states.CurrentLevelState;
+import com.omnicrola.voxel.engine.states.WorldLevelState;
 import com.omnicrola.voxel.entities.control.*;
 import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -36,7 +36,7 @@ public class EntityAiControlFactory implements IControlFactory {
         IGameWorld gameWorld = gameContainer.world();
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
-        CurrentLevelState currentLevelState = gameContainer.getState(CurrentLevelState.class);
+        WorldLevelState currentLevelState = gameContainer.getState(WorldLevelState.class);
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
         IProjectileStrategy projectileFactory = createProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);

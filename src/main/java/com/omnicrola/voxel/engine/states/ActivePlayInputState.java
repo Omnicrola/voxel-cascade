@@ -24,7 +24,7 @@ public class ActivePlayInputState extends VoxelGameState {
 
     private void initializeKeybindings(IGameContainer gameContainer) {
 
-        CurrentLevelState currentLevelState = gameContainer.getState(CurrentLevelState.class);
+        WorldLevelState currentLevelState = gameContainer.getState(WorldLevelState.class);
         addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(currentLevelState));
 
         ExecutePrimaryCursorListener primaryCursorListener = new ExecutePrimaryCursorListener(currentLevelState);
@@ -45,7 +45,7 @@ public class ActivePlayInputState extends VoxelGameState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        this.gameContainer.getState(CurrentLevelState.class).getCurrentLevel().addTime(tpf);
+        this.gameContainer.getState(WorldLevelState.class).getCurrentLevel().addTime(tpf);
     }
 
     @Override

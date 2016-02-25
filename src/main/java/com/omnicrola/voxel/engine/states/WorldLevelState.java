@@ -19,7 +19,7 @@ import java.util.UUID;
 /**
  * Created by Eric on 2/6/2016.
  */
-public class CurrentLevelState extends VoxelGameState implements ICurrentLevelProvider {
+public class WorldLevelState extends VoxelGameState implements IWorldLevelManager {
     private LevelState currentLevelState;
     private ArrayList<ILevelChangeObserver> observers;
     private IGameContainer gameContainer;
@@ -27,7 +27,7 @@ public class CurrentLevelState extends VoxelGameState implements ICurrentLevelPr
     private LevelDefinitionRepository levelDefinitions;
     private LevelStateFactory levelStateFactory;
 
-    public CurrentLevelState(GameXmlDataParser gameDataParser) {
+    public WorldLevelState(GameXmlDataParser gameDataParser) {
         this.gameDataParser = gameDataParser;
         this.observers = new ArrayList<>();
     }
