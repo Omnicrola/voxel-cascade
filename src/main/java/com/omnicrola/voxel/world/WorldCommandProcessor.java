@@ -8,7 +8,7 @@ import java.util.Iterator;
  */
 public class WorldCommandProcessor {
 
-    private final ArrayList<IWorldCommand> commands;
+    private final ArrayList<IWorldMessage> commands;
     private CommandPackage commandPackage;
 
     public WorldCommandProcessor(CommandPackage commandPackage) {
@@ -16,14 +16,15 @@ public class WorldCommandProcessor {
         this.commands = new ArrayList<>();
     }
 
-    public void addCommand(IWorldCommand worldCommand) {
+    public void addCommand(IWorldMessage worldCommand) {
         this.commands.add(worldCommand);
+        System.out.println("recieved command: " + worldCommand);
     }
 
     public void execute(long tick) {
-        Iterator<IWorldCommand> iterator = this.commands.iterator();
+        Iterator<IWorldMessage> iterator = this.commands.iterator();
         while (iterator.hasNext()) {
-            IWorldCommand command = iterator.next();
+            IWorldMessage command = iterator.next();
             if (command.getTargetTic() <= tick) {
                 command.execute(commandPackage);
                 iterator.remove();

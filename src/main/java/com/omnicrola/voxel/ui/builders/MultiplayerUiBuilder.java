@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.ui.builders;
 
+import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -11,10 +13,12 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
  * Created by Eric on 2/21/2016.
  */
 public class MultiplayerUiBuilder {
-    public static void build(IGameContainer gameContainer) {
+    public static void build(IGameContainer gameContainer,
+                             IMessageProcessor messageProcessor,
+                             ICommandProcessor commandProcessor) {
 
         String screenName = UiScreen.MULTIPLAYER_LOAD.toString();
-        MultiplayerScreenController multiplayerController = new MultiplayerScreenController(gameContainer);
+        MultiplayerScreenController multiplayerController = new MultiplayerScreenController(gameContainer, commandProcessor, messageProcessor);
 
         gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
             controller(multiplayerController);
@@ -50,7 +54,7 @@ public class MultiplayerUiBuilder {
                     }});
 
                     panel(new PanelBuilder("panel_bottom"){{
-                        childLayoutCenter();
+                        childLayoutVertical();
                         alignCenter();
                         height(percentage(75));
                         width(percentage(75));
@@ -60,10 +64,17 @@ public class MultiplayerUiBuilder {
                             font(UiConstants.DEFAULT_FONT);
                         }});
 
+                        control(new ButtonBuilder(UiToken.BUTTON_START_MULTIPLAYER.toString(), "Start") {{
+                            alignCenter();
+                            valignCenter();
+                            height("40%");
+                            width("50%");
+                        }});
+
                         control(new ButtonBuilder(UiToken.BUTTON_ABORT_SERVER_CONNECT.toString(), "Abort") {{
                             alignCenter();
                             valignCenter();
-                            height("50%");
+                            height("40%");
                             width("50%");
                         }});
 

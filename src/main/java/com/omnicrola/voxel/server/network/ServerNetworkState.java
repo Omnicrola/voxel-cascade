@@ -64,6 +64,6 @@ public class ServerNetworkState extends AbstractAppState {
 
     private void loadMessageListeners(Server server) {
         server.addMessageListener(new ServerHandshakeListener(this), HandshakeMessage.class);
-        server.addMessageListener(new ServerLoadLevelListener(this, this.game), LoadLevelMessage.class);
+        server.addMessageListener(new ServerLoadLevelListener(), LoadLevelMessage.class);
     }
 }

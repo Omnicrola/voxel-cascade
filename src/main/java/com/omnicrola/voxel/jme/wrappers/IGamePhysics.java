@@ -7,6 +7,7 @@ import com.jme3.scene.Spatial;
 /**
  * Created by omnic on 1/16/2016.
  */
+@Deprecated
 public interface IGamePhysics {
     void addControl(PhysicsControl physicsControl);
 

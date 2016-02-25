@@ -9,6 +9,7 @@ import com.omnicrola.voxel.ui.UiScreen;
 /**
  * Created by omnic on 1/15/2016.
  */
+@Deprecated
 public interface IGameGui {
     GuiBuilder build();
 

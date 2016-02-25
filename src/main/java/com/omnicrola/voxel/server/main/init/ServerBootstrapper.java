@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.server.main.init;
 
-import com.jme3.bullet.BulletAppState;
 import com.omnicrola.voxel.server.main.VoxelServerEngine;
 
 /**
@@ -9,9 +8,7 @@ import com.omnicrola.voxel.server.main.VoxelServerEngine;
 public class ServerBootstrapper {
 
     public static VoxelServerLauncher bootstrap() {
-        ServerInitializer serverInitializer = new ServerInitializer();
-        BulletAppState bulletAppState = new BulletAppState();
-        VoxelServerEngine voxelCascadeServer = new VoxelServerEngine(bulletAppState, serverInitializer);
+        VoxelServerEngine voxelCascadeServer = new VoxelServerEngine();
         return new VoxelServerLauncher(voxelCascadeServer);
     }
 }

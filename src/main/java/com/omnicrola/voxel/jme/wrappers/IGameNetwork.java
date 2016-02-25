@@ -5,6 +5,7 @@ import java.util.UUID;
 /**
  * Created by Eric on 2/21/2016.
  */
+@Deprecated
 public interface IGameNetwork {
     void connectTo(String servername);
 

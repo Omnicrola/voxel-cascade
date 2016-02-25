@@ -29,7 +29,7 @@ public class JmeNetworkWrapper implements IGameNetwork {
     @Override
     public void loadLevel(UUID levelId) {
         ClientNetworkState clientNetworkState = this.game.getStateManager().getState(ClientNetworkState.class);
-        LoadLevelMessage loadLevelMessage = new LoadLevelMessage(levelId);
+        LoadLevelMessage loadLevelMessage = new LoadLevelMessage();
         clientNetworkState.message(loadLevelMessage);
     }
 

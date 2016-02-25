@@ -4,12 +4,12 @@ import com.jme3.network.Client;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.engine.states.WorldManagerState;
 import com.omnicrola.voxel.network.AbstractMessageListener;
-import com.omnicrola.voxel.world.IWorldCommand;
+import com.omnicrola.voxel.world.IWorldMessage;
 
 /**
  * Created by Eric on 2/22/2016.
  */
-public class ClientCommandListener extends AbstractMessageListener<IWorldCommand, Client> {
+public class ClientCommandListener extends AbstractMessageListener<IWorldMessage, Client> {
     private IActionQueue actionQueue;
     private WorldManagerState worldManagerState;
 
@@ -19,11 +19,11 @@ public class ClientCommandListener extends AbstractMessageListener<IWorldCommand
     }
 
     @Override
-    protected void processMessage(Client connection, IWorldCommand command) {
+    protected void processMessage(Client connection, IWorldMessage command) {
         this.actionQueue.enqueue(() -> addCommand(command));
     }
 
-    private Object addCommand(IWorldCommand command) {
+    private Object addCommand(IWorldMessage command) {
         this.worldManagerState.addCommand(command);
         return null;
     }

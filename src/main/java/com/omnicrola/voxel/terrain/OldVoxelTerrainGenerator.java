@@ -1,30 +1,39 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
- * Created by Eric on 2/24/2016.
+ * Created by omnic on 1/16/2016.
  */
-public class VoxelTerrainGenerator {
+public class OldVoxelTerrainGenerator {
 
-    PerlinNoiseGenerator perlinNoiseGenerator;
-    VoxelTypeLibrary voxelTypeLibrary;
+    private ChunkHandlerFactory chunkHandlerFactory;
+    private PerlinNoiseGenerator perlinNoiseGenerator;
 
-    public VoxelTerrainGenerator(PerlinNoiseGenerator perlinNoiseGenerator, VoxelTypeLibrary voxelTypeLibrary) {
+    public OldVoxelTerrainGenerator(ChunkHandlerFactory chunkHandlerFactory, PerlinNoiseGenerator perlinNoiseGenerator) {
+        this.chunkHandlerFactory = chunkHandlerFactory;
         this.perlinNoiseGenerator = perlinNoiseGenerator;
-        this.voxelTypeLibrary = voxelTypeLibrary;
     }
 
-    public void generate(TerrainDefinition terrainDefinition, VoxelChunkHandler voxelChunkHandler) {
+    public Node load(LevelDefinition levelData, VoxelTypeLibrary voxelTypeLibrary) {
+        Node terrainRoot = new Node("Terrain");
+        VoxelChunkHandler voxelChunkHandler = this.chunkHandlerFactory.build(voxelTypeLibrary);
+
+        TerrainDefinition terrainDefinition = levelData.getTerrain();
         int width = terrainDefinition.getWidth();
         int depth = terrainDefinition.getDepth();
         this.perlinNoiseGenerator.setOctaves(terrainDefinition.getOctaves());
         this.perlinNoiseGenerator.setSeed(terrainDefinition.getSeed());
         float[][] noise = this.perlinNoiseGenerator.generate(width, depth);
         setVoxels(voxelChunkHandler, terrainDefinition, noise);
+
+        terrainRoot.addControl(new VoxelTerrainControl(voxelChunkHandler));
+        return terrainRoot;
     }
 
     private void setVoxels(VoxelChunkHandler voxelChunkHandler, TerrainDefinition terrain, float[][] noise) {

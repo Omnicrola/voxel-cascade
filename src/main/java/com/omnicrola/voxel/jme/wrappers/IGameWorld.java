@@ -17,6 +17,7 @@ import java.util.stream.Stream;
 /**
  * Created by omnic on 1/15/2016.
  */
+@Deprecated
 public interface IGameWorld {
 
     void attach(Spatial node);

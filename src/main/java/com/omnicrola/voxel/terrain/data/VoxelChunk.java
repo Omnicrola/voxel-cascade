@@ -100,5 +100,12 @@ public class VoxelChunk extends Node {
         Vec3i localize = this.chunkId.localize(globalLocation);
         this.resources[localize.getX()][localize.getY()][localize.getZ()] = amount;
     }
+
+    public void dispose() {
+        Node parent = this.getParent();
+        if (parent != null) {
+            parent.detachChild(this);
+        }
+    }
 }
 

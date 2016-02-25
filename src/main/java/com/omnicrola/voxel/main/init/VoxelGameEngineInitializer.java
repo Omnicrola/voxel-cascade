@@ -7,17 +7,26 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
+import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.debug.DebugState;
 import com.omnicrola.voxel.engine.states.*;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
+import com.omnicrola.voxel.network.ClientListenerBuilder;
 import com.omnicrola.voxel.network.ClientNetworkState;
+import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
+import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
+import com.omnicrola.voxel.terrain.data.VoxelType;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
 import com.omnicrola.voxel.ui.builders.GameOverUiBuilder;
 import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
 import com.omnicrola.voxel.ui.builders.MultiplayerUiBuilder;
+
+import java.util.Arrays;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -25,17 +34,17 @@ import com.omnicrola.voxel.ui.builders.MultiplayerUiBuilder;
 public class VoxelGameEngineInitializer {
     public static void initializeGame(IGameContainer gameContainer, InputManager inputManager) {
         createStates(gameContainer);
-        createGui(gameContainer);
         createInputMappings(inputManager);
     }
 
-    private static void createStates(IGameContainer stateManager) {
+    private static void createStates(IGameContainer gameContainer) {
         DebugState debugState = new DebugState();
         LoadingState loadingState = new LoadingState();
 
-        VoxelTerrainState voxelTerrainState = new VoxelTerrainState();
-        WorldManagerState worldManagerState = new WorldManagerState(voxelTerrainState);
-        ClientNetworkState clientNetworkState = new ClientNetworkState(worldManagerState);
+        VoxelTerrainState voxelTerrainState = createTerrainState();
+        UiState uiState = new UiState();
+        WorldManagerState worldManagerState = new WorldManagerState(new GameXmlDataParser());
+        ClientNetworkState clientNetworkState = new ClientNetworkState(new ClientListenerBuilder());
 
         CurrentLevelState currentLevelState = new CurrentLevelState(new GameXmlDataParser());
         ActivePlayInputState playState = new ActivePlayInputState();
@@ -43,28 +52,39 @@ public class VoxelGameEngineInitializer {
         GameOverState gameOverState = new GameOverState();
         ShadowState shadowState = new ShadowState();
 
-        stateManager.addState(debugState);
-        stateManager.addState(loadingState);
+        gameContainer.addState(debugState);
+        gameContainer.addState(loadingState);
 
-        stateManager.addState(voxelTerrainState);
-        stateManager.addState(worldManagerState);
-        stateManager.addState(clientNetworkState);
+        gameContainer.addState(voxelTerrainState);
+        gameContainer.addState(worldManagerState);
+        gameContainer.addState(clientNetworkState);
+        gameContainer.addState(uiState);
 
-        stateManager.addState(currentLevelState);
-        stateManager.addState(mainMenuState);
-        stateManager.addState(playState);
-        stateManager.addState(gameOverState);
-        stateManager.addState(shadowState);
+        gameContainer.addState(currentLevelState);
+        gameContainer.addState(mainMenuState);
+        gameContainer.addState(playState);
+        gameContainer.addState(gameOverState);
+        gameContainer.addState(shadowState);
+
+        createGui(gameContainer, clientNetworkState, worldManagerState);
     }
 
-    private static void createGui(IGameContainer gameContainer) {
+    private static VoxelTerrainState createTerrainState() {
+        PerlinNoiseGenerator perlinNoiseGenerator = new PerlinNoiseGenerator();
+        VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
+        Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
+        VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(perlinNoiseGenerator, voxelTypeLibrary);
+        return new VoxelTerrainState(voxelTerrainGenerator);
+    }
+
+    private static void createGui(IGameContainer gameContainer, IMessageProcessor messageProcessor, ICommandProcessor commandProcessor) {
         CurrentLevelState currentLevelState = gameContainer.getState(CurrentLevelState.class);
         IGameGui gameGui = gameContainer.gui();
         ActivePlayUiBuilder.build(gameGui, currentLevelState);
 
         GameOverUiBuilder.build(gameGui, gameContainer, currentLevelState);
         MainMenuUiBuilder.build(gameContainer);
-        MultiplayerUiBuilder.build(gameContainer);
+        MultiplayerUiBuilder.build(gameContainer, messageProcessor, commandProcessor);
     }
 
     private static void createInputMappings(InputManager inputManager) {

@@ -14,7 +14,7 @@ import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
-import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.terrain.OldVoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
@@ -26,10 +26,10 @@ import java.util.List;
  */
 public class LevelStateFactory {
 
-    private VoxelTerrainGenerator voxelTerrainGenerator;
+    private OldVoxelTerrainGenerator voxelTerrainGenerator;
     private IGameContainer gameContainer;
 
-    public LevelStateFactory(VoxelTerrainGenerator voxelTerrainGenerator,
+    public LevelStateFactory(OldVoxelTerrainGenerator voxelTerrainGenerator,
                              IGameContainer gameContainer) {
         this.voxelTerrainGenerator = voxelTerrainGenerator;
         this.gameContainer = gameContainer;

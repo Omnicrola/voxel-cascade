@@ -33,11 +33,11 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
 
     @Override
     public void simpleInitApp() {
+        this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
         loadNiftyGui();
         this.gameContainer = new JmeGameContainer(this);
         this.ticProvider = new VoxelTickProvider();
         this.stateManager.attach(this.bulletAppState);
-        this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
         VoxelGameEngineInitializer.initializeGame(this.gameContainer, this.inputManager);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
         addLights();

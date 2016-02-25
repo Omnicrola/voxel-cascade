@@ -6,7 +6,10 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
 import com.omnicrola.voxel.terrain.build.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
-import com.omnicrola.voxel.terrain.data.*;
+import com.omnicrola.voxel.terrain.data.ChunkId;
+import com.omnicrola.voxel.terrain.data.EmptyVoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.data.VoxelType;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -116,4 +119,8 @@ public class VoxelChunkHandler {
     }
 
 
+    public void clearAll() {
+        this.chunks.values().stream().forEach(c -> c.dispose());
+        this.chunks.clear();
+    }
 }

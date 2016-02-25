@@ -3,10 +3,13 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
+import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.VoxelChunkHandler;
+import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
@@ -14,9 +17,14 @@ import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 /**
  * Created by Eric on 2/22/2016.
  */
-public class VoxelTerrainState extends AbstractAppState {
+public class VoxelTerrainState extends AbstractAppState implements ITerrainManager {
 
     private VoxelChunkHandler voxelChunkHandler;
+    private VoxelTerrainGenerator voxelTerrainGenerator;
+
+    public VoxelTerrainState(VoxelTerrainGenerator voxelTerrainGenerator) {
+        this.voxelTerrainGenerator = voxelTerrainGenerator;
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -38,4 +46,13 @@ public class VoxelTerrainState extends AbstractAppState {
         return new VoxelChunkHandler(new VoxelTypeLibrary(), voxelChunkRebuilder);
     }
 
+    @Override
+    public void globalReset() {
+        this.voxelChunkHandler.clearAll();
+    }
+
+    @Override
+    public void load(TerrainDefinition terrain) {
+        this.voxelTerrainGenerator.generate(terrain, this.voxelChunkHandler);
+    }
 }

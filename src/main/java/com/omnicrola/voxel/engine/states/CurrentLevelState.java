@@ -9,7 +9,7 @@ import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.ChunkHandlerFactory;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
-import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.terrain.OldVoxelTerrainGenerator;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.ArrayList;
@@ -38,7 +38,7 @@ public class CurrentLevelState extends VoxelGameState implements ICurrentLevelPr
 
         this.levelDefinitions = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
         ChunkHandlerFactory chunkHandlerFactory = new ChunkHandlerFactory(gameContainer);
-        VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(chunkHandlerFactory, new PerlinNoiseGenerator());
+        OldVoxelTerrainGenerator voxelTerrainGenerator = new OldVoxelTerrainGenerator(chunkHandlerFactory, new PerlinNoiseGenerator());
         this.levelStateFactory = new LevelStateFactory(voxelTerrainGenerator, gameContainer);
     }
 

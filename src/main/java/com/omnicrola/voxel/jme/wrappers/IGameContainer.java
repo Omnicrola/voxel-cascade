@@ -6,6 +6,7 @@ import com.jme3.asset.AssetManager;
 /**
  * Created by omnic on 1/15/2016.
  */
+@Deprecated
 public interface IGameContainer extends IStateManager {
 
     IGameGui gui();
