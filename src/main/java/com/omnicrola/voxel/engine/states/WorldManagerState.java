@@ -3,8 +3,8 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.omnicrola.voxel.engine.ITickProvider;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.VoxelTickProvider;
 import com.omnicrola.voxel.world.*;
 
 /**
@@ -13,7 +13,7 @@ import com.omnicrola.voxel.world.*;
 public class WorldManagerState extends AbstractAppState {
 
     private  WorldCommandProcessor worldCommandProcessor;
-    private VoxelTickProvider ticProvider;
+    private ITickProvider ticProvider;
     private VoxelTerrainState voxelTerrainState;
 
     public WorldManagerState(VoxelTerrainState voxelTerrainState) {
@@ -33,7 +33,7 @@ public class WorldManagerState extends AbstractAppState {
         WorldEntityManager worldEntityManager = new WorldEntityManager();
         CommandPackage commandPackage = new CommandPackage(worldEntityBuilder, worldEntityManager, this.voxelTerrainState);
         this.worldCommandProcessor = new WorldCommandProcessor(commandPackage);
-        this.ticProvider = new VoxelTickProvider();
+        this.ticProvider = voxelGameEngine.getTicProvider();
     }
 
     @Override

@@ -25,6 +25,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     private Nifty niftyGui;
     private LightManager lightManager;
     private JmeGameContainer gameContainer;
+    private VoxelTickProvider ticProvider;
 
     public VoxelGameEngine(BulletAppState bulletAppState) {
         this.bulletAppState = bulletAppState;
@@ -34,6 +35,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     public void simpleInitApp() {
         loadNiftyGui();
         this.gameContainer = new JmeGameContainer(this);
+        this.ticProvider = new VoxelTickProvider();
         this.stateManager.attach(this.bulletAppState);
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
         VoxelGameEngineInitializer.initializeGame(this.gameContainer, this.inputManager);
@@ -99,4 +101,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         return this.lightManager;
     }
 
+    public ITickProvider getTicProvider() {
+        return this.ticProvider;
+    }
 }
