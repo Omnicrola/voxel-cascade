@@ -10,6 +10,7 @@ import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.WorldManagerState;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
+import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.world.IWorldMessage;
 
@@ -23,12 +24,11 @@ import java.util.List;
 public class ClientNetworkState extends AbstractAppState implements IMessageProcessor, INetworkManager {
 
     private Client networkClient;
-    private ListenerMap listeners;
     private ClientListenerBuilder listenerBuilder;
     private List<IWorldMessage> commands;
+    private VoxelServerEngine voxelServerEngine;
 
-    public ClientNetworkState(ClientListenerBuilder clientListenerBuilder) {
-        this.listenerBuilder = clientListenerBuilder;
+    public ClientNetworkState() {
         this.commands = new ArrayList<>();
     }
 
@@ -37,7 +37,7 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
         super.initialize(stateManager, app);
         VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
         WorldManagerState worldManager = stateManager.getState(WorldManagerState.class);
-        this.listeners = this.listenerBuilder.build(this, worldManager, voxelGameEngine);
+        this.listenerBuilder = new ClientListenerBuilder(voxelGameEngine, worldManager, this);
         setEnabled(true);
     }
 
@@ -68,7 +68,7 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
         if (this.networkClient != null) {
             this.commands.forEach(c -> {
                 this.networkClient.send(c);
-                System.out.println("> sending " + c);
+                System.out.println("C => sending " + c);
             });
             this.commands.clear();
         }
@@ -78,7 +78,7 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
     public boolean connectTo(String serverAddress) {
         try {
             this.networkClient = Network.connectToServer(serverAddress, GameConstants.SERVER_PORT);
-            this.listeners.attach(this.networkClient);
+            this.listenerBuilder.attach(networkClient);
             this.networkClient.start();
             this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
             return true;
@@ -86,5 +86,19 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
             e.printStackTrace();
             return false;
         }
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        if (this.voxelServerEngine != null) {
+            this.voxelServerEngine.stop();
+        }
+    }
+
+    @Override
+    public void startMultiplayerServer() {
+        this.voxelServerEngine = new VoxelServerEngine();
+        this.voxelServerEngine.start();
     }
 }

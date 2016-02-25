@@ -5,6 +5,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.network.Network;
 import com.jme3.network.Server;
+import com.omnicrola.voxel.debug.ServerDebugMessageListener;
 import com.omnicrola.voxel.network.MessageSerializationInitializer;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.LoadLevelMessage;
@@ -63,6 +64,7 @@ public class ServerNetworkState extends AbstractAppState {
     }
 
     private void loadMessageListeners(Server server) {
+        server.addMessageListener(new ServerDebugMessageListener(), HandshakeMessage.class, LoadLevelMessage.class);
         server.addMessageListener(new ServerHandshakeListener(this), HandshakeMessage.class);
         server.addMessageListener(new ServerLoadLevelListener(), LoadLevelMessage.class);
     }

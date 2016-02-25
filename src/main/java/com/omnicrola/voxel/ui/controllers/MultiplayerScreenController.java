@@ -7,7 +7,6 @@ import com.omnicrola.voxel.commands.StartMultiplayerServerCommand;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.network.messages.LoadLevelMessage;
-import com.omnicrola.voxel.server.main.init.ServerBootstrapper;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -43,7 +42,7 @@ public class MultiplayerScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_START_MULTIPLAYER")
     @SubscriberLink(UiToken.BUTTON_START_MULTIPLAYER)
     public void startGame(String id, ButtonClickedEvent buttonClickedEvent) {
-        StartMultiplayerServerCommand startMultiplayerServerCommand = new StartMultiplayerServerCommand(ServerBootstrapper.bootstrap());
+        StartMultiplayerServerCommand startMultiplayerServerCommand = new StartMultiplayerServerCommand();
         this.commandProcessor.executeCommand(startMultiplayerServerCommand);
         JoinMultiplayerCommand joinMultiplayerCommand = new JoinMultiplayerCommand("localhost");
         this.commandProcessor.executeCommand(joinMultiplayerCommand);

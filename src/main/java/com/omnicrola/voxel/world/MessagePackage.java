@@ -9,7 +9,7 @@ import com.omnicrola.voxel.ui.IUiManager;
 /**
  * Created by Eric on 2/22/2016.
  */
-public class CommandPackage {
+public class MessagePackage {
     private final WorldEntityBuilder worldEntityBuilder;
     private final WorldEntityManager worldEntityManager;
     private final VoxelTerrainState voxelTerrainState;
@@ -17,7 +17,7 @@ public class CommandPackage {
     private IUiManager uiManager;
     private INetworkManager networkManager;
 
-    public CommandPackage(WorldEntityBuilder worldEntityBuilder,
+    public MessagePackage(WorldEntityBuilder worldEntityBuilder,
                           WorldEntityManager worldEntityManager,
                           VoxelTerrainState voxelTerrainState,
                           LevelDefinitionRepository levelDefinitionRepository,

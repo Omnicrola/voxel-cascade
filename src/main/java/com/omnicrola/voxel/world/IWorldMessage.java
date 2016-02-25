@@ -10,5 +10,5 @@ import com.jme3.network.serializing.Serializable;
 public interface IWorldMessage extends Message{
     public long getTargetTic();
 
-    void execute(CommandPackage commandPackage);
+    void execute(MessagePackage messagePackage);
 }

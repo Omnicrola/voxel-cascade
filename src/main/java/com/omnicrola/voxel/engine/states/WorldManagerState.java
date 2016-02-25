@@ -18,17 +18,17 @@ import com.omnicrola.voxel.world.*;
  */
 public class WorldManagerState extends AbstractAppState implements ICommandProcessor {
 
-    private WorldCommandProcessor worldCommandProcessor;
+    private WorldMessageProcessor worldMessageProcessor;
     private ITickProvider ticProvider;
     private GameXmlDataParser gameDataParser;
-    private CommandPackage commandPackage;
+    private MessagePackage messagePackage;
 
     public WorldManagerState(GameXmlDataParser gameDataParser) {
         this.gameDataParser = gameDataParser;
     }
 
     public void addCommand(IWorldMessage worldCommand) {
-        this.worldCommandProcessor.addCommand(worldCommand);
+        this.worldMessageProcessor.addMessage(worldCommand);
     }
 
     @Override
@@ -42,27 +42,27 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
         WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder(voxelGameEngine);
         WorldEntityManager worldEntityManager = new WorldEntityManager();
-        this.commandPackage = new CommandPackage(
+        this.messagePackage = new MessagePackage(
                 worldEntityBuilder,
                 worldEntityManager,
                 voxelTerrainState,
                 levelDefinitionRepository,
                 uiState,
                 clientNetworkState);
-        this.worldCommandProcessor = new WorldCommandProcessor(this.commandPackage);
+        this.worldMessageProcessor = new WorldMessageProcessor(this.messagePackage);
         this.ticProvider = voxelGameEngine.getTicProvider();
     }
 
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        this.worldCommandProcessor.execute(ticProvider.getTic());
+        this.worldMessageProcessor.handleMessages(ticProvider.getTic());
     }
 
     @Override
     public void executeCommand(ILocalCommand localCommand) {
-        System.out.println("execute: " + localCommand);
-        localCommand.execute(this.commandPackage);
+        System.out.println("handleMessages: " + localCommand);
+        localCommand.execute(this.messagePackage);
     }
 
 }

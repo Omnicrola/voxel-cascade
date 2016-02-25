@@ -16,6 +16,7 @@ public class VoxelTypeLibrary {
     }
 
     public IVoxelType lookup(byte voxel) {
-        return this.types[voxel];
+        IVoxelType type = this.types[voxel];
+        return type;
     }
 }

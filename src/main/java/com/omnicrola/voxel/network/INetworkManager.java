@@ -5,4 +5,6 @@ package com.omnicrola.voxel.network;
  */
 public interface INetworkManager {
     boolean connectTo(String serverAddress);
+
+    void startMultiplayerServer();
 }

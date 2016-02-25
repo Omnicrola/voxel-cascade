@@ -13,6 +13,9 @@ import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
+import com.omnicrola.voxel.terrain.data.VoxelType;
+
+import java.util.Arrays;
 
 /**
  * Created by Eric on 2/22/2016.
@@ -43,7 +46,9 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
         JmeGameContainer jmeGameContainer = new JmeGameContainer(voxelGameEngine);
         TerrainQuadFactory quadFactory = new TerrainQuadFactory(new MaterialRepository(app.getAssetManager()));
         VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, jmeGameContainer.physics(), jmeGameContainer.world());
-        return new VoxelChunkHandler(new VoxelTypeLibrary(), voxelChunkRebuilder);
+        VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
+        Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
+        return new VoxelChunkHandler(voxelTypeLibrary, voxelChunkRebuilder);
     }
 
     @Override

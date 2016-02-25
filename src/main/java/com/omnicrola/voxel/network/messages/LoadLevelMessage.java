@@ -7,7 +7,7 @@ import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.ui.UiScreen;
-import com.omnicrola.voxel.world.CommandPackage;
+import com.omnicrola.voxel.world.MessagePackage;
 import com.omnicrola.voxel.world.IWorldMessage;
 
 import java.util.UUID;
@@ -34,14 +34,14 @@ public class LoadLevelMessage extends AbstractMessage implements IWorldMessage {
     }
 
     @Override
-    public void execute(CommandPackage commandPackage) {
-        LevelDefinitionRepository levelDefinitionRepository = commandPackage.getLevelDefinitionRepository();
+    public void execute(MessagePackage messagePackage) {
+        LevelDefinitionRepository levelDefinitionRepository = messagePackage.getLevelDefinitionRepository();
         LevelDefinition level = levelDefinitionRepository.getLevel(UUID.fromString(this.levelUuid));
 
-        ITerrainManager terrainManager = commandPackage.getVoxelTerrainManager();
+        ITerrainManager terrainManager = messagePackage.getVoxelTerrainManager();
         terrainManager.globalReset();
         terrainManager.load(level.getTerrain());
-        IUiManager uiManager = commandPackage.getUiManager();
+        IUiManager uiManager = messagePackage.getUiManager();
         uiManager.changeScreen(UiScreen.ACTIVE_PLAY);
     }
 

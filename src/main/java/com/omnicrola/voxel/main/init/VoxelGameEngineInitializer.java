@@ -15,7 +15,6 @@ import com.omnicrola.voxel.engine.states.*;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
-import com.omnicrola.voxel.network.ClientListenerBuilder;
 import com.omnicrola.voxel.network.ClientNetworkState;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
@@ -44,7 +43,7 @@ public class VoxelGameEngineInitializer {
         VoxelTerrainState voxelTerrainState = createTerrainState();
         UiState uiState = new UiState();
         WorldManagerState worldManagerState = new WorldManagerState(new GameXmlDataParser());
-        ClientNetworkState clientNetworkState = new ClientNetworkState(new ClientListenerBuilder());
+        ClientNetworkState clientNetworkState = new ClientNetworkState();
 
         CurrentLevelState currentLevelState = new CurrentLevelState(new GameXmlDataParser());
         ActivePlayInputState playState = new ActivePlayInputState();
