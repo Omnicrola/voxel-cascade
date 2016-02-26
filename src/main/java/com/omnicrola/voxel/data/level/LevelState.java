@@ -13,6 +13,7 @@ import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
+import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
@@ -42,7 +43,7 @@ public class LevelState implements IDisposable {
         this.isActive = false;
         this.teams = new ArrayList<>();
         this.terrain = terrain;
-        this.units = new Node();
+        this.units = new Node(GameConstants.NODE_UNITS);
         this.observers = new ArrayList<>();
         this.worldCursor = worldCursor;
         this.allEntities = new ArrayList<>();

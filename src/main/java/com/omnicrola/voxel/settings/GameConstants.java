@@ -24,4 +24,8 @@ public class GameConstants {
 
     public static final int SERVER_PORT = 5150;
     public static final String GAME_VERSION = "0.0.1";
+    public static final String NODE_UNITS = "ALL_UNITS";
+    public static final String NODE_WORLD_ROOT = "WORLD_ROOT";
+    public static final String NODE_PROJECTILES = "PROJECTILES";
+    public static final String NODE_FX = "FX";
 }

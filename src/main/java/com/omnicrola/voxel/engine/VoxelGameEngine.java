@@ -10,10 +10,12 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
+import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.world.WorldRootNode;
 import de.lessvoid.nifty.Nifty;
 
 /**
@@ -26,6 +28,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     private LightManager lightManager;
     private JmeGameContainer gameContainer;
     private VoxelTickProvider ticProvider;
+    private WorldRootNode worldRootNode;
 
     public VoxelGameEngine(BulletAppState bulletAppState) {
         this.bulletAppState = bulletAppState;
@@ -35,6 +38,9 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     public void simpleInitApp() {
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
         loadNiftyGui();
+        this.worldRootNode = new WorldRootNode();
+        this.rootNode.attachChild(this.worldRootNode);
+
         this.gameContainer = new JmeGameContainer(this);
         this.ticProvider = new VoxelTickProvider();
         this.stateManager.attach(this.bulletAppState);
@@ -83,6 +89,11 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     @Override
     public void simpleUpdate(float tpf) {
 
+    }
+
+    @Override
+    public Node getRootNode() {
+        return this.worldRootNode;
     }
 
     public BitmapFont getGuiFont() {
