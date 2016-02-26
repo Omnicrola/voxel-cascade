@@ -45,7 +45,7 @@ public class VoxelGameEngineInitializer {
         WorldManagerState worldManagerState = new WorldManagerState(new GameXmlDataParser());
         ClientNetworkState clientNetworkState = new ClientNetworkState();
 
-        WorldLevelState currentLevelState = new WorldLevelState(new GameXmlDataParser());
+        LevelManager currentLevelState = new LevelManager(new GameXmlDataParser());
         ActivePlayInputState playState = new ActivePlayInputState();
         MainMenuState mainMenuState = new MainMenuState();
         GameOverState gameOverState = new GameOverState();
@@ -77,7 +77,7 @@ public class VoxelGameEngineInitializer {
     }
 
     private static void createGui(IGameContainer gameContainer, IMessageProcessor messageProcessor, ICommandProcessor commandProcessor) {
-        WorldLevelState currentLevelState = gameContainer.getState(WorldLevelState.class);
+        LevelManager currentLevelState = gameContainer.getState(LevelManager.class);
         IGameGui gameGui = gameContainer.gui();
         ActivePlayUiBuilder.build(gameGui, currentLevelState);
 

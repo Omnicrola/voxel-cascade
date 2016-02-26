@@ -2,10 +2,7 @@ package com.omnicrola.voxel.network.messages;
 
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
-import com.omnicrola.voxel.data.level.LevelDefinition;
-import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
-import com.omnicrola.voxel.engine.states.IWorldLevelManager;
-import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.engine.states.ILevelManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.world.MessagePackage;
@@ -37,7 +34,7 @@ public class LoadLevelMessage extends AbstractMessage implements IWorldMessage {
     @Override
     public void execute(MessagePackage messagePackage) {
 
-        IWorldLevelManager worldLevelManager = messagePackage.getWorldLevelManager();
+        ILevelManager worldLevelManager = messagePackage.getLevelManager();
         worldLevelManager.loadLevel(UUID.fromString(this.levelUuid));
 
         IUiManager uiManager = messagePackage.getUiManager();

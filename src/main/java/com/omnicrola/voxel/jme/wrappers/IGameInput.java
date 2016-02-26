@@ -8,7 +8,7 @@ import com.omnicrola.voxel.input.IActionCode;
 /**
  * Created by omnic on 1/15/2016.
  */
-@Deprecated
+
 public interface IGameInput {
     void bind(IActionCode actionCode, InputListener keyListener);
 

@@ -17,6 +17,7 @@ import java.util.ArrayList;
 /**
  * Created by omnic on 1/15/2016.
  */
+@Deprecated
 public abstract class VoxelGameState extends AbstractAppState {
 
     protected final Node stateRootUiNode;

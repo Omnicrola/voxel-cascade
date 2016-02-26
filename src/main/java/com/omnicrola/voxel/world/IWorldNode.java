@@ -11,4 +11,6 @@ public interface IWorldNode {
     Node getProjectilesNode();
 
     Node getFxNode();
+
+    Node getTerrainNode();
 }

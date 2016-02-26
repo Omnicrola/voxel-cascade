@@ -5,7 +5,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.states.WorldLevelState;
+import com.omnicrola.voxel.engine.states.LevelManager;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
 import com.omnicrola.voxel.entities.commands.NullDeathAction;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
@@ -38,7 +38,7 @@ public class DeathController extends AbstractControl {
     }
 
     private void recordDeathStats() {
-        WorldLevelState currentLevelState = this.gameContainer.getState(WorldLevelState.class);
+        LevelManager currentLevelState = this.gameContainer.getState(LevelManager.class);
         LevelState currentLevel = currentLevelState.getCurrentLevel();
         currentLevel.unitDestroyed(this.spatial);
     }

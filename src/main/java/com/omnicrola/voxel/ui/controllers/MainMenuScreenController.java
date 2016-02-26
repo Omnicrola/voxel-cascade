@@ -23,8 +23,8 @@ public class MainMenuScreenController extends AbstractScreenController {
     @SubscriberLink(UiToken.BUTTON_START)
     public void start(String id, ButtonClickedEvent buttonClickedEvent) {
 //        this.gameContainer.disableState(MainMenuState.class);
-//        this.gameContainer.getState(WorldLevelState.class).loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
-//        this.gameContainer.enableState(WorldLevelState.class);
+//        this.gameContainer.getState(LevelManager.class).loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
+//        this.gameContainer.enableState(LevelManager.class);
 //        this.gameContainer.enableState(ActivePlayInputState.class);
     }
 

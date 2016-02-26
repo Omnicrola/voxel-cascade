@@ -7,6 +7,7 @@ import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.ILocalCommand;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
+import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.engine.ITickProvider;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.network.ClientNetworkState;
@@ -22,6 +23,7 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
     private ITickProvider ticProvider;
     private GameXmlDataParser gameDataParser;
     private MessagePackage messagePackage;
+    private LevelManager levelManager;
 
     public WorldManagerState(GameXmlDataParser gameDataParser) {
         this.gameDataParser = gameDataParser;
@@ -40,13 +42,15 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
         VoxelTerrainState voxelTerrainState = stateManager.getState(VoxelTerrainState.class);
         UiState uiState = stateManager.getState(UiState.class);
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
-        WorldLevelState currentLevelState = stateManager.getState(WorldLevelState.class);
+        this.levelManager = new LevelManager(levelDefinitionRepository, new LevelStateLoader(voxelGameEngine,clientNetworkState, voxelTerrainState));
+        WorldManager worldManager = new WorldManager();
+        WorldEntityBuilder entityBuilder = new WorldEntityBuilder();
         this.messagePackage = new MessagePackage(
-                currentLevelState,
-                voxelTerrainState,
-                levelDefinitionRepository,
+                this.levelManager,
                 uiState,
-                clientNetworkState);
+                clientNetworkState,
+                entityBuilder,
+                worldManager);
         this.worldMessageProcessor = new WorldMessageProcessor(this.messagePackage);
         this.ticProvider = voxelGameEngine.getTicProvider();
     }

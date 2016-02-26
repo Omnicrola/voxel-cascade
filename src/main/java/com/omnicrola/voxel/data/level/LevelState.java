@@ -1,52 +1,33 @@
 package com.omnicrola.voxel.data.level;
 
-import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
-import com.jme3.renderer.queue.RenderQueue;
-import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
-import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
 import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.main.VoxelException;
-import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.IVoxelType;
-import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
  */
 public class LevelState implements IDisposable {
     private final ArrayList<TeamData> teams;
-    private final ArrayList<Spatial> allEntities;
     private final LevelStatistics statistics;
     private final HashMap<TeamData, Float> resources;
     private final ArrayList<ILevelObserver> observers;
-    private Node units;
-    private Node terrain;
     private WorldCursor worldCursor;
     private String levelName;
-    private IGameContainer gameContainer;
-    private boolean isActive;
-    private VoxelTypeLibrary voxelTypeLibrary;
 
-    public LevelState(Node terrain, WorldCursor worldCursor, String levelName, VoxelTypeLibrary voxelTypeLibrary) {
-        this.voxelTypeLibrary = voxelTypeLibrary;
-        this.isActive = false;
+    public LevelState(WorldCursor worldCursor, String levelName, VoxelTypeLibrary voxelTypeLibrary) {
         this.teams = new ArrayList<>();
-        this.terrain = terrain;
-        this.units = new Node(GameConstants.NODE_UNITS);
         this.observers = new ArrayList<>();
         this.worldCursor = worldCursor;
-        this.allEntities = new ArrayList<>();
         this.levelName = levelName;
         this.statistics = new LevelStatistics();
         this.resources = new HashMap<>();
@@ -57,29 +38,8 @@ public class LevelState implements IDisposable {
         this.resources.put(team, 0f);
     }
 
-    public Node getUnitsNode() {
-        return units;
-    }
-
-    public ArrayList<Spatial> getAllEntities() {
-        return new ArrayList<>(allEntities);
-    }
-
-    public void addEntity(Spatial unit) {
-        this.units.attachChild(unit);
-        this.allEntities.add(unit);
-        this.statistics.addEntity(unit);
-        if (isActive) {
-            this.gameContainer.physics().add(unit);
-        }
-    }
-
     public String getLevelName() {
         return levelName;
-    }
-
-    public Node getTerrainNode() {
-        return this.terrain;
     }
 
     public WorldCursor getWorldCursor() {
@@ -110,58 +70,10 @@ public class LevelState implements IDisposable {
     public void dispose() {
         this.getWorldCursor().dispose();
         this.observers.clear();
-        recursivelyDisposeNode(this.terrain);
-        recursivelyDisposeNode(this.units);
-    }
-
-    private void recursivelyDisposeNode(Node node) {
-        Iterator<Spatial> children = node.getChildren().iterator();
-        node.detachAllChildren();
-        while (children.hasNext()) {
-            Spatial child = children.next();
-            if (child instanceof Node) {
-                recursivelyDisposeNode((Node) child);
-            }
-        }
-    }
-
-    public void attachToWorld(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
-        this.isActive = true;
-        this.units.setShadowMode(RenderQueue.ShadowMode.Cast);
-        this.terrain.setShadowMode(RenderQueue.ShadowMode.Receive);
-
-        this.gameContainer.world().attachUnits(this.units);
-        this.gameContainer.world().attachTerrain(this.terrain);
-        this.gameContainer.world().attach(this.worldCursor);
-        this.gameContainer.addState(new AnnihilationWinConditionState(this.teams));
-    }
-
-    public void detatchFromWorld(IGameContainer gameContainer) {
-        this.isActive = false;
-        this.gameContainer.world().detatchUnits(this.units);
-        this.gameContainer.world().detatchTerrain(this.terrain);
-        this.gameContainer.world().detatch(this.worldCursor);
-
-        ColorRGBA sunColor = ColorRGBA.White.mult(0.65f);
-        Vector3f sunDirection = new Vector3f(-0.3f, -0.8f, -0.5f).normalizeLocal();
-        this.gameContainer.world().lights().setSun(sunColor, sunDirection);
-        this.gameContainer.world().lights().setAmbient(ColorRGBA.White.mult(0.2f));
-    }
-
-    public void setVoxel(IVoxelType voxel, Vec3i location) {
-        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
-        control.setVoxel(voxel.uniqueId(), location);
     }
 
     public List<TeamStatistics> getTeamStatistics() {
         return this.statistics.getTeamStatistics();
-    }
-
-    public void unitDestroyed(Spatial spatial) {
-        this.units.detachChild(spatial);
-        this.allEntities.remove(spatial);
-        this.statistics.entityDied(spatial);
     }
 
     public void addTime(float seconds) {
@@ -201,7 +113,4 @@ public class LevelState implements IDisposable {
         this.observers.add(levelObserver);
     }
 
-    public VoxelTypeLibrary getVoxelTypeLibrary() {
-        return this.voxelTypeLibrary;
-    }
 }

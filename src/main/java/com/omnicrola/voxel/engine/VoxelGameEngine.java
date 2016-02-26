@@ -15,6 +15,7 @@ import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.world.IWorldNode;
 import com.omnicrola.voxel.world.WorldRootNode;
 import de.lessvoid.nifty.Nifty;
 
@@ -116,4 +117,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         return this.ticProvider;
     }
 
+    public IWorldNode getWorldNode() {
+        return this.worldRootNode;
+    }
 }

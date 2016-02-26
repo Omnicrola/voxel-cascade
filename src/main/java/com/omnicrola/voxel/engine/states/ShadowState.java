@@ -53,7 +53,7 @@ public class ShadowState extends AbstractAppState {
 
         setEnabled(true);
         ILevelChangeObserver shadowObserver = new ShadowLevelStateObserver();
-        this.voxelGameEngine.getStateManager().getState(WorldLevelState.class).addObserver(shadowObserver);
+        this.voxelGameEngine.getStateManager().getState(LevelManager.class).addObserver(shadowObserver);
     }
 
     @Override

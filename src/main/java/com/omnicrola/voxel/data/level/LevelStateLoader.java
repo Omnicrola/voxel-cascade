@@ -1,17 +1,27 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.bullet.control.RigidBodyControl;
+import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.debug.DebugOrientationControl;
 import com.omnicrola.voxel.debug.DebugVelocityControl;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.engine.states.VoxelTerrainState;
+import com.omnicrola.voxel.engine.states.WorldManagerState;
 import com.omnicrola.voxel.input.CursorCommandDelegator;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IGameInput;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeInputWrapper;
+import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
+import com.omnicrola.voxel.network.messages.SpawnUnitMessage;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.OldVoxelTerrainGenerator;
@@ -24,25 +34,32 @@ import java.util.List;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class LevelStateFactory {
+public class LevelStateLoader {
 
-    private OldVoxelTerrainGenerator voxelTerrainGenerator;
-    private IGameContainer gameContainer;
+    private VoxelGameEngine voxelGameEngine;
+    private IMessageProcessor messageProcessor;
+    private VoxelTerrainState voxelTerrainState;
 
-    public LevelStateFactory(OldVoxelTerrainGenerator voxelTerrainGenerator,
-                             IGameContainer gameContainer) {
-        this.voxelTerrainGenerator = voxelTerrainGenerator;
-        this.gameContainer = gameContainer;
+    public LevelStateLoader(VoxelGameEngine voxelGameEngine,
+                            IMessageProcessor messageProcessor,
+                            VoxelTerrainState voxelTerrainState) {
+        this.voxelGameEngine = voxelGameEngine;
+        this.messageProcessor = messageProcessor;
+        this.voxelTerrainState = voxelTerrainState;
     }
 
     public LevelState create(LevelDefinition levelDefinition) {
         VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
-        Node terrain = this.voxelTerrainGenerator.load(levelDefinition, voxelTypeLibrary);
-        WorldCursor worldCursor = createWorldCursor(terrain);
+        this.voxelTerrainState.load(levelDefinition.getTerrain());
 
-        LevelState levelState = new LevelState(terrain, worldCursor, levelDefinition.getName(), voxelTypeLibrary);
+        Camera camera = this.voxelGameEngine.getCamera();
+        IGameInput inputManager = new JmeInputWrapper(this.voxelGameEngine.getInputManager(), this.voxelGameEngine.getFlyByCamera());
+        Node terrainNode = this.voxelGameEngine.getWorldNode().getTerrainNode();
+        WorldCursor worldCursor = new WorldCursor(inputManager, camera, terrainNode);
+
+        LevelState levelState = new LevelState(worldCursor, levelDefinition.getName(), voxelTypeLibrary);
         addTeams(levelState, levelDefinition);
-        addUnits(levelState, levelDefinition);
+        addUnits(levelDefinition.getUnitPlacements());
         addStructures(levelState, levelDefinition);
 
         CursorCommandDelegator cursorStrategyFactory = new CursorCommandDelegator(this.gameContainer, levelState, worldCursor);
@@ -57,30 +74,15 @@ public class LevelStateFactory {
         levelDefinition.getTeams().forEach(t -> levelState.addTeam(new TeamData(t)));
     }
 
-    private void addStructures(LevelState levelState, LevelDefinition levelDefinition) {
-        VoxelTerrainControl terrainControl = levelState.getTerrainNode().getControl(VoxelTerrainControl.class);
-        List<UnitPlacement> structures = levelDefinition.getStructures();
+    private void addStructures(List<UnitPlacement> structures ) {
         for (UnitPlacement placement : structures) {
-            TeamData teamData = levelState.getTeamById(placement.getTeamId());
-            Spatial structure = this.gameContainer.world().build().structure(placement.getUnitId(), teamData);
-            Vector3f position = terrainControl.findLowestNonSolidVoxel(placement.getLocation());
-            structure.getControl(RigidBodyControl.class).setPhysicsLocation(position);
-            levelState.addEntity(structure);
+            this.messageProcessor.sendLocal(new SpawnStructureMessage(placement));
         }
     }
 
-    private void addUnits(LevelState levelState, LevelDefinition levelDefinition) {
-        VoxelTerrainControl terrainControl = levelState.getTerrainNode().getControl(VoxelTerrainControl.class);
-        for (UnitPlacement unitPlacement : levelDefinition.getUnitPlacements()) {
-            TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());
-            Spatial entity = this.gameContainer.world().build().unit(unitPlacement.getUnitId(), teamData);
-            Vector3f position = terrainControl.findLowestNonSolidVoxel(unitPlacement.getLocation());
-            entity.getControl(GroundVehicleControl.class).setPhysicsLocation(position);
-            entity.setLocalTranslation(position);
-            levelState.addEntity(entity);
-
-//            addOrientationArrow(levelState, entity);
-//            addVelocityArrow(levelState, entity);
+    private void addUnits(List<UnitPlacement> unitPlacements) {
+        for (UnitPlacement unitPlacement : unitPlacements) {
+            this.messageProcessor.sendLocal(new SpawnUnitMessage(unitPlacement));
         }
     }
 
@@ -94,11 +96,6 @@ public class LevelStateFactory {
         Spatial arrow = this.gameContainer.world().build().arrow(Vector3f.UNIT_Z, ColorRGBA.Green);
         arrow.addControl(new DebugVelocityControl(entity));
         levelState.addEntity(arrow);
-    }
-
-    private WorldCursor createWorldCursor(Node terrain) {
-        WorldCursor worldCursor = this.gameContainer.world().createCursor(terrain);
-        return worldCursor;
     }
 
     private VoxelTypeLibrary buildVoxelTypeLibrary() {
