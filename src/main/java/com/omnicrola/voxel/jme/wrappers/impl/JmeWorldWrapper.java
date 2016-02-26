@@ -11,7 +11,6 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.states.LevelManager;
 import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
@@ -125,10 +124,10 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public WorldCursor createCursor(Node terrain) {
-        JmeInputWrapper inputManager = new JmeInputWrapper(this.game);
-        WorldCursor worldCursor = new WorldCursor(inputManager, this.game.getCamera(), terrain);
-        return worldCursor;
-    }
+//        JmeInputWrapper inputManager = new JmeInputWrapper(this.game);
+//        WorldCursor worldCursor = new WorldCursor(inputManager, this.game.getCamera(), terrain);
+//        return worldCursor;
+    return null;}
 
     @Override
     public void attachLights(List<Light> lights) {
@@ -170,8 +169,8 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public void loadLevel(UUID levelUuid) {
-        LevelManager currentLevelState = this.game.getStateManager().getState(LevelManager.class);
-        currentLevelState.loadLevel(levelUuid);
+//        LevelManager currentLevelState = this.game.getStateManager().getState(LevelManager.class);
+//        currentLevelState.loadLevel(levelUuid);
     }
 
     @Override

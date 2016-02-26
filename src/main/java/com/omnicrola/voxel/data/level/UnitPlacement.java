@@ -24,6 +24,15 @@ public class UnitPlacement {
     @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
     protected Vector3f location;
 
+    public UnitPlacement() {
+    }
+
+    public UnitPlacement(int unitId, int teamId, Vector3f location) {
+        this.unitId = unitId;
+        this.teamId = teamId;
+        this.location = location;
+    }
+
     public int getUnitId() {
         return unitId;
     }

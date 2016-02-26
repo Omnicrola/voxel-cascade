@@ -6,18 +6,20 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
+import com.omnicrola.voxel.world.IWorldNode;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -26,17 +28,22 @@ public class WorldCursor extends Node implements IDisposable {
     private final IGameInput inputManager;
     private final Camera camera;
     private final CollisionDistanceComparator collisionDistanceComparator;
+    private final ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory;
     private ICursorStrategy cursorStrategy;
     private ICursorStrategy defaultCursorStrategy;
-    private Node terrainNode;
     private SelectionGroup currentSelection;
     private List<IUserInteractionObserver> observers;
+    private IWorldNode worldRootNode;
 
-    public WorldCursor(IGameInput inputManager, Camera camera, Node terrainNode) {
+    public WorldCursor(IGameInput inputManager,
+                       Camera camera,
+                       ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory,
+                       IWorldNode worldRootNode) {
+        this.screenSelectionEvaluatorFactory = screenSelectionEvaluatorFactory;
+        this.worldRootNode = worldRootNode;
         this.observers = new ArrayList<>();
         this.inputManager = inputManager;
         this.camera = camera;
-        this.terrainNode = terrainNode;
         this.currentSelection = new SelectionGroup();
         this.collisionDistanceComparator = new CollisionDistanceComparator();
         this.defaultCursorStrategy = NullCursorStrategy.INSTANCE;
@@ -64,7 +71,7 @@ public class WorldCursor extends Node implements IDisposable {
 
     private void setPositionToNearestVoxel(Ray pickRay) {
         CollisionResults results = new CollisionResults();
-        this.terrainNode.collideWith(pickRay, results);
+        this.worldRootNode.getTerrainNode().collideWith(pickRay, results);
         if (results.size() > 0) {
             Vector3f contactPoint = results.getClosestCollision().getContactPoint();
             contactPoint.setX((float) Math.round(contactPoint.x));
@@ -118,12 +125,12 @@ public class WorldCursor extends Node implements IDisposable {
         this.observers.forEach(o -> o.notifySelectionUpdated(this.currentSelection));
     }
 
-    public Optional<CollisionResult> getUnitUnderCursor(Node targetNode) {
+    public Optional<CollisionResult> getUnitUnderCursor() {
         CollisionResults results = new CollisionResults();
         Ray pickRay = getPickRay();
-        targetNode.collideWith(pickRay, results);
+        this.worldRootNode.getUnitsNode().collideWith(pickRay, results);
         return VoxelUtil.convertToStream(results)
-                .filter(c -> isSelectableUnit(c))
+                .filter(c -> isSelectableUnit(c.getGeometry()))
                 .sorted(this.collisionDistanceComparator)
                 .findFirst();
     }
@@ -131,7 +138,7 @@ public class WorldCursor extends Node implements IDisposable {
     public Optional<CollisionResult> getTerrainPositionUnderCursor() {
         CollisionResults results = new CollisionResults();
         Ray pickRay = getPickRay();
-        this.terrainNode.collideWith(pickRay, results);
+        this.worldRootNode.getTerrainNode().collideWith(pickRay, results);
         return VoxelUtil.convertToStream(results)
                 .sorted(this.collisionDistanceComparator)
                 .findFirst();
@@ -145,11 +152,10 @@ public class WorldCursor extends Node implements IDisposable {
         return new Ray(cursor3d, direction);
     }
 
-    private boolean isSelectableUnit(CollisionResult collision) {
-        Geometry geometry = collision.getGeometry();
-        boolean isUnit = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_UNIT);
-        boolean isStructure = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_STRUCTURE);
-        boolean isSelectable = VoxelUtil.booleanData(geometry, EntityDataKeys.IS_SELECTABLE);
+    private boolean isSelectableUnit(Spatial spatial) {
+        boolean isUnit = VoxelUtil.booleanData(spatial, EntityDataKeys.IS_UNIT);
+        boolean isStructure = VoxelUtil.booleanData(spatial, EntityDataKeys.IS_STRUCTURE);
+        boolean isSelectable = VoxelUtil.booleanData(spatial, EntityDataKeys.IS_SELECTABLE);
         return isSelectable && (isUnit || isStructure);
     }
 
@@ -171,5 +177,14 @@ public class WorldCursor extends Node implements IDisposable {
         return new Vec3i((int) p.x, (int) p.y, (int) p.z);
     }
 
-
+    public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
+        ScreenSelectionEvaluator screenSelectionEvaluator = this.screenSelectionEvaluatorFactory.build(screenRectangle);
+        List<Spatial> children = this.worldRootNode.getUnitsNode().getChildren();
+        List<Spatial> collect = children
+                .stream()
+                .filter(s -> isSelectableUnit(s))
+                .filter(s -> screenSelectionEvaluator.isInSelection(s.getWorldTranslation()))
+                .collect(Collectors.toList());
+        return collect;
+    }
 }

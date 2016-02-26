@@ -42,9 +42,10 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
         VoxelTerrainState voxelTerrainState = stateManager.getState(VoxelTerrainState.class);
         UiState uiState = stateManager.getState(UiState.class);
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
-        this.levelManager = new LevelManager(levelDefinitionRepository, new LevelStateLoader(voxelGameEngine,clientNetworkState, voxelTerrainState));
         WorldManager worldManager = new WorldManager();
         WorldEntityBuilder entityBuilder = new WorldEntityBuilder();
+        LevelStateLoader levelStateLoader = new LevelStateLoader(voxelGameEngine, clientNetworkState, voxelTerrainState, worldManager, entityBuilder);
+        this.levelManager = new LevelManager(levelDefinitionRepository, levelStateLoader);
         this.messagePackage = new MessagePackage(
                 this.levelManager,
                 uiState,

@@ -5,7 +5,6 @@ import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.main.VoxelException;
-import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.ArrayList;
@@ -24,7 +23,7 @@ public class LevelState implements IDisposable {
     private WorldCursor worldCursor;
     private String levelName;
 
-    public LevelState(WorldCursor worldCursor, String levelName, VoxelTypeLibrary voxelTypeLibrary) {
+    public LevelState(WorldCursor worldCursor, String levelName) {
         this.teams = new ArrayList<>();
         this.observers = new ArrayList<>();
         this.worldCursor = worldCursor;

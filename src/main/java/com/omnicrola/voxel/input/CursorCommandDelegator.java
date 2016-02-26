@@ -1,37 +1,45 @@
 package com.omnicrola.voxel.input;
 
 import com.jme3.cursors.plugins.JmeCursor;
-import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.entities.control.BuildCursorValidityControl;
-import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.input.actions.*;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.ui.CursorToken;
+import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/30/2016.
  */
 public class CursorCommandDelegator {
-    private IGameContainer gameContainer;
     private LevelState levelState;
     private WorldCursor worldCursor;
+    private IGameInput gameInput;
+    private WorldEntityBuilder worldEntityBuilder;
+    private WorldManager worldManager;
 
-    public CursorCommandDelegator(IGameContainer gameContainer, LevelState levelState, WorldCursor worldCursor) {
-        this.gameContainer = gameContainer;
+    public CursorCommandDelegator(LevelState levelState,
+                                  IGameInput gameInput,
+                                  WorldCursor worldCursor,
+                                  WorldEntityBuilder worldEntityBuilder,
+                                  WorldManager worldManager) {
         this.levelState = levelState;
+        this.gameInput = gameInput;
         this.worldCursor = worldCursor;
+        this.worldEntityBuilder = worldEntityBuilder;
+        this.worldManager = worldManager;
     }
 
     public SelectUnitsCursorStrategy setSelectStrategy() {
         JmeCursor defaultCursor = getCursor(CursorToken.DEFAULT);
-        SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(this.gameContainer,
-                this, levelState, worldCursor, defaultCursor);
+        SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(
+                this, levelState, worldCursor, this.gameInput, defaultCursor);
         this.worldCursor.setCursorStrategy(selectUnitsCursorStrategy);
         return selectUnitsCursorStrategy;
     }
@@ -59,21 +67,23 @@ public class CursorCommandDelegator {
         Spatial exampleBuildTarget = createValidityCheckingModel(unitId, buildRadius, selectionGroup);
 
         BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(
-                this.gameContainer,
                 this.levelState,
                 unitId,
                 buildCursor,
-                exampleBuildTarget);
+                exampleBuildTarget,
+                worldEntityBuilder,
+                worldManager);
         this.worldCursor.setCursorStrategy(buildUnitStrategy);
     }
 
     private Spatial createValidityCheckingModel(int unitId, float buildRadius, SelectionGroup selectionGroup) {
-        Spatial exampleBuildTarget = this.gameContainer.world().build().unitCursor(unitId);
-        Material validBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_VALID);
-        Material invalidBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_NOT_VALID);
-        BuildCursorValidityControl buildCursorValidityControl = new BuildCursorValidityControl(selectionGroup, buildRadius, validBuildMaterial, invalidBuildMaterial);
-        exampleBuildTarget.addControl(buildCursorValidityControl);
-        return exampleBuildTarget;
+//        Spatial exampleBuildTarget = this.gameContainer.world().build().unitCursor(unitId);
+//        Material validBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_VALID);
+//        Material invalidBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_NOT_VALID);
+//        BuildCursorValidityControl buildCursorValidityControl = new BuildCursorValidityControl(selectionGroup, buildRadius, validBuildMaterial, invalidBuildMaterial);
+//        exampleBuildTarget.addControl(buildCursorValidityControl);
+//        return exampleBuildTarget;
+        return new Node();
     }
 
     public void setBuildVoxelStrategy(byte type) {
