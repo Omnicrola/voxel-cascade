@@ -24,7 +24,7 @@ public class SpawnUnitMessage extends AbstractWorldMessage {
         WorldEntityBuilder entityBuilder = messagePackage.getEntityBuilder();
         WorldManager worldManager = messagePackage.getWorldManager();
         Unit gameUnit = entityBuilder.buildUnit(this.unitPlacement);
-        worldManager.addEntity(gameUnit);
+        worldManager.addUnit(gameUnit);
 
 
 //        TeamData teamData = levelState.getTeamById(unitPlacement.getTeamId());

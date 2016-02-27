@@ -39,10 +39,9 @@ import java.util.Arrays;
  */
 public class VoxelGameEngineInitializer {
 
-
-    public static void initializeGame(VoxelGameEngine voxelGameEngine, InputManager inputManager) {
+    public static void initializeGame(VoxelGameEngine voxelGameEngine) {
         createStates(voxelGameEngine);
-        createInputMappings(inputManager);
+        createInputMappings(voxelGameEngine.getInputManager());
     }
 
     private static void createStates(VoxelGameEngine voxelGameEngine) {

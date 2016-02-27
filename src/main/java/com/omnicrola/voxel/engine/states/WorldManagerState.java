@@ -86,4 +86,8 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
     public List<Unit> getAllUnits() {
         return this.worldManager.getAllUnits();
     }
+
+    public LevelManager getLevelManager() {
+        return this.levelManager;
+    }
 }

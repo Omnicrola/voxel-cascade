@@ -45,7 +45,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         this.gameContainer = new JmeGameContainer(this);
         this.ticProvider = new VoxelTickProvider();
         this.stateManager.attach(this.bulletAppState);
-        VoxelGameEngineInitializer.initializeGame(this.gameContainer, this.inputManager);
+        VoxelGameEngineInitializer.initializeGame(this);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
         addLights();
     }

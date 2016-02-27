@@ -93,4 +93,8 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
     public VoxelData getVoxelAt(Vector3f location) {
         return this.voxelChunkHandler.getVoxelAt(Vec3i.round(location));
     }
+
+    public void globalRebuild() {
+        this.voxelChunkHandler.flagAllChunksForRebuild();
+    }
 }

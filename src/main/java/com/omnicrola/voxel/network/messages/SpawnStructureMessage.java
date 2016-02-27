@@ -24,7 +24,7 @@ public class SpawnStructureMessage extends AbstractWorldMessage {
         WorldEntityBuilder entityBuilder = messagePackage.getEntityBuilder();
         WorldManager worldManager = messagePackage.getWorldManager();
         Structure structure = entityBuilder.buildStructure(this.unitPlacement);
-        worldManager.addEntity(structure);
+        worldManager.addStructure(structure);
 
 //        TeamData teamData = levelState.getTeamById(placement.getTeamId());
 //

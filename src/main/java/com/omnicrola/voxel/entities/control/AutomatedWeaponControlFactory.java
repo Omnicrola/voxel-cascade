@@ -7,7 +7,6 @@ import com.omnicrola.voxel.data.WeaponType;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
-import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.entities.ai.AiHoldPositionState;
 import com.omnicrola.voxel.entities.ai.AiStateMap;
 import com.omnicrola.voxel.entities.ai.EntityAiController;
@@ -35,7 +34,6 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
-        LevelManager currentLevelState = gameContainer.getState(LevelManager.class);
         IGameWorld gameWorld = gameContainer.world();
 
         IProjectileStrategy projectileFactory = buildProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);

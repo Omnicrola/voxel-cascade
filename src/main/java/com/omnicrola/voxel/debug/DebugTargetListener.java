@@ -8,6 +8,7 @@ import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.engine.states.WorldManagerState;
 
 import java.util.Optional;
 
@@ -29,7 +30,8 @@ public class DebugTargetListener implements ActionListener {
     }
 
     private void findTerrain() {
-        LevelState currentLevelState = this.voxelGameEngine.getStateManager().getState(LevelManager.class).getCurrentLevel();
+        LevelManager levelManager = this.voxelGameEngine.getStateManager().getState(WorldManagerState.class).getLevelManager();
+        LevelState currentLevelState = levelManager.getCurrentLevel();
         Optional<CollisionResult> terrainUnderCursor = currentLevelState.getWorldCursor().getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             Geometry geometry = terrainUnderCursor.get().getGeometry();
