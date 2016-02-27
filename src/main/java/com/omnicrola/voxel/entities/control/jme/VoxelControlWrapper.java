@@ -9,15 +9,15 @@ import com.jme3.scene.control.AbstractControl;
  */
 public class VoxelControlWrapper extends AbstractControl {
 
-    private IVoxelEntityControl voxelEntityControl;
+    private IEntityBehavior entityBehavior;
 
-    public VoxelControlWrapper(IVoxelEntityControl voxelEntityControl) {
-        this.voxelEntityControl = voxelEntityControl;
+    public VoxelControlWrapper(IEntityBehavior entityBehavior) {
+        this.entityBehavior = entityBehavior;
     }
 
     @Override
     protected void controlUpdate(float tpf) {
-        this.voxelEntityControl.update(tpf);
+        this.entityBehavior.update(tpf);
     }
 
     @Override

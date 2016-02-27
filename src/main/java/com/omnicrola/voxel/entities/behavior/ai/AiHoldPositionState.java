@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.ai;
+package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;

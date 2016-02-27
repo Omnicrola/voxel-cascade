@@ -4,7 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.SelectedSpatial;
-import com.omnicrola.voxel.entities.ai.*;
+import com.omnicrola.voxel.entities.behavior.ai.*;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.old.EntityCommandController;
 import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;

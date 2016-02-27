@@ -1,9 +1,7 @@
-package com.omnicrola.voxel.entities.ai;
+package com.omnicrola.voxel.entities.behavior.ai;
 
-import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 
 /**
@@ -13,8 +11,6 @@ public class EntityAiController extends AbstractControl {
 
     private IAiState currentState;
     private AiStateMap states;
-    private Vector3f currentTargetLocation;
-    private Spatial currentTarget;
 
     public EntityAiController(AiStateMap states, IAiState initialState) {
         this.states = states;

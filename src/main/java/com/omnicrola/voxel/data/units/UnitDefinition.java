@@ -3,7 +3,7 @@ package com.omnicrola.voxel.data.units;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
-import com.omnicrola.voxel.entities.ai.EntityAiControlFactory;
+import com.omnicrola.voxel.entities.behavior.ai.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.old.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.old.DeathControllerFactory;
