@@ -1,50 +1,50 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.weapon;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.entities.Projectile;
+import com.omnicrola.voxel.entities.build.ProjectileBuilder;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.entities.control.SelfDestructControl;
 
 /**
  * Created by Eric on 2/8/2016.
  */
 public class ParabolicProjectileStrategy extends ProjectileStrategy {
 
+    private EntityControlAdapter entityControlAdapter;
     private WeaponDefinition weaponDefinition;
     private ProjectileDefinition projectileDefinition;
-    private IGameContainer gameContainer;
 
     public ParabolicProjectileStrategy(EntityControlAdapter entityControlAdapter,
                                        WeaponDefinition weaponDefinition,
-                                       ProjectileDefinition projectileDefinition
-    ) {
+                                       ProjectileDefinition projectileDefinition) {
+        this.entityControlAdapter = entityControlAdapter;
         this.weaponDefinition = weaponDefinition;
         this.projectileDefinition = projectileDefinition;
-        this.gameContainer = entityControlAdapter;
     }
 
     @Override
-    public Spatial spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
-        Spatial projectile = this.gameContainer
-                .world()
-                .build()
-                .projectile(emittingEntity, this.projectileDefinition.getId());
-        addCollisionControl(this.gameContainer.world(), projectile);
-        projectile.addControl(createProjectileControl(emittingEntity, targetLocation));
-        projectile.addControl(createSelfDestruct());
+    public Projectile spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
+        ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
+        Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
+
+        addCollisionControl(entityControlAdapter.getWorldManager(), entityControlAdapter.getEffectsBuilder(), projectile);
+        projectile.getSpatial().addControl(createProjectileControl(emittingEntity, targetLocation));
+        projectile.getSpatial().addControl(createSelfDestruct());
         return projectile;
     }
 
     private Control createSelfDestruct() {
-        return new SelfDestructControl(this.gameContainer.physics(), 5);
+        return new SelfDestructControl(this.entityControlAdapter.getWorldManager(), 5);
     }
 
     private ParabolicProjectileControl createProjectileControl(Spatial emittingEntity,
                                                                Vector3f targetLocation) {
-        Vector3f gravity = this.gameContainer.physics().getGravity();
+        Vector3f gravity = new Vector3f(0, -9.8f, 0);
         final Vector3f trajectory = calculateParabolicTrajectory(emittingEntity, targetLocation);
         ParabolicProjectileControl parabolicProjectileControl = new ParabolicProjectileControl(0.125f, trajectory, gravity);
         return parabolicProjectileControl;

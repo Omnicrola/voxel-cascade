@@ -10,6 +10,10 @@ import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.build.BuildController;
 import com.omnicrola.voxel.entities.control.old.*;
+import com.omnicrola.voxel.entities.control.weapon.LinearProjectileStrategy;
+import com.omnicrola.voxel.entities.control.weapon.ParabolicProjectileStrategy;
+import com.omnicrola.voxel.entities.control.weapon.TargetingController;
+import com.omnicrola.voxel.entities.control.weapon.WeaponsController;
 import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 
 /**

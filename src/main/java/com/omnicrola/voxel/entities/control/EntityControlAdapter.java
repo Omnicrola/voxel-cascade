@@ -2,6 +2,7 @@ package com.omnicrola.voxel.entities.control;
 
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.build.EffectsBuilder;
+import com.omnicrola.voxel.entities.build.ProjectileBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 /**
@@ -10,6 +11,7 @@ import com.omnicrola.voxel.world.WorldManager;
 public class EntityControlAdapter {
     private EffectsBuilder effectsBuilder;
     private WorldManager worldManager;
+    private ProjectileBuilder projectileBuilder;
 
 
     public EffectsBuilder getEffectsBuilder() {
@@ -22,5 +24,9 @@ public class EntityControlAdapter {
 
     public LevelState getCurrentLevel() {
         return null;
+    }
+
+    public ProjectileBuilder getProjectileBuilder() {
+        return projectileBuilder;
     }
 }

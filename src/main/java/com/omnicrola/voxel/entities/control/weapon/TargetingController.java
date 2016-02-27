@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.weapon;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.math.Vector3f;
@@ -8,10 +8,10 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.entities.control.old.DistanceSorter;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
+import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.Optional;
 
@@ -26,10 +26,10 @@ public class TargetingController extends AbstractControl {
     private final DistanceSorter distanceSorter;
     private float lastTargetScan;
     private Spatial closestTarget;
-    private IGameWorld world;
+    private WorldManager worldManager;
 
-    public TargetingController(EntityControlAdapter entityControlAdapter) {
-        this.world = entityControlAdapter;
+    public TargetingController(WorldManager worldManager) {
+        this.worldManager = worldManager;
         this.distanceSorter = new DistanceSorter();
         this.lastTargetScan = 0f;
     }
@@ -41,7 +41,7 @@ public class TargetingController extends AbstractControl {
             this.lastTargetScan = 0f;
             Vector3f position = this.spatial.getWorldTranslation();
 
-            Optional<Geometry> closestTarget = world.getUnitsInRange(position, SCAN_RADIUS)
+            Optional<Geometry> closestTarget = this.worldManager.getUnitsInRange(position, SCAN_RADIUS)
                     .filter(c -> isTargetable(c))
                     .filter(c -> isEnemy(c))
                     .sorted(this.distanceSorter)

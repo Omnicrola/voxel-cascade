@@ -11,6 +11,10 @@ import com.omnicrola.voxel.entities.behavior.ai.AiHoldPositionState;
 import com.omnicrola.voxel.entities.behavior.ai.AiStateMap;
 import com.omnicrola.voxel.entities.behavior.ai.EntityAiController;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
+import com.omnicrola.voxel.entities.control.weapon.LinearProjectileStrategy;
+import com.omnicrola.voxel.entities.control.weapon.ParabolicProjectileStrategy;
+import com.omnicrola.voxel.entities.control.weapon.TargetingController;
+import com.omnicrola.voxel.entities.control.weapon.WeaponsController;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 

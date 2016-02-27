@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.weapon;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.control.GhostControl;

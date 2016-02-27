@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.weapon;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
@@ -6,9 +6,10 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
-import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.entities.Projectile;
+import com.omnicrola.voxel.entities.control.old.IProjectileStrategy;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -19,16 +20,16 @@ public class WeaponsController extends AbstractControl {
 
     private float timeSinceLastShot = 0f;
     private Spatial currentTarget;
-    private IGameWorld gameWorld;
     private WeaponDefinition weaponDefinition;
     private Vector3f projectileOffset;
     private IProjectileStrategy projectileFactory;
+    private WorldManager worldManager;
 
-    public WeaponsController(EntityControlAdapter entityControlAdapter,
+    public WeaponsController(WorldManager worldManager,
                              WeaponDefinition weaponDefinition,
                              Vector3f projectileOffset,
                              IProjectileStrategy projectileFactory) {
-        this.gameWorld = entityControlAdapter;
+        this.worldManager = worldManager;
         this.weaponDefinition = weaponDefinition;
         this.projectileOffset = projectileOffset;
         this.projectileFactory = projectileFactory;
@@ -72,13 +73,13 @@ public class WeaponsController extends AbstractControl {
         this.timeSinceLastShot = 0;
 
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
-        Spatial projectile = this.projectileFactory.spawnProjectile(this.spatial, targetLocation);
-        this.gameWorld.attach(projectile);
+        Projectile projectile = this.projectileFactory.spawnProjectile(this.spatial, targetLocation);
+        this.worldManager.addProjectile(projectile);
         Vector3f initialPosition = this.spatial
                 .getWorldTranslation()
                 .clone()
                 .add(this.projectileOffset);
-        projectile.setLocalTranslation(initialPosition);
+        projectile.setLocation(initialPosition);
 
     }
 

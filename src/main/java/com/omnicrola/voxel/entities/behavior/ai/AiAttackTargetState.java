@@ -3,7 +3,7 @@ package com.omnicrola.voxel.entities.behavior.ai;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
-import com.omnicrola.voxel.entities.control.old.WeaponsController;
+import com.omnicrola.voxel.entities.control.weapon.WeaponsController;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 /**

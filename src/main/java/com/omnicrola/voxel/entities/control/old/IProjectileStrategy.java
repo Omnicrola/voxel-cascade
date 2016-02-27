@@ -2,10 +2,11 @@ package com.omnicrola.voxel.entities.control.old;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.entities.Projectile;
 
 /**
  * Created by Eric on 2/8/2016.
  */
 public interface IProjectileStrategy {
-    Spatial spawnProjectile(Spatial emittingEntity, Vector3f targetLocation);
+    Projectile spawnProjectile(Spatial emittingEntity, Vector3f targetLocation);
 }

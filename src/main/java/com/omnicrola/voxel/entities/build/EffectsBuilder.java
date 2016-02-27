@@ -14,4 +14,8 @@ public class EffectsBuilder {
     public Spatial buildVoxelFire(float lifetime, int count) {
         return null;
     }
+
+    public Spatial buildVoxelSpray(int count) {
+        return null;
+    }
 }
