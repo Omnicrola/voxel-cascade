@@ -15,6 +15,7 @@ import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
 import com.omnicrola.voxel.network.messages.SpawnUnitMessage;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.world.IWorldNode;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
@@ -32,17 +33,20 @@ public class LevelStateLoader {
     private VoxelTerrainState voxelTerrainState;
     private WorldManager worldManager;
     private WorldEntityBuilder worldEntityBuilder;
+    private Cursor2dProvider cursor2dProvider;
 
     public LevelStateLoader(VoxelGameEngine voxelGameEngine,
                             IMessageProcessor messageProcessor,
                             VoxelTerrainState voxelTerrainState,
                             WorldManager worldManager,
-                            WorldEntityBuilder worldEntityBuilder) {
+                            WorldEntityBuilder worldEntityBuilder,
+                            Cursor2dProvider cursor2dProvider) {
         this.voxelGameEngine = voxelGameEngine;
         this.messageProcessor = messageProcessor;
         this.voxelTerrainState = voxelTerrainState;
         this.worldManager = worldManager;
         this.worldEntityBuilder = worldEntityBuilder;
+        this.cursor2dProvider = cursor2dProvider;
     }
 
     public LevelState create(LevelDefinition levelDefinition) {
@@ -51,6 +55,7 @@ public class LevelStateLoader {
         Camera camera = this.voxelGameEngine.getCamera();
         IGameInput inputManager = new JmeInputWrapper(this.voxelGameEngine.getInputManager(), this.voxelGameEngine.getFlyByCamera());
         IWorldNode worldNode = this.voxelGameEngine.getWorldNode();
+        VoxelTerrainState terrainManager = voxelGameEngine.getStateManager().getState(VoxelTerrainState.class);
         ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory = new ScreenSelectionEvaluatorFactory(camera);
         WorldCursor worldCursor = new WorldCursor(inputManager, camera, screenSelectionEvaluatorFactory, worldNode);
 
@@ -59,7 +64,15 @@ public class LevelStateLoader {
         addUnits(levelDefinition.getUnitPlacements());
         addStructures(levelDefinition.getStructures());
 
-        CursorCommandDelegator cursorStrategyFactory = new CursorCommandDelegator(levelState, inputManager, worldCursor, this.worldEntityBuilder, this.worldManager);
+
+        CursorCommandDelegator cursorStrategyFactory = new CursorCommandDelegator(
+                levelState,
+                inputManager,
+                this.cursor2dProvider,
+                worldCursor,
+                this.worldEntityBuilder,
+                this.worldManager,
+                terrainManager);
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = cursorStrategyFactory.setSelectStrategy();
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
         worldCursor.clearCursorStrategy();

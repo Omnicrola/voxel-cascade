@@ -22,7 +22,7 @@ public class FaceBuilder {
     public VoxelFace build(Vec3i globalLocation, int side) {
         IOcclusionCalculator occlusionCalculator = this.occlusionCalculators[side];
         OcclusionSet occlusionSet = occlusionCalculator.calculate(globalLocation);
-        IVoxelType type = this.voxelChunkHandler.getVoxelAt(globalLocation);
+        IVoxelType type = this.voxelChunkHandler.getVoxelAt(globalLocation).getType();
         VoxelFace voxelFace = new VoxelFace(type, side, occlusionSet);
         return voxelFace;
     }

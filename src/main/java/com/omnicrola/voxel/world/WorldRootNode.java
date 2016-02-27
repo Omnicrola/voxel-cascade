@@ -11,12 +11,14 @@ public class WorldRootNode extends Node implements IWorldNode {
     private final Node unitsNode;
     private final Node projectilesNode;
     private final Node fxNode;
+    private final Node terrainNode;
 
     public WorldRootNode() {
         super(GameConstants.NODE_WORLD_ROOT);
         this.unitsNode = new Node(GameConstants.NODE_UNITS);
         this.projectilesNode = new Node(GameConstants.NODE_PROJECTILES);
         this.fxNode = new Node(GameConstants.NODE_FX);
+        this.terrainNode = new Node(GameConstants.NODE_TERRAIN);
     }
 
     @Override
@@ -32,5 +34,10 @@ public class WorldRootNode extends Node implements IWorldNode {
     @Override
     public Node getFxNode() {
         return this.fxNode;
+    }
+
+    @Override
+    public Node getTerrainNode() {
+        return this.terrainNode;
     }
 }

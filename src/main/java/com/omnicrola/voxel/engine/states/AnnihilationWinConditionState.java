@@ -1,51 +1,44 @@
 package com.omnicrola.voxel.engine.states;
 
-import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.LevelManager;
+import com.jme3.app.Application;
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.util.VoxelUtil;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.entities.Unit;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
  * Created by omnic on 2/6/2016.
  */
-public class AnnihilationWinConditionState extends VoxelGameState {
+public class AnnihilationWinConditionState extends AbstractAppState {
 
     private ArrayList<TeamData> teams;
-    private IGameContainer gameContainer;
+    private VoxelGameEngine voxelGameEngine;
+    private AppStateManager stateManager;
 
     public AnnihilationWinConditionState(ArrayList<TeamData> teams) {
         this.teams = teams;
     }
 
     @Override
-    protected void voxelInitialize(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
-        setEnabled(true);
-    }
-
-    @Override
-    protected void voxelEnable(IGameContainer gameContainer) {
-
-    }
-
-    @Override
-    protected void voxelDisable(IGameContainer gameContainer) {
-
+    public void initialize(AppStateManager stateManager, Application app) {
+        this.stateManager = stateManager;
+        super.initialize(stateManager, app);
+        this.voxelGameEngine = (VoxelGameEngine) app;
     }
 
     @Override
     public void update(float tpf) {
-        LevelManager currentLevelState = this.gameContainer.getState(LevelManager.class);
-        if (currentLevelState != null) {
-            ArrayList<Spatial> allUnits = currentLevelState.getCurrentLevel().getAllEntities();
+        WorldManagerState worldManagerState = this.stateManager.getState(WorldManagerState.class);
+        if (worldManagerState != null) {
+            List<Unit> units = worldManagerState.getAllUnits();
             Optional<TeamData> firstTeamEliminated = this.teams.stream()
-                    .filter(t -> isEliminated(allUnits, t))
+                    .filter(t -> isEliminated(units, t))
                     .findFirst();
             if (firstTeamEliminated.isPresent()) {
                 gameOver();
@@ -53,10 +46,9 @@ public class AnnihilationWinConditionState extends VoxelGameState {
         }
     }
 
-    private boolean isEliminated(ArrayList<Spatial> allUnits, TeamData teamData) {
+    private boolean isEliminated(List<Unit> allUnits, TeamData teamData) {
         Long livingStructures = allUnits.stream()
-                .filter(s -> isStructure(s))
-                .filter(s -> isAlive(s))
+                .filter(s -> s.isAlive())
                 .filter(s -> isOnTeam(s, teamData))
                 .collect(Collectors.counting());
         return livingStructures <= 0;
@@ -64,23 +56,11 @@ public class AnnihilationWinConditionState extends VoxelGameState {
 
     private void gameOver() {
         setEnabled(false);
-        this.gameContainer.enableState(GameOverState.class);
+        this.stateManager.getState(GameOverState.class).setEnabled(true);
     }
 
-    private boolean isOnTeam(Spatial s, TeamData teamData) {
-        return getTeam(s).equals(teamData);
+    private boolean isOnTeam(Unit unit, TeamData teamData) {
+        return unit.getTeam().equals(teamData);
     }
 
-    private TeamData getTeam(Spatial spatial) {
-        TeamData teamData = spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        return teamData;
-    }
-
-    private boolean isAlive(Spatial spatial) {
-        return VoxelUtil.floatData(spatial, EntityDataKeys.HITPOINTS) > 0;
-    }
-
-    private boolean isStructure(Spatial spatial) {
-        return VoxelUtil.booleanData(spatial, EntityDataKeys.IS_STRUCTURE);
-    }
 }

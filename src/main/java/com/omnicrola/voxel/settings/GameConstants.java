@@ -28,4 +28,5 @@ public class GameConstants {
     public static final String NODE_WORLD_ROOT = "WORLD_ROOT";
     public static final String NODE_PROJECTILES = "PROJECTILES";
     public static final String NODE_FX = "FX";
+    public static final String NODE_TERRAIN = "TERRAIN";
 }

@@ -28,4 +28,8 @@ public class VoxelData {
     public void removeVoxel() {
         this.chunk.set(location, VoxelType.EMPTY.uniqueId());
     }
+
+    public IVoxelType getType() {
+        return voxel;
+    }
 }

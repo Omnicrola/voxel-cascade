@@ -121,4 +121,5 @@ public class VoxelChunkHandler {
         this.chunks.values().stream().forEach(c -> c.dispose());
         this.chunks.clear();
     }
+
 }

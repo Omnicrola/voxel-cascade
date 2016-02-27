@@ -6,4 +6,5 @@ import com.omnicrola.voxel.world.IGameEntity;
  * Created by Eric on 2/25/2016.
  */
 public class Unit implements IGameEntity {
+
 }

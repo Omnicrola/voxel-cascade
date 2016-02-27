@@ -17,7 +17,7 @@ public class JmeGameContainer implements IGameContainer {
     private final VoxelGameEngine game;
     private final JmeGuiWrapper guiWrapper;
     private final JmeWorldWrapper worldWrapper;
-    private final JmeInputWrapper inputWrapper;
+//    private final JmeInputWrapper inputWrapper;
     private final JmePhysicsWrapper physicsWrapper;
     private final JmeNetworkWrapper networkWrapper;
 
@@ -26,7 +26,7 @@ public class JmeGameContainer implements IGameContainer {
         this.guiWrapper = new JmeGuiWrapper(game);
         this.physicsWrapper = new JmePhysicsWrapper(game.getPhysicsSpace());
         this.worldWrapper = new JmeWorldWrapper(game, this, this.physicsWrapper);
-        this.inputWrapper = new JmeInputWrapper(game);
+//        this.inputWrapper = new JmeInputWrapper(game);
         this.networkWrapper = new JmeNetworkWrapper(game);
     }
 
@@ -42,7 +42,7 @@ public class JmeGameContainer implements IGameContainer {
 
     @Override
     public IGameInput input() {
-        return this.inputWrapper;
+        return null;
     }
 
     @Override
