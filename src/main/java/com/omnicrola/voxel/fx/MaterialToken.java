@@ -8,7 +8,7 @@ import com.jme3.math.ColorRGBA;
 public enum MaterialToken {
     BUILD_VALID("build-valid.png", true),
     BUILD_NOT_VALID("build-not-valid.png", true),
-    TERRAIN_VOXEL(ColorRGBA.randomColor(), false);
+    TERRAIN_PLACEHOLDER(new ColorRGBA(0.0f, 1.0f, 0.0f, 0.5f), true);
 
     private ColorRGBA color;
     private String texture;

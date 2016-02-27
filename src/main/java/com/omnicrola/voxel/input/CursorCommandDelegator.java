@@ -2,13 +2,16 @@ package com.omnicrola.voxel.input;
 
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
+import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.ui.CursorToken;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
@@ -23,17 +26,20 @@ public class CursorCommandDelegator {
     private IGameInput gameInput;
     private WorldEntityBuilder worldEntityBuilder;
     private WorldManager worldManager;
+    private ITerrainManager terrainManager;
 
     public CursorCommandDelegator(LevelState levelState,
                                   IGameInput gameInput,
                                   WorldCursor worldCursor,
                                   WorldEntityBuilder worldEntityBuilder,
-                                  WorldManager worldManager) {
+                                  WorldManager worldManager,
+                                  ITerrainManager terrainManager) {
         this.levelState = levelState;
         this.gameInput = gameInput;
         this.worldCursor = worldCursor;
         this.worldEntityBuilder = worldEntityBuilder;
         this.worldManager = worldManager;
+        this.terrainManager = terrainManager;
     }
 
     public SelectUnitsCursorStrategy setSelectStrategy() {
@@ -88,9 +94,14 @@ public class CursorCommandDelegator {
 
     public void setBuildVoxelStrategy(byte type) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
-        Geometry ghostVoxel = createVoxel(new ColorRGBA(1, 1, 1, 0.5f));
-        IVoxelType voxelType = this.levelState.getVoxelTypeLibrary().lookup(type);
-        BuildVoxelCursorStrategy buildVoxelCursorStrategy = new BuildVoxelCursorStrategy(this.gameContainer, this.levelState, voxelType, buildCursor, ghostVoxel);
+        Effect placeholderVoxel = this.terrainManager.buildPlaceholderVoxel(new Vector3f());
+        BuildVoxelCursorStrategy buildVoxelCursorStrategy = new BuildVoxelCursorStrategy(
+                this.levelState,
+                type,
+                buildCursor,
+                this.terrainManager,
+                this.worldManager,
+                placeholderVoxel.getSpatial());
         this.worldCursor.setCursorStrategy(buildVoxelCursorStrategy);
     }
 

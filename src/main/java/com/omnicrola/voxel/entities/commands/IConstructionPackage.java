@@ -15,5 +15,5 @@ public interface IConstructionPackage {
 
     float applyResourceTic(float tpf);
 
-    void completeConstruction(IGameContainer gameContainer, LevelState levelState);
+    void completeConstruction();
 }

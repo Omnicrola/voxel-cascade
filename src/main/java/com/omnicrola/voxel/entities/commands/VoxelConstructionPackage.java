@@ -1,12 +1,10 @@
 package com.omnicrola.voxel.entities.commands;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.terrain.IVoxelType;
+import com.omnicrola.voxel.terrain.ITerrainManager;
 
 /**
  * Created by omnic on 2/11/2016.
@@ -15,11 +13,13 @@ public class VoxelConstructionPackage implements IConstructionPackage {
 
     public static final float BASE_BUILD_RATE = 1f;
     private float resourcesRequired;
-    private IVoxelType voxelType;
+    private ITerrainManager terrainManager;
+    private byte voxelType;
     private Vec3i location;
-    private Geometry ghostVoxel;
+    private Spatial ghostVoxel;
 
-    public VoxelConstructionPackage(IVoxelType voxelType, Vec3i location, Geometry ghostVoxel) {
+    public VoxelConstructionPackage(ITerrainManager terrainManager,byte voxelType, Vec3i location, Spatial ghostVoxel) {
+        this.terrainManager = terrainManager;
         this.voxelType = voxelType;
         this.location = location;
         this.ghostVoxel = ghostVoxel;
@@ -49,11 +49,11 @@ public class VoxelConstructionPackage implements IConstructionPackage {
     }
 
     @Override
-    public void completeConstruction(IGameContainer gameContainer, LevelState levelState) {
+    public void completeConstruction() {
         Node parent = this.ghostVoxel.getParent();
         if (parent != null) {
             parent.detachChild(this.ghostVoxel);
         }
-        levelState.setVoxel(this.voxelType, this.location);
+        this.terrainManager.setVoxel(this.location, this.voxelType);
     }
 }

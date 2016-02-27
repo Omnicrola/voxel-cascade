@@ -1,9 +1,7 @@
 package com.omnicrola.voxel.entities.control;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 /**
  * Created by Eric on 2/12/2016.
@@ -30,7 +28,7 @@ public class NullConstructionPackage implements IConstructionPackage {
     }
 
     @Override
-    public void completeConstruction(IGameContainer gameContainer, LevelState levelState) {
+    public void completeConstruction() {
 
     }
 }

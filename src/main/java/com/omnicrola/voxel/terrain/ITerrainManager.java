@@ -1,6 +1,9 @@
 package com.omnicrola.voxel.terrain;
 
+import com.jme3.math.Vector3f;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
+import com.omnicrola.voxel.entities.Effect;
 
 /**
  * Created by Eric on 2/24/2016.
@@ -9,4 +12,10 @@ public interface ITerrainManager {
     void globalReset();
 
     void load(TerrainDefinition terrain);
+
+    Effect buildPlaceholderVoxel(Vector3f location);
+
+    IVoxelType getVoxelType(byte type);
+
+    void setVoxel(Vec3i location, byte voxelType);
 }

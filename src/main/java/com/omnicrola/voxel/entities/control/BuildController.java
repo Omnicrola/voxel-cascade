@@ -40,7 +40,7 @@ public class BuildController extends AbstractControl {
         if (this.constructionPackage != NullConstructionPackage.NO_OP) {
             if (isInRange()) {
                 if (this.constructionPackage.isFinished()) {
-                    this.constructionPackage.completeConstruction(this.gameContainer, this.levelProvider.getCurrentLevel());
+                    this.constructionPackage.completeConstruction();
                     clearConstructionPackage();
                     stopFx();
                 } else {
