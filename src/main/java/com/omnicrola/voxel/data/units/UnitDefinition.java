@@ -5,7 +5,7 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.entities.behavior.ai.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
-import com.omnicrola.voxel.entities.control.old.CollisionControlFactory;
+import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.old.DeathControllerFactory;
 import com.omnicrola.voxel.entities.control.old.GroundVehicleControlFactory;
 import com.omnicrola.voxel.entities.control.old.IControlFactory;

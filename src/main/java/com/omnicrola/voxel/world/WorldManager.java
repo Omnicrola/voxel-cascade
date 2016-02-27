@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.world;
 
+import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
 
@@ -37,5 +38,9 @@ public class WorldManager {
 
     public List<Unit> getAllUnits() {
         return new ArrayList<>(this.units);
+    }
+
+    public void removeSpatial(Spatial spatial) {
+
     }
 }

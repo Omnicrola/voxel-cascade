@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.entities.control.old;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.engine.physics.CollisionController;
-import com.omnicrola.voxel.engine.physics.ProjectileCollisionHandler;
+import com.omnicrola.voxel.entities.control.collision.CollisionController;
+import com.omnicrola.voxel.entities.control.collision.ProjectileCollisionHandler;
 import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 

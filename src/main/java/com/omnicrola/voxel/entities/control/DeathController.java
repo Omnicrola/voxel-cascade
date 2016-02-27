@@ -1,13 +1,16 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
 import com.omnicrola.voxel.entities.commands.NullDeathAction;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.ui.data.TeamStatistics;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 /**
@@ -15,10 +18,10 @@ import com.omnicrola.voxel.util.VoxelUtil;
  */
 public class DeathController extends AbstractControl {
     private IDeathAction deathAction;
-    private IGameContainer gameContainer;
+    private EntityControlAdapter entityControlAdapter;
 
-    public DeathController(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
+    public DeathController(EntityControlAdapter entityControlAdapter) {
+        this.entityControlAdapter = entityControlAdapter;
         this.deathAction = NullDeathAction.NULL;
     }
 
@@ -36,9 +39,10 @@ public class DeathController extends AbstractControl {
     }
 
     private void recordDeathStats() {
-//        LevelManager currentLevelState = this.gameContainer.getState(LevelManager.class);
-//        LevelState currentLevel = currentLevelState.getCurrentLevel();
-//        currentLevel.unitDestroyed(this.spatial);
+        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        LevelState currentLevel = this.entityControlAdapter.getCurrentLevel();
+        TeamStatistics teamStatistics = currentLevel.getTeamStatistics(teamData);
+        teamStatistics.increaseUnitsLost();
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.old.EntityCommandController;
 import com.omnicrola.voxel.entities.control.old.IControlFactory;
 
@@ -20,7 +21,7 @@ public class CommandControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
         EntityCommandController commandController = new EntityCommandController(this.commands, buildCommands);
         spatial.addControl(commandController);
     }

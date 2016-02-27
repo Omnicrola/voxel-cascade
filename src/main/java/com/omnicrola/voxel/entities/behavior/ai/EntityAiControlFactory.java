@@ -31,7 +31,7 @@ public class EntityAiControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
 
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);

@@ -1,25 +1,25 @@
-package com.omnicrola.voxel.engine.physics;
+package com.omnicrola.voxel.entities.control.collision;
 
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
 import com.omnicrola.voxel.entities.commands.NullDeathAction;
 import com.omnicrola.voxel.entities.control.old.ISpatialCollisionHandler;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/17/2016.
  */
 public abstract class AbstractCollisionHandler implements ISpatialCollisionHandler {
 
+    private final WorldManager worldManager;
     protected Spatial parentSpatial;
-    private IGameWorld gameWorld;
     private IDeathAction deathAction;
 
-    public AbstractCollisionHandler(Spatial parentSpatial, IGameWorld gameWorld) {
+    public AbstractCollisionHandler(Spatial parentSpatial, WorldManager worldManager) {
         this.parentSpatial = parentSpatial;
-        this.gameWorld = gameWorld;
+        this.worldManager = worldManager;
         this.deathAction = NullDeathAction.NULL;
     }
 
@@ -45,7 +45,7 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
             parent.detachChild(this.parentSpatial);
         }
         this.parentSpatial.setUserData(EntityDataKeys.IS_COLLIDABLE, false);
-        gameWorld.remove(this.parentSpatial);
+        this.worldManager.removeSpatial(this.parentSpatial);
     }
 
     public void setDeathAction(IDeathAction deathAction){

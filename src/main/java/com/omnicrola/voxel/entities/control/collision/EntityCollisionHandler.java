@@ -1,16 +1,16 @@
-package com.omnicrola.voxel.engine.physics;
+package com.omnicrola.voxel.entities.control.collision;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/17/2016.
  */
 public class EntityCollisionHandler extends AbstractCollisionHandler {
-    public EntityCollisionHandler(Spatial spatial, IGameWorld physicsSpace) {
-        super(spatial, physicsSpace);
+    public EntityCollisionHandler(Spatial spatial, WorldManager worldManager) {
+        super(spatial, worldManager);
     }
 
     @Override

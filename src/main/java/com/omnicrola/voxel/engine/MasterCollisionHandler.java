@@ -3,7 +3,7 @@ package com.omnicrola.voxel.engine;
 import com.jme3.bullet.collision.PhysicsCollisionEvent;
 import com.jme3.bullet.collision.PhysicsCollisionListener;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.engine.physics.CollisionController;
+import com.omnicrola.voxel.entities.control.collision.CollisionController;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 

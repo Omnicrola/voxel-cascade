@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.physics;
+package com.omnicrola.voxel.entities.control.collision;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;

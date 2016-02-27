@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.entities.build;
 
+import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Effect;
 
 /**
@@ -7,6 +8,10 @@ import com.omnicrola.voxel.entities.Effect;
  */
 public class EffectsBuilder {
     public Effect buildCubeHarvest() {
+        return null;
+    }
+
+    public Spatial buildVoxelFire(float lifetime, int count) {
         return null;
     }
 }

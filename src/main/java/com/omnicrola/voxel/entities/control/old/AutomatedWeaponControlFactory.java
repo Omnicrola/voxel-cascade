@@ -10,6 +10,7 @@ import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.entities.behavior.ai.AiHoldPositionState;
 import com.omnicrola.voxel.entities.behavior.ai.AiStateMap;
 import com.omnicrola.voxel.entities.behavior.ai.EntityAiController;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
@@ -31,7 +32,7 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     protected Vector3f weaponOffset;
 
     @Override
-    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
         IGameWorld gameWorld = gameContainer.world();
