@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.entities.Effect;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 
 /**
  * Created by Eric on 2/24/2016.
@@ -18,4 +19,6 @@ public interface ITerrainManager {
     IVoxelType getVoxelType(byte type);
 
     void setVoxel(Vec3i location, byte voxelType);
+
+    VoxelData getVoxelAt(Vector3f location);
 }

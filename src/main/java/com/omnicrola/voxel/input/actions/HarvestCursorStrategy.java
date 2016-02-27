@@ -10,7 +10,7 @@ import com.omnicrola.voxel.entities.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.Optional;
@@ -19,13 +19,13 @@ import java.util.Optional;
  * Created by Eric on 2/10/2016.
  */
 public class HarvestCursorStrategy implements ICursorStrategy {
-    private final IGameContainer gameContainer;
+    private ITerrainManager terrainManager;
     private LevelState levelState;
     private final JmeCursor cursor2d;
     private final Geometry cursor3d;
 
-    public HarvestCursorStrategy(IGameContainer gameContainer, LevelState levelState, JmeCursor cursor2d, Geometry cube) {
-        this.gameContainer = gameContainer;
+    public HarvestCursorStrategy(ITerrainManager terrainManager, LevelState levelState, JmeCursor cursor2d, Geometry cube) {
+        this.terrainManager = terrainManager;
         this.levelState = levelState;
         this.cursor2d = cursor2d;
         this.cursor3d = cube;
@@ -37,7 +37,7 @@ public class HarvestCursorStrategy implements ICursorStrategy {
             Optional<CollisionResult> terrainPositionUnderCursor = this.levelState.getWorldCursor().getTerrainPositionUnderCursor();
             if (terrainPositionUnderCursor.isPresent()) {
                 Vector3f contactPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
-                VoxelData voxelData = this.gameContainer.world().getVoxelAt(contactPoint);
+                VoxelData voxelData = this.terrainManager.getVoxelAt(contactPoint);
                 VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelData, contactPoint);
                 currentSelection.orderHarvest(voxelHarvestTarget);
             }

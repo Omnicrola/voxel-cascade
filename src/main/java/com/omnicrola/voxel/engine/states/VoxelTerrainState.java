@@ -17,6 +17,7 @@ import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.terrain.*;
 import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
 import java.util.Arrays;
@@ -86,5 +87,10 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
     @Override
     public void setVoxel(Vec3i location, byte voxelType) {
         this.voxelChunkHandler.set(location, voxelType);
+    }
+
+    @Override
+    public VoxelData getVoxelAt(Vector3f location) {
+        return this.voxelChunkHandler.getVoxelAt(Vec3i.round(location));
     }
 }

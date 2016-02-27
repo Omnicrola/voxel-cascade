@@ -6,10 +6,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
 import com.omnicrola.voxel.terrain.build.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
-import com.omnicrola.voxel.terrain.data.ChunkId;
-import com.omnicrola.voxel.terrain.data.EmptyVoxelChunk;
-import com.omnicrola.voxel.terrain.data.VoxelChunk;
-import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.terrain.data.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,10 +109,11 @@ public class VoxelChunkHandler {
         return solid;
     }
 
-    public IVoxelType getVoxelAt(Vec3i location) {
+    public VoxelData getVoxelAt(Vec3i location) {
         VoxelChunk chunk = getChunkContaining(location);
         byte voxel = chunk.getVoxelGlobal(location);
-        return this.voxelTypeLibrary.lookup(voxel);
+        IVoxelType voxelType = this.voxelTypeLibrary.lookup(voxel);
+        return new VoxelData(chunk, location, voxelType);
     }
 
 

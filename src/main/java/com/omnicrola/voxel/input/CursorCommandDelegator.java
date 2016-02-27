@@ -10,9 +10,8 @@ import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
-import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.terrain.IVoxelType;
+import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorToken;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
@@ -22,6 +21,7 @@ import com.omnicrola.voxel.world.WorldManager;
  */
 public class CursorCommandDelegator {
     private LevelState levelState;
+    private Cursor2dProvider cursor2dProvider;
     private WorldCursor worldCursor;
     private IGameInput gameInput;
     private WorldEntityBuilder worldEntityBuilder;
@@ -30,12 +30,14 @@ public class CursorCommandDelegator {
 
     public CursorCommandDelegator(LevelState levelState,
                                   IGameInput gameInput,
+                                  Cursor2dProvider cursor2dProvider,
                                   WorldCursor worldCursor,
                                   WorldEntityBuilder worldEntityBuilder,
                                   WorldManager worldManager,
                                   ITerrainManager terrainManager) {
         this.levelState = levelState;
         this.gameInput = gameInput;
+        this.cursor2dProvider = cursor2dProvider;
         this.worldCursor = worldCursor;
         this.worldEntityBuilder = worldEntityBuilder;
         this.worldManager = worldManager;
@@ -105,25 +107,20 @@ public class CursorCommandDelegator {
         this.worldCursor.setCursorStrategy(buildVoxelCursorStrategy);
     }
 
-    public void setHarvestStrategy(SelectionGroup selectionGroup) {
+    public void setHarvestStrategy() {
         JmeCursor harvestCursor = getCursor(CursorToken.HARVEST);
-        IWorldBuilder worldBuilder = this.gameContainer.world().build();
 
-        Geometry cube = worldBuilder.terrainVoxel(ColorRGBA.White);
+        Geometry cube = this.worldEntityBuilder.buildCube(ColorRGBA.White);
         cube.getMaterial().getAdditionalRenderState().setWireframe(true);
         cube.setLocalTranslation(0.5f, -0.5f, 0.5f);
         cube.setLocalScale(1.1f);
 
-        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(this.gameContainer, this.levelState, harvestCursor, cube);
+        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(this.terrainManager, this.levelState, harvestCursor, cube);
         this.worldCursor.setCursorStrategy(harvestStrategy);
     }
 
-    private Geometry createVoxel(ColorRGBA color) {
-        return this.gameContainer.world().build().terrainVoxel(color);
-    }
-
     private JmeCursor getCursor(CursorToken cursorToken) {
-        return this.gameContainer.gui().build().cursor(cursorToken);
+        return this.cursor2dProvider.getCursor(cursorToken);
     }
 
 }
