@@ -7,8 +7,8 @@ import com.omnicrola.voxel.entities.behavior.ai.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.DeathControllerFactory;
-import com.omnicrola.voxel.entities.control.old.GroundVehicleControlFactory;
-import com.omnicrola.voxel.entities.control.old.IControlFactory;
+import com.omnicrola.voxel.entities.control.unit.GroundVehicleControlFactory;
+import com.omnicrola.voxel.entities.control.IControlFactory;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;

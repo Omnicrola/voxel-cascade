@@ -7,7 +7,7 @@ import com.omnicrola.voxel.entities.control.collision.CollisionController;
 import com.omnicrola.voxel.entities.control.collision.TerrainCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.physics.VoxelPhysicsControl;
+import com.omnicrola.voxel.terrain.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;

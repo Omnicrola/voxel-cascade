@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 import com.omnicrola.voxel.entities.control.weapon.TargetingController;
 import com.omnicrola.voxel.entities.control.weapon.WeaponsController;
 
@@ -13,11 +13,11 @@ import java.util.Optional;
 public class AiHoldPositionState implements IAiState {
     private TargetingController targetingController;
     private WeaponsController weaponsController;
-    private MotionGovernorControl motionGovernor;
+    private EntityMotionControl motionGovernor;
 
     public AiHoldPositionState(TargetingController targetingController,
                                WeaponsController weaponsController,
-                               MotionGovernorControl motionGovernor) {
+                               EntityMotionControl motionGovernor) {
         this.targetingController = targetingController;
         this.weaponsController = weaponsController;
         this.motionGovernor = motionGovernor;

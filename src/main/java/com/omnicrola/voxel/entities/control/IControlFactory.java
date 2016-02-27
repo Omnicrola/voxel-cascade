@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;

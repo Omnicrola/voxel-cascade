@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.build;
+package com.omnicrola.voxel.entities.control.construction;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
@@ -10,7 +10,6 @@ import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.build.EffectsBuilder;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.entities.control.old.NullConstructionPackage;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.world.WorldManager;
 

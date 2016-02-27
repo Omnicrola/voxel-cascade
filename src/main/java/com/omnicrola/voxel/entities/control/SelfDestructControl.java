@@ -3,7 +3,6 @@ package com.omnicrola.voxel.entities.control;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.world.WorldManager;
 
 /**
@@ -11,11 +10,11 @@ import com.omnicrola.voxel.world.WorldManager;
  */
 public class SelfDestructControl extends AbstractControl {
     private float elapsedTime;
-    private IGamePhysics physics;
+    private WorldManager worldManager;
     private float lifetime;
 
     public SelfDestructControl(WorldManager worldManager, float lifetime) {
-        this.physics = worldManager;
+        this.worldManager = worldManager;
         this.lifetime = lifetime;
         this.elapsedTime = 0f;
     }
@@ -29,7 +28,7 @@ public class SelfDestructControl extends AbstractControl {
     }
 
     protected void destroy() {
-        this.physics.remove(this.spatial);
+        this.worldManager.removeSpatial(this.spatial);
         this.spatial.getParent().detachChild(this.spatial);
     }
 

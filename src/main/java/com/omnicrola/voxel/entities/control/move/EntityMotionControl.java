@@ -1,16 +1,16 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.move;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.units.MovementDefinition;
-import com.omnicrola.voxel.physics.GroundVehicleControl;
+import com.omnicrola.voxel.entities.control.unit.GroundVehicleControl;
 
 /**
  * Created by omnic on 1/16/2016.
  */
-public class MotionGovernorControl extends AbstractControl {
+public class EntityMotionControl extends AbstractControl {
 
     public static final float DAMPENING = 0.0001f;
     public static final Vector3f MAX_VELOCITY = new Vector3f(2, 2, 2);
@@ -18,7 +18,7 @@ public class MotionGovernorControl extends AbstractControl {
     private final Vector3f desiredVelocity;
     private MovementDefinition movementDefinition;
 
-    public MotionGovernorControl(MovementDefinition movementDefinition) {
+    public EntityMotionControl(MovementDefinition movementDefinition) {
         this.movementDefinition = movementDefinition;
         this.desiredVelocity = new Vector3f();
     }

@@ -4,7 +4,7 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.entities.build.EffectsBuilder;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.entities.control.old.IControlFactory;
+import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.fx.VoxelFireSpawnAction;
 import com.omnicrola.voxel.world.WorldManager;
 

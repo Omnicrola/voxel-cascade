@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
@@ -10,13 +10,8 @@ import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.entities.behavior.ai.AiHoldPositionState;
 import com.omnicrola.voxel.entities.behavior.ai.AiStateMap;
 import com.omnicrola.voxel.entities.behavior.ai.EntityAiController;
-import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.entities.control.weapon.LinearProjectileStrategy;
-import com.omnicrola.voxel.entities.control.weapon.ParabolicProjectileStrategy;
-import com.omnicrola.voxel.entities.control.weapon.TargetingController;
-import com.omnicrola.voxel.entities.control.weapon.WeaponsController;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
+import com.omnicrola.voxel.entities.control.move.NullEntityMotionController;
+import com.omnicrola.voxel.entities.control.weapon.*;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -39,13 +34,12 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
-        IGameWorld gameWorld = gameContainer.world();
 
-        IProjectileStrategy projectileFactory = buildProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
-        WeaponsController weaponsController = new WeaponsController(gameWorld, weaponDefinition, weaponOffset, projectileFactory);
-        TargetingController targetingController = new TargetingController(gameWorld);
+        IProjectileStrategy projectileFactory = buildProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
+        WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(), weaponDefinition, weaponOffset, projectileFactory);
+        TargetingController targetingController = new TargetingController(entityControlAdapter.getWorldManager());
 
-        AiHoldPositionState holdPositionState = new AiHoldPositionState(targetingController, weaponsController, NullMotionController.NO_OP);
+        AiHoldPositionState holdPositionState = new AiHoldPositionState(targetingController, weaponsController, NullEntityMotionController.NO_OP);
 
         AiStateMap stateMap = new AiStateMap();
         stateMap.add(holdPositionState);
@@ -57,11 +51,11 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
         spatial.addControl(targetingController);
     }
 
-    private IProjectileStrategy buildProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
+    private IProjectileStrategy buildProjectileFactory(EntityControlAdapter entityControlAdapter, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
         if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
-            return new ParabolicProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
+            return new ParabolicProjectileStrategy(entityControlAdapter, weaponDefinition, projectileDefinition);
         } else {
-            return new LinearProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
+            return new LinearProjectileStrategy(entityControlAdapter, weaponDefinition, projectileDefinition);
         }
     }
 }

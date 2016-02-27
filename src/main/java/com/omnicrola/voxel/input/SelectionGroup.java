@@ -6,9 +6,9 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.SelectedSpatial;
 import com.omnicrola.voxel.entities.behavior.ai.*;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
-import com.omnicrola.voxel.entities.control.old.EntityCommandController;
-import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
-import com.omnicrola.voxel.entities.resources.VoxelHarvestTarget;
+import com.omnicrola.voxel.entities.control.EntityCommandController;
+import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
+import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -86,7 +86,7 @@ public class SelectionGroup {
     }
 
     private float getPersonalRadius(Spatial spatial) {
-        MotionGovernorControl motionControl = spatial.getControl(MotionGovernorControl.class);
+        EntityMotionControl motionControl = spatial.getControl(EntityMotionControl.class);
         if (motionControl == null) {
             return 0;
         } else {

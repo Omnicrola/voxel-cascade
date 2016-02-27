@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.build;
+package com.omnicrola.voxel.entities.control.construction;
 
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;

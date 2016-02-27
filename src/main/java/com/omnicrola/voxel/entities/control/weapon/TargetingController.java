@@ -8,7 +8,6 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.entities.control.old.DistanceSorter;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 import com.omnicrola.voxel.world.WorldManager;

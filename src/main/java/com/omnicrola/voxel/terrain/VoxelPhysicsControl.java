@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.physics;
+package com.omnicrola.voxel.terrain;
 
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.bullet.collision.shapes.MeshCollisionShape;

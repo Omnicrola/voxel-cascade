@@ -8,13 +8,11 @@ import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.entities.control.build.BuildController;
-import com.omnicrola.voxel.entities.control.old.*;
-import com.omnicrola.voxel.entities.control.weapon.LinearProjectileStrategy;
-import com.omnicrola.voxel.entities.control.weapon.ParabolicProjectileStrategy;
-import com.omnicrola.voxel.entities.control.weapon.TargetingController;
-import com.omnicrola.voxel.entities.control.weapon.WeaponsController;
-import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
+import com.omnicrola.voxel.entities.control.IControlFactory;
+import com.omnicrola.voxel.entities.control.construction.BuildController;
+import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
+import com.omnicrola.voxel.entities.control.weapon.*;
+import com.omnicrola.voxel.entities.control.resources.ResourceHarvestController;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -41,7 +39,7 @@ public class EntityAiControlFactory implements IControlFactory {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
-        MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
+        EntityMotionControl motionGovernor = new EntityMotionControl(this.movementDefinition);
         IProjectileStrategy projectileFactory = createProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(entityControlAdapter, weaponDefinition, this.projectileOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(entityControlAdapter);
@@ -63,7 +61,7 @@ public class EntityAiControlFactory implements IControlFactory {
         spatial.addControl(entityAi);
     }
 
-    protected EntityAiController buildAiController(MotionGovernorControl motionGovernor,
+    protected EntityAiController buildAiController(EntityMotionControl motionGovernor,
                                                  WeaponsController weaponsController,
                                                  TargetingController targetingController,
                                                  ResourceHarvestController resourceHarvester,
@@ -87,7 +85,7 @@ public class EntityAiControlFactory implements IControlFactory {
 
     private IAiState buildHoldState(TargetingController targetingController,
                                     WeaponsController weaponController,
-                                    MotionGovernorControl motionGovernor) {
+                                    EntityMotionControl motionGovernor) {
         return new AiHoldPositionState(targetingController, weaponController, motionGovernor);
     }
 

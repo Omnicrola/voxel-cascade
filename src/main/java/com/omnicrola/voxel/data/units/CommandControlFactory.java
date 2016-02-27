@@ -3,8 +3,8 @@ package com.omnicrola.voxel.data.units;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.entities.control.old.EntityCommandController;
-import com.omnicrola.voxel.entities.control.old.IControlFactory;
+import com.omnicrola.voxel.entities.control.EntityCommandController;
+import com.omnicrola.voxel.entities.control.IControlFactory;
 
 import java.util.List;
 

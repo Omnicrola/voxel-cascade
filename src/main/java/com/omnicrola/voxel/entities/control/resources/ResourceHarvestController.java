@@ -1,15 +1,13 @@
-package com.omnicrola.voxel.entities.resources;
+package com.omnicrola.voxel.entities.control.resources;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.data.ILevelManager;
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.fx.ParticleDurationControl;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -19,7 +17,7 @@ import com.omnicrola.voxel.util.VoxelUtil;
 public class ResourceHarvestController extends AbstractControl {
     private boolean startedFx;
     private IHarvestTarget harvestTarget;
-    private Spatial harvestFx;
+    private Effect harvestFx;
     private EntityControlAdapter controlAdapter;
 
     public ResourceHarvestController(EntityControlAdapter controlAdapter) {
@@ -67,25 +65,22 @@ public class ResourceHarvestController extends AbstractControl {
     }
 
     private void startFx() {
-        this.harvestFx = this.gameContainer
-                .world()
-                .build()
-                .particles()
-                .cubicHarvest();
-        this.gameContainer.world().attach(this.harvestFx);
-        this.harvestFx.setLocalTranslation(getTargetLocation());
+        this.harvestFx = this.controlAdapter.getEffectsBuilder().buildCubeHarvest();
+        this.controlAdapter.getWorldManager().addEffect(this.harvestFx);
+        this.harvestFx.setLocation(getTargetLocation());
         this.startedFx = true;
     }
 
     private void stopFx() {
-        this.harvestFx.getControl(ParticleDurationControl.class).resetDuration(0.1f);
+        this.harvestFx.resetDuration(0.1f);
         this.startedFx = false;
     }
 
     public void harvest(float tpf) {
         float resources = harvestTarget.removeResources(tpf);
         TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        this.levelProvider.getCurrentLevel().addResouces(teamData, resources);
+        LevelState currentLevel = this.controlAdapter.getCurrentLevel();
+        currentLevel.addResouces(teamData, resources);
     }
 
     @Override

@@ -7,7 +7,7 @@ import com.omnicrola.voxel.data.units.XmlGameDefinitions;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
-import com.omnicrola.voxel.entities.control.old.AutomatedWeaponControlFactory;
+import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

@@ -6,7 +6,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.entities.resources.VoxelHarvestTarget;
+import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;

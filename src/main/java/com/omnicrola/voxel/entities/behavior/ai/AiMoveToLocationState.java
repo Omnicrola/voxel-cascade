@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 
 /**
  * Created by Eric on 2/17/2016.
@@ -9,10 +9,10 @@ import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
 public class AiMoveToLocationState implements IAiState {
 
     public static final float MINIMUM_DISTANCE = 0.5f;
-    private MotionGovernorControl motionGovernor;
+    private EntityMotionControl motionGovernor;
     private Vector3f targetLocation;
 
-    public AiMoveToLocationState(MotionGovernorControl motionGovernor) {
+    public AiMoveToLocationState(EntityMotionControl motionGovernor) {
         this.motionGovernor = motionGovernor;
     }
 

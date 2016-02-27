@@ -4,8 +4,8 @@ import com.jme3.math.ColorRGBA;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.DeathControllerFactory;
-import com.omnicrola.voxel.entities.control.old.IControlFactory;
-import com.omnicrola.voxel.entities.control.old.StructurePhysicsControlFactory;
+import com.omnicrola.voxel.entities.control.IControlFactory;
+import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;

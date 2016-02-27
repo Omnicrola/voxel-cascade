@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.collision;
 
 import com.jme3.scene.Spatial;
 

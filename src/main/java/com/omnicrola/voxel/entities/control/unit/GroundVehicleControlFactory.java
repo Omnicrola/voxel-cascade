@@ -1,9 +1,10 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.unit;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.physics.GroundVehicleControl;
+import com.omnicrola.voxel.entities.control.IControlFactory;
+import com.omnicrola.voxel.terrain.ITerrainManager;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -21,7 +22,8 @@ public class GroundVehicleControlFactory implements IControlFactory {
 
     @Override
     public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
-        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(gameContainer, this.mass);
+        ITerrainManager terrainManager = entityControlAdapter.getTerrainManager();
+        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(terrainManager, this.mass);
         spatial.addControl(tankVehicleControl);
     }
 }

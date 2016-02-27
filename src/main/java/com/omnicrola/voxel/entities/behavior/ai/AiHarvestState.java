@@ -1,9 +1,9 @@
 package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
-import com.omnicrola.voxel.entities.resources.IHarvestTarget;
-import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
+import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
+import com.omnicrola.voxel.entities.control.resources.IHarvestTarget;
+import com.omnicrola.voxel.entities.control.resources.ResourceHarvestController;
 
 /**
  * Created by Eric on 2/17/2016.
@@ -11,9 +11,9 @@ import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 public class AiHarvestState implements IAiState {
 
     private ResourceHarvestController harvestController;
-    private MotionGovernorControl motionGovernor;
+    private EntityMotionControl motionGovernor;
 
-    public AiHarvestState(ResourceHarvestController harvestController, MotionGovernorControl motionGovernor) {
+    public AiHarvestState(ResourceHarvestController harvestController, EntityMotionControl motionGovernor) {
         this.harvestController = harvestController;
         this.motionGovernor = motionGovernor;
     }

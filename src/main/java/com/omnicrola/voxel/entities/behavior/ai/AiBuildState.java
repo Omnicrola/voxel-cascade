@@ -1,17 +1,17 @@
 package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
-import com.omnicrola.voxel.entities.control.build.BuildController;
-import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.construction.BuildController;
+import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 
 /**
  * Created by Eric on 2/17/2016.
  */
 public class AiBuildState implements IAiState {
-    MotionGovernorControl motionGovernor;
+    EntityMotionControl motionGovernor;
     BuildController buildController;
 
-    public AiBuildState(MotionGovernorControl motionGovernor, BuildController buildController) {
+    public AiBuildState(EntityMotionControl motionGovernor, BuildController buildController) {
         this.motionGovernor = motionGovernor;
         this.buildController = buildController;
     }

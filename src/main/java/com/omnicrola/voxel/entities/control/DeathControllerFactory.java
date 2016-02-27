@@ -2,7 +2,6 @@ package com.omnicrola.voxel.entities.control;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
-import com.omnicrola.voxel.entities.control.old.IControlFactory;
 
 /**
  * Created by omnic on 1/31/2016.

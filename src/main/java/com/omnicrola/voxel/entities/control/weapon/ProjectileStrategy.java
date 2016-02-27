@@ -5,7 +5,6 @@ import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.entities.build.EffectsBuilder;
 import com.omnicrola.voxel.entities.control.collision.CollisionController;
 import com.omnicrola.voxel.entities.control.collision.ProjectileCollisionHandler;
-import com.omnicrola.voxel.entities.control.old.IProjectileStrategy;
 import com.omnicrola.voxel.fx.VoxelShowerSpawnAction;
 import com.omnicrola.voxel.world.WorldManager;
 

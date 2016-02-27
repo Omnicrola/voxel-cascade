@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.resources;
+package com.omnicrola.voxel.entities.control.resources;
 
 import com.jme3.math.Vector3f;
 

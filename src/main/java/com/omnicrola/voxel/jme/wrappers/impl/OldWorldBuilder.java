@@ -16,7 +16,7 @@ import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.StructureDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
-import com.omnicrola.voxel.entities.control.old.IControlFactory;
+import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
