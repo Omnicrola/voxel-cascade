@@ -15,6 +15,7 @@ import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
 import com.omnicrola.voxel.debug.WireframeProcessor;
+import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -122,7 +123,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     }
 
     public VoxelTerrainViewer(BulletAppState bulletAppState) {
-        super(bulletAppState);
+        super(bulletAppState, new EngineShutdownHandler());
     }
 
     @Override

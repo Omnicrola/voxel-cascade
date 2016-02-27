@@ -11,6 +11,14 @@ public class TerrainAdapter {
     private MaterialRepository materialRepository;
     private VoxelTypeLibrary voxelTypeLibrary;
 
+    public TerrainAdapter(WorldManager worldManager,
+                          MaterialRepository materialRepository,
+                          VoxelTypeLibrary voxelTypeLibrary) {
+        this.worldManager = worldManager;
+        this.materialRepository = materialRepository;
+        this.voxelTypeLibrary = voxelTypeLibrary;
+    }
+
     public WorldManager getWorldManager() {
         return worldManager;
     }

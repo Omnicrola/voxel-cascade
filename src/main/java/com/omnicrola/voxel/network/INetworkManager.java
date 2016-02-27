@@ -7,4 +7,6 @@ public interface INetworkManager {
     boolean connectTo(String serverAddress);
 
     void startMultiplayerServer();
+
+    void shutdownMultiplayer();
 }

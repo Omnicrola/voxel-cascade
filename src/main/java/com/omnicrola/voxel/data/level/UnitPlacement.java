@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 
 import javax.xml.bind.annotation.XmlAccessType;
@@ -12,6 +13,7 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
  * Created by Eric on 1/18/2016.
  */
 @XmlAccessorType(XmlAccessType.FIELD)
+@Serializable
 public class UnitPlacement {
 
     @XmlElement(name = "unit-id", required = true)

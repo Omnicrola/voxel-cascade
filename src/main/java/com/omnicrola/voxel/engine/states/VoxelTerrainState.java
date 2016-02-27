@@ -38,13 +38,8 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
+        this.materialRepository = new MaterialRepository(app.getAssetManager());
         this.voxelChunkHandler = buildVoxelChunkHandler(stateManager);
-    }
-
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        this.voxelChunkHandler.update();
     }
 
     private VoxelChunkHandler buildVoxelChunkHandler(AppStateManager stateManager) {
@@ -55,8 +50,14 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
         this.voxelTypeLibrary = new VoxelTypeLibrary();
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
 
-        TerrainAdapter terrainAdapter = new TerrainAdapter();
+        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary);
         return new VoxelChunkHandler(terrainAdapter, voxelChunkRebuilder);
+    }
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+        this.voxelChunkHandler.update();
     }
 
     @Override

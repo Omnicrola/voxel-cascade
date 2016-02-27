@@ -2,6 +2,7 @@ package com.omnicrola.voxel.main.init;
 
 import com.jme3.bullet.BulletAppState;
 import com.jme3.system.AppSettings;
+import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 
 /**
@@ -10,7 +11,7 @@ import com.omnicrola.voxel.engine.VoxelGameEngine;
 public class Bootstrapper {
     public static VoxelGameLauncher bootstrap() {
         BulletAppState bulletAppState = new BulletAppState();
-        VoxelGameEngine gameEngine = new VoxelGameEngine(bulletAppState);
+        VoxelGameEngine gameEngine = new VoxelGameEngine(bulletAppState, new EngineShutdownHandler());
         gameEngine.setShowSettings(false);
 
         AppSettings appSettings = new AppSettings(true);

@@ -23,6 +23,7 @@ public class LevelManager implements ILevelManager {
         this.levelDefinitions = levelDefinitions;
         this.levelStateLoader = levelStateLoader;
         this.observers = new ArrayList<>();
+
     }
 
     @Override

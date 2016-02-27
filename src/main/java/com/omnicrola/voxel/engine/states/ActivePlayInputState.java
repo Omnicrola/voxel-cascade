@@ -5,7 +5,9 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
+import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
@@ -15,15 +17,19 @@ import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
 import com.omnicrola.voxel.input.listeners.PanCameraListener;
 import com.omnicrola.voxel.ui.UiScreen;
 
+import java.util.ArrayList;
+
 /**
  * Created by omnic on 1/15/2016.
  */
 public class ActivePlayInputState extends AbstractAppState {
+    private final ArrayList<Tuple<GameInputAction, ActionListener>> inputs;
     private LevelManager levelManager;
     private InputManager inputManager;
 
     public ActivePlayInputState(LevelManager levelManager) {
         this.levelManager = levelManager;
+        this.inputs = new ArrayList<>();
     }
 
     @Override
@@ -51,14 +57,34 @@ public class ActivePlayInputState extends AbstractAppState {
         panCameraListener.registerInputs(this);
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        super.setEnabled(enabled);
+        if (enabled) {
+            this.inputs.forEach(t -> addListener(t));
+        } else {
+            this.inputs.forEach(t -> removeListener(t));
+        }
+    }
+
+    private void removeListener(Tuple<GameInputAction, ActionListener> listenerTuple) {
+        this.inputManager.removeListener(listenerTuple.getRight());
+    }
+
+    private void addListener(Tuple<GameInputAction, ActionListener> listenerTuple) {
+        this.inputManager.addListener(listenerTuple.getRight(), listenerTuple.getLeft().toString());
+    }
+
     public void addStateInput(GameInputAction gameInputAction, ActionListener actionListener) {
-        this.inputManager.addListener(actionListener, gameInputAction.toString());
+        this.inputs.add(new Tuple<>(gameInputAction, actionListener));
     }
 
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        this.levelManager.getCurrentLevel().addTime(tpf);
+        LevelState currentLevel = this.levelManager.getCurrentLevel();
+        if (currentLevel != null) {
+            currentLevel.addTime(tpf);
+        }
     }
-
 }

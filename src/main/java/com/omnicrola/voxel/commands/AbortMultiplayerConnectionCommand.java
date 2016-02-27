@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.commands;
 
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.world.MessagePackage;
 
 /**
@@ -8,8 +9,7 @@ import com.omnicrola.voxel.world.MessagePackage;
 public class AbortMultiplayerConnectionCommand implements ILocalCommand {
     @Override
     public void execute(MessagePackage messagePackage) {
-//        this.gameContainer.network().closeConnection();
-//        this.gameContainer.gui().changeScreens(UiScreen.MAIN_MENU);
-
+        messagePackage.getNetworkManager().shutdownMultiplayer();
+        messagePackage.getUiManager().changeScreen(UiScreen.MAIN_MENU);
     }
 }

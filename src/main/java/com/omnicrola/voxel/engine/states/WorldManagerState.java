@@ -10,6 +10,7 @@ import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.engine.ITickProvider;
+import com.omnicrola.voxel.engine.ShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.network.ClientNetworkState;
@@ -62,7 +63,9 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
                 this.cursor2dProvider);
         this.levelManager = new LevelManager(levelDefinitionRepository, levelStateLoader);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
+        ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
         this.messagePackage = new MessagePackage(
+                shutdownHandler,
                 this.levelManager,
                 clientNetworkState,
                 entityBuilder,

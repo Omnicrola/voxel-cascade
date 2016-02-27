@@ -46,7 +46,10 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
     }
 
     public void disconnect() {
-        this.networkClient.close();
+        if (this.networkClient != null) {
+            this.networkClient.close();
+            this.networkClient = null;
+        }
     }
 
     @Deprecated
@@ -60,7 +63,6 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
     public void sendLocal(IWorldMessage message) {
         this.commands.add(message);
     }
-
 
     @Override
     public void update(float tpf) {
@@ -91,14 +93,25 @@ public class ClientNetworkState extends AbstractAppState implements IMessageProc
     @Override
     public void cleanup() {
         super.cleanup();
-        if (this.voxelServerEngine != null) {
-            this.voxelServerEngine.stop();
-        }
+        shutdownMultiplayer();
     }
 
     @Override
     public void startMultiplayerServer() {
         this.voxelServerEngine = new VoxelServerEngine();
+        this.voxelServerEngine.enqueue(() -> {
+            System.out.println("Multiplayer Start!");
+            return null;
+        });
         this.voxelServerEngine.start();
+        connectTo("localhost");
+    }
+
+    @Override
+    public void shutdownMultiplayer() {
+        if (this.voxelServerEngine != null) {
+            this.voxelServerEngine.stop();
+            this.voxelServerEngine = null;
+        }
     }
 }

@@ -12,7 +12,6 @@ import com.jme3.niftygui.NiftyJmeDisplay;
 import com.jme3.renderer.RenderManager;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
-import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.world.IWorldNode;
@@ -25,14 +24,15 @@ import de.lessvoid.nifty.Nifty;
 public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
 
     protected BulletAppState bulletAppState;
+    private EngineShutdownHandler shutdownHandler;
     private Nifty niftyGui;
     private LightManager lightManager;
-    private JmeGameContainer gameContainer;
     private VoxelTickProvider ticProvider;
     private WorldRootNode worldRootNode;
 
-    public VoxelGameEngine(BulletAppState bulletAppState) {
+    public VoxelGameEngine(BulletAppState bulletAppState, EngineShutdownHandler shutdownHandler) {
         this.bulletAppState = bulletAppState;
+        this.shutdownHandler = shutdownHandler;
     }
 
     @Override
@@ -42,7 +42,6 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         this.worldRootNode = new WorldRootNode();
         this.rootNode.attachChild(this.worldRootNode);
 
-        this.gameContainer = new JmeGameContainer(this);
         this.ticProvider = new VoxelTickProvider();
         this.stateManager.attach(this.bulletAppState);
         VoxelGameEngineInitializer.initializeGame(this);
@@ -90,6 +89,12 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     @Override
     public void simpleUpdate(float tpf) {
 
+    }
+
+    @Override
+    public void stop() {
+        super.stop();
+        this.shutdownHandler.shutdownAndExit(this);
     }
 
     @Override

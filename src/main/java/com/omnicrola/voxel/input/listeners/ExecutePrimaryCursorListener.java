@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.ILevelManager;
+import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.WorldCursor;
@@ -24,9 +24,11 @@ public class ExecutePrimaryCursorListener implements ActionListener {
             this.isMultiSelecting = isPressed;
         } else if (name.equals(GameInputAction.MOUSE_PRIMARY.toString())) {
             LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
-            WorldCursor worldCursor = currentLevelState.getWorldCursor();
-            GameMouseEvent gameMouseEvent = new GameMouseEvent(isPressed, isMultiSelecting);
-            worldCursor.executePrimary(gameMouseEvent);
+            if (currentLevelState != null) {
+                WorldCursor worldCursor = currentLevelState.getWorldCursor();
+                GameMouseEvent gameMouseEvent = new GameMouseEvent(isPressed, isMultiSelecting);
+                worldCursor.executePrimary(gameMouseEvent);
+            }
         }
     }
 }
