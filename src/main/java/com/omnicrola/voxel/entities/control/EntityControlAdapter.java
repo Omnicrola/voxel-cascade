@@ -1,0 +1,26 @@
+package com.omnicrola.voxel.entities.control;
+
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.entities.build.EffectsBuilder;
+import com.omnicrola.voxel.world.WorldManager;
+
+/**
+ * Created by Eric on 2/27/2016.
+ */
+public class EntityControlAdapter {
+    private EffectsBuilder effectsBuilder;
+    private WorldManager worldManager;
+
+
+    public EffectsBuilder getEffectsBuilder() {
+        return this.effectsBuilder;
+    }
+
+    public WorldManager getWorldManager() {
+        return worldManager;
+    }
+
+    public LevelState getCurrentLevel() {
+        return null;
+    }
+}

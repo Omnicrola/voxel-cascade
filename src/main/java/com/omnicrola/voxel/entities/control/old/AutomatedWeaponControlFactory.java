@@ -31,7 +31,7 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     protected Vector3f weaponOffset;
 
     @Override
-    public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
         IGameWorld gameWorld = gameContainer.world();

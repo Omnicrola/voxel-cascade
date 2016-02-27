@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 /**
@@ -14,10 +15,10 @@ public class LinearProjectileStrategy extends ProjectileStrategy {
     private ProjectileDefinition projectileDefinition;
     private IGameContainer gameContainer;
 
-    public LinearProjectileStrategy(IGameContainer gameContainer,
+    public LinearProjectileStrategy(EntityControlAdapter entityControlAdapter,
                                     WeaponDefinition weaponDefinition,
                                     ProjectileDefinition projectileDefinition) {
-        this.gameContainer = gameContainer;
+        this.gameContainer = entityControlAdapter;
         this.weaponDefinition = weaponDefinition;
         this.projectileDefinition = projectileDefinition;
     }

@@ -5,6 +5,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 /**
@@ -16,13 +17,13 @@ public class ParabolicProjectileStrategy extends ProjectileStrategy {
     private ProjectileDefinition projectileDefinition;
     private IGameContainer gameContainer;
 
-    public ParabolicProjectileStrategy(IGameContainer gameContainer,
+    public ParabolicProjectileStrategy(EntityControlAdapter entityControlAdapter,
                                        WeaponDefinition weaponDefinition,
                                        ProjectileDefinition projectileDefinition
     ) {
         this.weaponDefinition = weaponDefinition;
         this.projectileDefinition = projectileDefinition;
-        this.gameContainer = gameContainer;
+        this.gameContainer = entityControlAdapter;
     }
 
     @Override

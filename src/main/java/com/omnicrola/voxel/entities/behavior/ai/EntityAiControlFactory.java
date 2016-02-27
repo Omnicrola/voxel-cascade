@@ -7,11 +7,10 @@ import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
-import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
+import com.omnicrola.voxel.entities.control.build.BuildController;
 import com.omnicrola.voxel.entities.control.old.*;
 import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -32,18 +31,18 @@ public class EntityAiControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
-        IGameWorld gameWorld = gameContainer.world();
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
+        EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
+
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
-        LevelManager currentLevelState = gameContainer.getState(LevelManager.class);
 
         MotionGovernorControl motionGovernor = new MotionGovernorControl(this.movementDefinition);
-        IProjectileStrategy projectileFactory = createProjectileFactory(gameContainer, weaponDefinition, projectileDefinition);
-        WeaponsController weaponsController = new WeaponsController(gameContainer.world(), weaponDefinition, this.projectileOffset, projectileFactory);
-        TargetingController targetingController = new TargetingController(gameWorld);
-        ResourceHarvestController resourceHarvester = new ResourceHarvestController(currentLevelState, gameContainer);
-        BuildController buildController = new BuildController(gameContainer, currentLevelState);
+        IProjectileStrategy projectileFactory = createProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
+        WeaponsController weaponsController = new WeaponsController(entityControlAdapter, weaponDefinition, this.projectileOffset, projectileFactory);
+        TargetingController targetingController = new TargetingController(entityControlAdapter);
+        ResourceHarvestController resourceHarvester = new ResourceHarvestController(entityControlAdapter);
+        BuildController buildController = new BuildController(entityControlAdapter);
 
         EntityAiController entityAi = buildAiController(
                 motionGovernor,
@@ -88,11 +87,11 @@ public class EntityAiControlFactory implements IControlFactory {
         return new AiHoldPositionState(targetingController, weaponController, motionGovernor);
     }
 
-    private IProjectileStrategy createProjectileFactory(IGameContainer gameContainer, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
+    private IProjectileStrategy createProjectileFactory(EntityControlAdapter entityControlAdapter, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
         if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
-            return new ParabolicProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
+            return new ParabolicProjectileStrategy(entityControlAdapter, weaponDefinition, projectileDefinition);
         } else {
-            return new LinearProjectileStrategy(gameContainer, weaponDefinition, projectileDefinition);
+            return new LinearProjectileStrategy(entityControlAdapter, weaponDefinition, projectileDefinition);
         }
     }
 }

@@ -6,6 +6,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
@@ -23,11 +24,11 @@ public class WeaponsController extends AbstractControl {
     private Vector3f projectileOffset;
     private IProjectileStrategy projectileFactory;
 
-    public WeaponsController(IGameWorld gameWorld,
+    public WeaponsController(EntityControlAdapter entityControlAdapter,
                              WeaponDefinition weaponDefinition,
                              Vector3f projectileOffset,
                              IProjectileStrategy projectileFactory) {
-        this.gameWorld = gameWorld;
+        this.gameWorld = entityControlAdapter;
         this.weaponDefinition = weaponDefinition;
         this.projectileOffset = projectileOffset;
         this.projectileFactory = projectileFactory;

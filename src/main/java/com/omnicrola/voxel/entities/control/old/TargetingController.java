@@ -8,6 +8,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -27,8 +28,8 @@ public class TargetingController extends AbstractControl {
     private Spatial closestTarget;
     private IGameWorld world;
 
-    public TargetingController(IGameWorld world) {
-        this.world = world;
+    public TargetingController(EntityControlAdapter entityControlAdapter) {
+        this.world = entityControlAdapter;
         this.distanceSorter = new DistanceSorter();
         this.lastTargetScan = 0f;
     }

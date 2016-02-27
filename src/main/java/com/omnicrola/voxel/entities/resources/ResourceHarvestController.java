@@ -7,6 +7,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.ILevelManager;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.fx.ParticleDurationControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -18,14 +19,11 @@ import com.omnicrola.voxel.util.VoxelUtil;
 public class ResourceHarvestController extends AbstractControl {
     private boolean startedFx;
     private IHarvestTarget harvestTarget;
-    private ILevelManager levelProvider;
-    private IGameContainer gameContainer;
     private Spatial harvestFx;
+    private EntityControlAdapter controlAdapter;
 
-    public ResourceHarvestController(ILevelManager levelProvider, IGameContainer gameContainer) {
-        this.levelProvider = levelProvider;
-        this.gameContainer = gameContainer;
-        this.startedFx = false;
+    public ResourceHarvestController(EntityControlAdapter controlAdapter) {
+        this.controlAdapter = controlAdapter;
     }
 
     public void setTarget(IHarvestTarget target) {

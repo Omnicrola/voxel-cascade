@@ -1,17 +1,18 @@
-package com.omnicrola.voxel.entities.control.old;
+package com.omnicrola.voxel.entities.control.build;
 
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.data.ILevelManager;
+import com.omnicrola.voxel.entities.Effect;
+import com.omnicrola.voxel.entities.build.EffectsBuilder;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
-import com.omnicrola.voxel.fx.ParticleDurationControl;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
+import com.omnicrola.voxel.entities.control.old.NullConstructionPackage;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 2/11/2016.
@@ -20,13 +21,11 @@ public class BuildController extends AbstractControl {
 
     private IConstructionPackage constructionPackage;
     private boolean startedFx;
-    private IGameContainer gameContainer;
-    private ILevelManager levelProvider;
-    private Spatial buildFx;
+    private Effect buildFx;
+    private EntityControlAdapter entityControlAdapter;
 
-    public BuildController(IGameContainer gameContainer, ILevelManager levelProvider) {
-        this.gameContainer = gameContainer;
-        this.levelProvider = levelProvider;
+    public BuildController(EntityControlAdapter entityControlAdapter) {
+        this.entityControlAdapter = entityControlAdapter;
         this.startedFx = false;
         clearConstructionPackage();
     }
@@ -51,20 +50,17 @@ public class BuildController extends AbstractControl {
     }
 
     private void startFx() {
-        this.buildFx = this.gameContainer
-                .world()
-                .build()
-                .particles()
-                .cubicHarvest();
-        this.gameContainer.world().attach(this.buildFx);
-        this.buildFx.setLocalTranslation(getTargetLocation());
+        EffectsBuilder effectsBuilder= this.entityControlAdapter.getEffectsBuilder();
+        this.buildFx = effectsBuilder.buildCubeHarvest();
+        WorldManager worldManager=this.entityControlAdapter.getWorldManager();
+        worldManager.addEffect(this.buildFx);
+        this.buildFx.setLocation(getTargetLocation());
         this.startedFx = true;
     }
 
     private void stopFx() {
         if (this.buildFx != null) {
-            ParticleDurationControl durationControl = this.buildFx.getControl(ParticleDurationControl.class);
-            durationControl.resetDuration(0.1f);
+            this.buildFx.resetDuration(0.1f);
         }
         this.startedFx = false;
     }
@@ -73,7 +69,8 @@ public class BuildController extends AbstractControl {
         if (!this.startedFx) {
             startFx();
         }
-        LevelState currentLevel = this.levelProvider.getCurrentLevel();
+
+        LevelState currentLevel = this.entityControlAdapter.getCurrentLevel();
         float resourcesUsed = this.constructionPackage.applyResourceTic(tpf);
         TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
         currentLevel.removeResources(teamData, resourcesUsed);

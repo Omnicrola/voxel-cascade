@@ -4,7 +4,6 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.old.EntityCommandController;
 import com.omnicrola.voxel.entities.control.old.IControlFactory;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 
 import java.util.List;
 
@@ -21,7 +20,7 @@ public class CommandControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
         EntityCommandController commandController = new EntityCommandController(this.commands, buildCommands);
         spatial.addControl(commandController);
     }

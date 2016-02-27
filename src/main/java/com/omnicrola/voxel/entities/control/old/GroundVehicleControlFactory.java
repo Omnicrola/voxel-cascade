@@ -2,7 +2,6 @@ package com.omnicrola.voxel.entities.control.old;
 
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.physics.GroundVehicleControl;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -20,7 +19,7 @@ public class GroundVehicleControlFactory implements IControlFactory {
     }
 
     @Override
-    public void build(Spatial spatial, IGameContainer gameContainer, UnitDefinitionRepository unitDefinitionRepository) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository) {
         GroundVehicleControl tankVehicleControl = new GroundVehicleControl(gameContainer, this.mass);
         spatial.addControl(tankVehicleControl);
     }

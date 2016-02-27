@@ -7,7 +7,7 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Unit;
-import com.omnicrola.voxel.entities.control.old.BuildCursorValidityControl;
+import com.omnicrola.voxel.entities.control.build.BuildCursorValidityControl;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;

@@ -66,7 +66,7 @@ public class OldWorldBuilder implements IWorldBuilder {
         UnitDefinition unitDefinition = getUnitDefinition(definitionId);
         Spatial spatial = unitCursor(definitionId);
         for (IControlFactory factory : unitDefinition.getControlFactories()) {
-            factory.build(spatial, this.gameContainer, this.definitionRepository);
+            factory.build(spatial, this.definitionRepository);
         }
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
@@ -84,7 +84,7 @@ public class OldWorldBuilder implements IWorldBuilder {
         Spatial structure = buildStructureModel(structureDefinition);
 
         for (IControlFactory factory : structureDefinition.getControlFactories()) {
-            factory.build(structure, this.gameContainer, this.definitionRepository);
+            factory.build(structure, this.definitionRepository);
         }
 
         structure.setUserData(EntityDataKeys.IS_SELECTABLE, true);
