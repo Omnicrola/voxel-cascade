@@ -1,8 +1,6 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.data.ILevelManager;
-import com.omnicrola.voxel.jme.wrappers.IGameGui;
-import com.omnicrola.voxel.ui.controllers.UiLevelChangeObserver;
+import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.ActivePlayScreenController;
@@ -17,13 +15,12 @@ import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
  * Created by Eric on 1/25/2016.
  */
 public class ActivePlayUiBuilder {
-    public static void build(IGameGui gameGui, ILevelManager levelProvider) {
+    public static void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.ACTIVE_PLAY.toString();
 
-        final ActivePlayScreenController activePlayScreenController = new ActivePlayScreenController();
-        levelProvider.addObserver(new UiLevelChangeObserver(activePlayScreenController));
+        final ActivePlayScreenController activePlayScreenController = new ActivePlayScreenController(uiAdapter);
 
-        gameGui.build().screen(screenName, new ScreenBuilder(screenName) {{
+        uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(activePlayScreenController);
             layer(new LayerBuilder("foreground") {{
                 childLayoutHorizontal();

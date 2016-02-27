@@ -50,7 +50,7 @@ public enum EntityCommand implements IEntityCommand {
     HARVEST(5){
         @Override
         public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
-            cursorCommandDelegator.setHarvestStrategy(selectionGroup);
+            cursorCommandDelegator.setHarvestStrategy();
             return null;
         }
     };

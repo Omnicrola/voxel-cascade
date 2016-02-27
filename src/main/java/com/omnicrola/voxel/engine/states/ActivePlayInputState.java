@@ -1,56 +1,63 @@
 package com.omnicrola.voxel.engine.states;
 
+import com.jme3.app.Application;
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
+import com.jme3.input.InputManager;
+import com.jme3.input.controls.ActionListener;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.engine.CameraDolly;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
 import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
 import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
 import com.omnicrola.voxel.input.listeners.PanCameraListener;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.UiScreen;
 
 /**
  * Created by omnic on 1/15/2016.
  */
-public class ActivePlayInputState extends VoxelGameState {
+public class ActivePlayInputState extends AbstractAppState {
+    private LevelManager levelManager;
+    private InputManager inputManager;
 
-    private IGameContainer gameContainer;
-
-    @Override
-    protected void voxelInitialize(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
-        initializeKeybindings(gameContainer);
-        setEnabled(false);
+    public ActivePlayInputState(LevelManager levelManager) {
+        this.levelManager = levelManager;
     }
 
-    private void initializeKeybindings(IGameContainer gameContainer) {
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
+        this.inputManager = app.getInputManager();
+        voxelGameEngine.getFlyByCamera().setMoveSpeed(10f);
+        voxelGameEngine.getNiftyGui().gotoScreen(UiScreen.ACTIVE_PLAY.toString());
 
-        LevelManager currentLevelState = gameContainer.getState(LevelManager.class);
-        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(currentLevelState));
+        initializeKeybindings(voxelGameEngine);
+    }
 
-        ExecutePrimaryCursorListener primaryCursorListener = new ExecutePrimaryCursorListener(currentLevelState);
+    private void initializeKeybindings(VoxelGameEngine voxelGameEngine) {
+
+        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this.levelManager));
+
+        ExecutePrimaryCursorListener primaryCursorListener = new ExecutePrimaryCursorListener(this.levelManager);
         addStateInput(GameInputAction.MULTI_SELECT, primaryCursorListener);
         addStateInput(GameInputAction.MOUSE_PRIMARY, primaryCursorListener);
-        addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(currentLevelState));
+        addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this.levelManager));
 
-        PanCameraListener panCameraListener = new PanCameraListener(gameContainer.gui(), gameContainer.input());
+        PanCameraListener panCameraListener = new PanCameraListener(new CameraDolly(voxelGameEngine.getCamera()));
         panCameraListener.registerInputs(this);
     }
 
-    @Override
-    protected void voxelEnable(IGameContainer gameContainer) {
-        gameContainer.input().setCameraMoveSpeed(10);
-        gameContainer.gui().changeScreens(UiScreen.ACTIVE_PLAY);
+    public void addStateInput(GameInputAction gameInputAction, ActionListener actionListener) {
+        this.inputManager.addListener(actionListener, gameInputAction.toString());
     }
 
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        this.gameContainer.getState(LevelManager.class).getCurrentLevel().addTime(tpf);
-    }
-
-    @Override
-    protected void voxelDisable(IGameContainer gameContainer) {
+        this.levelManager.getCurrentLevel().addTime(tpf);
     }
 
 }

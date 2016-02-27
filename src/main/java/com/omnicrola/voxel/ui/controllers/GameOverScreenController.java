@@ -1,11 +1,13 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.engine.states.ActivePlayInputState;
 import com.omnicrola.voxel.engine.states.GameOverState;
 import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 import com.omnicrola.voxel.jme.wrappers.IStateManager;
 import com.omnicrola.voxel.ui.SubscriberLink;
+import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
@@ -23,20 +25,18 @@ import java.util.List;
  */
 public class GameOverScreenController extends AbstractScreenController {
 
-    private IStateManager stateManager;
-    private ILevelManager currentLevelProvider;
+    private UiAdapter uiAdapter;
 
-    public GameOverScreenController(IStateManager stateManager, ILevelManager currentLevelProvider) {
-        this.stateManager = stateManager;
-        this.currentLevelProvider = currentLevelProvider;
+    public GameOverScreenController(UiAdapter uiAdapter) {
+        this.uiAdapter = uiAdapter;
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MAIN_MENU")
     @SubscriberLink(UiToken.BUTTON_MAIN_MENU)
     public void triggerMainMenuButton(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.stateManager.disableState(ActivePlayInputState.class);
-        this.stateManager.disableState(GameOverState.class);
-        this.stateManager.enableState(MainMenuState.class);
+        this.uiAdapter.disableState(ActivePlayInputState.class);
+        this.uiAdapter.disableState(GameOverState.class);
+        this.uiAdapter.enableState(MainMenuState.class);
     }
 
 

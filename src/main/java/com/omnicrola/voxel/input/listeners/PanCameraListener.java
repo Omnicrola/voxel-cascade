@@ -2,22 +2,19 @@ package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
+import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.states.ActivePlayInputState;
 import com.omnicrola.voxel.input.GameInputAction;
-import com.omnicrola.voxel.jme.wrappers.IGameGui;
-import com.omnicrola.voxel.jme.wrappers.IGameInput;
 
 /**
  * Created by Eric on 1/24/2016.
  */
 public class PanCameraListener implements ActionListener, AnalogListener {
 
-    private IGameGui gameGui;
-    private IGameInput input;
+    private CameraDolly camera;
 
-    public PanCameraListener(IGameGui gameGui, IGameInput input) {
-        this.gameGui = gameGui;
-        this.input = input;
+    public PanCameraListener(CameraDolly camera) {
+        this.camera = camera;
     }
 
     @Override
@@ -25,7 +22,8 @@ public class PanCameraListener implements ActionListener, AnalogListener {
     }
 
     private void moveCamera(float movementDistance, boolean sideways) {
-        this.gameGui.moveCamera(movementDistance, sideways);
+        this.camera.moveCamera(movementDistance, sideways);
+
     }
 
     @Override

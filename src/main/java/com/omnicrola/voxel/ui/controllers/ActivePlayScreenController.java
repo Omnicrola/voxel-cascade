@@ -6,14 +6,17 @@ import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.ui.ISelectedUnit;
 import com.omnicrola.voxel.ui.SubscriberLink;
+import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
+import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
+import de.lessvoid.nifty.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -23,15 +26,19 @@ import java.util.List;
  * Created by Eric on 1/25/2016.
  */
 public class ActivePlayScreenController extends AbstractScreenController {
-    private final UiCurrentSelectionObserver currentSelectionObserver;
-    private LevelState currentLevel;
     private SelectionGroup currentSelection;
     private List<CommandGroup> actionCommands;
-    private UiLevelObserver levelObserver;
+    private UiAdapter uiAdapter;
 
-    public ActivePlayScreenController() {
-        this.currentSelectionObserver = new UiCurrentSelectionObserver(this);
-        this.levelObserver = new UiLevelObserver(this);
+    public ActivePlayScreenController(UiAdapter uiAdapter) {
+        this.uiAdapter = uiAdapter;
+    }
+
+    @Override
+    public void bind(Nifty nifty, Screen screen) {
+        super.bind(nifty, screen);
+        this.uiAdapter.addUnitSelectionObserver(new UiCurrentSelectionObserver(this));
+        this.uiAdapter.addCurrentLevelObserver(new UiLevelObserver(this));
     }
 
     @NiftyEventSubscriber(id = "ACTION_1")
@@ -64,26 +71,17 @@ public class ActivePlayScreenController extends AbstractScreenController {
         triggerCommandGroup(5);
     }
 
-    public void setLevel(LevelState newLevel) {
-        if (this.currentLevel != null) {
-            this.currentLevel.getWorldCursor().removeSelectionObserver(this.currentSelectionObserver);
-        }
-        newLevel.getWorldCursor().addSelectionObserver(this.currentSelectionObserver);
-        newLevel.addObserver(this.levelObserver);
-        this.currentLevel = newLevel;
-    }
-
     public void setCurrentSelection(SelectionGroup currentSelection) {
         this.currentSelection = currentSelection;
         updateSelectionList();
         setCommandLabels(this.currentSelection.getAvailableCommands());
     }
 
-    public void updateStats() {
-        TeamData playerTeam = this.currentLevel.getPlayerTeam();
-        float resources = this.currentLevel.getResources(playerTeam);
+    public void updateStats(LevelState currentLevel) {
+        TeamData playerTeam = currentLevel.getPlayerTeam();
+        float resources = currentLevel.getResources(playerTeam);
         IUiElement resourceLabel = ui().getElement(UiToken.RESOURCE_AMOUNT);
-        resourceLabel.setText(String.valueOf((int)resources));
+        resourceLabel.setText(String.valueOf((int) resources));
     }
 
     private void setCommandLabels(List<CommandGroup> newCommands) {

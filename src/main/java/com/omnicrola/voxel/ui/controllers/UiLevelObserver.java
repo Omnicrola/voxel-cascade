@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.data.ILevelObserver;
+import com.omnicrola.voxel.data.level.LevelState;
 
 /**
  * Created by omnic on 2/11/2016.
@@ -13,7 +14,7 @@ public class UiLevelObserver implements ILevelObserver {
     }
 
     @Override
-    public void levelChanged() {
-        this.activePlayScreenController.updateStats();
+    public void levelChanged(LevelState currentLevel) {
+        this.activePlayScreenController.updateStats(currentLevel);
     }
 }

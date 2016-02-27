@@ -1,9 +1,9 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.MainMenuScreenController;
+import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.*;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 
@@ -12,11 +12,11 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
  */
 public class MainMenuUiBuilder {
 
-    public static void build(IGameContainer gameContainer) {
+    public static void build(Nifty nifty) {
         String screenName = UiScreen.MAIN_MENU.toString();
         final MainMenuScreenController mainMenuScreenController = new MainMenuScreenController(gameContainer);
 
-        gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
+        nifty.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(mainMenuScreenController);
             layer(new LayerBuilder("background") {
                 {
@@ -103,6 +103,6 @@ public class MainMenuUiBuilder {
                     }});
                 }}); // panel added
             }});
-        }});
+        }}.build(nifty));
     }
 }

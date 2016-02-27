@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.SimpleApplication;
+import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.KeyInput;
 import com.jme3.input.MouseInput;
@@ -11,20 +12,28 @@ import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
+import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.debug.DebugState;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.*;
 import com.omnicrola.voxel.input.GameInputAction;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
-import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.network.ClientNetworkState;
+import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.ui.Cursor2dProvider;
+import com.omnicrola.voxel.ui.CursorProviderBuilder;
+import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.builders.ActivePlayUiBuilder;
 import com.omnicrola.voxel.ui.builders.GameOverUiBuilder;
 import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
 import com.omnicrola.voxel.ui.builders.MultiplayerUiBuilder;
+import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.WorldManager;
+import de.lessvoid.nifty.Nifty;
 
 import java.util.Arrays;
 
@@ -32,41 +41,56 @@ import java.util.Arrays;
  * Created by omnic on 1/15/2016.
  */
 public class VoxelGameEngineInitializer {
-    public static void initializeGame(IGameContainer gameContainer, InputManager inputManager) {
-        createStates(gameContainer);
+
+
+    public static void initializeGame(VoxelGameEngine voxelGameEngine, InputManager inputManager) {
+        createStates(voxelGameEngine);
         createInputMappings(inputManager);
     }
 
-    private static void createStates(IGameContainer gameContainer) {
+    private static void createStates(VoxelGameEngine voxelGameEngine) {
         DebugState debugState = new DebugState();
         LoadingState loadingState = new LoadingState();
 
         VoxelTerrainState voxelTerrainState = createTerrainState();
         UiState uiState = new UiState();
-        WorldManagerState worldManagerState = new WorldManagerState(new GameXmlDataParser());
+        GameXmlDataParser gameDataParser = new GameXmlDataParser();
+        LevelDefinitionRepository levelDefinitionRepository = gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
+        CursorProviderBuilder cursorProviderBuilder = new CursorProviderBuilder();
+        Cursor2dProvider cursor2dProvider = cursorProviderBuilder.build(voxelGameEngine.getAssetManager());
+        WorldManagerState worldManagerState = new WorldManagerState(gameDataParser, cursor2dProvider);
         ClientNetworkState clientNetworkState = new ClientNetworkState();
 
-        LevelManager currentLevelState = new LevelManager(new GameXmlDataParser());
-        ActivePlayInputState playState = new ActivePlayInputState();
+        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode());
+        WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder();
+        LevelStateLoader levelStateLoader = new LevelStateLoader(
+                voxelGameEngine,
+                clientNetworkState,
+                voxelTerrainState,
+                worldManager,
+                worldEntityBuilder,
+                cursor2dProvider);
+        LevelManager levelManager = new LevelManager(levelDefinitionRepository, levelStateLoader);
+        ActivePlayInputState playState = new ActivePlayInputState(levelManager);
         MainMenuState mainMenuState = new MainMenuState();
         GameOverState gameOverState = new GameOverState();
         ShadowState shadowState = new ShadowState();
 
-        gameContainer.addState(debugState);
-        gameContainer.addState(loadingState);
+        AppStateManager stateManager = voxelGameEngine.getStateManager();
+        stateManager.attach(debugState);
+        stateManager.attach(loadingState);
 
-        gameContainer.addState(voxelTerrainState);
-        gameContainer.addState(worldManagerState);
-        gameContainer.addState(clientNetworkState);
-        gameContainer.addState(uiState);
+        stateManager.attach(voxelTerrainState);
+        stateManager.attach(worldManagerState);
+        stateManager.attach(clientNetworkState);
+        stateManager.attach(uiState);
 
-        gameContainer.addState(currentLevelState);
-        gameContainer.addState(mainMenuState);
-        gameContainer.addState(playState);
-        gameContainer.addState(gameOverState);
-        gameContainer.addState(shadowState);
+        stateManager.attach(mainMenuState);
+        stateManager.attach(playState);
+        stateManager.attach(gameOverState);
+        stateManager.attach(shadowState);
 
-        createGui(gameContainer, clientNetworkState, worldManagerState);
+        createGui(voxelGameEngine,levelManager, clientNetworkState, worldManagerState);
     }
 
     private static VoxelTerrainState createTerrainState() {
@@ -77,14 +101,18 @@ public class VoxelGameEngineInitializer {
         return new VoxelTerrainState(voxelTerrainGenerator);
     }
 
-    private static void createGui(IGameContainer gameContainer, IMessageProcessor messageProcessor, ICommandProcessor commandProcessor) {
-        LevelManager currentLevelState = gameContainer.getState(LevelManager.class);
-        IGameGui gameGui = gameContainer.gui();
-        ActivePlayUiBuilder.build(gameGui, currentLevelState);
+    private static void createGui(VoxelGameEngine voxelGameEngine,
+                                  LevelManager levelManager,
+                                  IMessageProcessor messageProcessor,
+                                  ICommandProcessor commandProcessor) {
 
-        GameOverUiBuilder.build(gameGui, gameContainer, currentLevelState);
-        MainMenuUiBuilder.build(gameContainer);
-        MultiplayerUiBuilder.build(gameContainer, messageProcessor, commandProcessor);
+        UiAdapter uiAdapter = new UiAdapter(voxelGameEngine);
+        ActivePlayUiBuilder.build(uiAdapter);
+
+        AppStateManager stateManager = voxelGameEngine.getStateManager();
+        GameOverUiBuilder.build(uiAdapter);
+        MainMenuUiBuilder.build(nifty, gameContainer);
+        MultiplayerUiBuilder.build(nifty, gameContainer, messageProcessor, commandProcessor);
     }
 
     private static void createInputMappings(InputManager inputManager) {

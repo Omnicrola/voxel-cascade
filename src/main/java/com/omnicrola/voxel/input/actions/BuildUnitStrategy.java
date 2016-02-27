@@ -53,7 +53,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
                     Vector3f location = terrainUnderCursor.get().getContactPoint();
                     UnitPlacement unitPlacement = new UnitPlacement(this.unitId, levelState.getPlayerTeam().getId(), location);
                     Unit newUnit = this.worldEntityBuilder.buildUnit(unitPlacement);
-                    this.worldManager.addEntity(newUnit);
+                    this.worldManager.addUnit(newUnit);
 
                     worldCursor.clearCursorStrategy();
                 }
