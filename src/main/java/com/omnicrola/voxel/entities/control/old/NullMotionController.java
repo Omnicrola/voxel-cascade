@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control;
+package com.omnicrola.voxel.entities.control.old;
 
 /**
  * Created by omnic on 2/6/2016.

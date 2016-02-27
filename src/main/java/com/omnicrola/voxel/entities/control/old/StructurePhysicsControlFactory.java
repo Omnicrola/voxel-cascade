@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control;
+package com.omnicrola.voxel.entities.control.old;
 
 import com.jme3.bullet.control.RigidBodyControl;
 import com.jme3.scene.Spatial;

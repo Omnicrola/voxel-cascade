@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control;
+package com.omnicrola.voxel.entities.control.old;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.math.Vector3f;

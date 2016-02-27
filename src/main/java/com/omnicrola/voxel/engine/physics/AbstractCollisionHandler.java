@@ -4,7 +4,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
 import com.omnicrola.voxel.entities.commands.NullDeathAction;
-import com.omnicrola.voxel.entities.control.ISpatialCollisionHandler;
+import com.omnicrola.voxel.entities.control.old.ISpatialCollisionHandler;
 import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 

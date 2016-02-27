@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.ai;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
 import com.omnicrola.voxel.entities.resources.IHarvestTarget;
 import com.omnicrola.voxel.entities.resources.ResourceHarvestController;
 

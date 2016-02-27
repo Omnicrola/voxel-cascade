@@ -4,7 +4,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
-import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
+import com.omnicrola.voxel.entities.control.old.AutomatedWeaponControlFactory;
 
 /**
  * Created by omnic on 1/24/2016.

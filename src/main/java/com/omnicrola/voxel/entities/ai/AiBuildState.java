@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.entities.ai;
 
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
-import com.omnicrola.voxel.entities.control.BuildController;
-import com.omnicrola.voxel.entities.control.MotionGovernorControl;
+import com.omnicrola.voxel.entities.control.old.BuildController;
+import com.omnicrola.voxel.entities.control.old.MotionGovernorControl;
 
 /**
  * Created by Eric on 2/17/2016.

@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.entities.control;
+package com.omnicrola.voxel.entities.control.old;
 
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
