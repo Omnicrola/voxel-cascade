@@ -17,13 +17,13 @@ import java.util.Map;
 public class VoxelChunkHandler {
 
     private final Map<ChunkId, VoxelChunk> chunks;
-    private VoxelTypeLibrary voxelTypeLibrary;
+    private TerrainAdapter terrainAdapter;
     private VoxelChunkRebuilder voxelChunkRebuilder;
     private Node parentNode;
     private FaceBuilder faceBuilder;
 
-    public VoxelChunkHandler(VoxelTypeLibrary voxelTypeLibrary, VoxelChunkRebuilder voxelChunkRebuilder) {
-        this.voxelTypeLibrary = voxelTypeLibrary;
+    public VoxelChunkHandler(TerrainAdapter terrainAdapter, VoxelChunkRebuilder voxelChunkRebuilder) {
+        this.terrainAdapter = terrainAdapter;
         this.voxelChunkRebuilder = voxelChunkRebuilder;
         this.faceBuilder = new FaceBuilder(this, OcclusionCalculatorBuilder.build(this));
         this.chunks = new HashMap<>();
@@ -51,7 +51,7 @@ public class VoxelChunkHandler {
 
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
-            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder);
+            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder, terrainAdapter.getWorldManager());
             Vector3f translate = new Vector3f(chunkId.getX(), chunkId.getY(), chunkId.getZ()).multLocal(16);
             chunk.setLocalTranslation(translate);
             if (this.parentNode != null) {
@@ -112,7 +112,7 @@ public class VoxelChunkHandler {
     public VoxelData getVoxelAt(Vec3i location) {
         VoxelChunk chunk = getChunkContaining(location);
         byte voxel = chunk.getVoxelGlobal(location);
-        IVoxelType voxelType = this.voxelTypeLibrary.lookup(voxel);
+        IVoxelType voxelType = this.terrainAdapter.lookupVoxelType(voxel);
         return new VoxelData(chunk, location, voxelType);
     }
 

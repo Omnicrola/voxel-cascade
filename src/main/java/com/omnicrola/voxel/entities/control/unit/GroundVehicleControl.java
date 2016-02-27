@@ -44,7 +44,7 @@ public class GroundVehicleControl extends CharacterControl {
         Vector3f physicsLocation = this.getPhysicsLocation();
         boolean isBelowTerrain = this.terrainManager.isBelowTerrain(this.geometry);
         if (isBelowTerrain) {
-            Vector3f newPosition = this.terrainManager.getLowestEmptyVoxel(physicsLocation).add(0, 0.1f, 0);
+            Vector3f newPosition = this.terrainManager.getLowestNonSolidVoxel(physicsLocation).add(0, 0.1f, 0);
             this.warp(newPosition);
         }
     }

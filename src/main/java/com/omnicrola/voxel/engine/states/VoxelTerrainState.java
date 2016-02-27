@@ -10,15 +10,14 @@ import com.jme3.scene.shape.Box;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.engine.MaterialRepository;
-import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.fx.MaterialToken;
-import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
 import com.omnicrola.voxel.terrain.*;
 import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.Arrays;
 
@@ -39,8 +38,7 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
-        this.voxelChunkHandler = buildVoxelChunkHandler(voxelGameEngine);
+        this.voxelChunkHandler = buildVoxelChunkHandler(stateManager);
     }
 
     @Override
@@ -49,14 +47,16 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
         this.voxelChunkHandler.update();
     }
 
-    private VoxelChunkHandler buildVoxelChunkHandler(VoxelGameEngine voxelGameEngine) {
-        JmeGameContainer jmeGameContainer = new JmeGameContainer(voxelGameEngine);
-        this.materialRepository = new MaterialRepository(voxelGameEngine.getAssetManager());
+    private VoxelChunkHandler buildVoxelChunkHandler(AppStateManager stateManager) {
+        WorldManager worldManager = stateManager.getState(WorldManagerState.class).getWorldManager();
+
         TerrainQuadFactory quadFactory = new TerrainQuadFactory(materialRepository);
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, jmeGameContainer.physics(), jmeGameContainer.world());
+        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, worldManager);
         this.voxelTypeLibrary = new VoxelTypeLibrary();
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
-        return new VoxelChunkHandler(voxelTypeLibrary, voxelChunkRebuilder);
+
+        TerrainAdapter terrainAdapter = new TerrainAdapter();
+        return new VoxelChunkHandler(terrainAdapter, voxelChunkRebuilder);
     }
 
     @Override
@@ -92,6 +92,18 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
     @Override
     public VoxelData getVoxelAt(Vector3f location) {
         return this.voxelChunkHandler.getVoxelAt(Vec3i.round(location));
+    }
+
+    @Override
+    public boolean isBelowTerrain(Geometry geometry) {
+        Vector3f worldLocation = geometry.getWorldTranslation();
+        Vec3i location = Vec3i.floor(worldLocation.add(0, 0.5f, 0));
+        return this.voxelChunkHandler.isVoxelSolidAt(location);
+    }
+
+    @Override
+    public Vector3f getLowestNonSolidVoxel(Vector3f location) {
+        return this.voxelChunkHandler.findLowestNonSolidVoxel(location);
     }
 
     public void globalRebuild() {

@@ -2,12 +2,9 @@ package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
-
-import java.util.Arrays;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -25,9 +22,11 @@ public class VoxelChunk extends Node {
     private ChunkId chunkId;
     private boolean isDirty;
     private FaceBuilder faceBuilder;
+    private WorldManager worldManager;
 
-    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder) {
+    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder, WorldManager worldManager) {
         this.faceBuilder = faceBuilder;
+        this.worldManager = worldManager;
         setName("Chunk ID:" + chunkId);
         this.chunkId = chunkId;
         int size = GameConstants.CHUNK_SIZE;
@@ -81,12 +80,8 @@ public class VoxelChunk extends Node {
     }
 
 
-    private IVoxelType getType(byte type) {
-        return Arrays.asList(VoxelType.values()).stream().filter(t -> t.uniqueId() == type).findFirst().get();
-    }
-
-    public void clearGeometry(IGamePhysics gamePhysics) {
-        this.getChildren().forEach(spatial -> gamePhysics.remove(spatial));
+    public void clearGeometry() {
+        this.getChildren().forEach(spatial -> this.worldManager.removeTerrain(spatial));
         this.detachAllChildren();
     }
 

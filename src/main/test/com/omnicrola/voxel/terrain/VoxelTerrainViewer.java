@@ -37,7 +37,6 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     private JmeGameContainer jmeApplicationWrapper;
     private Node terrainNode;
     private WireframeProcessor wireframeProcessor;
-    private OldVoxelTerrainGenerator voxelTerrainGenerator;
     private PerlinNoiseGenerator perlinNoiseGenerator;
 
     private class DebugSceneGraphListener implements ActionListener {
@@ -136,9 +135,9 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
         getViewPort().addProcessor(this.wireframeProcessor);
 
         jmeApplicationWrapper = new JmeGameContainer(this);
-        ChunkHandlerFactory chunkHandlerFactory = new ChunkHandlerFactory(jmeApplicationWrapper);
+//        ChunkHandlerFactory chunkHandlerFactory = new ChunkHandlerFactory(jmeApplicationWrapper);
         perlinNoiseGenerator = new PerlinNoiseGenerator();
-        voxelTerrainGenerator = new OldVoxelTerrainGenerator(chunkHandlerFactory, perlinNoiseGenerator);
+//        voxelTerrainGenerator = new OldVoxelTerrainGenerator(chunkHandlerFactory, perlinNoiseGenerator);
         loadLevel();
 
         RebuildTerrainListener rebuildTerrainListener = new RebuildTerrainListener();
@@ -194,7 +193,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
 
         VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
-        terrainNode = voxelTerrainGenerator.load(levelData, voxelTypeLibrary);
+//        terrainNode = voxelTerrainGenerator.load(levelData, voxelTypeLibrary);
         jmeApplicationWrapper.world().attachTerrain(terrainNode);
     }
 

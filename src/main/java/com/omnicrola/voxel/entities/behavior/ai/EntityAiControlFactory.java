@@ -34,15 +34,14 @@ public class EntityAiControlFactory implements IControlFactory {
 
     @Override
     public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
-        EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
 
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
         EntityMotionControl motionGovernor = new EntityMotionControl(this.movementDefinition);
         IProjectileStrategy projectileFactory = createProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
-        WeaponsController weaponsController = new WeaponsController(entityControlAdapter, weaponDefinition, this.projectileOffset, projectileFactory);
-        TargetingController targetingController = new TargetingController(entityControlAdapter);
+        WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(), weaponDefinition, this.projectileOffset, projectileFactory);
+        TargetingController targetingController = new TargetingController(entityControlAdapter.getWorldManager());
         ResourceHarvestController resourceHarvester = new ResourceHarvestController(entityControlAdapter);
         BuildController buildController = new BuildController(entityControlAdapter);
 

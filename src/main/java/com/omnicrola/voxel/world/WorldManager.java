@@ -4,6 +4,7 @@ import com.jme3.bounding.BoundingSphere;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.entities.Structure;
@@ -62,5 +63,13 @@ public class WorldManager {
     public void addProjectile(Projectile projectile) {
         this.projectiles.add(projectile);
         this.worldNode.getProjectilesNode().attachChild(projectile.getSpatial());
+    }
+
+    public void removeTerrain(Spatial spatial) {
+        // only remove physics
+    }
+
+    public void addTerrain(Node node) {
+        // physics
     }
 }

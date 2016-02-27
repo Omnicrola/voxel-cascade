@@ -5,13 +5,12 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.entities.control.collision.CollisionController;
 import com.omnicrola.voxel.entities.control.collision.TerrainCollisionHandler;
-import com.omnicrola.voxel.jme.wrappers.IGamePhysics;
-import com.omnicrola.voxel.jme.wrappers.IGameWorld;
-import com.omnicrola.voxel.terrain.VoxelPhysicsControl;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.VoxelPhysicsControl;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
+import com.omnicrola.voxel.world.WorldManager;
 import jme3tools.optimize.GeometryBatchFactory;
 
 public class VoxelChunkRebuilder {
@@ -21,18 +20,15 @@ public class VoxelChunkRebuilder {
     public static final float VOXEL_SIZE = 1.0f;
 
     private TerrainQuadFactory quadFactory;
-    private IGamePhysics gamePhysics;
-    private IGameWorld gameWorld;
+    private WorldManager worldManager;
 
-    public VoxelChunkRebuilder(TerrainQuadFactory quadFactory, IGamePhysics gamePhysics, IGameWorld gameWorld) {
+    public VoxelChunkRebuilder(TerrainQuadFactory quadFactory, WorldManager worldManager) {
         this.quadFactory = quadFactory;
-        this.gamePhysics = gamePhysics;
-        this.gameWorld = gameWorld;
+        this.worldManager = worldManager;
     }
 
     public void rebuild(VoxelChunk chunk) {
-        long start = System.nanoTime();
-        chunk.clearGeometry(this.gamePhysics);
+        chunk.clearGeometry();
         Node node = new Node();
         sweepAllThreeAxes(chunk, node, true);
         sweepAllThreeAxes(chunk, node, false);
@@ -40,17 +36,13 @@ public class VoxelChunkRebuilder {
         Node batchNode = (Node) GeometryBatchFactory.optimize(node);
         batchNode.getChildren().forEach(c -> {
             c.setUserData(EntityDataKeys.IS_TERRAIN, true);
-            c.addControl(new CollisionController(new TerrainCollisionHandler(c, this.gameWorld)));
+            c.addControl(new CollisionController(new TerrainCollisionHandler(c, this.worldManager)));
         });
         batchNode.addControl(new VoxelPhysicsControl(chunk.getWorldTranslation(), batchNode));
-        gamePhysics.add(batchNode);
+        worldManager.addTerrain(batchNode);
 
         chunk.attachChild(batchNode);
         chunk.clearRebuildFlag();
-        long elapsed = System.nanoTime() - start;
-        float time = (float) elapsed / 1_000_000f;
-//        Logger.getLogger(getClass().getName()).log(Level.FINE, "Rebuilt chunk " + chunk.getChunkId() + " in " + time + "ms");
-        System.out.println("Rebuilt chunk " + chunk.getChunkId() + " in " + time + "ms");
     }
 
     private void sweepAllThreeAxes(VoxelChunk chunk, Node parentNode, boolean backFace) {
@@ -64,11 +56,6 @@ public class VoxelChunkRebuilder {
         final VoxelFace[] mask = new VoxelFace[GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE];
         VoxelFace voxelFace, voxelFace1;
 
-        /*
-         * We sweep over the 3 dimensions - most of what follows is well described by Mikola Lysenko
-         * in his post - and is ported from his Javascript implementation.  Where this implementation
-         * diverges, I've added commentary.
-         */
         for (int d = 0; d < 3; d++) {
 
             u = (d + 1) % 3;
@@ -83,39 +70,16 @@ public class VoxelChunkRebuilder {
             q[2] = 0;
             q[d] = 1;
 
-            /*
-             * Here we're keeping track of the side that we're meshing.
-             */
             side = getSide(backFace, side, d);
-
-            /*
-             * We move through the dimension from front to back
-             */
             for (x[d] = -1; x[d] < CHUNK_WIDTH; ) {
 
-                /*
-                 * -------------------------------------------------------------------
-                 *   We compute the mask
-                 * -------------------------------------------------------------------
-                 */
                 n = 0;
-
                 for (x[v] = 0; x[v] < CHUNK_HEIGHT; x[v]++) {
 
                     for (x[u] = 0; x[u] < CHUNK_WIDTH; x[u]++) {
 
-                        /*
-                         * Here we retrieve two voxel faces for comparison.
-                         */
                         voxelFace = (x[d] >= 0) ? chunk.getVoxelFace(x[0], x[1], x[2], side) : null;
                         voxelFace1 = (x[d] < CHUNK_WIDTH - 1) ? chunk.getVoxelFace(x[0] + q[0], x[1] + q[1], x[2] + q[2], side) : null;
-
-                        /*
-                         * Note that we're using the equals function in the voxel face class here, which lets the faces
-                         * be compared based on any number of attributes.
-                         *
-                         * Also, we choose the face to add to the mask depending on whether we're moving through on a backface or not.
-                         */
 
                         if (voxelFace != null && voxelFace1 != null && voxelFace.equals(voxelFace1)) {
                             mask[n] = null;
@@ -128,80 +92,76 @@ public class VoxelChunkRebuilder {
 
                 x[d]++;
 
-                /*
-                 * Now we generate the mesh for the mask
-                 */
-                n = 0;
-                for (j = 0; j < CHUNK_HEIGHT; j++) {
-                    for (i = 0; i < CHUNK_WIDTH; ) {
-                        if (mask[n] != null) {
-                            width = getWidth(i, n, mask);
-                            height = getHeight(j, width, n, mask);
+                createMesh(parentNode, backFace, u, v, side, x, du, dv, mask);
+            }
+        }
+    }
 
-                            /*
-                             * Here we check the "isTransparent" attribute in the VoxelFace class to ensure that we don't mesh
-                             * any culled faces.
-                             */
-                            if (!mask[n].isTransparent()) {
-                                /*
-                                 * Add quad
-                                 */
-                                x[u] = i;
-                                x[v] = j;
+    private void createMesh(Node parentNode, boolean backFace, int u, int v, int side, int[] x, int[] du, int[] dv, VoxelFace[] mask) {
+        int n;
+        int j;
+        int i;
+        int width;
+        int height;
+        int l;
+        int k;
+        n = 0;
+        for (j = 0; j < CHUNK_HEIGHT; j++) {
+            for (i = 0; i < CHUNK_WIDTH; ) {
+                if (mask[n] != null) {
+                    width = getWidth(i, n, mask);
+                    height = getHeight(j, width, n, mask);
 
-                                du[0] = 0;
-                                du[1] = 0;
-                                du[2] = 0;
-                                du[u] = width;
+                    if (isSolidFace(mask[n])) {
+                        x[u] = i;
+                        x[v] = j;
 
-                                dv[0] = 0;
-                                dv[1] = 0;
-                                dv[2] = 0;
-                                dv[v] = height;
+                        du[0] = 0;
+                        du[1] = 0;
+                        du[2] = 0;
+                        du[u] = width;
 
-                                /*
-                                 * And here we call the quad function in order to render a merged quad in the scene.
-                                 *
-                                 * We pass mask[n] to the function, which is an instance of the VoxelFace class containing
-                                 * all the attributes of the face - which allows for variables to be passed to shaders - for
-                                 * example lighting values used to create ambient occlusion.
-                                 */
-                                Vector3f bottomLeft = new Vector3f(x[0], x[1], x[2]);
-                                Vector3f topLeft = new Vector3f(x[0] + du[0], x[1] + du[1], x[2] + du[2]);
-                                Vector3f topRight = new Vector3f(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]);
-                                Vector3f bottomRight = new Vector3f(x[0] + dv[0], x[1] + dv[1], x[2] + dv[2]);
-                                Geometry quad;
-                                if (backFace) {
-                                    quad = this.quadFactory.buildBack(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
-                                } else {
-                                    quad = this.quadFactory.buildFront(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
-                                }
-//                                chunk.attachChild(quad);
-                                parentNode.attachChild(quad);
-                            }
+                        dv[0] = 0;
+                        dv[1] = 0;
+                        dv[2] = 0;
+                        dv[v] = height;
 
-                            /*
-                             * We zero out the mask
-                             */
-                            for (l = 0; l < height; ++l) {
-                                for (k = 0; k < width; ++k) {
-                                    mask[n + k + l * CHUNK_WIDTH] = null;
-                                }
-                            }
+                        Geometry quad = buildQuad(backFace, side, x, du, dv, mask, n);
+                        parentNode.attachChild(quad);
+                    }
 
-                            /*
-                             * And then finally set the counters and continue
-                             */
-                            i += width;
-                            n += width;
-                        } else {
-                            i++;
-                            n++;
+                    for (l = 0; l < height; ++l) {
+                        for (k = 0; k < width; ++k) {
+                            mask[n + k + l * CHUNK_WIDTH] = null;
                         }
                     }
+
+                    i += width;
+                    n += width;
+                } else {
+                    i++;
+                    n++;
                 }
             }
         }
+    }
+
+    private Geometry buildQuad(boolean backFace, int side, int[] x, int[] du, int[] dv, VoxelFace[] mask, int n) {
+        Vector3f bottomLeft = new Vector3f(x[0], x[1], x[2]);
+        Vector3f topLeft = new Vector3f(x[0] + du[0], x[1] + du[1], x[2] + du[2]);
+        Vector3f topRight = new Vector3f(x[0] + du[0] + dv[0], x[1] + du[1] + dv[1], x[2] + du[2] + dv[2]);
+        Vector3f bottomRight = new Vector3f(x[0] + dv[0], x[1] + dv[1], x[2] + dv[2]);
+        Geometry quad;
+        if (backFace) {
+            quad = this.quadFactory.buildBack(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
+        } else {
+            quad = this.quadFactory.buildFront(bottomLeft, topLeft, topRight, bottomRight, mask[n], side);
+        }
+        return quad;
+    }
+
+    private boolean isSolidFace(VoxelFace voxelFace) {
+        return !voxelFace.isTransparent();
     }
 
     private int getHeight(int j, int width, int n, VoxelFace[] mask) {

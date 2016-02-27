@@ -90,4 +90,8 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
     public LevelManager getLevelManager() {
         return this.levelManager;
     }
+
+    public WorldManager getWorldManager() {
+        return this.worldManager;
+    }
 }
