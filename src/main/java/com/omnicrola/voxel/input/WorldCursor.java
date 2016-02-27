@@ -32,7 +32,7 @@ public class WorldCursor extends Node implements IDisposable {
     private ICursorStrategy cursorStrategy;
     private ICursorStrategy defaultCursorStrategy;
     private SelectionGroup currentSelection;
-    private List<IUserInteractionObserver> observers;
+    private List<IUserSelectionObserver> observers;
     private IWorldNode worldRootNode;
 
     public WorldCursor(IGameInput inputManager,
@@ -50,11 +50,11 @@ public class WorldCursor extends Node implements IDisposable {
         clearCursorStrategy();
     }
 
-    public void addSelectionObserver(IUserInteractionObserver selectionObserver) {
+    public void addSelectionObserver(IUserSelectionObserver selectionObserver) {
         this.observers.add(selectionObserver);
     }
 
-    public void removeSelectionObserver(IUserInteractionObserver userInteractionObserver) {
+    public void removeSelectionObserver(IUserSelectionObserver userInteractionObserver) {
         this.observers.remove(userInteractionObserver);
     }
 

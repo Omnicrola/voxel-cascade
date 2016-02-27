@@ -15,6 +15,10 @@ public class Bootstrapper {
 
         AppSettings appSettings = new AppSettings(true);
         appSettings.setSettingsDialogImage("Textures/splash.jpg");
+        appSettings.setResolution(1024, 600);
+        appSettings.setBitsPerPixel(32);
+        appSettings.setFrequency(60);
+        appSettings.put("Samples", 4);
 
         appSettings.setTitle("Voxel Cascade");
 

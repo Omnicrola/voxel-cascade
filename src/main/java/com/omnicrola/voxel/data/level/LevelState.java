@@ -109,11 +109,14 @@ public class LevelState implements IDisposable {
     }
 
     private void notifyObservers() {
-        this.observers.forEach(o -> o.levelChanged(this));
+        this.observers.forEach(o -> o.levelUpdated(this));
     }
 
     public void addObserver(ILevelObserver levelObserver) {
         this.observers.add(levelObserver);
     }
 
+    public void removeObserver(ILevelObserver observer) {
+        this.observers.remove(observer);
+    }
 }

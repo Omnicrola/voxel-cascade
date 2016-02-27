@@ -1,58 +1,43 @@
 package com.omnicrola.voxel.engine.states;
 
-import com.jme3.math.ColorRGBA;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.jme3.app.Application;
+import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
+import com.jme3.input.FlyByCamera;
+import com.jme3.input.InputManager;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.ui.GLabel;
 
 /**
  * Created by omnic on 1/15/2016.
  */
-public class LoadingState extends VoxelGameState {
+public class LoadingState extends AbstractAppState {
 
     private static final float ONE_SECOND = 1.0f;
     private GLabel loadingText;
-    private IGameContainer gameContainer;
     private float timeElapsed;
+    private AppStateManager stateManager;
 
     public LoadingState() {
-
     }
 
     @Override
-    protected void voxelInitialize(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
-
-        this.loadingText = this.gameContainer
-                .gui()
-                .build()
-                .label("Loading...", ColorRGBA.White);
-        loadingText.setTextPosition(300, 300);
-        setEnabled(true);
-    }
-
-    @Override
-    protected void voxelEnable(IGameContainer gameContainer) {
-        this.timeElapsed = 0;
-        this.gameContainer
-                .input()
-                .setMouseGrabbed(false);
-        this.gameContainer
-                .gui()
-                .attach(this.loadingText);
-    }
-
-    @Override
-    protected void voxelDisable(IGameContainer gameContainer) {
-        this.gameContainer
-                .gui()
-                .remove(this.loadingText);
+    public void initialize(AppStateManager stateManager, Application app) {
+        this.stateManager = stateManager;
+        super.initialize(stateManager, app);
+        VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
+        InputManager inputManager = app.getInputManager();
+        FlyByCamera flyByCamera = voxelGameEngine.getFlyByCamera();
+        inputManager.setCursorVisible(false);
+        flyByCamera.setDragToRotate(true);
+        flyByCamera.setEnabled(false);
     }
 
     @Override
     public void update(float tpf) {
         this.timeElapsed += tpf;
         if (timeElapsed > ONE_SECOND) {
-            this.gameContainer.enableState(MainMenuState.class);
+            this.stateManager.getState(MainMenuState.class).setEnabled(true);
             setEnabled(false);
         }
     }

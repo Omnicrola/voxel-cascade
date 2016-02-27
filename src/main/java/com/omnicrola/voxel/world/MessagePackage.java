@@ -10,21 +10,21 @@ import com.omnicrola.voxel.ui.IUiManager;
  */
 public class MessagePackage {
     private LevelManager levelManager;
-    private IUiManager uiManager;
     private INetworkManager networkManager;
     private WorldEntityBuilder entityBuilder;
     private WorldManager worldManager;
+    private IUiManager uiManager;
 
     public MessagePackage(
             LevelManager levelManager,
-            IUiManager uiManager,
             INetworkManager networkManager,
             WorldEntityBuilder entityBuilder,
+            IUiManager uiManager,
             WorldManager worldManager) {
         this.levelManager = levelManager;
-        this.uiManager = uiManager;
         this.networkManager = networkManager;
         this.entityBuilder = entityBuilder;
+        this.uiManager = uiManager;
         this.worldManager = worldManager;
     }
 
@@ -32,9 +32,6 @@ public class MessagePackage {
         return this.levelManager;
     }
 
-    public IUiManager getUiManager() {
-        return uiManager;
-    }
 
     public INetworkManager getNetworkManager() {
         return networkManager;
@@ -46,5 +43,9 @@ public class MessagePackage {
 
     public WorldManager getWorldManager() {
         return this.worldManager;
+    }
+
+    public IUiManager getUiManager() {
+        return this.uiManager;
     }
 }

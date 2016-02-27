@@ -35,6 +35,7 @@ public class ActivePlayInputState extends AbstractAppState {
         voxelGameEngine.getNiftyGui().gotoScreen(UiScreen.ACTIVE_PLAY.toString());
 
         initializeKeybindings(voxelGameEngine);
+        setEnabled(false);
     }
 
     private void initializeKeybindings(VoxelGameEngine voxelGameEngine) {

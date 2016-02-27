@@ -15,6 +15,7 @@ import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.network.ClientNetworkState;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
+import com.omnicrola.voxel.ui.UiManager;
 import com.omnicrola.voxel.world.*;
 
 import java.util.List;
@@ -48,7 +49,6 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
         LevelDefinitionRepository levelDefinitionRepository = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
 
         VoxelTerrainState voxelTerrainState = stateManager.getState(VoxelTerrainState.class);
-        UiState uiState = stateManager.getState(UiState.class);
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
         this.worldManager = new WorldManager(voxelGameEngine.getWorldNode());
         WorldEntityBuilder entityBuilder = new WorldEntityBuilder();
@@ -61,11 +61,12 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
                 entityBuilder,
                 this.cursor2dProvider);
         this.levelManager = new LevelManager(levelDefinitionRepository, levelStateLoader);
+        UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
         this.messagePackage = new MessagePackage(
                 this.levelManager,
-                uiState,
                 clientNetworkState,
                 entityBuilder,
+                uiManager,
                 this.worldManager);
         this.worldMessageProcessor = new WorldMessageProcessor(this.messagePackage);
         this.ticProvider = voxelGameEngine.getTicProvider();

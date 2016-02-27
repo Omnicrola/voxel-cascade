@@ -14,7 +14,7 @@ public class UiLevelObserver implements ILevelObserver {
     }
 
     @Override
-    public void levelChanged(LevelState currentLevel) {
+    public void levelUpdated(LevelState currentLevel) {
         this.activePlayScreenController.updateStats(currentLevel);
     }
 }

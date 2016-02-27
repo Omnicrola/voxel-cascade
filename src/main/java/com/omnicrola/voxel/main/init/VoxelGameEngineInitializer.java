@@ -13,8 +13,12 @@ import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.debug.DebugState;
+import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.*;
+import com.omnicrola.voxel.engine.states.transitions.TransitionActivePlay;
+import com.omnicrola.voxel.engine.states.transitions.TransitionMainMenu;
+import com.omnicrola.voxel.engine.states.transitions.TransitionMultiplayerLoad;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.network.ClientNetworkState;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -31,8 +35,11 @@ import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
 import com.omnicrola.voxel.ui.builders.MultiplayerUiBuilder;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import de.lessvoid.nifty.Nifty;
 
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by omnic on 1/15/2016.
@@ -49,7 +56,6 @@ public class VoxelGameEngineInitializer {
         LoadingState loadingState = new LoadingState();
 
         VoxelTerrainState voxelTerrainState = createTerrainState();
-        UiState uiState = new UiState();
         GameXmlDataParser gameDataParser = new GameXmlDataParser();
         LevelDefinitionRepository levelDefinitionRepository = gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
         CursorProviderBuilder cursorProviderBuilder = new CursorProviderBuilder();
@@ -79,14 +85,13 @@ public class VoxelGameEngineInitializer {
         stateManager.attach(voxelTerrainState);
         stateManager.attach(worldManagerState);
         stateManager.attach(clientNetworkState);
-        stateManager.attach(uiState);
 
         stateManager.attach(mainMenuState);
         stateManager.attach(playState);
         stateManager.attach(gameOverState);
         stateManager.attach(shadowState);
 
-        createGui(voxelGameEngine);
+        createGui(voxelGameEngine, levelManager, worldManagerState, stateManager);
     }
 
     private static VoxelTerrainState createTerrainState() {
@@ -97,9 +102,18 @@ public class VoxelGameEngineInitializer {
         return new VoxelTerrainState(voxelTerrainGenerator);
     }
 
-    private static void createGui(VoxelGameEngine voxelGameEngine) {
+    private static void createGui(VoxelGameEngine voxelGameEngine,
+                                  LevelManager levelManager,
+                                  WorldManagerState worldManagerState,
+                                  AppStateManager stateManager) {
 
-        UiAdapter uiAdapter = new UiAdapter(voxelGameEngine);
+        Nifty niftyGui = voxelGameEngine.getNiftyGui();
+
+        Map<GlobalGameState, IStateTransition> transitions = new HashMap<>();
+        transitions.put(GlobalGameState.MULTIPLAYER_LOAD, new TransitionMultiplayerLoad());
+        transitions.put(GlobalGameState.ACTIVE_PLAY, new TransitionActivePlay());
+        transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());
+        UiAdapter uiAdapter = new UiAdapter(niftyGui, levelManager, worldManagerState, transitions, stateManager);
         ActivePlayUiBuilder.build(uiAdapter);
 
         GameOverUiBuilder.build(uiAdapter);
