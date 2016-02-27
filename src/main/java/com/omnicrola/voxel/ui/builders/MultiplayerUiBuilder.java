@@ -1,8 +1,6 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.commands.ICommandProcessor;
-import com.omnicrola.voxel.commands.IMessageProcessor;
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.MultiplayerScreenController;
@@ -13,14 +11,12 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
  * Created by Eric on 2/21/2016.
  */
 public class MultiplayerUiBuilder {
-    public static void build(IGameContainer gameContainer,
-                             IMessageProcessor messageProcessor,
-                             ICommandProcessor commandProcessor) {
+    public static void build(UiAdapter uiAdapter) {
 
         String screenName = UiScreen.MULTIPLAYER_LOAD.toString();
-        MultiplayerScreenController multiplayerController = new MultiplayerScreenController(gameContainer, commandProcessor, messageProcessor);
+        MultiplayerScreenController multiplayerController = new MultiplayerScreenController(uiAdapter);
 
-        gameContainer.gui().build().screen(screenName, new ScreenBuilder(screenName) {{
+        uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(multiplayerController);
             layer(new LayerBuilder("background") {
                 {
@@ -83,4 +79,6 @@ public class MultiplayerUiBuilder {
             });
         }});
     }
+
+
 }

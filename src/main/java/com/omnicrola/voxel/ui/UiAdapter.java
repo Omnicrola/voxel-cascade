@@ -1,6 +1,9 @@
 package com.omnicrola.voxel.ui;
 
+import com.omnicrola.voxel.commands.ILocalCommand;
 import com.omnicrola.voxel.data.ILevelObserver;
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.IUserInteractionObserver;
 import de.lessvoid.nifty.Nifty;
@@ -26,6 +29,22 @@ public class UiAdapter {
     }
 
     public void addCurrentLevelObserver(ILevelObserver levelObserver) {
+
+    }
+
+    public LevelState getCurrentLevel() {
+        return null;
+    }
+
+    public void transitionTo(GlobalGameState globalGameState) {
+// from game back to main menu
+//        this.uiAdapter.disableState(ActivePlayInputState.class);
+//        this.uiAdapter.disableState(GameOverState.class);
+//        this.uiAdapter.enableState(MainMenuState.class);
+
+    }
+
+    public void sendCommand(ILocalCommand command) {
 
     }
 }

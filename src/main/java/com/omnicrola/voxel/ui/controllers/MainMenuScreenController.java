@@ -1,8 +1,9 @@
 package com.omnicrola.voxel.ui.controllers;
 
-import com.omnicrola.voxel.jme.wrappers.IGameContainer;
+import com.omnicrola.voxel.commands.ShutdownAndExitCommand;
+import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.ui.SubscriberLink;
-import com.omnicrola.voxel.ui.UiScreen;
+import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -13,31 +14,28 @@ import de.lessvoid.nifty.controls.ButtonClickedEvent;
  */
 public class MainMenuScreenController extends AbstractScreenController {
 
-    private IGameContainer gameContainer;
+    private UiAdapter uiAdapter;
 
-    public MainMenuScreenController(IGameContainer gameContainer) {
-        this.gameContainer = gameContainer;
+    public MainMenuScreenController(UiAdapter uiAdapter) {
+        this.uiAdapter = uiAdapter;
     }
 
     @NiftyEventSubscriber(id = "BUTTON_START")
     @SubscriberLink(UiToken.BUTTON_START)
     public void start(String id, ButtonClickedEvent buttonClickedEvent) {
-//        this.gameContainer.disableState(MainMenuState.class);
-//        this.gameContainer.getState(LevelManager.class).loadLevel(LevelGeneratorTool.BASIC_LEVEL_UUID);
-//        this.gameContainer.enableState(LevelManager.class);
-//        this.gameContainer.enableState(ActivePlayInputState.class);
+        this.uiAdapter.transitionTo(GlobalGameState.ACTIVE_PLAY);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER)
     public void launchMultiplayer(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.gameContainer.gui().changeScreens(UiScreen.MULTIPLAYER_LOAD);
+        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOAD);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")
     @SubscriberLink(UiToken.BUTTON_QUIT_GAME)
     public void quitGame(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.gameContainer.quitAndExit();
+        this.uiAdapter.sendCommand(new ShutdownAndExitCommand());
     }
 
 

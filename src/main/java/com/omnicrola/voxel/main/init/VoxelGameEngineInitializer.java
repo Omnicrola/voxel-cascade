@@ -8,8 +8,6 @@ import com.jme3.input.MouseInput;
 import com.jme3.input.controls.KeyTrigger;
 import com.jme3.input.controls.MouseAxisTrigger;
 import com.jme3.input.controls.MouseButtonTrigger;
-import com.omnicrola.voxel.commands.ICommandProcessor;
-import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
@@ -33,7 +31,6 @@ import com.omnicrola.voxel.ui.builders.MainMenuUiBuilder;
 import com.omnicrola.voxel.ui.builders.MultiplayerUiBuilder;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
-import de.lessvoid.nifty.Nifty;
 
 import java.util.Arrays;
 
@@ -90,7 +87,7 @@ public class VoxelGameEngineInitializer {
         stateManager.attach(gameOverState);
         stateManager.attach(shadowState);
 
-        createGui(voxelGameEngine,levelManager, clientNetworkState, worldManagerState);
+        createGui(voxelGameEngine);
     }
 
     private static VoxelTerrainState createTerrainState() {
@@ -101,18 +98,14 @@ public class VoxelGameEngineInitializer {
         return new VoxelTerrainState(voxelTerrainGenerator);
     }
 
-    private static void createGui(VoxelGameEngine voxelGameEngine,
-                                  LevelManager levelManager,
-                                  IMessageProcessor messageProcessor,
-                                  ICommandProcessor commandProcessor) {
+    private static void createGui(VoxelGameEngine voxelGameEngine) {
 
         UiAdapter uiAdapter = new UiAdapter(voxelGameEngine);
         ActivePlayUiBuilder.build(uiAdapter);
 
-        AppStateManager stateManager = voxelGameEngine.getStateManager();
         GameOverUiBuilder.build(uiAdapter);
-        MainMenuUiBuilder.build(nifty, gameContainer);
-        MultiplayerUiBuilder.build(nifty, gameContainer, messageProcessor, commandProcessor);
+        MainMenuUiBuilder.build(uiAdapter);
+        MultiplayerUiBuilder.build(uiAdapter);
     }
 
     private static void createInputMappings(InputManager inputManager) {

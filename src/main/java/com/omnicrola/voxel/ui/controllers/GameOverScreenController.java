@@ -1,11 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
-import com.jme3.app.state.AppStateManager;
-import com.omnicrola.voxel.engine.states.ActivePlayInputState;
-import com.omnicrola.voxel.engine.states.GameOverState;
-import com.omnicrola.voxel.data.ILevelManager;
-import com.omnicrola.voxel.engine.states.MainMenuState;
-import com.omnicrola.voxel.jme.wrappers.IStateManager;
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
@@ -34,9 +30,7 @@ public class GameOverScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MAIN_MENU")
     @SubscriberLink(UiToken.BUTTON_MAIN_MENU)
     public void triggerMainMenuButton(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.disableState(ActivePlayInputState.class);
-        this.uiAdapter.disableState(GameOverState.class);
-        this.uiAdapter.enableState(MainMenuState.class);
+        this.uiAdapter.transitionTo(GlobalGameState.MAIN_MENU);
     }
 
 
@@ -48,8 +42,9 @@ public class GameOverScreenController extends AbstractScreenController {
         resultsPanel.removeAllChildren();
         resultsPanel.setWidth(resultsContainer.getWidth());
 
-        elapsedTimeLabel.setText(formatTime(currentLevelProvider.getCurrentLevel().getTimeElapsed()));
-        List<TeamStatistics> teamStatistics = this.currentLevelProvider.getTeamStatistics();
+        LevelState levelState = this.uiAdapter.getCurrentLevel();
+        elapsedTimeLabel.setText(formatTime(levelState.getTimeElapsed()));
+        List<TeamStatistics> teamStatistics = levelState.getTeamStatistics();
         resultsPanel.addElement(teamRow("Team", "Units Built", "Units Lost", "Structures Built", "Structures Lost", ""));
         teamStatistics.forEach(s -> addStats(resultsPanel, s));
     }
