@@ -4,12 +4,13 @@ import com.jme3.bounding.BoundingSphere;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
+import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.util.VoxelUtil;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -51,7 +52,7 @@ public class WorldManager {
     }
 
     public void removeSpatial(Spatial spatial) {
-
+        throw new NotImplementedException();
     }
 
     public Stream<CollisionResult> getUnitsInRange(Vector3f position, float scanRadius) {
@@ -65,11 +66,7 @@ public class WorldManager {
         this.worldNode.getProjectilesNode().attachChild(projectile.getSpatial());
     }
 
-    public void removeTerrain(Spatial spatial) {
-        // only remove physics
-    }
-
-    public void addTerrain(Node node) {
-        // physics
+    public void addTerrainChunk(VoxelChunk chunk) {
+        this.worldNode.getTerrainNode().attachChild(chunk);
     }
 }

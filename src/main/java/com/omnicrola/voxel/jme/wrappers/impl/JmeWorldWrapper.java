@@ -9,7 +9,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.ScreenRectangle;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluator;
@@ -19,7 +18,6 @@ import com.omnicrola.voxel.jme.wrappers.IGameWorld;
 import com.omnicrola.voxel.jme.wrappers.ILightManager;
 import com.omnicrola.voxel.jme.wrappers.IWorldBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.terrain.VoxelTerrainControl;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -61,15 +59,17 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public boolean isBelowTerrain(Geometry geometry) {
-        Vector3f worldLocation = geometry.getWorldTranslation();
-        Vec3i location = Vec3i.floor(worldLocation.add(0, 0.5f, 0));
-        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
-        return control.isVoxelSolidAt(location);
+//        Vector3f worldLocation = geometry.getWorldTranslation();
+//        Vec3i location = Vec3i.floor(worldLocation.add(0, 0.5f, 0));
+//        VoxelTerrainControl control = this.terrain.getControl(VoxelTerrainControl.class);
+//        return control.isVoxelSolidAt(location);
+        return false;
     }
 
     @Override
     public Vector3f getSpawnPointFor(Vector3f location) {
-        return this.terrain.getControl(VoxelTerrainControl.class).findLowestNonSolidVoxel(location);
+//        return this.terrain.getControl(VoxelTerrainControl.class).findLowestNonSolidVoxel(location);
+        return new Vector3f();
     }
 
     private void addChildrenToPhysicsSpace(Spatial spatial) {
@@ -175,8 +175,9 @@ public class JmeWorldWrapper implements IGameWorld {
 
     @Override
     public VoxelData getVoxelAt(Vector3f location) {
-        VoxelTerrainControl terrainControl = this.terrain.getControl(VoxelTerrainControl.class);
-        return terrainControl.getVoxelAt(Vec3i.round(location));
+//        VoxelTerrainControl terrainControl = this.terrain.getControl(VoxelTerrainControl.class);
+//        return terrainControl.getVoxelAt(Vec3i.round(location));
+        return null;
     }
 
     @Override

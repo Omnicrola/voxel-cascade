@@ -201,7 +201,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     private void reload() {
         System.out.println("rebuilding...");
         if (terrainNode != null) {
-            terrainNode.getControl(VoxelTerrainControl.class).forceRebuild();
+//            terrainNode.getControl(VoxelTerrainControl.class).forceRebuild();
         }
     }
 }

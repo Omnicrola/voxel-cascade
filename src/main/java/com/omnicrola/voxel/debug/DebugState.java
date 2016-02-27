@@ -70,7 +70,7 @@ public class DebugState extends AbstractAppState {
         game.getViewPort().addProcessor(wireframeProcessor);
 
         game.getInputManager().addListener(new ToggleDebugListener(), GameInputAction.TOGGLE_DEBUG_MODE.toString());
-        this.listeners.add(new Tuple(new DebugSceneGraphListener(this.game), GameInputAction.TOGGLE_DEBUG_MODE));
+        this.listeners.add(new Tuple(new DebugSceneGraphListener(this.game), GameInputAction.DEBUG_SCENE_GRAPH));
         this.listeners.add(new Tuple(new DebugTargetListener(this.game), GameInputAction.DEBUG_TARGET_OBJECT));
         this.listeners.add(new Tuple(new DebugReloadLevelListener(this.game), GameInputAction.DEBUG_RELOAD_LEVEL));
         this.listeners.add(new Tuple(new DebugRebuildTerrainListener(this.game), GameInputAction.DEBUG_REBUILD_TERRAIN));

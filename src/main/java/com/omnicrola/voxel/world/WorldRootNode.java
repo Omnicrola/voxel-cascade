@@ -19,6 +19,10 @@ public class WorldRootNode extends Node implements IWorldNode {
         this.projectilesNode = new Node(GameConstants.NODE_PROJECTILES);
         this.fxNode = new Node(GameConstants.NODE_FX);
         this.terrainNode = new Node(GameConstants.NODE_TERRAIN);
+        this.attachChild(unitsNode);
+        this.attachChild(projectilesNode);
+        this.attachChild(fxNode);
+        this.attachChild(terrainNode);
     }
 
     @Override

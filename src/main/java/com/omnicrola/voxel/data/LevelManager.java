@@ -37,7 +37,6 @@ public class LevelManager implements ILevelManager {
             this.currentLevelState.dispose();
         }
         this.currentLevelState = this.levelStateLoader.create(newLevelDefinition);
-
         notifyObserversOfLevelChange();
     }
 

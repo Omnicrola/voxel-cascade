@@ -1,8 +1,9 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.debug.DebugTimer;
+import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
 import com.omnicrola.voxel.terrain.build.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
@@ -19,14 +20,15 @@ public class VoxelChunkHandler {
     private final Map<ChunkId, VoxelChunk> chunks;
     private TerrainAdapter terrainAdapter;
     private VoxelChunkRebuilder voxelChunkRebuilder;
-    private Node parentNode;
     private FaceBuilder faceBuilder;
+    private final DebugTimer debugTimer;
 
     public VoxelChunkHandler(TerrainAdapter terrainAdapter, VoxelChunkRebuilder voxelChunkRebuilder) {
         this.terrainAdapter = terrainAdapter;
         this.voxelChunkRebuilder = voxelChunkRebuilder;
         this.faceBuilder = new FaceBuilder(this, OcclusionCalculatorBuilder.build(this));
         this.chunks = new HashMap<>();
+        this.debugTimer = new DebugTimer();
     }
 
     public void set(Vec3i location, byte voxelType) {
@@ -51,12 +53,10 @@ public class VoxelChunkHandler {
 
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
-            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder, terrainAdapter.getWorldManager());
-            Vector3f translate = new Vector3f(chunkId.getX(), chunkId.getY(), chunkId.getZ()).multLocal(16);
+            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder, this.terrainAdapter);
+            Vector3f translate = new Vector3f(chunkId.getX(), chunkId.getY(), chunkId.getZ()).multLocal(GameConstants.CHUNK_SIZE);
             chunk.setLocalTranslation(translate);
-            if (this.parentNode != null) {
-                this.parentNode.attachChild(chunk);
-            }
+            this.terrainAdapter.addChunk(chunk);
             this.chunks.put(chunkId, chunk);
         }
         return this.chunks.get(chunkId);
@@ -67,13 +67,11 @@ public class VoxelChunkHandler {
                 .stream()
                 .filter(c -> c.needsRebuilt())
                 .forEach(c -> {
+                    this.debugTimer.reset();
                     this.voxelChunkRebuilder.rebuild(c);
+                    float elapsed = this.debugTimer.mark();
+                    System.out.println("Rebuilt chunk " + c.toString() + " in " + elapsed + "ms");
                 });
-    }
-
-    public void setParentNode(Node parentNode) {
-        this.parentNode = parentNode;
-        this.chunks.forEach((id, c) -> parentNode.attachChild(c));
     }
 
     public void flagAllChunksForRebuild() {
@@ -116,10 +114,8 @@ public class VoxelChunkHandler {
         return new VoxelData(chunk, location, voxelType);
     }
 
-
     public void clearAll() {
         this.chunks.values().stream().forEach(c -> c.dispose());
         this.chunks.clear();
     }
-
 }

@@ -60,10 +60,10 @@ public class VoxelGameEngineInitializer {
         LevelDefinitionRepository levelDefinitionRepository = gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
         CursorProviderBuilder cursorProviderBuilder = new CursorProviderBuilder();
         Cursor2dProvider cursor2dProvider = cursorProviderBuilder.build(voxelGameEngine.getAssetManager());
-        WorldManagerState worldManagerState = new WorldManagerState(gameDataParser, cursor2dProvider);
+        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode());
+        WorldManagerState worldManagerState = new WorldManagerState(gameDataParser, cursor2dProvider, worldManager);
         ClientNetworkState clientNetworkState = new ClientNetworkState();
 
-        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode());
         WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder();
         LevelStateLoader levelStateLoader = new LevelStateLoader(
                 voxelGameEngine,

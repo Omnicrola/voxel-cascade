@@ -34,9 +34,10 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
     private LevelManager levelManager;
     private WorldManager worldManager;
 
-    public WorldManagerState(GameXmlDataParser gameDataParser, Cursor2dProvider cursor2dProvider) {
+    public WorldManagerState(GameXmlDataParser gameDataParser, Cursor2dProvider cursor2dProvider, WorldManager worldManager) {
         this.gameDataParser = gameDataParser;
         this.cursor2dProvider = cursor2dProvider;
+        this.worldManager = worldManager;
     }
 
     public void addCommand(IWorldMessage worldCommand) {
@@ -51,7 +52,6 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
 
         VoxelTerrainState voxelTerrainState = stateManager.getState(VoxelTerrainState.class);
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
-        this.worldManager = new WorldManager(voxelGameEngine.getWorldNode());
         WorldEntityBuilder entityBuilder = new WorldEntityBuilder();
 
         LevelStateLoader levelStateLoader = new LevelStateLoader(

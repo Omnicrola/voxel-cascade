@@ -1,10 +1,11 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.scene.Node;
+import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.TerrainAdapter;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
-import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -22,11 +23,11 @@ public class VoxelChunk extends Node {
     private ChunkId chunkId;
     private boolean isDirty;
     private FaceBuilder faceBuilder;
-    private WorldManager worldManager;
+    private TerrainAdapter terrainAdapter;
 
-    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder, WorldManager worldManager) {
+    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder, TerrainAdapter terrainAdapter) {
         this.faceBuilder = faceBuilder;
-        this.worldManager = worldManager;
+        this.terrainAdapter = terrainAdapter;
         setName("Chunk ID:" + chunkId);
         this.chunkId = chunkId;
         int size = GameConstants.CHUNK_SIZE;
@@ -80,9 +81,16 @@ public class VoxelChunk extends Node {
     }
 
 
-    public void clearGeometry() {
-        this.getChildren().forEach(spatial -> this.worldManager.removeTerrain(spatial));
-        this.detachAllChildren();
+    @Override
+    public void detachAllChildren() {
+        this.getChildren().forEach(spatial -> terrainAdapter.removeQuad(spatial));
+        super.detachAllChildren();
+    }
+
+    @Override
+    public int attachChild(Spatial child) {
+        this.terrainAdapter.attachQuad(child);
+        return super.attachChild(child);
     }
 
     public float getResourceGlobal(Vec3i globalLocation) {

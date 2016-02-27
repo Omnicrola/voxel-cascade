@@ -3,6 +3,7 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.material.Material;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -10,6 +11,7 @@ import com.jme3.scene.shape.Box;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.engine.MaterialRepository;
+import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.terrain.*;
@@ -38,11 +40,12 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
+        VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
         this.materialRepository = new MaterialRepository(app.getAssetManager());
-        this.voxelChunkHandler = buildVoxelChunkHandler(stateManager);
+        this.voxelChunkHandler = buildVoxelChunkHandler(stateManager, voxelGameEngine);
     }
 
-    private VoxelChunkHandler buildVoxelChunkHandler(AppStateManager stateManager) {
+    private VoxelChunkHandler buildVoxelChunkHandler(AppStateManager stateManager, VoxelGameEngine voxelGameEngine) {
         WorldManager worldManager = stateManager.getState(WorldManagerState.class).getWorldManager();
 
         TerrainQuadFactory quadFactory = new TerrainQuadFactory(materialRepository);
@@ -50,7 +53,8 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
         this.voxelTypeLibrary = new VoxelTypeLibrary();
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
 
-        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary);
+        PhysicsSpace physicsSpace = voxelGameEngine.getPhysicsSpace();
+        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, this.materialRepository, this.voxelTypeLibrary, physicsSpace);
         return new VoxelChunkHandler(terrainAdapter, voxelChunkRebuilder);
     }
 

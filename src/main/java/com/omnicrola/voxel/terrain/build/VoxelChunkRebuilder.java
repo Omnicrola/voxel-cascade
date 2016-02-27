@@ -28,7 +28,7 @@ public class VoxelChunkRebuilder {
     }
 
     public void rebuild(VoxelChunk chunk) {
-        chunk.clearGeometry();
+        chunk.detachAllChildren();
         Node node = new Node();
         sweepAllThreeAxes(chunk, node, true);
         sweepAllThreeAxes(chunk, node, false);
@@ -39,8 +39,6 @@ public class VoxelChunkRebuilder {
             c.addControl(new CollisionController(new TerrainCollisionHandler(c, this.worldManager)));
         });
         batchNode.addControl(new VoxelPhysicsControl(chunk.getWorldTranslation(), batchNode));
-        worldManager.addTerrain(batchNode);
-
         chunk.attachChild(batchNode);
         chunk.clearRebuildFlag();
     }
