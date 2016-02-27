@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.engine.states.ILevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.jme.wrappers.IGameGui;
 import com.omnicrola.voxel.jme.wrappers.IStateManager;
 import com.omnicrola.voxel.ui.UiScreen;

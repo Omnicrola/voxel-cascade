@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.states;
+package com.omnicrola.voxel.data;
 
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;

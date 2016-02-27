@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.engine.states;
 
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;
 import com.omnicrola.voxel.settings.EntityDataKeys;

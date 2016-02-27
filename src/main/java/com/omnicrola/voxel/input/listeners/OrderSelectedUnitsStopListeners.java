@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import com.omnicrola.voxel.engine.states.ILevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
 
 /**
  * Created by omnic on 1/24/2016.

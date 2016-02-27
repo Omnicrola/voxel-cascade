@@ -2,7 +2,7 @@ package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.states.ILevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.WorldCursor;

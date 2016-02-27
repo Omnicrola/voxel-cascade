@@ -1,8 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.states.ILevelChangeObserver;
-import com.omnicrola.voxel.ui.controllers.ActivePlayScreenController;
+import com.omnicrola.voxel.data.ILevelChangeObserver;
 
 /**
  * Created by Eric on 1/26/2016.

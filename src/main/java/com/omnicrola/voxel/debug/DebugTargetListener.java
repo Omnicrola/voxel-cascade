@@ -7,7 +7,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.states.LevelManager;
+import com.omnicrola.voxel.data.LevelManager;
 
 import java.util.Optional;
 

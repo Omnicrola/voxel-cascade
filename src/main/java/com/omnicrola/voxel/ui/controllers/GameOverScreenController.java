@@ -2,7 +2,7 @@ package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.engine.states.ActivePlayInputState;
 import com.omnicrola.voxel.engine.states.GameOverState;
-import com.omnicrola.voxel.engine.states.ILevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 import com.omnicrola.voxel.jme.wrappers.IStateManager;
 import com.omnicrola.voxel.ui.SubscriberLink;

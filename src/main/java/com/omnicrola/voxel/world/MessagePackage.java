@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.world;
 
-import com.omnicrola.voxel.engine.states.ILevelManager;
-import com.omnicrola.voxel.engine.states.LevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.ui.IUiManager;
 

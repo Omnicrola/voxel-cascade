@@ -2,7 +2,7 @@ package com.omnicrola.voxel.network.messages;
 
 import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
-import com.omnicrola.voxel.engine.states.ILevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.world.MessagePackage;

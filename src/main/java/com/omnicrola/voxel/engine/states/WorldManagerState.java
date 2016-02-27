@@ -6,6 +6,7 @@ import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.ILocalCommand;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.engine.ITickProvider;

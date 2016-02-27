@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.engine.states;
+package com.omnicrola.voxel.data;
 
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.ui.data.TeamStatistics;

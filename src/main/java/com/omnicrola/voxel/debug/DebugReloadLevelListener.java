@@ -4,7 +4,7 @@ import com.jme3.input.controls.ActionListener;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.states.LevelManager;
+import com.omnicrola.voxel.data.LevelManager;
 
 /**
  * Created by Eric on 2/5/2016.

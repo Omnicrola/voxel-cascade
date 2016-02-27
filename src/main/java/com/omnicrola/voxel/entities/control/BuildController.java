@@ -7,7 +7,7 @@ import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.states.ILevelManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.fx.ParticleDurationControl;
 import com.omnicrola.voxel.jme.wrappers.IGameContainer;

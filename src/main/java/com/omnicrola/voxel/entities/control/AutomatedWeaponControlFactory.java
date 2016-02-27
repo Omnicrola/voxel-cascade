@@ -7,7 +7,7 @@ import com.omnicrola.voxel.data.WeaponType;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
-import com.omnicrola.voxel.engine.states.LevelManager;
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.entities.ai.AiHoldPositionState;
 import com.omnicrola.voxel.entities.ai.AiStateMap;
 import com.omnicrola.voxel.entities.ai.EntityAiController;
