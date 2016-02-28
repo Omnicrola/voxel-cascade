@@ -6,10 +6,15 @@ import com.omnicrola.voxel.world.CommandPackage;
 /**
  * Created by Eric on 2/27/2016.
  */
-public class AbortMultiplayerConnectionCommand implements IWorldCommand {
+public class AbortMultiplayerConnectionCommand extends AbstractWorldCommand {
     @Override
     public void execute(CommandPackage commandPackage) {
         commandPackage.getNetworkManager().shutdownMultiplayer();
         commandPackage.getUiManager().changeScreen(UiScreen.MAIN_MENU);
+    }
+
+    @Override
+    public boolean isLocal() {
+        return true;
     }
 }

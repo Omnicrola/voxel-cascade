@@ -16,7 +16,6 @@ public class TransitionActivePlay implements IStateTransition {
 
         stateManager.getState(ActivePlayState.class).setEnabled(true);
         stateManager.getState(VoxelTerrainState.class).setEnabled(true);
-        stateManager.getState(WorldManagerState.class).setEnabled(true);
         stateManager.getState(ShadowState.class).setEnabled(true);
 
         niftyGui.gotoScreen(UiScreen.ACTIVE_PLAY.toString());

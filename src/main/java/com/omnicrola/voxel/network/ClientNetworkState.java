@@ -24,4 +24,8 @@ public class ClientNetworkState extends AbstractAppState {
         super.cleanup();
         this.networkManager.cleanup();
     }
+
+    public NetworkManager getNetworkManager() {
+        return networkManager;
+    }
 }

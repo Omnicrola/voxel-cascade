@@ -9,7 +9,7 @@ import java.util.UUID;
 /**
  * Created by Eric on 2/27/2016.
  */
-public class StartMultiplayerGameCommand implements IWorldCommand {
+public class StartMultiplayerGameCommand extends AbstractWorldCommand {
     private UUID levelUuid;
 
     public StartMultiplayerGameCommand(UUID levelUuid) {
@@ -20,6 +20,12 @@ public class StartMultiplayerGameCommand implements IWorldCommand {
     public void execute(CommandPackage commandPackage) {
         commandPackage.getNetworkManager().startMultiplayerServer();
         LoadLevelMessage loadLevelMessage = new LoadLevelMessage(LevelGeneratorTool.BASIC_LEVEL_UUID.toString());
-        commandPackage.getMessageProcessor().sendLocal(loadLevelMessage);
+        ICommandProcessor commandProcessor = commandPackage.getCommandQueue();
+        commandProcessor.executeCommand(loadLevelMessage);
+    }
+
+    @Override
+    public boolean isLocal() {
+        return true;
     }
 }

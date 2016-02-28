@@ -1,12 +1,11 @@
 package com.omnicrola.voxel.network.messages;
 
-import com.jme3.network.AbstractMessage;
 import com.jme3.network.serializing.Serializable;
+import com.omnicrola.voxel.commands.AbstractWorldCommand;
 import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.world.CommandPackage;
-import com.omnicrola.voxel.world.IWorldMessage;
 
 import java.util.UUID;
 
@@ -14,15 +13,8 @@ import java.util.UUID;
  * Created by Eric on 2/24/2016.
  */
 @Serializable
-public class LoadLevelMessage extends AbstractMessage implements IWorldMessage {
+public class LoadLevelMessage extends AbstractWorldCommand {
     private String levelUuid;
-
-    {
-
-        setReliable(true);
-    }
-
-    private long targetTic;
 
     public LoadLevelMessage() {
     }
@@ -41,8 +33,4 @@ public class LoadLevelMessage extends AbstractMessage implements IWorldMessage {
         uiManager.changeScreen(UiScreen.ACTIVE_PLAY);
     }
 
-    @Override
-    public long getTargetTic() {
-        return this.targetTic;
-    }
 }

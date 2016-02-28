@@ -23,6 +23,7 @@ import de.lessvoid.nifty.Nifty;
  */
 public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
 
+    private VoxelGameEngineInitializer gameEngineInitializer;
     protected BulletAppState bulletAppState;
     private EngineShutdownHandler shutdownHandler;
     private Nifty niftyGui;
@@ -30,7 +31,8 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     private VoxelTickProvider ticProvider;
     private WorldRootNode worldRootNode;
 
-    public VoxelGameEngine(BulletAppState bulletAppState, EngineShutdownHandler shutdownHandler) {
+    public VoxelGameEngine(VoxelGameEngineInitializer gameEngineInitializer, BulletAppState bulletAppState, EngineShutdownHandler shutdownHandler) {
+        this.gameEngineInitializer = gameEngineInitializer;
         this.bulletAppState = bulletAppState;
         this.shutdownHandler = shutdownHandler;
     }
@@ -39,14 +41,14 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     public void simpleInitApp() {
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
         loadNiftyGui();
+        addLights();
         this.worldRootNode = new WorldRootNode();
         this.rootNode.attachChild(this.worldRootNode);
 
         this.ticProvider = new VoxelTickProvider();
         this.stateManager.attach(this.bulletAppState);
-        VoxelGameEngineInitializer.initializeGame(this);
+        this.gameEngineInitializer.initialize(this);
         this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
-        addLights();
     }
 
     private void addLights() {

@@ -71,6 +71,7 @@ public class VoxelGameEngineInitializer {
 
         ClientListenerBuilder clientListenerBuilder = new ClientListenerBuilder(voxelGameEngine);
         NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue);
+
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
         WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder(unitDefintions, assetManager, levelManager, entityControlAdapter);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
@@ -83,6 +84,7 @@ public class VoxelGameEngineInitializer {
                 worldEntityBuilder,
                 uiManager,
                 worldManager);
+        networkManager.setCommandProcessor(worldCommandProcessor);
 
         InitializationContainer initializationContainer = new InitializationContainer(
                 worldManager,

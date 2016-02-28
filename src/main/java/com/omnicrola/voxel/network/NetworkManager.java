@@ -2,6 +2,7 @@ package com.omnicrola.voxel.network;
 
 import com.jme3.network.Client;
 import com.jme3.network.Network;
+import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -15,8 +16,10 @@ public class NetworkManager implements INetworkManager {
 
     private Client networkClient;
     private VoxelServerEngine voxelServerEngine;
+
     private ClientListenerBuilder clientListenerBuilder;
     private NetworkCommandQueue networkCommandQueue;
+    private WorldCommandProcessor commandProcessor;
 
     public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue) {
         this.clientListenerBuilder = clientListenerBuilder;
@@ -35,7 +38,7 @@ public class NetworkManager implements INetworkManager {
     public boolean connectTo(String serverAddress) {
         try {
             this.networkClient = Network.connectToServer(serverAddress, GameConstants.SERVER_PORT);
-            this.clientListenerBuilder.attach(networkClient);
+            this.clientListenerBuilder.attach(networkClient, this.commandProcessor);
             this.networkClient.start();
             this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
             return true;
@@ -73,5 +76,9 @@ public class NetworkManager implements INetworkManager {
         if (this.networkClient != null) {
             this.networkCommandQueue.sendMessages(this.networkClient);
         }
+    }
+
+    public void setCommandProcessor(WorldCommandProcessor commandProcessor) {
+        this.commandProcessor = commandProcessor;
     }
 }
