@@ -1,32 +1,22 @@
-package com.omnicrola.voxel.engine.states;
+package com.omnicrola.voxel.terrain;
 
-import com.jme3.app.state.AbstractAppState;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
-import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.terrain.VoxelChunkHandler;
-import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 /**
- * Created by Eric on 2/22/2016.
+ * Created by Eric on 2/28/2016.
  */
-public class VoxelTerrainState extends AbstractAppState implements ITerrainManager {
+public class TerrainManager implements ITerrainManager {
 
     private VoxelChunkHandler voxelChunkHandler;
     private VoxelTerrainGenerator voxelTerrainGenerator;
 
-    public VoxelTerrainState(VoxelTerrainGenerator voxelTerrainGenerator, VoxelChunkHandler voxelChunkHandler) {
-        this.voxelTerrainGenerator = voxelTerrainGenerator;
+    public TerrainManager(VoxelChunkHandler voxelChunkHandler, VoxelTerrainGenerator voxelTerrainGenerator) {
         this.voxelChunkHandler = voxelChunkHandler;
-    }
-
-    @Override
-    public void update(float tpf) {
-        super.update(tpf);
-        this.voxelChunkHandler.update();
+        this.voxelTerrainGenerator = voxelTerrainGenerator;
     }
 
     @Override
@@ -63,5 +53,9 @@ public class VoxelTerrainState extends AbstractAppState implements ITerrainManag
 
     public void globalRebuild() {
         this.voxelChunkHandler.flagAllChunksForRebuild();
+    }
+
+    public void update(float tpf) {
+        this.voxelChunkHandler.update();
     }
 }

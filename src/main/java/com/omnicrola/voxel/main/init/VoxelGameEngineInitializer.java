@@ -17,7 +17,10 @@ import com.omnicrola.voxel.network.ClientListenerBuilder;
 import com.omnicrola.voxel.network.NetworkCommandQueue;
 import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
+import com.omnicrola.voxel.terrain.*;
+import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
+import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
+import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 import com.omnicrola.voxel.ui.UiManager;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
@@ -72,6 +75,12 @@ public class VoxelGameEngineInitializer {
         ClientListenerBuilder clientListenerBuilder = new ClientListenerBuilder(voxelGameEngine);
         NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue);
 
+        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary, voxelGameEngine.getPhysicsSpace());
+        VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
+        VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
+
+        TerrainManager terrainManager = new TerrainManager(voxelChunkHandler, voxelTerrainGenerator);
+
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
         WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder(unitDefintions, assetManager, levelManager, entityControlAdapter);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
@@ -83,7 +92,8 @@ public class VoxelGameEngineInitializer {
                 networkManager,
                 worldEntityBuilder,
                 uiManager,
-                worldManager);
+                worldManager,
+                terrainManager);
         networkManager.setCommandProcessor(worldCommandProcessor);
 
         InitializationContainer initializationContainer = new InitializationContainer(
@@ -101,5 +111,18 @@ public class VoxelGameEngineInitializer {
         VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
         return voxelTypeLibrary;
+    }
+
+
+    private VoxelTerrainGenerator buildTerrainGenerator(VoxelTypeLibrary voxelTypeLibrary) {
+        PerlinNoiseGenerator perlinNoiseGenerator = new PerlinNoiseGenerator();
+        return new VoxelTerrainGenerator(perlinNoiseGenerator, voxelTypeLibrary);
+    }
+
+    private VoxelChunkHandler buildVoxelChunkHandler(WorldManager worldManager, MaterialRepository materialRepository, TerrainAdapter terrainAdapter) {
+        TerrainQuadFactory quadFactory = new TerrainQuadFactory(materialRepository);
+        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, worldManager);
+
+        return new VoxelChunkHandler(terrainAdapter, voxelChunkRebuilder);
     }
 }

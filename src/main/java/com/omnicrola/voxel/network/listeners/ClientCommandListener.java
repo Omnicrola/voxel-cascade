@@ -28,7 +28,7 @@ public class ClientCommandListener implements MessageListener<Client> {
 
     private Object addCommand(IWorldCommand command) {
         System.out.println("C <= recieved message: " + command);
-        this.commandProcessor.executeCommand(command);
+        this.commandProcessor.addCommand(command);
         return null;
     }
 }

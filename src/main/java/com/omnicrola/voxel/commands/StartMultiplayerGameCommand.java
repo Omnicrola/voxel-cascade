@@ -20,8 +20,8 @@ public class StartMultiplayerGameCommand extends AbstractWorldCommand {
     public void execute(CommandPackage commandPackage) {
         commandPackage.getNetworkManager().startMultiplayerServer();
         LoadLevelMessage loadLevelMessage = new LoadLevelMessage(LevelGeneratorTool.BASIC_LEVEL_UUID.toString());
-        ICommandProcessor commandProcessor = commandPackage.getCommandQueue();
-        commandProcessor.executeCommand(loadLevelMessage);
+        ICommandProcessor commandProcessor = commandPackage.getCommandProcessor();
+        commandProcessor.addCommand(loadLevelMessage);
     }
 
     @Override

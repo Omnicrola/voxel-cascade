@@ -72,7 +72,7 @@ public class UiAdapter implements ILevelChangeObserver {
     }
 
     public void sendCommand(IWorldCommand command) {
-        this.worldManagerState.executeCommand(command);
+        this.worldManagerState.addCommand(command);
     }
 
     @Override

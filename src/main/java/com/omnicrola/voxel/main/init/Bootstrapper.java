@@ -4,14 +4,23 @@ import com.jme3.bullet.BulletAppState;
 import com.jme3.system.AppSettings;
 import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.main.init.states.IStateInitializer;
+import com.omnicrola.voxel.ui.builders.IGuiBuilder;
+
+import java.util.ArrayList;
 
 /**
  * Created by omnic on 1/15/2016.
  */
 public class Bootstrapper {
     public static VoxelGameLauncher bootstrap() {
+
+        ArrayList<IGuiBuilder> guiBuilders = new ArrayList<>();
+        ArrayList<IStateInitializer> stateInitializers = new ArrayList<>();
+        VoxelGameEngineInitializer initializer = new VoxelGameEngineInitializer(new InputMappingLoader(), new GuiInitializer(guiBuilders), stateInitializers);
+
         BulletAppState bulletAppState = new BulletAppState();
-        VoxelGameEngine gameEngine = new VoxelGameEngine(bulletAppState, new EngineShutdownHandler());
+        VoxelGameEngine gameEngine = new VoxelGameEngine(initializer, bulletAppState, new EngineShutdownHandler());
         gameEngine.setShowSettings(false);
 
         AppSettings appSettings = new AppSettings(true);

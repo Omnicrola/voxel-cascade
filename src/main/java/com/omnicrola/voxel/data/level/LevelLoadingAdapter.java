@@ -7,6 +7,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
  */
 public class LevelLoadingAdapter {
     public LevelStateLoader getLoader() {
-        return throw new NotImplementedException();
+        throw new NotImplementedException();
     }
 }
