@@ -5,17 +5,12 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.ILocalCommand;
-import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
-import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
-import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.engine.ITickProvider;
 import com.omnicrola.voxel.engine.ShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.network.ClientNetworkState;
-import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.UiManager;
 import com.omnicrola.voxel.world.*;
 
@@ -28,42 +23,30 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
 
     private WorldMessageProcessor worldMessageProcessor;
     private ITickProvider ticProvider;
-    private GameXmlDataParser gameDataParser;
-    private Cursor2dProvider cursor2dProvider;
     private MessagePackage messagePackage;
     private LevelManager levelManager;
     private WorldManager worldManager;
+    private WorldEntityBuilder entityBuilder;
 
-    public WorldManagerState(GameXmlDataParser gameDataParser, Cursor2dProvider cursor2dProvider, WorldManager worldManager) {
-        this.gameDataParser = gameDataParser;
-        this.cursor2dProvider = cursor2dProvider;
+    public WorldManagerState(ITickProvider ticProvider,
+                             LevelManager levelManager,
+                             WorldManager worldManager,
+                             WorldEntityBuilder entityBuilder) {
+        this.ticProvider = ticProvider;
+        this.levelManager = levelManager;
         this.worldManager = worldManager;
-    }
-
-    public void addCommand(IWorldMessage worldCommand) {
-        this.worldMessageProcessor.addMessage(worldCommand);
+        this.entityBuilder = entityBuilder;
     }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
-        VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
-        LevelDefinitionRepository levelDefinitionRepository = this.gameDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS);
+        VoxelGameEngine  voxelGameEngine = (VoxelGameEngine) app;
 
-        VoxelTerrainState voxelTerrainState = stateManager.getState(VoxelTerrainState.class);
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
-        WorldEntityBuilder entityBuilder = new WorldEntityBuilder();
-
-        LevelStateLoader levelStateLoader = new LevelStateLoader(
-                voxelGameEngine,
-                clientNetworkState,
-                voxelTerrainState,
-                this.worldManager,
-                entityBuilder,
-                this.cursor2dProvider);
-        this.levelManager = new LevelManager(levelDefinitionRepository, levelStateLoader);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
         ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
+
         this.messagePackage = new MessagePackage(
                 shutdownHandler,
                 this.levelManager,
@@ -72,7 +55,10 @@ public class WorldManagerState extends AbstractAppState implements ICommandProce
                 uiManager,
                 this.worldManager);
         this.worldMessageProcessor = new WorldMessageProcessor(this.messagePackage);
-        this.ticProvider = voxelGameEngine.getTicProvider();
+    }
+
+    public void addCommand(IWorldMessage worldCommand) {
+        this.worldMessageProcessor.addMessage(worldCommand);
     }
 
     @Override

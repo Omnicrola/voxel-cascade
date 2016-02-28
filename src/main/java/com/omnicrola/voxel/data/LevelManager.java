@@ -1,9 +1,6 @@
 package com.omnicrola.voxel.data;
 
-import com.omnicrola.voxel.data.level.LevelDefinition;
-import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
-import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.data.level.LevelStateLoader;
+import com.omnicrola.voxel.data.level.*;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.ArrayList;
@@ -15,13 +12,13 @@ import java.util.UUID;
  */
 public class LevelManager implements ILevelManager {
     private final LevelDefinitionRepository levelDefinitions;
-    private final LevelStateLoader levelStateLoader;
+    private LevelLoadingAdapter levelLoadingAdapter;
     private LevelState currentLevelState;
     private ArrayList<ILevelChangeObserver> observers;
 
-    public LevelManager(LevelDefinitionRepository levelDefinitions, LevelStateLoader levelStateLoader) {
+    public LevelManager(LevelDefinitionRepository levelDefinitions, LevelLoadingAdapter levelLoadingAdapter) {
         this.levelDefinitions = levelDefinitions;
-        this.levelStateLoader = levelStateLoader;
+        this.levelLoadingAdapter = levelLoadingAdapter;
         this.observers = new ArrayList<>();
 
     }
@@ -36,7 +33,8 @@ public class LevelManager implements ILevelManager {
         if (this.currentLevelState != null) {
             this.currentLevelState.dispose();
         }
-        this.currentLevelState = this.levelStateLoader.create(newLevelDefinition);
+        LevelStateLoader levelStateLoader  =this.levelLoadingAdapter.getLoader();
+        this.currentLevelState = levelStateLoader.create(newLevelDefinition);
         notifyObserversOfLevelChange();
     }
 
@@ -58,4 +56,5 @@ public class LevelManager implements ILevelManager {
     public List<TeamStatistics> getTeamStatistics() {
         return this.currentLevelState.getTeamStatistics();
     }
+
 }

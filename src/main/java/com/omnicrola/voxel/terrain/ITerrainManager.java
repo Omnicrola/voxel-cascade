@@ -4,7 +4,6 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
-import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 /**
@@ -14,10 +13,6 @@ public interface ITerrainManager {
     void globalReset();
 
     void load(TerrainDefinition terrain);
-
-    Effect buildPlaceholderVoxel(Vector3f location);
-
-    IVoxelType getVoxelType(byte type);
 
     void setVoxel(Vec3i location, byte voxelType);
 

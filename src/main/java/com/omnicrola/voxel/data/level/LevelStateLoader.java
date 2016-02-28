@@ -53,6 +53,9 @@ public class LevelStateLoader {
         this.voxelTerrainState.load(levelDefinition.getTerrain());
 
         Camera camera = this.voxelGameEngine.getCamera();
+        camera.setRotation(levelDefinition.getCameraOrientation());
+        camera.setLocation(levelDefinition.getCameraPosition());
+
         IGameInput inputManager = new JmeInputWrapper(this.voxelGameEngine.getInputManager(), this.voxelGameEngine.getFlyByCamera());
         IWorldNode worldNode = this.voxelGameEngine.getWorldNode();
         VoxelTerrainState terrainManager = voxelGameEngine.getStateManager().getState(VoxelTerrainState.class);
@@ -63,7 +66,6 @@ public class LevelStateLoader {
         addTeams(levelState, levelDefinition);
         addUnits(levelDefinition.getUnitPlacements());
         addStructures(levelDefinition.getStructures());
-
 
         CursorCommandDelegator cursorStrategyFactory = new CursorCommandDelegator(
                 levelState,
