@@ -5,10 +5,10 @@ package com.omnicrola.voxel.settings;
  */
 public class GameConstants {
     public static final String UNIT_DEFINITION_FILE_EXTENSION = "units";
-    public static final String DEFINITION_REPOSITORY_FILE = "Data/core-definitions.units";
+    public static final String UNIT_DEFINITION_FILE = "Data/core-definitions.units";
 
     public static final String LEVEL_DEFINITION_FILE_EXTENSION = "level";
-    public static final String LEVEL_DEFINITIONS = "Data/levels";
+    public static final String LEVEL_DEFINITIONS_DIRECTORY = "Data/levels";
 
     public static final String MATERIAL_PARTICLE_SHADER = "Common/MatDefs/Misc/Particle.j3md";
     public static final String MATERIAL_UNSHADED = "Common/MatDefs/Misc/Unshaded.j3md";
@@ -18,7 +18,7 @@ public class GameConstants {
     public static final byte TERRAIN_TYPE_1 = 1;
     public static final float VOXEL_SIZE = 0.5f;
     public static final int CHUNK_SIZE_CUBED = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
-    
+
     public static final String DIR_TEXTURES = "Textures/";
     public static final String DIR_MODELS = "Models/";
 

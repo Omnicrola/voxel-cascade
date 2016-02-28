@@ -38,7 +38,7 @@ public class OldWorldBuilder implements IWorldBuilder {
         this.assetManager = assetManager;
         this.gameContainer = gameContainer;
         this.particleBuilder = particleBuilder;
-        this.definitionRepository = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.DEFINITION_REPOSITORY_FILE);
+        this.definitionRepository = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
     }
 
     @Override

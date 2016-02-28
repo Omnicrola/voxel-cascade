@@ -12,16 +12,13 @@ import com.omnicrola.voxel.network.messages.HandshakeMessage;
  */
 public class ClientListenerBuilder {
     private IActionQueue actionQueue;
-    private ICommandProcessor commandProcessor;
 
-    public ClientListenerBuilder(IActionQueue actionQueue,
-                                 ICommandProcessor commandProcessor) {
+    public ClientListenerBuilder(IActionQueue actionQueue) {
         this.actionQueue = actionQueue;
-        this.commandProcessor = commandProcessor;
     }
 
-    public void attach(Client networkClient) {
+    public void attach(Client networkClient, ICommandProcessor commandProcessor) {
         networkClient.addMessageListener(new ClientHandshakeListener(), HandshakeMessage.class);
-        networkClient.addMessageListener(new ClientCommandListener(this.actionQueue, this.commandProcessor));
+        networkClient.addMessageListener(new ClientCommandListener(this.actionQueue, commandProcessor));
     }
 }

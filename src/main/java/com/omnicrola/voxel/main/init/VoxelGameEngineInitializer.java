@@ -2,20 +2,25 @@ package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.omnicrola.voxel.commands.INetworkCommandQueue;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.LevelLoadingAdapter;
+import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.MaterialRepository;
+import com.omnicrola.voxel.engine.ShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.main.init.states.IStateInitializer;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
+import com.omnicrola.voxel.network.ClientListenerBuilder;
 import com.omnicrola.voxel.network.NetworkCommandQueue;
+import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.data.VoxelType;
-import com.omnicrola.voxel.world.CommandPackage;
+import com.omnicrola.voxel.ui.UiManager;
+import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.Arrays;
@@ -54,13 +59,30 @@ public class VoxelGameEngineInitializer {
         VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
         MaterialRepository materialRepository = new MaterialRepository(voxelGameEngine.getAssetManager());
 
-        LevelDefinitionRepository levelDefinitions = (LevelDefinitionRepository) assetManager.loadAsset(GameConstants.LEVEL_DEFINITIONS);
+        LevelDefinitionRepository levelDefinitions = (LevelDefinitionRepository) assetManager.loadAsset(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
+        UnitDefinitionRepository unitDefintions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
+
         LevelLoadingAdapter levelLoadingAdapter = new LevelLoadingAdapter();
         LevelManager levelManager = new LevelManager(levelDefinitions, levelLoadingAdapter);
 
-        CommandPackage commandPackage = new CommandPackage();
-        INetworkCommandQueue networkCommandQueue  = new NetworkCommandQueue();
-        WorldCommandProcessor worldCommandProcessor = new WorldCommandProcessor(commandPackage, networkCommandQueue);
+        NetworkCommandQueue networkCommandQueue = new NetworkCommandQueue();
+
+        ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
+
+        ClientListenerBuilder clientListenerBuilder = new ClientListenerBuilder(voxelGameEngine);
+        NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue);
+        EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
+        WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder(unitDefintions, assetManager, levelManager, entityControlAdapter);
+        UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
+
+        WorldCommandProcessor worldCommandProcessor = new WorldCommandProcessor(
+                networkCommandQueue,
+                shutdownHandler,
+                levelManager,
+                networkManager,
+                worldEntityBuilder,
+                uiManager,
+                worldManager);
 
         InitializationContainer initializationContainer = new InitializationContainer(
                 worldManager,
@@ -68,7 +90,8 @@ public class VoxelGameEngineInitializer {
                 materialRepository,
                 voxelGameEngine,
                 levelManager,
-                worldCommandProcessor);
+                worldCommandProcessor,
+                networkManager);
         return initializationContainer;
     }
 
