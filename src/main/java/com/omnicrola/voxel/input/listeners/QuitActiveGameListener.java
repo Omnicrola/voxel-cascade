@@ -3,7 +3,7 @@ package com.omnicrola.voxel.input.listeners;
 import com.jme3.app.state.AppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.controls.ActionListener;
-import com.omnicrola.voxel.engine.states.ActivePlayInputState;
+import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.engine.states.GameOverState;
 import com.omnicrola.voxel.engine.states.MainMenuState;
 
@@ -22,7 +22,7 @@ public class QuitActiveGameListener implements ActionListener {
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
             disableState(GameOverState.class);
-            disableState(ActivePlayInputState.class);
+            disableState(ActivePlayState.class);
             enableState(MainMenuState.class);
         }
     }

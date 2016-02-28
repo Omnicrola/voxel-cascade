@@ -1,28 +1,26 @@
 package com.omnicrola.voxel.world;
 
-import com.omnicrola.voxel.commands.IMessageProcessor;
 import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.IShutdown;
-import com.omnicrola.voxel.network.ClientNetworkState;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.ui.IUiManager;
 
 /**
  * Created by Eric on 2/22/2016.
  */
-public class MessagePackage {
+public class CommandPackage {
     private IShutdown shutdown;
     private LevelManager levelManager;
-    private ClientNetworkState networkManager;
+    private INetworkManager networkManager;
     private WorldEntityBuilder entityBuilder;
     private WorldManager worldManager;
     private IUiManager uiManager;
 
-    public MessagePackage(
+    public CommandPackage(
             IShutdown shutdown,
             LevelManager levelManager,
-            ClientNetworkState networkManager,
+            INetworkManager networkManager,
             WorldEntityBuilder entityBuilder,
             IUiManager uiManager,
             WorldManager worldManager) {
@@ -52,10 +50,6 @@ public class MessagePackage {
 
     public IUiManager getUiManager() {
         return this.uiManager;
-    }
-
-    public IMessageProcessor getMessageProcessor() {
-        return this.networkManager;
     }
 
     public void shutdownAndExit() {

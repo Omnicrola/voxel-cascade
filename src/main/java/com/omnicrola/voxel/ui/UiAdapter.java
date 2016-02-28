@@ -1,14 +1,14 @@
 package com.omnicrola.voxel.ui;
 
 import com.jme3.app.state.AppStateManager;
-import com.omnicrola.voxel.commands.ILocalCommand;
+import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.commands.IWorldCommand;
 import com.omnicrola.voxel.data.ILevelChangeObserver;
 import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.states.IStateTransition;
-import com.omnicrola.voxel.engine.states.WorldManagerState;
 import com.omnicrola.voxel.input.IUserSelectionObserver;
 import com.omnicrola.voxel.input.WorldCursor;
 import de.lessvoid.nifty.Nifty;
@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class UiAdapter implements ILevelChangeObserver {
     private final Nifty niftyGui;
-    private final WorldManagerState worldManagerState;
+    private final ICommandProcessor worldManagerState;
     private final Map<GlobalGameState, IStateTransition> transitions;
     private AppStateManager stateManager;
     private final ArrayList<ILevelObserver> levelObservers;
@@ -31,7 +31,7 @@ public class UiAdapter implements ILevelChangeObserver {
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
-                     WorldManagerState worldManagerState,
+                     ICommandProcessor worldManagerState,
                      Map<GlobalGameState, IStateTransition> transitions,
                      AppStateManager stateManager) {
         this.niftyGui = niftyGui;
@@ -71,7 +71,7 @@ public class UiAdapter implements ILevelChangeObserver {
         stateTranstion.run(this.niftyGui, this.stateManager);
     }
 
-    public void sendCommand(ILocalCommand command) {
+    public void sendCommand(IWorldCommand command) {
         this.worldManagerState.executeCommand(command);
     }
 

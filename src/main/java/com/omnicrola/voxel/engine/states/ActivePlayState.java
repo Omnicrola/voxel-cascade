@@ -15,19 +15,18 @@ import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
 import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
 import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
 import com.omnicrola.voxel.input.listeners.PanCameraListener;
-import com.omnicrola.voxel.ui.UiScreen;
 
 import java.util.ArrayList;
 
 /**
  * Created by omnic on 1/15/2016.
  */
-public class ActivePlayInputState extends AbstractAppState {
+public class ActivePlayState extends AbstractAppState {
     private final ArrayList<Tuple<GameInputAction, ActionListener>> inputs;
     private LevelManager levelManager;
     private InputManager inputManager;
 
-    public ActivePlayInputState(LevelManager levelManager) {
+    public ActivePlayState(LevelManager levelManager) {
         this.levelManager = levelManager;
         this.inputs = new ArrayList<>();
     }
@@ -37,9 +36,6 @@ public class ActivePlayInputState extends AbstractAppState {
         super.initialize(stateManager, app);
         VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
         this.inputManager = app.getInputManager();
-        voxelGameEngine.getFlyByCamera().setMoveSpeed(10f);
-        voxelGameEngine.getNiftyGui().gotoScreen(UiScreen.ACTIVE_PLAY.toString());
-
         initializeKeybindings(voxelGameEngine);
         setEnabled(false);
     }

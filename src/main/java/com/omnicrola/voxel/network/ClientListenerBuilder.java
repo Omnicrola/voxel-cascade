@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.network;
 
 import com.jme3.network.Client;
+import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.engine.IActionQueue;
-import com.omnicrola.voxel.engine.states.WorldManagerState;
 import com.omnicrola.voxel.network.listeners.ClientCommandListener;
 import com.omnicrola.voxel.network.listeners.ClientHandshakeListener;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
@@ -12,19 +12,16 @@ import com.omnicrola.voxel.network.messages.HandshakeMessage;
  */
 public class ClientListenerBuilder {
     private IActionQueue actionQueue;
-    private WorldManagerState worldManagerState;
-    private ClientNetworkState clientNetworkState;
+    private ICommandProcessor commandProcessor;
 
     public ClientListenerBuilder(IActionQueue actionQueue,
-                                 WorldManagerState worldManagerState,
-                                 ClientNetworkState clientNetworkState) {
+                                 ICommandProcessor commandProcessor) {
         this.actionQueue = actionQueue;
-        this.worldManagerState = worldManagerState;
-        this.clientNetworkState = clientNetworkState;
+        this.commandProcessor = commandProcessor;
     }
 
     public void attach(Client networkClient) {
-        networkClient.addMessageListener(new ClientHandshakeListener(this.clientNetworkState), HandshakeMessage.class);
-        networkClient.addMessageListener(new ClientCommandListener(this.worldManagerState, this.actionQueue));
+        networkClient.addMessageListener(new ClientHandshakeListener(), HandshakeMessage.class);
+        networkClient.addMessageListener(new ClientCommandListener(this.actionQueue, this.commandProcessor));
     }
 }

@@ -3,7 +3,7 @@ package com.omnicrola.voxel.network.messages;
 import com.jme3.network.serializing.Serializable;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Structure;
-import com.omnicrola.voxel.world.MessagePackage;
+import com.omnicrola.voxel.world.CommandPackage;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
@@ -22,9 +22,9 @@ public class SpawnStructureMessage extends AbstractWorldMessage {
     }
 
     @Override
-    public void execute(MessagePackage messagePackage) {
-        WorldEntityBuilder entityBuilder = messagePackage.getEntityBuilder();
-        WorldManager worldManager = messagePackage.getWorldManager();
+    public void execute(CommandPackage commandPackage) {
+        WorldEntityBuilder entityBuilder = commandPackage.getEntityBuilder();
+        WorldManager worldManager = commandPackage.getWorldManager();
         Structure structure = entityBuilder.buildStructure(this.unitPlacement);
         worldManager.addStructure(structure);
 

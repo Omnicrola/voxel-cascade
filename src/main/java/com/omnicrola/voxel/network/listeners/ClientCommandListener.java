@@ -3,33 +3,32 @@ package com.omnicrola.voxel.network.listeners;
 import com.jme3.network.Client;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
+import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.commands.IWorldCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
-import com.omnicrola.voxel.engine.states.WorldManagerState;
-import com.omnicrola.voxel.world.IWorldMessage;
 
 /**
  * Created by Eric on 2/22/2016.
  */
 public class ClientCommandListener implements MessageListener<Client> {
     private IActionQueue actionQueue;
-    private WorldManagerState worldManagerState;
+    private ICommandProcessor commandProcessor;
 
-    public ClientCommandListener(WorldManagerState worldManagerState, IActionQueue actionQueue) {
-        this.worldManagerState = worldManagerState;
+    public ClientCommandListener(IActionQueue actionQueue, ICommandProcessor commandProcessor) {
         this.actionQueue = actionQueue;
+        this.commandProcessor = commandProcessor;
     }
 
     @Override
     public void messageReceived(Client client, Message message) {
-        if (message instanceof IWorldMessage) {
-            this.actionQueue.enqueue(() -> addCommand((IWorldMessage) message));
+        if (message instanceof IWorldCommand) {
+            this.actionQueue.enqueue(() -> addCommand((IWorldCommand) message));
         }
     }
 
-    private Object addCommand(IWorldMessage command) {
+    private Object addCommand(IWorldCommand command) {
         System.out.println("C <= recieved message: " + command);
-        this.worldManagerState.addCommand(command);
+        this.commandProcessor.executeCommand(command);
         return null;
     }
-
 }

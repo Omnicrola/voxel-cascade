@@ -14,7 +14,7 @@ public class TransitionActivePlay implements IStateTransition {
         stateManager.getState(MainMenuState.class).setEnabled(false);
         stateManager.getState(GameOverState.class).setEnabled(false);
 
-        stateManager.getState(ActivePlayInputState.class).setEnabled(true);
+        stateManager.getState(ActivePlayState.class).setEnabled(true);
         stateManager.getState(VoxelTerrainState.class).setEnabled(true);
         stateManager.getState(WorldManagerState.class).setEnabled(true);
         stateManager.getState(ShadowState.class).setEnabled(true);
