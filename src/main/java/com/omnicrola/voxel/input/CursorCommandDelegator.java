@@ -2,12 +2,10 @@ package com.omnicrola.voxel.input;
 
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.ColorRGBA;
-import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.terrain.ITerrainManager;
@@ -96,14 +94,14 @@ public class CursorCommandDelegator {
 
     public void setBuildVoxelStrategy(byte type) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
-        Effect placeholderVoxel = this.terrainManager.buildPlaceholderVoxel(new Vector3f());
+        Geometry placeholderVoxel = this.worldEntityBuilder.buildCube(ColorRGBA.Green);
         BuildVoxelCursorStrategy buildVoxelCursorStrategy = new BuildVoxelCursorStrategy(
                 this.levelState,
                 type,
                 buildCursor,
                 this.terrainManager,
                 this.worldManager,
-                placeholderVoxel.getSpatial());
+                placeholderVoxel);
         this.worldCursor.setCursorStrategy(buildVoxelCursorStrategy);
     }
 

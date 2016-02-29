@@ -23,20 +23,20 @@ public class JmeNetworkWrapper implements IGameNetwork {
     @Override
     public void connectTo(String servername) {
         ClientNetworkState clientNetworkState = this.game.getStateManager().getState(ClientNetworkState.class);
-        clientNetworkState.connect(servername);
+//        clientNetworkState.connect(servername);
     }
 
     @Override
     public void loadLevel(UUID levelId) {
         ClientNetworkState clientNetworkState = this.game.getStateManager().getState(ClientNetworkState.class);
         LoadLevelMessage loadLevelMessage = new LoadLevelMessage();
-        clientNetworkState.message(loadLevelMessage);
+//        clientNetworkState.message(loadLevelMessage);
     }
 
     @Override
     public void closeConnection() {
         ClientNetworkState clientNetworkState = this.game.getStateManager().getState(ClientNetworkState.class);
-        clientNetworkState.disconnect();
+//        clientNetworkState.disconnect();
     }
 
     @Override

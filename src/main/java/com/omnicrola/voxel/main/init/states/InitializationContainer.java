@@ -10,6 +10,7 @@ import com.omnicrola.voxel.engine.ITickProvider;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.network.NetworkManager;
+import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.world.WorldManager;
 import de.lessvoid.nifty.Nifty;
@@ -25,6 +26,7 @@ public class InitializationContainer {
     private LevelManager levelManager;
     private WorldCommandProcessor worldCommandProcessor;
     private NetworkManager networkManager;
+    private TerrainManager terrainManager;
 
     public InitializationContainer(WorldManager worldManager,
                                    VoxelTypeLibrary voxelTypeLibrary,
@@ -32,7 +34,8 @@ public class InitializationContainer {
                                    VoxelGameEngine voxelGameEngine,
                                    LevelManager levelManager,
                                    WorldCommandProcessor worldCommandProcessor,
-                                   NetworkManager networkManager) {
+                                   NetworkManager networkManager,
+                                   TerrainManager terrainManager) {
         this.worldManager = worldManager;
         this.voxelTypeLibrary = voxelTypeLibrary;
         this.materialRepository = materialRepository;
@@ -40,6 +43,7 @@ public class InitializationContainer {
         this.levelManager = levelManager;
         this.worldCommandProcessor = worldCommandProcessor;
         this.networkManager = networkManager;
+        this.terrainManager = terrainManager;
     }
 
     public WorldManager getWorldManager() {
@@ -88,5 +92,9 @@ public class InitializationContainer {
 
     public NetworkManager getNetworkManager() {
         return this.networkManager;
+    }
+
+    public TerrainManager getTerrainManager() {
+        return terrainManager;
     }
 }

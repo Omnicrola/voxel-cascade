@@ -15,6 +15,8 @@ import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
 import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
 import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
 import com.omnicrola.voxel.input.listeners.PanCameraListener;
+import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.TerrainManager;
 
 import java.util.ArrayList;
 
@@ -25,9 +27,11 @@ public class ActivePlayState extends AbstractAppState {
     private final ArrayList<Tuple<GameInputAction, ActionListener>> inputs;
     private LevelManager levelManager;
     private InputManager inputManager;
+    private TerrainManager terrainManager;
 
-    public ActivePlayState(LevelManager levelManager) {
+    public ActivePlayState(LevelManager levelManager, TerrainManager terrainManager) {
         this.levelManager = levelManager;
+        this.terrainManager = terrainManager;
         this.inputs = new ArrayList<>();
     }
 
@@ -82,5 +86,13 @@ public class ActivePlayState extends AbstractAppState {
         if (currentLevel != null) {
             currentLevel.addTime(tpf);
         }
+    }
+
+    public LevelManager getLevelManager() {
+        return levelManager;
+    }
+
+    public ITerrainManager getTerrainManager() {
+        return terrainManager;
     }
 }

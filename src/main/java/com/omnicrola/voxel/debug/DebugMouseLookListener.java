@@ -2,10 +2,10 @@ package com.omnicrola.voxel.debug;
 
 import com.jme3.input.controls.ActionListener;
 import com.jme3.renderer.Camera;
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.data.LevelManager;
-import com.omnicrola.voxel.engine.states.WorldManagerState;
+import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeInputWrapper;
 
 /**
@@ -25,7 +25,7 @@ public class DebugMouseLookListener implements ActionListener {
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
             this.isLooking = !this.isLooking;
-            LevelManager levelManager = this.voxelGameEngine.getStateManager().getState(WorldManagerState.class).getLevelManager();
+            LevelManager levelManager = this.voxelGameEngine.getStateManager().getState(ActivePlayState.class).getLevelManager();
             LevelState currentLevelState = levelManager.getCurrentLevel();
             currentLevelState.getWorldCursor().setVisible(!this.isLooking);
             this.jmeInputWrapper.setMouseGrabbed(this.isLooking);

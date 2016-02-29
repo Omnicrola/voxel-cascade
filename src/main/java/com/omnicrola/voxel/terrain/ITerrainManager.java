@@ -21,4 +21,6 @@ public interface ITerrainManager {
     boolean isBelowTerrain(Geometry geometry);
 
     Vector3f getLowestNonSolidVoxel(Vector3f location);
+
+    void globalRebuild();
 }

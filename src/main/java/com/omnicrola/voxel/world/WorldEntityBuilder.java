@@ -5,6 +5,7 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import com.jme3.scene.shape.Box;
 import com.jme3.texture.Texture;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.TeamData;
@@ -64,7 +65,16 @@ public class WorldEntityBuilder {
     }
 
     public Geometry buildCube(ColorRGBA color) {
-        return null;
+
+        Material material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
+        material.setBoolean("UseMaterialColors", true);
+        material.setColor("Ambient", color);
+        material.setColor("Diffuse", color);
+
+        Box box = new Box(0.5f, 0.5f, 0.5f);
+        Geometry cube = new Geometry("cube", box);
+        cube.setMaterial(material);
+        return cube;
     }
 
     private UnitDefinition getUnitDefinition(int definitionId) {

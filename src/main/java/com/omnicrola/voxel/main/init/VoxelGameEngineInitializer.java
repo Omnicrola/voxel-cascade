@@ -103,7 +103,7 @@ public class VoxelGameEngineInitializer {
                 voxelGameEngine,
                 levelManager,
                 worldCommandProcessor,
-                networkManager);
+                networkManager, terrainManager);
         return initializationContainer;
     }
 
