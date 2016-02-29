@@ -29,7 +29,6 @@ public class SelfDestructControl extends AbstractControl {
 
     protected void destroy() {
         this.worldManager.removeSpatial(this.spatial);
-        this.spatial.getParent().detachChild(this.spatial);
     }
 
     @Override

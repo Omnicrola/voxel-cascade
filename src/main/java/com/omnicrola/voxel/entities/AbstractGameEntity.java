@@ -10,7 +10,7 @@ import com.omnicrola.voxel.world.IGameEntity;
 /**
  * Created by Eric on 2/26/2016.
  */
-public class AbstractGameEntity implements IGameEntity{
+public abstract class AbstractGameEntity implements IGameEntity {
     protected Spatial spatial;
 
     public AbstractGameEntity(Spatial spatial) {
@@ -30,6 +30,27 @@ public class AbstractGameEntity implements IGameEntity{
     @Override
     public boolean isAlive() {
         return VoxelUtil.isAlive(this.spatial);
+    }
+
+    @Override
+    public boolean matches(Spatial spatial) {
+        return spatial == this.spatial;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof AbstractGameEntity)) return false;
+
+        AbstractGameEntity that = (AbstractGameEntity) o;
+
+        return !(spatial != null ? !spatial.equals(that.spatial) : that.spatial != null);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return spatial != null ? spatial.hashCode() : 0;
     }
 
     public void setLocation(Vector3f location) {

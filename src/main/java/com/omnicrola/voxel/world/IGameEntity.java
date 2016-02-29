@@ -12,4 +12,6 @@ public interface IGameEntity {
     TeamData getTeam();
 
     boolean isAlive();
+
+    boolean matches(Spatial spatial);
 }

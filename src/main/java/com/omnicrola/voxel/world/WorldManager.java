@@ -10,7 +10,6 @@ import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.util.VoxelUtil;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,12 +46,14 @@ public class WorldManager {
         this.worldNode.getFxNode().attachChild(gameEntity.getSpatial());
     }
 
-    public List<Unit> getAllUnits() {
-        return new ArrayList<>(this.units);
-    }
-
     public void removeSpatial(Spatial spatial) {
-        throw new NotImplementedException();
+        this.worldNode.getUnitsNode().detachChild(spatial);
+        this.worldNode.getProjectilesNode().detachChild(spatial);
+        this.worldNode.getFxNode().detachChild(spatial);
+        this.worldNode.getTerrainNode().detachChild(spatial);
+        this.units.remove(spatial);
+        this.structures.remove(spatial);
+        this.projectiles.remove(spatial);
     }
 
     public Stream<CollisionResult> getUnitsInRange(Vector3f position, float scanRadius) {
