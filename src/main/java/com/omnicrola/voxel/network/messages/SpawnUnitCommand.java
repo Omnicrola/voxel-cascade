@@ -14,13 +14,13 @@ import com.omnicrola.voxel.world.WorldManager;
  * Created by Eric on 2/25/2016.
  */
 @Serializable
-public class SpawnUnitMessage extends AbstractWorldCommand {
+public class SpawnUnitCommand extends AbstractWorldCommand {
     private UnitPlacement unitPlacement;
 
-    public SpawnUnitMessage() {
+    public SpawnUnitCommand() {
     }
 
-    public SpawnUnitMessage(UnitPlacement unitPlacement) {
+    public SpawnUnitCommand(UnitPlacement unitPlacement) {
         this.unitPlacement = unitPlacement;
     }
 

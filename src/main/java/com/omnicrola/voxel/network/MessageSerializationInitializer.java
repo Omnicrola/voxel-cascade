@@ -5,7 +5,7 @@ import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.LoadLevelCommand;
 import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
-import com.omnicrola.voxel.network.messages.SpawnUnitMessage;
+import com.omnicrola.voxel.network.messages.SpawnUnitCommand;
 
 /**
  * Created by Eric on 2/21/2016.
@@ -15,7 +15,7 @@ public class MessageSerializationInitializer {
     public static void init (){
         Serializer.registerClass(HandshakeMessage.class);
         Serializer.registerClass(LoadLevelCommand.class);
-        Serializer.registerClass(SpawnUnitMessage.class);
+        Serializer.registerClass(SpawnUnitCommand.class);
         Serializer.registerClass(SpawnStructureMessage.class);
 
         Serializer.registerClass(UnitPlacement.class);

@@ -11,4 +11,6 @@ public interface IWorldCommand extends Message {
     public void execute(CommandPackage commandPackage);
 
     boolean isLocal();
+
+    void setIsLocal(boolean isLocal);
 }

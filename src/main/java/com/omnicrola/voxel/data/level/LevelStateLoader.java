@@ -11,7 +11,7 @@ import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeInputWrapper;
 import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
-import com.omnicrola.voxel.network.messages.SpawnUnitMessage;
+import com.omnicrola.voxel.network.messages.SpawnUnitCommand;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.world.IWorldNode;
@@ -90,7 +90,7 @@ public class LevelStateLoader {
 
     private void addUnits(List<UnitPlacement> unitPlacements) {
         for (UnitPlacement unitPlacement : unitPlacements) {
-            this.commandProcessor.addCommand(new SpawnUnitMessage(unitPlacement));
+            this.commandProcessor.addCommand(new SpawnUnitCommand(unitPlacement));
         }
     }
 

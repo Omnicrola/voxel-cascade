@@ -36,6 +36,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
         this.cursorCommandDelegator = cursorCommandDelegator;
         this.levelState = levelState;
         this.worldCursor = worldCursor;
+        this.gameInput = gameInput;
         this.lastCursorPosition = new Vector2f();
     }
 

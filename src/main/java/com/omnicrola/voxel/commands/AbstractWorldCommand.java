@@ -19,6 +19,7 @@ public abstract class AbstractWorldCommand extends AbstractMessage implements IW
         return this.isLocal;
     }
 
+    @Override
     public void setIsLocal(boolean isLocal) {
         this.isLocal = isLocal;
     }
