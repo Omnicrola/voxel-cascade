@@ -12,7 +12,7 @@ import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.Optional;

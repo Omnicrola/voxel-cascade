@@ -15,7 +15,7 @@ import com.omnicrola.voxel.network.messages.SpawnUnitCommand;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.world.IWorldNode;
-import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.List;

@@ -7,7 +7,7 @@ import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.world.CommandPackage;
-import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 /**

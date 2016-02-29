@@ -6,7 +6,7 @@ import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.world.CommandPackage;
-import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.ArrayList;

@@ -27,8 +27,11 @@ import com.omnicrola.voxel.terrain.data.VoxelType;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.UiManager;
-import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.StructureBuilder;
+import com.omnicrola.voxel.world.build.UnitBuilder;
+import com.omnicrola.voxel.world.build.WorldBuilderToolbox;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 import java.util.Arrays;
 import java.util.List;
@@ -75,30 +78,20 @@ public class VoxelGameEngineInitializer {
         MaterialRepository materialRepository = new MaterialRepository(voxelGameEngine.getAssetManager());
 
         LevelDefinitionRepository levelDefinitions = this.gameXmlDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
-        UnitDefinitionRepository unitDefintions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
+        UnitDefinitionRepository unitDefinitions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
 
         Cursor2dProvider cursorProvider = cursorProviderBuilder.build(assetManager);
-
-
         LevelLoadingAdapter levelLoadingAdapter = new LevelLoadingAdapter();
-
         LevelManager levelManager = new LevelManager(levelDefinitions, levelLoadingAdapter);
-
         NetworkCommandQueue networkCommandQueue = new NetworkCommandQueue();
-
         ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
 
         ClientListenerBuilder clientListenerBuilder = new ClientListenerBuilder(voxelGameEngine);
         NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue);
 
-        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary, voxelGameEngine.getPhysicsSpace());
-        VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
-        VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
+        TerrainManager terrainManager = createTerrainManager(voxelGameEngine, worldManager, voxelTypeLibrary, materialRepository);
 
-        TerrainManager terrainManager = new TerrainManager(voxelChunkHandler, voxelTerrainGenerator);
-
-        EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
-        WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder(unitDefintions, assetManager, levelManager, entityControlAdapter);
+        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
 
 
@@ -132,6 +125,21 @@ public class VoxelGameEngineInitializer {
                 worldCommandProcessor,
                 networkManager, terrainManager);
         return initializationContainer;
+    }
+
+    private TerrainManager createTerrainManager(VoxelGameEngine voxelGameEngine, WorldManager worldManager, VoxelTypeLibrary voxelTypeLibrary, MaterialRepository materialRepository) {
+        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary, voxelGameEngine.getPhysicsSpace());
+        VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
+        VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
+        return new TerrainManager(voxelChunkHandler, voxelTerrainGenerator);
+    }
+
+    private WorldEntityBuilder createWorldEntityBuilder(AssetManager assetManager, UnitDefinitionRepository unitDefintions, LevelManager levelManager) {
+        EntityControlAdapter entityControlAdapter = new EntityControlAdapter();
+        WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefintions, entityControlAdapter);
+        UnitBuilder unitBuilder = new UnitBuilder(toolbox);
+        StructureBuilder structureBuilder = new StructureBuilder(toolbox);
+        return new WorldEntityBuilder(unitDefintions, assetManager, unitBuilder, structureBuilder);
     }
 
     private VoxelTypeLibrary buildVoxelTypeLibrary() {

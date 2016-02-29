@@ -11,7 +11,7 @@ import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorToken;
-import com.omnicrola.voxel.world.WorldEntityBuilder;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
 
 /**

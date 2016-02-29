@@ -7,6 +7,7 @@ import com.omnicrola.voxel.engine.IShutdown;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 /**
  * Created by Eric on 2/22/2016.
