@@ -2,7 +2,6 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
-import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
@@ -128,16 +127,16 @@ public class OldWorldBuilder implements IWorldBuilder {
     @Override
     public Material material(MaterialToken materialToken) {
         Material material;
-        if (materialToken.color() != null) {
-            material = createMaterial(materialToken.color());
-        } else {
-            material = createMaterial(materialToken.texture());
-        }
+//        if (materialToken.color() != null) {
+//            material = createMaterial(materialToken.color());
+//        } else {
+//            material = createMaterial(materialToken.texture());
+//        }
         if (materialToken.isTransparent()) {
-            material.setBoolean("UseAlpha", true);
-            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+//            material.setBoolean("UseAlpha", true);
+//            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         }
-        return material;
+        return null;
     }
 
     private Texture getTexture(String texture) {

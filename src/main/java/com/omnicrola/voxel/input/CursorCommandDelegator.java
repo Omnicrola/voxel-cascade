@@ -3,7 +3,6 @@ package com.omnicrola.voxel.input;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.actions.*;
@@ -11,8 +10,8 @@ import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorToken;
-import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 /**
  * Created by omnic on 1/30/2016.
@@ -83,13 +82,8 @@ public class CursorCommandDelegator {
     }
 
     private Spatial createValidityCheckingModel(int unitId, float buildRadius, SelectionGroup selectionGroup) {
-//        Spatial exampleBuildTarget = this.gameContainer.world().build().unitCursor(unitId);
-//        Material validBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_VALID);
-//        Material invalidBuildMaterial = this.gameContainer.world().build().material(MaterialToken.BUILD_NOT_VALID);
-//        BuildCursorValidityControl buildCursorValidityControl = new BuildCursorValidityControl(selectionGroup, buildRadius, validBuildMaterial, invalidBuildMaterial);
-//        exampleBuildTarget.addControl(buildCursorValidityControl);
-//        return exampleBuildTarget;
-        return new Node();
+        Spatial placeholder = this.worldEntityBuilder.buildPlaceholderUnit(unitId, buildRadius, selectionGroup);
+        return placeholder;
     }
 
     public void setBuildVoxelStrategy(byte type) {

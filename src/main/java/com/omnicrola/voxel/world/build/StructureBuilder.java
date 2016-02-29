@@ -6,6 +6,7 @@ import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.data.units.StructureDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
+import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.IControlFactory;
@@ -18,18 +19,20 @@ import java.util.List;
  */
 public class StructureBuilder {
 
-    WorldBuilderToolbox toolbox;
+    private WorldBuilderToolbox toolbox;
     private EntityControlAdapter entityControlAdapter;
+    private MaterialRepository materialRepository;
 
-    public StructureBuilder(WorldBuilderToolbox toolbox, EntityControlAdapter entityControlAdapter) {
+    public StructureBuilder(WorldBuilderToolbox toolbox, EntityControlAdapter entityControlAdapter, MaterialRepository materialRepository) {
         this.toolbox = toolbox;
         this.entityControlAdapter = entityControlAdapter;
+        this.materialRepository = materialRepository;
     }
 
     public Structure build(UnitPlacement unitPlacement, StructureDefinition structureDefinition) {
         Spatial spatial = toolbox.getModel(structureDefinition.getModel());
         spatial.setName(structureDefinition.getName());
-        Material material = toolbox.createMaterial(structureDefinition.getTexture());
+        Material material = materialRepository.createMaterial(structureDefinition.getTexture());
         spatial.setMaterial(material);
 
         List<IControlFactory> controlFactories = structureDefinition.getControlFactories();

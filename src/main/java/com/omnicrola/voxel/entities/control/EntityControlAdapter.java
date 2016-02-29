@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.entities.control;
 
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.build.ProjectileBuilder;
 import com.omnicrola.voxel.jme.wrappers.impl.ParticleBuilder;
@@ -14,15 +15,18 @@ public class EntityControlAdapter {
     private WorldManager worldManager;
     private ProjectileBuilder projectileBuilder;
     private ITerrainManager terrainManager;
+    private LevelManager levelManager;
 
     public EntityControlAdapter(ParticleBuilder particleBuilder,
                                 WorldManager worldManager,
                                 ProjectileBuilder projectileBuilder,
-                                ITerrainManager terrainManager) {
+                                ITerrainManager terrainManager,
+                                LevelManager levelManager) {
         this.particleBuilder = particleBuilder;
         this.worldManager = worldManager;
         this.projectileBuilder = projectileBuilder;
         this.terrainManager = terrainManager;
+        this.levelManager = levelManager;
     }
 
     public ParticleBuilder getParticleBuilder() {
@@ -34,7 +38,7 @@ public class EntityControlAdapter {
     }
 
     public LevelState getCurrentLevel() {
-        return null;
+        return this.levelManager.getCurrentLevel();
     }
 
     public ProjectileBuilder getProjectileBuilder() {

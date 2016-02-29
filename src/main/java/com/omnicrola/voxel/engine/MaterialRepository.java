@@ -4,6 +4,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.material.RenderState;
 import com.jme3.math.ColorRGBA;
+import com.jme3.texture.Texture;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.IVoxelType;
@@ -27,7 +28,7 @@ public class MaterialRepository {
 
     public Material get(MaterialToken materialToken) {
         if (!this.materials.containsKey(materialToken)) {
-            makeMaterial(materialToken);
+            this.materials.get(materialToken);
         }
         return this.materials.get(materialToken);
     }
@@ -39,11 +40,24 @@ public class MaterialRepository {
         return this.voxelMaterials.get(type);
     }
 
-    public void makeMaterial(MaterialToken materialToken) {
-        ColorRGBA color = materialToken.color();
-        Material material = getMaterial(color);
-        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Additive);
-        this.materials.put(materialToken, material);
+    public Material getMaterial(MaterialToken materialToken) {
+        Material material = createMaterial(materialToken.texture());
+        if (materialToken.isTransparent()) {
+            material.setBoolean("UseAlpha", true);
+            material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
+        }
+        return material;
+    }
+
+    public Material createMaterial(String textureName) {
+        Texture texture = getTexture(textureName);
+        Material material = new Material(this.assetManager, GameConstants.MATERIAL_SHADED);
+        material.setTexture("DiffuseMap", texture);
+        return material;
+    }
+
+    private Texture getTexture(String texture) {
+        return this.assetManager.loadTexture(GameConstants.DIR_TEXTURES + texture);
     }
 
     private void makeMaterial(IVoxelType type) {

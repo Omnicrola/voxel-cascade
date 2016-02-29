@@ -95,7 +95,7 @@ public class VoxelGameEngineInitializer {
 
         TerrainManager terrainManager = createTerrainManager(voxelGameEngine, worldManager, voxelTypeLibrary, materialRepository);
 
-        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager, terrainManager, worldManager);
+        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager, terrainManager, worldManager, materialRepository);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
 
 
@@ -128,7 +128,8 @@ public class VoxelGameEngineInitializer {
                 voxelGameEngine,
                 levelManager,
                 worldCommandProcessor,
-                networkManager, terrainManager);
+                networkManager,
+                terrainManager);
         return initializationContainer;
     }
 
@@ -143,17 +144,18 @@ public class VoxelGameEngineInitializer {
                                                         UnitDefinitionRepository unitDefintions,
                                                         LevelManager levelManager,
                                                         ITerrainManager terrainManager,
-                                                        WorldManager worldManager) {
+                                                        WorldManager worldManager,
+                                                        MaterialRepository materialRepository) {
         WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefintions);
-        ProjectileBuilder projectileBuilder = new ProjectileBuilder(toolbox);
+        ProjectileBuilder projectileBuilder = new ProjectileBuilder(toolbox, materialRepository);
         ParticleBuilder particleBuilder = new ParticleBuilder(assetManager);
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter(
                 particleBuilder,
                 worldManager,
                 projectileBuilder,
-                terrainManager);
-        UnitBuilder unitBuilder = new UnitBuilder(toolbox, entityControlAdapter);
-        StructureBuilder structureBuilder = new StructureBuilder(toolbox, entityControlAdapter);
+                terrainManager, levelManager);
+        UnitBuilder unitBuilder = new UnitBuilder(toolbox, entityControlAdapter, materialRepository);
+        StructureBuilder structureBuilder = new StructureBuilder(toolbox, entityControlAdapter, materialRepository);
         return new WorldEntityBuilder(unitDefintions, assetManager, unitBuilder, structureBuilder);
     }
 

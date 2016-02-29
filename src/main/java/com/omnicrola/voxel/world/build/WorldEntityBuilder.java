@@ -4,6 +4,7 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Spatial;
 import com.jme3.scene.shape.Box;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.data.units.StructureDefinition;
@@ -11,6 +12,7 @@ import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
+import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
@@ -37,6 +39,10 @@ public class WorldEntityBuilder {
         return this.unitBuilder.build(unitPlacement, unitDefinition);
     }
 
+    public Spatial buildPlaceholderUnit(int unitId, float buildRadius, SelectionGroup selectionGroup) {
+        UnitDefinition unitDefinition = getUnitDefinition(unitId);
+        return this.unitBuilder.buildPlaceholder(unitDefinition, buildRadius, selectionGroup);
+    }
     public Structure buildStructure(UnitPlacement unitPlacement) {
         StructureDefinition structureDefinition = getStructureDefinition(unitPlacement.getUnitId());
         return this.structureBuilder.build(unitPlacement, structureDefinition);
