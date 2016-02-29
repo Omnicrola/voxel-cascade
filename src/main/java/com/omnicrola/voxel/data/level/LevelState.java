@@ -22,6 +22,7 @@ public class LevelState implements IDisposable {
     private final ArrayList<ILevelObserver> observers;
     private WorldCursor worldCursor;
     private String levelName;
+    private boolean hasStarted;
 
     public LevelState(WorldCursor worldCursor, String levelName) {
         this.teams = new ArrayList<>();
@@ -118,5 +119,17 @@ public class LevelState implements IDisposable {
 
     public void removeObserver(ILevelObserver observer) {
         this.observers.remove(observer);
+    }
+
+    public List<TeamData> getAllTeams() {
+        return new ArrayList<>(this.teams);
+    }
+
+    public boolean hasStarted() {
+        return this.hasStarted;
+    }
+
+    public void setHasStarted(boolean hasStarted) {
+        this.hasStarted = hasStarted;
     }
 }

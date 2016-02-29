@@ -3,12 +3,14 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.entities.Unit;
+import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.world.IGameEntity;
+import com.omnicrola.voxel.world.WorldManager;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -16,41 +18,42 @@ import java.util.stream.Collectors;
  */
 public class AnnihilationWinConditionState extends AbstractAppState {
 
-    private ArrayList<TeamData> teams;
-    private VoxelGameEngine voxelGameEngine;
+    private WorldManager worldManager;
+    private ILevelManager levelManager;
     private AppStateManager stateManager;
 
-    public AnnihilationWinConditionState(ArrayList<TeamData> teams) {
-        this.teams = teams;
+    public AnnihilationWinConditionState(WorldManager worldManager, ILevelManager levelManager) {
+        this.worldManager = worldManager;
+        this.levelManager = levelManager;
     }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
-        this.stateManager = stateManager;
         super.initialize(stateManager, app);
-        this.voxelGameEngine = (VoxelGameEngine) app;
+        this.stateManager = stateManager;
     }
 
     @Override
     public void update(float tpf) {
-//        WorldManagerState worldManagerState = this.stateManager.getState(WorldManagerState.class);
-//        if (worldManagerState != null) {
-//            List<Unit> units = worldManagerState.getAllUnits();
-//            Optional<TeamData> firstTeamEliminated = this.teams.stream()
-//                    .filter(t -> isEliminated(units, t))
-//                    .findFirst();
-//            if (firstTeamEliminated.isPresent()) {
-//                gameOver();
-//            }
-//        }
+        LevelState currentLevel = this.levelManager.getCurrentLevel();
+        if (currentLevel.hasStarted()) {
+            List<IGameEntity> entities = worldManager.getAllUnits();
+            List<TeamData> teams = currentLevel.getAllTeams();
+            Optional<TeamData> firstTeamEliminated = teams.stream()
+                    .filter(t -> isEliminated(entities, t))
+                    .findFirst();
+            if (firstTeamEliminated.isPresent()) {
+                gameOver();
+            }
+        }
     }
 
-    private boolean isEliminated(List<Unit> allUnits, TeamData teamData) {
-        Long livingStructures = allUnits.stream()
-                .filter(s -> s.isAlive())
-                .filter(s -> isOnTeam(s, teamData))
+    private boolean isEliminated(List<IGameEntity> allUnits, TeamData teamData) {
+        Long livingUnits = allUnits.stream()
+                .filter(e -> e.isAlive())
+                .filter(e -> isOnTeam(e, teamData))
                 .collect(Collectors.counting());
-        return livingStructures <= 0;
+        return livingUnits <= 0;
     }
 
     private void gameOver() {
@@ -58,7 +61,7 @@ public class AnnihilationWinConditionState extends AbstractAppState {
         this.stateManager.getState(GameOverState.class).setEnabled(true);
     }
 
-    private boolean isOnTeam(Unit unit, TeamData teamData) {
+    private boolean isOnTeam(IGameEntity unit, TeamData teamData) {
         return unit.getTeam().equals(teamData);
     }
 

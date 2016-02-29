@@ -116,7 +116,8 @@ public class VoxelGameEngineInitializer {
                 worldManager,
                 worldEntityBuilder,
                 cursorProvider,
-                worldCommandProcessor);
+                worldCommandProcessor,
+                levelManager);
         levelLoadingAdapter.setStateLoader(levelStateLoader);
 
 

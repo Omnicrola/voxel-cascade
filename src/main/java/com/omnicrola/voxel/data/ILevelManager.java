@@ -17,4 +17,5 @@ public interface ILevelManager {
     void loadLevel(UUID levelUuid);
 
     List<TeamStatistics> getTeamStatistics();
+
 }

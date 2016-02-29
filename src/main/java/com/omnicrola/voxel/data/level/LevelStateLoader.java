@@ -2,8 +2,11 @@ package com.omnicrola.voxel.data.level;
 
 import com.jme3.renderer.Camera;
 import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.commands.StartLevelCommand;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
+import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
 import com.omnicrola.voxel.input.CursorCommandDelegator;
 import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
 import com.omnicrola.voxel.input.WorldCursor;
@@ -31,19 +34,22 @@ public class LevelStateLoader {
     private WorldEntityBuilder worldEntityBuilder;
     private Cursor2dProvider cursor2dProvider;
     private ICommandProcessor commandProcessor;
+    private ILevelManager levelManager;
 
     public LevelStateLoader(VoxelGameEngine voxelGameEngine,
                             ITerrainManager terrainManager,
                             WorldManager worldManager,
                             WorldEntityBuilder worldEntityBuilder,
                             Cursor2dProvider cursor2dProvider,
-                            ICommandProcessor commandProcessor) {
+                            ICommandProcessor commandProcessor,
+                            ILevelManager levelManager) {
         this.voxelGameEngine = voxelGameEngine;
         this.terrainManager = terrainManager;
         this.worldManager = worldManager;
         this.worldEntityBuilder = worldEntityBuilder;
         this.cursor2dProvider = cursor2dProvider;
         this.commandProcessor = commandProcessor;
+        this.levelManager = levelManager;
     }
 
     public LevelState create(LevelDefinition levelDefinition) {
@@ -74,6 +80,10 @@ public class LevelStateLoader {
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = cursorStrategyFactory.setSelectStrategy();
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
         worldCursor.clearCursorStrategy();
+
+        AnnihilationWinConditionState winCondition = new AnnihilationWinConditionState(this.worldManager, this.levelManager);
+        this.voxelGameEngine.getStateManager().attach(winCondition);
+        this.commandProcessor.addCommand(new StartLevelCommand());
 
         return levelState;
     }

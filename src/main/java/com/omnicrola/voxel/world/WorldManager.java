@@ -6,6 +6,7 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
@@ -81,4 +82,12 @@ public class WorldManager {
         this.projectiles.remove(spatial);
         this.physicsSpace.remove(spatial);
     }
+
+    public List<IGameEntity> getAllUnits() {
+        ArrayList<IGameEntity> gameEntities = new ArrayList<>();
+        gameEntities.addAll(this.units);
+        gameEntities.addAll(this.structures);
+        return gameEntities;
+    }
+
 }
