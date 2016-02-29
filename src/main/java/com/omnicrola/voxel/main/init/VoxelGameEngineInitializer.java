@@ -2,6 +2,7 @@ package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.bullet.PhysicsSpace;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
@@ -73,7 +74,8 @@ public class VoxelGameEngineInitializer {
     }
 
     private InitializationContainer buildInitializationContainer(VoxelGameEngine voxelGameEngine) {
-        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode());
+        PhysicsSpace physicsSpace = voxelGameEngine.getPhysicsSpace();
+        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode(), physicsSpace);
         AssetManager assetManager = voxelGameEngine.getAssetManager();
 
         VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();

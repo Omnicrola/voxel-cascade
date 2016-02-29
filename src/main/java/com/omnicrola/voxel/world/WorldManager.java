@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.world;
 
 import com.jme3.bounding.BoundingSphere;
+import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
@@ -21,12 +22,14 @@ import java.util.stream.Stream;
 public class WorldManager {
 
     private IWorldNode worldNode;
+    private PhysicsSpace physicsSpace;
     private List<Unit> units;
     private List<Structure> structures;
     private List<Projectile> projectiles;
 
-    public WorldManager(IWorldNode worldNode) {
+    public WorldManager(IWorldNode worldNode, PhysicsSpace physicsSpace) {
         this.worldNode = worldNode;
+        this.physicsSpace = physicsSpace;
         this.units = new ArrayList<>();
         this.structures = new ArrayList<>();
         this.projectiles = new ArrayList<>();
@@ -34,16 +37,38 @@ public class WorldManager {
 
     public void addUnit(Unit unit) {
         this.units.add(unit);
-        this.worldNode.getUnitsNode().attachChild(unit.getSpatial());
+        Spatial spatial = unit.getSpatial();
+        this.worldNode.getUnitsNode().attachChild(spatial);
+        this.physicsSpace.add(spatial);
     }
 
     public void addStructure(Structure structure) {
         this.structures.add(structure);
-        this.worldNode.getUnitsNode().attachChild(structure.getSpatial());
+        Spatial spatial = structure.getSpatial();
+        this.worldNode.getUnitsNode().attachChild(spatial);
+        this.physicsSpace.add(spatial);
+    }
+
+    public void addProjectile(Projectile projectile) {
+        this.projectiles.add(projectile);
+        Spatial spatial = projectile.getSpatial();
+        this.worldNode.getProjectilesNode().attachChild(spatial);
+        this.physicsSpace.add(spatial);
     }
 
     public void addEffect(IGameEntity gameEntity) {
         this.worldNode.getFxNode().attachChild(gameEntity.getSpatial());
+    }
+
+    public Stream<CollisionResult> getUnitsInRange(Vector3f position, float scanRadius) {
+        CollisionResults collisionResults = new CollisionResults();
+        this.worldNode.getUnitsNode().collideWith(new BoundingSphere(scanRadius, position), collisionResults);
+        return VoxelUtil.convertToStream(collisionResults);
+    }
+
+
+    public void addTerrainChunk(VoxelChunk chunk) {
+        this.worldNode.getTerrainNode().attachChild(chunk);
     }
 
     public void removeSpatial(Spatial spatial) {
@@ -54,20 +79,6 @@ public class WorldManager {
         this.units.remove(spatial);
         this.structures.remove(spatial);
         this.projectiles.remove(spatial);
-    }
-
-    public Stream<CollisionResult> getUnitsInRange(Vector3f position, float scanRadius) {
-        CollisionResults collisionResults = new CollisionResults();
-        this.worldNode.getUnitsNode().collideWith(new BoundingSphere(scanRadius, position), collisionResults);
-        return VoxelUtil.convertToStream(collisionResults);
-    }
-
-    public void addProjectile(Projectile projectile) {
-        this.projectiles.add(projectile);
-        this.worldNode.getProjectilesNode().attachChild(projectile.getSpatial());
-    }
-
-    public void addTerrainChunk(VoxelChunk chunk) {
-        this.worldNode.getTerrainNode().attachChild(chunk);
+        this.physicsSpace.remove(spatial);
     }
 }
