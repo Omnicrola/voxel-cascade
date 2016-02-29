@@ -37,7 +37,7 @@ public class GameOverState extends AbstractAppState {
         if (enabled) {
             this.niftyGui.gotoScreen(UiScreen.GAME_OVER.toString());
         } else {
-            this.transitionMainMenu.run(this.niftyGui, this.stateManager);
+//            this.transitionMainMenu.run(this.niftyGui, this.stateManager);
         }
     }
 }

@@ -10,9 +10,9 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 /**
  * Created by Eric on 1/24/2016.
  */
-public class MainMenuUiBuilder {
+public class MainMenuUiBuilder implements IGuiBuilder {
 
-    public static void build(UiAdapter uiAdapter) {
+    public void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.MAIN_MENU.toString();
         final MainMenuScreenController mainMenuScreenController = new MainMenuScreenController(uiAdapter);
 

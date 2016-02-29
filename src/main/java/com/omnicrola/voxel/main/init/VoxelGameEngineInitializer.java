@@ -3,6 +3,7 @@ package com.omnicrola.voxel.main.init;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
+import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.LevelLoadingAdapter;
@@ -37,11 +38,16 @@ public class VoxelGameEngineInitializer {
     private InputMappingLoader inputMappingLoader;
     private GuiInitializer guiInitializer;
     private List<IStateInitializer> stateInitializers;
+    private GameXmlDataParser gameXmlDataParser;
 
-    public VoxelGameEngineInitializer(InputMappingLoader inputMappingLoader, GuiInitializer guiInitializer, List<IStateInitializer> stateInitializers) {
+    public VoxelGameEngineInitializer(InputMappingLoader inputMappingLoader,
+                                      GuiInitializer guiInitializer,
+                                      List<IStateInitializer> stateInitializers,
+                                      GameXmlDataParser gameXmlDataParser) {
         this.inputMappingLoader = inputMappingLoader;
         this.guiInitializer = guiInitializer;
         this.stateInitializers = stateInitializers;
+        this.gameXmlDataParser = gameXmlDataParser;
     }
 
     public void initialize(VoxelGameEngine voxelGameEngine) {
@@ -62,7 +68,7 @@ public class VoxelGameEngineInitializer {
         VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
         MaterialRepository materialRepository = new MaterialRepository(voxelGameEngine.getAssetManager());
 
-        LevelDefinitionRepository levelDefinitions = (LevelDefinitionRepository) assetManager.loadAsset(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
+        LevelDefinitionRepository levelDefinitions = this.gameXmlDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
         UnitDefinitionRepository unitDefintions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
 
         LevelLoadingAdapter levelLoadingAdapter = new LevelLoadingAdapter();

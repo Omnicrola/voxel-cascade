@@ -11,6 +11,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.system.AppSettings;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.data.units.EntityDefinitionXmlAssetLoader;
@@ -18,10 +19,16 @@ import com.omnicrola.voxel.debug.WireframeProcessor;
 import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeGameContainer;
+import com.omnicrola.voxel.main.init.GuiInitializer;
+import com.omnicrola.voxel.main.init.InputMappingLoader;
+import com.omnicrola.voxel.main.init.VoxelGameEngineInitializer;
+import com.omnicrola.voxel.main.init.states.IStateInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.ui.builders.IGuiBuilder;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -123,7 +130,7 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     }
 
     public VoxelTerrainViewer(BulletAppState bulletAppState) {
-        super(bulletAppState, new EngineShutdownHandler());
+        super(new VoxelGameEngineInitializer(new InputMappingLoader(),new GuiInitializer(new ArrayList<IGuiBuilder>()), new ArrayList<IStateInitializer>(), new GameXmlDataParser()), bulletAppState, new EngineShutdownHandler());
     }
 
     @Override

@@ -14,8 +14,8 @@ import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
 /**
  * Created by Eric on 1/25/2016.
  */
-public class ActivePlayUiBuilder {
-    public static void build(UiAdapter uiAdapter) {
+public class ActivePlayUiBuilder implements IGuiBuilder {
+    public void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.ACTIVE_PLAY.toString();
 
         final ActivePlayScreenController activePlayScreenController = new ActivePlayScreenController(uiAdapter);

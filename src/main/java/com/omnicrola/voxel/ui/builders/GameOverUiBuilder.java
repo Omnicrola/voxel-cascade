@@ -1,12 +1,9 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.jme3.app.state.AppStateManager;
-import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.GameOverScreenController;
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.*;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
@@ -15,8 +12,8 @@ import de.lessvoid.nifty.tools.Color;
 /**
  * Created by Eric on 2/6/2016.
  */
-public class GameOverUiBuilder {
-    public static void build(UiAdapter uiAdapter) {
+public class GameOverUiBuilder implements IGuiBuilder {
+    public void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.GAME_OVER.toString();
         GameOverScreenController gameOverScreenController = new GameOverScreenController(uiAdapter);
 

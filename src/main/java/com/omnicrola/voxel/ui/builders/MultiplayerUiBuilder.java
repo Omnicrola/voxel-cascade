@@ -10,8 +10,8 @@ import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
 /**
  * Created by Eric on 2/21/2016.
  */
-public class MultiplayerUiBuilder {
-    public static void build(UiAdapter uiAdapter) {
+public class MultiplayerUiBuilder implements IGuiBuilder {
+    public void build(UiAdapter uiAdapter) {
 
         String screenName = UiScreen.MULTIPLAYER_LOAD.toString();
         MultiplayerScreenController multiplayerController = new MultiplayerScreenController(uiAdapter);
@@ -49,13 +49,13 @@ public class MultiplayerUiBuilder {
                         }});
                     }});
 
-                    panel(new PanelBuilder("panel_bottom"){{
+                    panel(new PanelBuilder("panel_bottom") {{
                         childLayoutVertical();
                         alignCenter();
                         height(percentage(75));
                         width(percentage(75));
 
-                        text(new TextBuilder(){{
+                        text(new TextBuilder() {{
                             text("Loading...");
                             font(UiConstants.DEFAULT_FONT);
                         }});
