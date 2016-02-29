@@ -8,11 +8,7 @@ import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
-import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.settings.GameConstants;
-
-import java.util.List;
 
 /**
  * Created by Eric on 2/28/2016.
@@ -21,20 +17,13 @@ public  class WorldBuilderToolbox {
     private AssetManager assetManager;
     private ILevelManager levelManager;
     private UnitDefinitionRepository definitionRepository;
-    private EntityControlAdapter entityControlAdapter;
 
     public WorldBuilderToolbox(AssetManager assetManager,
                                ILevelManager levelManager,
-                               UnitDefinitionRepository definitionRepository,
-                               EntityControlAdapter entityControlAdapter) {
+                               UnitDefinitionRepository definitionRepository                               ) {
         this.assetManager = assetManager;
         this.levelManager = levelManager;
         this.definitionRepository = definitionRepository;
-        this.entityControlAdapter = entityControlAdapter;
-    }
-
-    public void runFactories(Spatial spatial, List<IControlFactory> controlFactories) {
-        controlFactories.forEach(f -> f.build(spatial, this.definitionRepository, this.entityControlAdapter));
     }
 
     public Spatial getModel(String modelName) {
@@ -57,4 +46,7 @@ public  class WorldBuilderToolbox {
         return currentLevel.getTeamById(teamId);
     }
 
+    public UnitDefinitionRepository getDefinitionRepository() {
+        return definitionRepository;
+    }
 }

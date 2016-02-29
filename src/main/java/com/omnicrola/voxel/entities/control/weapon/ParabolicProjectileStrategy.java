@@ -32,7 +32,7 @@ public class ParabolicProjectileStrategy extends ProjectileStrategy {
         ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
         Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
 
-        addCollisionControl(entityControlAdapter.getWorldManager(), entityControlAdapter.getEffectsBuilder(), projectile);
+        addCollisionControl(entityControlAdapter.getWorldManager(), entityControlAdapter.getParticleBuilder(), projectile);
         projectile.getSpatial().addControl(createProjectileControl(emittingEntity, targetLocation));
         projectile.getSpatial().addControl(createSelfDestruct());
         return projectile;

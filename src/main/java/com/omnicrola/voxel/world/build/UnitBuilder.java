@@ -5,8 +5,13 @@ import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.data.units.UnitDefinition;
+import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.entities.Unit;
+import com.omnicrola.voxel.entities.control.EntityControlAdapter;
+import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+
+import java.util.List;
 
 /**
  * Created by Eric on 2/28/2016.
@@ -14,9 +19,11 @@ import com.omnicrola.voxel.settings.EntityDataKeys;
 public class UnitBuilder {
 
     WorldBuilderToolbox toolbox;
+    private EntityControlAdapter entityControlAdapter;
 
-    public UnitBuilder(WorldBuilderToolbox toolbox) {
+    public UnitBuilder(WorldBuilderToolbox toolbox, EntityControlAdapter entityControlAdapter) {
         this.toolbox = toolbox;
+        this.entityControlAdapter = entityControlAdapter;
     }
 
     public Unit build(UnitPlacement unitPlacement, UnitDefinition unitDefinition) {
@@ -26,7 +33,10 @@ public class UnitBuilder {
         Material material = toolbox.createMaterial(unitDefinition.getTexture());
         spatial.setMaterial(material);
 
-        toolbox.runFactories(spatial, unitDefinition.getControlFactories());
+        List<IControlFactory> controlFactories = unitDefinition.getControlFactories();
+        UnitDefinitionRepository definitionRepository = toolbox.getDefinitionRepository();
+        controlFactories.forEach(f -> f.build(spatial, definitionRepository, this.entityControlAdapter));
+
 
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);

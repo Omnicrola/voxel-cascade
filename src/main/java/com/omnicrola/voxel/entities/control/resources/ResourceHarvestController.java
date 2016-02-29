@@ -65,7 +65,7 @@ public class ResourceHarvestController extends AbstractControl {
     }
 
     private void startFx() {
-        this.harvestFx = this.controlAdapter.getEffectsBuilder().buildCubeHarvest();
+        this.harvestFx = this.controlAdapter.getParticleBuilder().cubicHarvest();
         this.controlAdapter.getWorldManager().addEffect(this.harvestFx);
         this.harvestFx.setLocation(getTargetLocation());
         this.startedFx = true;

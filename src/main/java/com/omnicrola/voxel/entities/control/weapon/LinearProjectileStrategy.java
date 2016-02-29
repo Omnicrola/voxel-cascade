@@ -29,7 +29,7 @@ public class LinearProjectileStrategy extends ProjectileStrategy {
     public Projectile spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
         ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
         Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
-        addCollisionControl(this.entityControlAdapter.getWorldManager(), entityControlAdapter.getEffectsBuilder(), projectile);
+        addCollisionControl(this.entityControlAdapter.getWorldManager(), entityControlAdapter.getParticleBuilder(), projectile);
         addRangeControl(projectile);
         addProjectileControl(emittingEntity, targetLocation, projectile);
         return projectile;

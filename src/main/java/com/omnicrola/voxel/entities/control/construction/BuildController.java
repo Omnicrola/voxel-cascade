@@ -7,9 +7,9 @@ import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.Effect;
-import com.omnicrola.voxel.entities.build.EffectsBuilder;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
+import com.omnicrola.voxel.jme.wrappers.impl.ParticleBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.world.WorldManager;
 
@@ -49,8 +49,8 @@ public class BuildController extends AbstractControl {
     }
 
     private void startFx() {
-        EffectsBuilder effectsBuilder= this.entityControlAdapter.getEffectsBuilder();
-        this.buildFx = effectsBuilder.buildCubeHarvest();
+        ParticleBuilder effectsBuilder= this.entityControlAdapter.getParticleBuilder();
+        this.buildFx = effectsBuilder.cubicHarvest();
         WorldManager worldManager=this.entityControlAdapter.getWorldManager();
         worldManager.addEffect(this.buildFx);
         this.buildFx.setLocation(getTargetLocation());

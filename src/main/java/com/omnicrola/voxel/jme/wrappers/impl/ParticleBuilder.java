@@ -7,7 +7,7 @@ import com.jme3.effect.shapes.EmitterBoxShape;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.fx.ParticleDurationControl;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -24,7 +24,7 @@ public class ParticleBuilder implements IParticleBuilder {
     }
 
     @Override
-    public Spatial voxelFire(float duration, int count) {
+    public Effect voxelFire(float duration, int count) {
         ParticleEmitter fire = new ParticleEmitter("particles", ParticleMesh.Type.Triangle, count);
         Material material = new Material(this.assetManager, GameConstants.MATERIAL_PARTICLE_SHADER);
         material.setTexture("Texture", assetManager.loadTexture("Textures/test.png"));
@@ -42,11 +42,11 @@ public class ParticleBuilder implements IParticleBuilder {
         fire.getParticleInfluencer().setVelocityVariation(0.3f);
         fire.addControl(new ParticleDurationControl(duration));
 
-        return fire;
+        return new Effect(fire);
     }
 
     @Override
-    public Spatial voxelSpray(int count) {
+    public Effect voxelSpray(int count) {
         ParticleEmitter spray = new ParticleEmitter("spray", ParticleMesh.Type.Point, count);
         Material material = new Material(this.assetManager, GameConstants.MATERIAL_PARTICLE_SHADER);
         spray.setMaterial(material);
@@ -66,11 +66,11 @@ public class ParticleBuilder implements IParticleBuilder {
         spray.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 5f, 0));
         spray.getParticleInfluencer().setVelocityVariation(1f);
 
-        return spray;
+        return new Effect(spray);
     }
 
     @Override
-    public Spatial cubicHarvest() {
+    public Effect cubicHarvest() {
         int count = 100;
         ParticleEmitter cubicEmitter = new ParticleEmitter("cubic", ParticleMesh.Type.Point, count);
         cubicEmitter.setShape(new EmitterBoxShape(new Vector3f(), new Vector3f(1, 1, 1)));
@@ -90,6 +90,6 @@ public class ParticleBuilder implements IParticleBuilder {
         cubicEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2f, 0));
         cubicEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
 
-        return cubicEmitter;
+        return new Effect(cubicEmitter);
     }
 }
