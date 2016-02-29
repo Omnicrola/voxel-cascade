@@ -11,6 +11,7 @@ public class ServerLoadLevelListener extends AbstractMessageListener<LoadLevelMe
 
     @Override
     protected void processMessage(HostedConnection connection, LoadLevelMessage message) {
+        message.setIsLocal(true);
         connection.getServer().broadcast(message);
     }
 }

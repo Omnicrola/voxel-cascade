@@ -49,6 +49,7 @@ public class Bootstrapper {
 
     private static ArrayList<IStateInitializer> getStateInitializers() {
         ArrayList<IStateInitializer> stateInitializers = new ArrayList<>();
+        stateInitializers.add(new CommandStateInitializer());
         stateInitializers.add(new ActivePlayInputStateInitializer());
         stateInitializers.add(new ClientNetworkStateInitializer());
         stateInitializers.add(new DebugStateInitializer());

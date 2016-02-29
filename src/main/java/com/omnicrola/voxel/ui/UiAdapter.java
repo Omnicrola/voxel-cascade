@@ -22,7 +22,7 @@ import java.util.Map;
  */
 public class UiAdapter implements ILevelChangeObserver {
     private final Nifty niftyGui;
-    private final ICommandProcessor worldManagerState;
+    private final ICommandProcessor commandProcessor;
     private final Map<GlobalGameState, IStateTransition> transitions;
     private AppStateManager stateManager;
     private final ArrayList<ILevelObserver> levelObservers;
@@ -31,11 +31,11 @@ public class UiAdapter implements ILevelChangeObserver {
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
-                     ICommandProcessor worldManagerState,
+                     ICommandProcessor commandProcessor,
                      Map<GlobalGameState, IStateTransition> transitions,
                      AppStateManager stateManager) {
         this.niftyGui = niftyGui;
-        this.worldManagerState = worldManagerState;
+        this.commandProcessor = commandProcessor;
         this.transitions = transitions;
         this.stateManager = stateManager;
 
@@ -72,7 +72,7 @@ public class UiAdapter implements ILevelChangeObserver {
     }
 
     public void sendCommand(IWorldCommand command) {
-        this.worldManagerState.addCommand(command);
+        this.commandProcessor.addCommand(command);
     }
 
     @Override

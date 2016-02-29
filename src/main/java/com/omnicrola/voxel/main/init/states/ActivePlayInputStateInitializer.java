@@ -13,6 +13,7 @@ public class ActivePlayInputStateInitializer implements IStateInitializer {
     public AppState buildState(InitializationContainer initializationContainer) {
         LevelManager levelManager = initializationContainer.getLevelManager();
         TerrainManager terrainManager = initializationContainer.getTerrainManager();
+
         return new ActivePlayState(levelManager, terrainManager);
     }
 }

@@ -29,7 +29,8 @@ public class ActivePlayState extends AbstractAppState {
     private InputManager inputManager;
     private TerrainManager terrainManager;
 
-    public ActivePlayState(LevelManager levelManager, TerrainManager terrainManager) {
+    public ActivePlayState(LevelManager levelManager,
+                           TerrainManager terrainManager) {
         this.levelManager = levelManager;
         this.terrainManager = terrainManager;
         this.inputs = new ArrayList<>();
@@ -82,6 +83,11 @@ public class ActivePlayState extends AbstractAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
+        updateCurrentLevel(tpf);
+        this.terrainManager.update(tpf);
+    }
+
+    private void updateCurrentLevel(float tpf) {
         LevelState currentLevel = this.levelManager.getCurrentLevel();
         if (currentLevel != null) {
             currentLevel.addTime(tpf);
