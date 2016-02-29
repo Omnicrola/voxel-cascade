@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.commands;
 
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
-import com.omnicrola.voxel.network.messages.LoadLevelMessage;
+import com.omnicrola.voxel.network.messages.LoadLevelCommand;
 import com.omnicrola.voxel.world.CommandPackage;
 
 import java.util.UUID;
@@ -19,9 +19,9 @@ public class StartMultiplayerGameCommand extends AbstractWorldCommand {
     @Override
     public void execute(CommandPackage commandPackage) {
         commandPackage.getNetworkManager().startMultiplayerServer();
-        LoadLevelMessage loadLevelMessage = new LoadLevelMessage(LevelGeneratorTool.BASIC_LEVEL_UUID.toString());
+        LoadLevelCommand loadLevelCommand = new LoadLevelCommand(LevelGeneratorTool.BASIC_LEVEL_UUID.toString());
         ICommandProcessor commandProcessor = commandPackage.getCommandProcessor();
-        commandProcessor.addCommand(loadLevelMessage);
+        commandProcessor.addCommand(loadLevelCommand);
     }
 
     @Override

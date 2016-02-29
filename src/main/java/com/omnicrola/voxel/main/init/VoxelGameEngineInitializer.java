@@ -7,6 +7,7 @@ import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.LevelLoadingAdapter;
+import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.ShutdownHandler;
@@ -23,6 +24,8 @@ import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.ui.Cursor2dProvider;
+import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.UiManager;
 import com.omnicrola.voxel.world.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
@@ -39,15 +42,18 @@ public class VoxelGameEngineInitializer {
     private GuiInitializer guiInitializer;
     private List<IStateInitializer> stateInitializers;
     private GameXmlDataParser gameXmlDataParser;
+    private CursorProviderBuilder cursorProviderBuilder;
 
     public VoxelGameEngineInitializer(InputMappingLoader inputMappingLoader,
                                       GuiInitializer guiInitializer,
                                       List<IStateInitializer> stateInitializers,
-                                      GameXmlDataParser gameXmlDataParser) {
+                                      GameXmlDataParser gameXmlDataParser,
+                                      CursorProviderBuilder cursorProviderBuilder) {
         this.inputMappingLoader = inputMappingLoader;
         this.guiInitializer = guiInitializer;
         this.stateInitializers = stateInitializers;
         this.gameXmlDataParser = gameXmlDataParser;
+        this.cursorProviderBuilder = cursorProviderBuilder;
     }
 
     public void initialize(VoxelGameEngine voxelGameEngine) {
@@ -71,7 +77,11 @@ public class VoxelGameEngineInitializer {
         LevelDefinitionRepository levelDefinitions = this.gameXmlDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
         UnitDefinitionRepository unitDefintions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
 
+        Cursor2dProvider cursorProvider = cursorProviderBuilder.build(assetManager);
+
+
         LevelLoadingAdapter levelLoadingAdapter = new LevelLoadingAdapter();
+
         LevelManager levelManager = new LevelManager(levelDefinitions, levelLoadingAdapter);
 
         NetworkCommandQueue networkCommandQueue = new NetworkCommandQueue();
@@ -91,6 +101,7 @@ public class VoxelGameEngineInitializer {
         WorldEntityBuilder worldEntityBuilder = new WorldEntityBuilder(unitDefintions, assetManager, levelManager, entityControlAdapter);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
 
+
         WorldCommandProcessor worldCommandProcessor = new WorldCommandProcessor(
                 networkCommandQueue,
                 shutdownHandler,
@@ -101,6 +112,16 @@ public class VoxelGameEngineInitializer {
                 worldManager,
                 terrainManager);
         networkManager.setCommandProcessor(worldCommandProcessor);
+
+        LevelStateLoader levelStateLoader = new LevelStateLoader(
+                voxelGameEngine,
+                terrainManager,
+                worldManager,
+                worldEntityBuilder,
+                cursorProvider,
+                worldCommandProcessor);
+        levelLoadingAdapter.setStateLoader(levelStateLoader);
+
 
         InitializationContainer initializationContainer = new InitializationContainer(
                 worldManager,

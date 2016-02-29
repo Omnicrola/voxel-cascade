@@ -3,7 +3,7 @@ package com.omnicrola.voxel.jme.wrappers.impl;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.jme.wrappers.IGameNetwork;
 import com.omnicrola.voxel.network.ClientNetworkState;
-import com.omnicrola.voxel.network.messages.LoadLevelMessage;
+import com.omnicrola.voxel.network.messages.LoadLevelCommand;
 import com.omnicrola.voxel.server.main.init.ServerBootstrapper;
 import com.omnicrola.voxel.server.main.init.VoxelServerLauncher;
 
@@ -29,8 +29,8 @@ public class JmeNetworkWrapper implements IGameNetwork {
     @Override
     public void loadLevel(UUID levelId) {
         ClientNetworkState clientNetworkState = this.game.getStateManager().getState(ClientNetworkState.class);
-        LoadLevelMessage loadLevelMessage = new LoadLevelMessage();
-//        clientNetworkState.message(loadLevelMessage);
+        LoadLevelCommand loadLevelCommand = new LoadLevelCommand();
+//        clientNetworkState.message(loadLevelCommand);
     }
 
     @Override

@@ -6,6 +6,7 @@ import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.main.init.states.*;
+import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.builders.*;
 
 import java.util.ArrayList;
@@ -19,7 +20,12 @@ public class Bootstrapper {
         ArrayList<IGuiBuilder> guiBuilders = getiGuiBuilders();
         ArrayList<IStateInitializer> stateInitializers = getStateInitializers();
         GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
-        VoxelGameEngineInitializer initializer = new VoxelGameEngineInitializer(new InputMappingLoader(), new GuiInitializer(guiBuilders), stateInitializers, gameXmlDataParser);
+        VoxelGameEngineInitializer initializer = new VoxelGameEngineInitializer(
+                new InputMappingLoader(),
+                new GuiInitializer(guiBuilders),
+                stateInitializers,
+                gameXmlDataParser,
+                new CursorProviderBuilder());
 
         BulletAppState bulletAppState = new BulletAppState();
         VoxelGameEngine gameEngine = new VoxelGameEngine(initializer, bulletAppState, new EngineShutdownHandler());

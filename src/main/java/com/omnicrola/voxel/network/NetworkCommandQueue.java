@@ -18,11 +18,12 @@ public class NetworkCommandQueue implements INetworkCommandQueue {
     }
 
     @Override
-    public void add(IWorldCommand worldCommand) {
+    public synchronized void add(IWorldCommand worldCommand) {
         this.commands.add(worldCommand);
     }
 
-    public void sendMessages(Client client) {
+    public synchronized void sendMessages(Client client) {
         this.commands.forEach(c -> client.send(c));
+        this.commands.clear();
     }
 }

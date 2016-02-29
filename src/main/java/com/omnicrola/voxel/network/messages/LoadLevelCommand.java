@@ -13,13 +13,13 @@ import java.util.UUID;
  * Created by Eric on 2/24/2016.
  */
 @Serializable
-public class LoadLevelMessage extends AbstractWorldCommand {
+public class LoadLevelCommand extends AbstractWorldCommand {
     private String levelUuid;
 
-    public LoadLevelMessage() {
+    public LoadLevelCommand() {
     }
 
-    public LoadLevelMessage(String levelUuid) {
+    public LoadLevelCommand(String levelUuid) {
         this.levelUuid = levelUuid;
     }
 

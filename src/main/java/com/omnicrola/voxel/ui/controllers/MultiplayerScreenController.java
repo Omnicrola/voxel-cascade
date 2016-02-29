@@ -3,6 +3,7 @@ package com.omnicrola.voxel.ui.controllers;
 import com.omnicrola.voxel.commands.AbortMultiplayerConnectionCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
+import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
@@ -32,6 +33,7 @@ public class MultiplayerScreenController extends AbstractScreenController {
     @SubscriberLink(UiToken.BUTTON_START_MULTIPLAYER)
     public void startGame(String id, ButtonClickedEvent buttonClickedEvent) {
         this.uiAdapter.sendCommand(new StartMultiplayerGameCommand(LevelGeneratorTool.BASIC_LEVEL_UUID));
+        this.uiAdapter.transitionTo(GlobalGameState.ACTIVE_PLAY);
     }
 
 }

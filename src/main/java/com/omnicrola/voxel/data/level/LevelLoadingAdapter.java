@@ -1,12 +1,16 @@
 package com.omnicrola.voxel.data.level;
 
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 /**
  * Created by omnic on 2/28/2016.
  */
 public class LevelLoadingAdapter {
+    private LevelStateLoader stateLoader;
+
     public LevelStateLoader getLoader() {
-        throw new NotImplementedException();
+        return this.stateLoader;
+    }
+
+    public void setStateLoader(LevelStateLoader stateLoader) {
+        this.stateLoader = stateLoader;
     }
 }

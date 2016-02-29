@@ -26,6 +26,7 @@ import com.omnicrola.voxel.main.init.states.IStateInitializer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.builders.IGuiBuilder;
 
 import java.util.ArrayList;
@@ -130,7 +131,14 @@ public class VoxelTerrainViewer extends VoxelGameEngine {
     }
 
     public VoxelTerrainViewer(BulletAppState bulletAppState) {
-        super(new VoxelGameEngineInitializer(new InputMappingLoader(),new GuiInitializer(new ArrayList<IGuiBuilder>()), new ArrayList<IStateInitializer>(), new GameXmlDataParser()), bulletAppState, new EngineShutdownHandler());
+        super(new VoxelGameEngineInitializer(
+                        new InputMappingLoader(),
+                        new GuiInitializer(new ArrayList<IGuiBuilder>()),
+                        new ArrayList<IStateInitializer>(),
+                        new GameXmlDataParser(),
+                        new CursorProviderBuilder()),
+                bulletAppState,
+                new EngineShutdownHandler());
     }
 
     @Override
