@@ -22,4 +22,5 @@ public class UiCurrentSelectionObserver implements IUserSelectionObserver {
     public void notifySelectionUpdated(SelectionGroup currentSelection) {
         this.activePlayScreenController.selectionHasUpdated();
     }
+
 }

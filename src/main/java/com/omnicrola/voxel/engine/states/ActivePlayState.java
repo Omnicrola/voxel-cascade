@@ -13,12 +13,10 @@ import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.IWorldCursor;
-import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
-import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
-import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
-import com.omnicrola.voxel.input.listeners.PanCameraListener;
+import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.TerrainManager;
+import com.omnicrola.voxel.ui.UiSelectionRectangle;
 
 import java.util.ArrayList;
 
@@ -31,13 +29,16 @@ public class ActivePlayState extends AbstractAppState {
     private InputManager inputManager;
     private TerrainManager terrainManager;
     private IWorldCursor worldCursor;
+    private UiSelectionRectangle selectionRectangle;
 
     public ActivePlayState(LevelManager levelManager,
                            TerrainManager terrainManager,
-                           IWorldCursor worldCursor) {
+                           IWorldCursor worldCursor,
+                           UiSelectionRectangle selectionRectangle) {
         this.levelManager = levelManager;
         this.terrainManager = terrainManager;
         this.worldCursor = worldCursor;
+        this.selectionRectangle = selectionRectangle;
         this.inputs = new ArrayList<>();
     }
 
@@ -45,11 +46,18 @@ public class ActivePlayState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
-        this.inputManager = app.getInputManager();
+        this.inputManager = voxelGameEngine.getInputManager();
+
+        voxelGameEngine.getFlyByCamera().setMoveSpeed(10f);
+        attachWorldCursor(voxelGameEngine);
         initializeKeybindings(voxelGameEngine);
+        setEnabled(false);
+    }
+
+    private void attachWorldCursor(VoxelGameEngine voxelGameEngine) {
         Node fxNode = voxelGameEngine.getWorldNode().getFxNode();
         this.worldCursor.attachTo(fxNode);
-        setEnabled(false);
+        voxelGameEngine.getGuiNode().attachChild(this.selectionRectangle);
     }
 
     private void initializeKeybindings(VoxelGameEngine voxelGameEngine) {
@@ -61,7 +69,14 @@ public class ActivePlayState extends AbstractAppState {
         addStateInput(GameInputAction.MOUSE_PRIMARY, primaryCursorListener);
         addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this.worldCursor));
 
-        PanCameraListener panCameraListener = new PanCameraListener(new CameraDolly(voxelGameEngine.getCamera()));
+        InputManager inputManager = voxelGameEngine.getInputManager();
+        SelectionRectangleListener selectionRectangleListener = new SelectionRectangleListener(inputManager, this.selectionRectangle);
+        addStateInput(GameInputAction.MOUSE_PRIMARY, selectionRectangleListener);
+        addStateInput(GameInputAction.MOUSE_MOVEMENT, selectionRectangleListener);
+        addStateInput(GameInputAction.MOUSE_MOVEMENT, selectionRectangleListener);
+
+        CameraDolly cameraDolly = new CameraDolly(voxelGameEngine.getCamera());
+        PanCameraListener panCameraListener = new PanCameraListener(cameraDolly);
         panCameraListener.registerInputs(this);
     }
 

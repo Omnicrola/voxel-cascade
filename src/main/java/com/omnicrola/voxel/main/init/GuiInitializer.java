@@ -28,13 +28,13 @@ public class GuiInitializer {
         this.guiBuilders = guiBuilders;
     }
 
-    public void createGui(InitializationContainer initializationContainer ) {
+    public void createGui(InitializationContainer initializationContainer) {
         UiAdapter uiAdapter = buildUiAdapter(initializationContainer);
         this.guiBuilders.forEach(b -> b.build(uiAdapter));
 
     }
 
-    private UiAdapter buildUiAdapter(InitializationContainer initializationContainer ) {
+    private UiAdapter buildUiAdapter(InitializationContainer initializationContainer) {
         Nifty niftyGui = initializationContainer.getNiftyGui();
         LevelManager levelManager = initializationContainer.getLevelManager();
         AppStateManager stateManager = initializationContainer.getStateManager();
@@ -48,4 +48,5 @@ public class GuiInitializer {
 
         return new UiAdapter(niftyGui, levelManager, worldCursor, worldCommandProcessor, transitions, stateManager);
     }
+
 }

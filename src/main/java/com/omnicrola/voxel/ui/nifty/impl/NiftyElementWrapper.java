@@ -38,6 +38,11 @@ public class NiftyElementWrapper implements IUiElement {
     }
 
     @Override
+    public void setVisible(boolean isVisible) {
+        this.element.setVisible(isVisible);
+    }
+
+    @Override
     public void addElement(ElementBuilder elementBuilder) {
         this.element.add(elementBuilder.build(this.nifty, this.screen, this.element));
     }

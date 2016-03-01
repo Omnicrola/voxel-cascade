@@ -15,4 +15,6 @@ public interface IUiElement {
     void setWidth(int width);
 
     int getWidth();
+
+    void setVisible(boolean isVisible);
 }

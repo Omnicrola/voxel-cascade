@@ -4,6 +4,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
 import com.jme3.input.InputManager;
+import com.jme3.scene.Node;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.ITickProvider;
@@ -104,5 +105,9 @@ public class InitializationContainer {
 
     public WorldEntityBuilder getWorldEntityBuilder() {
         return worldEntityBuilder;
+    }
+
+    public Node getGuiNode() {
+        return this.voxelGameEngine.getGuiNode();
     }
 }

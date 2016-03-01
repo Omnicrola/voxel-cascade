@@ -66,7 +66,7 @@ public class MaterialRepository {
         this.voxelMaterials.put(type, material);
     }
 
-    private Material getMaterial(ColorRGBA color) {
+    public Material getMaterial(ColorRGBA color) {
         Material material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         material.setBoolean("UseMaterialColors", true);
         material.setBoolean("UseVertexColor", true);

@@ -7,4 +7,5 @@ public interface IUserSelectionObserver {
     void notifyNewSelection(SelectionGroup selectionGroup);
 
     void notifySelectionUpdated(SelectionGroup currentSelection);
+
 }

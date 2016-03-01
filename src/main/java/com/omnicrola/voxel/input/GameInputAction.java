@@ -26,6 +26,7 @@ public enum GameInputAction implements IActionCode {
 
     MULTI_SELECT, DEBUG_TOGGLE_WIREFRAME;
 
+
     @Override
     public String trigger() {
         return this.toString();
