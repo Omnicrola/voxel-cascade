@@ -5,6 +5,7 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.scene.Node;
 import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelState;
@@ -46,6 +47,8 @@ public class ActivePlayState extends AbstractAppState {
         VoxelGameEngine voxelGameEngine = (VoxelGameEngine) app;
         this.inputManager = app.getInputManager();
         initializeKeybindings(voxelGameEngine);
+        Node fxNode = voxelGameEngine.getWorldNode().getFxNode();
+        this.worldCursor.attachTo(fxNode);
         setEnabled(false);
     }
 

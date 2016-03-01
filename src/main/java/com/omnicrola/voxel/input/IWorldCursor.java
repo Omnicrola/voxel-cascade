@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.input;
 
 import com.jme3.collision.CollisionResult;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 
@@ -36,4 +37,6 @@ public interface IWorldCursor {
     void setVisible(boolean isVisible);
 
     void addSelectionObserver(IUserSelectionObserver observer);
+
+    void attachTo(Node node);
 }

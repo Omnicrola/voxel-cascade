@@ -174,7 +174,7 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
 
     public Vec3i getSnappedLocation() {
         Vector3f p = this.getLocalTranslation();
-        return new Vec3i((int) p.x, (int) p.y, (int) p.z);
+        return Vec3i.floor(p);
     }
 
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
@@ -186,5 +186,10 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
                 .filter(s -> screenSelectionEvaluator.isInSelection(s.getWorldTranslation()))
                 .collect(Collectors.toList());
         return collect;
+    }
+
+    @Override
+    public void attachTo(Node node) {
+        node.attachChild(this);
     }
 }
