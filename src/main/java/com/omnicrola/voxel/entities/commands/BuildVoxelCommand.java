@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.commands;
 
 import com.omnicrola.voxel.input.CommandGroup;
-import com.omnicrola.voxel.input.CursorCommandDelegator;
+import com.omnicrola.voxel.input.CursorCommandAdaptor;
 import com.omnicrola.voxel.input.SelectionGroup;
 
 import javax.xml.bind.annotation.XmlAttribute;
@@ -40,8 +40,8 @@ public class BuildVoxelCommand implements IEntityCommand {
     }
 
     @Override
-    public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
-        cursorCommandDelegator.setBuildVoxelStrategy(this.voxelType);
+    public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandAdaptor cursorCommandAdaptor) {
+        cursorCommandAdaptor.setBuildVoxelStrategy(this.voxelType);
         return null;
     }
 }

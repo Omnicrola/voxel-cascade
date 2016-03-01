@@ -11,6 +11,7 @@ import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
 import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
 import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
@@ -28,11 +29,14 @@ public class ActivePlayState extends AbstractAppState {
     private LevelManager levelManager;
     private InputManager inputManager;
     private TerrainManager terrainManager;
+    private IWorldCursor worldCursor;
 
     public ActivePlayState(LevelManager levelManager,
-                           TerrainManager terrainManager) {
+                           TerrainManager terrainManager,
+                           IWorldCursor worldCursor) {
         this.levelManager = levelManager;
         this.terrainManager = terrainManager;
+        this.worldCursor = worldCursor;
         this.inputs = new ArrayList<>();
     }
 
@@ -47,12 +51,12 @@ public class ActivePlayState extends AbstractAppState {
 
     private void initializeKeybindings(VoxelGameEngine voxelGameEngine) {
 
-        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this.levelManager));
+        addStateInput(GameInputAction.CLEAR_SELECTION, new ClearSelectionListener(this.worldCursor));
 
-        ExecutePrimaryCursorListener primaryCursorListener = new ExecutePrimaryCursorListener(this.levelManager);
+        ExecutePrimaryCursorListener primaryCursorListener = new ExecutePrimaryCursorListener(this.worldCursor);
         addStateInput(GameInputAction.MULTI_SELECT, primaryCursorListener);
         addStateInput(GameInputAction.MOUSE_PRIMARY, primaryCursorListener);
-        addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this.levelManager));
+        addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this.worldCursor));
 
         PanCameraListener panCameraListener = new PanCameraListener(new CameraDolly(voxelGameEngine.getCamera()));
         panCameraListener.registerInputs(this);

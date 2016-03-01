@@ -5,11 +5,10 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.input.WorldCursor;
 
 import java.util.Optional;
 
@@ -19,14 +18,11 @@ import java.util.Optional;
 public class MoveSelectedUnitsStrategy implements ICursorStrategy {
 
     private final Node empty3dCursor;
-    protected LevelState levelState;
-    protected WorldCursor worldCursor;
+    protected IWorldCursor worldCursor;
     private JmeCursor cursor2d;
 
-    public MoveSelectedUnitsStrategy(LevelState currentLevelState,
-                                     WorldCursor worldCursor,
+    public MoveSelectedUnitsStrategy(IWorldCursor worldCursor,
                                      JmeCursor cursor2d) {
-        this.levelState = currentLevelState;
         this.worldCursor = worldCursor;
         this.cursor2d = cursor2d;
         this.empty3dCursor = new Node();

@@ -25,11 +25,11 @@ import java.util.stream.Stream;
  */
 public class SelectionGroup {
     private final NavigationGridDistributor gridDistributor;
-    private CursorCommandDelegator cursorCommandDelegator;
+    private CursorCommandAdaptor cursorCommandAdaptor;
     private List<Spatial> selection;
 
-    public SelectionGroup(CursorCommandDelegator cursorStrategyFactory, List<Spatial> selection) {
-        this.cursorCommandDelegator = cursorStrategyFactory;
+    public SelectionGroup(CursorCommandAdaptor cursorStrategyFactory, List<Spatial> selection) {
+        this.cursorCommandAdaptor = cursorStrategyFactory;
         this.selection = selection;
         this.gridDistributor = new NavigationGridDistributor(this);
     }
@@ -107,7 +107,7 @@ public class SelectionGroup {
                 .map(u -> u.getControl(EntityCommandController.class))
                 .filter(cc -> cc != null)
                 .forEach(cc -> cc.collectCommands(commandCollector));
-        return commandCollector.getCommandsCommonToAllEntities(this, this.cursorCommandDelegator);
+        return commandCollector.getCommandsCommonToAllEntities(this, this.cursorCommandAdaptor);
     }
 
     public List<CommandGroup> getBuildCommands() {
@@ -116,7 +116,7 @@ public class SelectionGroup {
                 .map(u -> u.getControl(EntityCommandController.class))
                 .filter(cc -> cc != null)
                 .forEach(cc -> cc.collectBuildCommands(commandCollector));
-        return commandCollector.getCommandsCommonToAllEntities(this, cursorCommandDelegator);
+        return commandCollector.getCommandsCommonToAllEntities(this, cursorCommandAdaptor);
     }
 
     private Stream<EntityAiController> getEntityAiControllerStream() {

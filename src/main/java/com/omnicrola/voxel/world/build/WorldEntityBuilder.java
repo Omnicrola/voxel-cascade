@@ -49,7 +49,6 @@ public class WorldEntityBuilder {
     }
 
     public Geometry buildCube(ColorRGBA color) {
-
         Material material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         material.setBoolean("UseMaterialColors", true);
         material.setColor("Ambient", color);

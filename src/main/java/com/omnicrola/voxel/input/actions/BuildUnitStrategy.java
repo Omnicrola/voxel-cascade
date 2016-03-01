@@ -4,16 +4,15 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.entities.control.construction.BuildCursorValidityControl;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 import java.util.Optional;
 
@@ -22,20 +21,17 @@ import java.util.Optional;
  */
 public class BuildUnitStrategy implements ICursorStrategy {
 
-    private final LevelState levelState;
     private final int unitId;
     private final JmeCursor buildCursor;
     private Spatial targetModel;
     private WorldEntityBuilder worldEntityBuilder;
     private WorldManager worldManager;
 
-    public BuildUnitStrategy(LevelState levelState,
-                             int unitId,
+    public BuildUnitStrategy(int unitId,
                              JmeCursor buildCursor,
                              Spatial targetModel,
                              WorldEntityBuilder worldEntityBuilder,
                              WorldManager worldManager) {
-        this.levelState = levelState;
         this.unitId = unitId;
         this.buildCursor = buildCursor;
         this.targetModel = targetModel;
@@ -47,11 +43,13 @@ public class BuildUnitStrategy implements ICursorStrategy {
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
         if (!gameMouseEvent.isPressed()) {
             if (isValidBuildLocation()) {
-                WorldCursor worldCursor = this.levelState.getWorldCursor();
+                IWorldCursor worldCursor = this.worldManager.getWorldCursor();
                 Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainPositionUnderCursor();
                 if (terrainUnderCursor.isPresent()) {
                     Vector3f location = terrainUnderCursor.get().getContactPoint();
-                    UnitPlacement unitPlacement = new UnitPlacement(this.unitId, levelState.getPlayerTeam().getId(), location);
+                    // TODO : make team id be the current player
+                    int teamId = 1;
+                    UnitPlacement unitPlacement = new UnitPlacement(this.unitId, teamId, location);
                     Unit newUnit = this.worldEntityBuilder.buildUnit(unitPlacement);
                     this.worldManager.addUnit(newUnit);
 

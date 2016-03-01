@@ -5,10 +5,7 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
-import com.omnicrola.voxel.data.LevelManager;
-import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.VoxelGameEngine;
-import com.omnicrola.voxel.engine.states.ActivePlayState;
+import com.omnicrola.voxel.input.IWorldCursor;
 
 import java.util.Optional;
 
@@ -16,10 +13,11 @@ import java.util.Optional;
  * Created by Eric on 2/5/2016.
  */
 public class DebugTargetListener implements ActionListener {
-    private VoxelGameEngine voxelGameEngine;
 
-    public DebugTargetListener(VoxelGameEngine voxelGameEngine) {
-        this.voxelGameEngine = voxelGameEngine;
+    private IWorldCursor worldCursor;
+
+    public DebugTargetListener(IWorldCursor worldCursor) {
+        this.worldCursor = worldCursor;
     }
 
     @Override
@@ -30,9 +28,7 @@ public class DebugTargetListener implements ActionListener {
     }
 
     private void findTerrain() {
-        LevelManager levelManager = this.voxelGameEngine.getStateManager().getState(ActivePlayState.class).getLevelManager();
-        LevelState currentLevelState = levelManager.getCurrentLevel();
-        Optional<CollisionResult> terrainUnderCursor = currentLevelState.getWorldCursor().getTerrainPositionUnderCursor();
+        Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             Geometry geometry = terrainUnderCursor.get().getGeometry();
             RigidBodyControl control = geometry.getControl(RigidBodyControl.class);

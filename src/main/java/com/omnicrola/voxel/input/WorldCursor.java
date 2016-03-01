@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 /**
  * Created by omnic on 1/16/2016.
  */
-public class WorldCursor extends Node implements IDisposable {
+public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     private final IGameInput inputManager;
     private final Camera camera;
     private final CollisionDistanceComparator collisionDistanceComparator;

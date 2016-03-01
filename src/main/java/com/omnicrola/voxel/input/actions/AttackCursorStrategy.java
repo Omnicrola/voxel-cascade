@@ -5,11 +5,10 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.input.WorldCursor;
 
 import java.util.Optional;
 
@@ -18,11 +17,11 @@ import java.util.Optional;
  */
 public class AttackCursorStrategy implements ICursorStrategy {
     private final Node empty3dCursor;
-    private LevelState currentLevelState;
     private JmeCursor cursor2d;
+    private IWorldCursor worldCursor;
 
-    public AttackCursorStrategy(LevelState currentLevelState, JmeCursor cursor2d) {
-        this.currentLevelState = currentLevelState;
+    public AttackCursorStrategy(IWorldCursor worldCursor, JmeCursor cursor2d) {
+        this.worldCursor = worldCursor;
         this.cursor2d = cursor2d;
         this.empty3dCursor = new Node();
     }
@@ -52,7 +51,6 @@ public class AttackCursorStrategy implements ICursorStrategy {
     }
 
     private void attackTarget(SelectionGroup currentSelection) {
-        WorldCursor worldCursor = this.currentLevelState.getWorldCursor();
         Optional<CollisionResult> unitUnderCursor = worldCursor.getUnitUnderCursor();
         if (unitUnderCursor.isPresent()) {
             currentSelection.orderAttackTarget(unitUnderCursor.get().getGeometry());

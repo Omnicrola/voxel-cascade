@@ -1,25 +1,21 @@
 package com.omnicrola.voxel.input.listeners;
 
 import com.jme3.input.controls.ActionListener;
-import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.data.ILevelManager;
-import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.input.IWorldCursor;
 
 /**
  * Created by omnic on 1/17/2016.
  */
 public class ClearSelectionListener implements ActionListener {
-    private ILevelManager currentLevelProvider;
+    private IWorldCursor worldCursor;
 
-    public ClearSelectionListener(ILevelManager currentLevelProvider) {
-        this.currentLevelProvider = currentLevelProvider;
+    public ClearSelectionListener(IWorldCursor worldCursor) {
+        this.worldCursor = worldCursor;
     }
 
     @Override
     public void onAction(String name, boolean isPressed, float tpf) {
         if (!isPressed) {
-            LevelState currentLevelState = this.currentLevelProvider.getCurrentLevel();
-            WorldCursor worldCursor = currentLevelState.getWorldCursor();
             worldCursor.clearCursorStrategy();
             worldCursor.clearSelection();
         }

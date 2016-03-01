@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.commands;
 
 import com.omnicrola.voxel.input.CommandGroup;
-import com.omnicrola.voxel.input.CursorCommandDelegator;
+import com.omnicrola.voxel.input.CursorCommandAdaptor;
 import com.omnicrola.voxel.input.SelectionGroup;
 
 import java.util.List;
@@ -16,5 +16,5 @@ public interface IEntityCommand {
 
     int priority();
 
-    List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator);
+    List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandAdaptor cursorCommandAdaptor);
 }

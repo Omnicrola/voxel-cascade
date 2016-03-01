@@ -27,11 +27,11 @@ public class CommandCollector {
         this.commandCounters.put(command, count);
     }
 
-    public List<CommandGroup> getCommandsCommonToAllEntities(SelectionGroup selectionGroup, CursorCommandDelegator cursorCommandDelegator) {
+    public List<CommandGroup> getCommandsCommonToAllEntities(SelectionGroup selectionGroup, CursorCommandAdaptor cursorCommandAdaptor) {
         return this.commandCounters.entrySet()
                 .stream()
                 .filter(e -> e.getValue() == this.totalUnitsSelected)
-                .map(e -> new CommandGroup(selectionGroup, cursorCommandDelegator, e.getKey()))
+                .map(e -> new CommandGroup(selectionGroup, cursorCommandAdaptor, e.getKey()))
                 .sorted(new CommandSorter())
                 .collect(Collectors.toList());
     }

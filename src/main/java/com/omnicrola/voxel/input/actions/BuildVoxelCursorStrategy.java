@@ -5,13 +5,12 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.commands.VoxelConstructionPackage;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.Optional;
 
@@ -19,25 +18,22 @@ import java.util.Optional;
  * Created by omnic on 1/31/2016.
  */
 public class BuildVoxelCursorStrategy implements ICursorStrategy {
-    private final LevelState levelState;
     private byte voxelType;
     private final JmeCursor buildCursor;
     private final ITerrainManager terrainManager;
-    private WorldManager worldManager;
     private final Spatial placeholderVoxel;
     private final Node cursor3d;
+    private IWorldCursor worldCursor;
 
-    public BuildVoxelCursorStrategy(LevelState levelState,
+    public BuildVoxelCursorStrategy(IWorldCursor worldCursor,
                                     byte voxelType,
                                     JmeCursor buildCursor,
                                     ITerrainManager terrainManager,
-                                    WorldManager worldManager,
                                     Spatial placeholderVoxel) {
-        this.levelState = levelState;
+        this.worldCursor = worldCursor;
         this.voxelType = voxelType;
         this.buildCursor = buildCursor;
         this.terrainManager = terrainManager;
-        this.worldManager = worldManager;
         this.placeholderVoxel = placeholderVoxel;
         this.cursor3d = new Node();
         this.cursor3d.attachChild(placeholderVoxel);
@@ -46,14 +42,14 @@ public class BuildVoxelCursorStrategy implements ICursorStrategy {
     @Override
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
         if (!gameMouseEvent.isPressed()) {
-            Optional<CollisionResult> terrainUnderCursor = this.levelState.getWorldCursor().getTerrainPositionUnderCursor();
+            Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
             if (terrainUnderCursor.isPresent()) {
                 buildAtMouseLocation(gameMouseEvent, currentSelection);
             }
         }
     }
     private void buildAtMouseLocation(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
-        Vec3i snappedLocation = this.levelState.getWorldCursor().getSnappedLocation();
+        Vec3i snappedLocation = this.worldCursor.getSnappedLocation();
         this.placeholderVoxel.setLocalTranslation(snappedLocation.asVector3f());
         VoxelConstructionPackage voxelConstructionPackage = new VoxelConstructionPackage(
                 this.terrainManager,
@@ -62,13 +58,13 @@ public class BuildVoxelCursorStrategy implements ICursorStrategy {
                 this.placeholderVoxel);
         currentSelection.orderBuild(voxelConstructionPackage);
         if (!gameMouseEvent.isMultiSelecting()) {
-            this.levelState.getWorldCursor().clearCursorStrategy();
+            this.worldCursor.clearCursorStrategy();
         }
     }
 
     @Override
     public void executeSecondary(boolean isPressed, SelectionGroup currentSelection) {
-        this.levelState.getWorldCursor().clearCursorStrategy();
+        this.worldCursor.clearCursorStrategy();
     }
 
     @Override

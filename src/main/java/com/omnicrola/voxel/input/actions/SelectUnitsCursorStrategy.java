@@ -2,12 +2,11 @@ package com.omnicrola.voxel.input.actions;
 
 import com.jme3.collision.CollisionResult;
 import com.jme3.cursors.plugins.JmeCursor;
+import com.jme3.input.InputManager;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.*;
-import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -20,41 +19,38 @@ import java.util.stream.Collectors;
  * Created by omnic on 1/24/2016.
  */
 public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
-    private final CursorCommandDelegator cursorCommandDelegator;
-    private final LevelState levelState;
-    private final WorldCursor worldCursor;
+    private final CursorCommandAdaptor cursorCommandAdaptor;
+    private final IWorldCursor worldCursor;
     private boolean wasPressed;
     private Vector2f lastCursorPosition;
-    private IGameInput gameInput;
+    private InputManager inputManager;
 
-    public SelectUnitsCursorStrategy(CursorCommandDelegator cursorCommandDelegator,
-                                     LevelState levelState,
-                                     WorldCursor worldCursor,
-                                     IGameInput gameInput,
+    public SelectUnitsCursorStrategy(CursorCommandAdaptor cursorCommandAdaptor,
+                                     IWorldCursor worldCursor,
+                                     InputManager inputManager,
                                      JmeCursor defaultCursor) {
-        super(levelState, worldCursor, defaultCursor);
-        this.cursorCommandDelegator = cursorCommandDelegator;
-        this.levelState = levelState;
+        super(worldCursor, defaultCursor);
+        this.cursorCommandAdaptor = cursorCommandAdaptor;
         this.worldCursor = worldCursor;
-        this.gameInput = gameInput;
+        this.inputManager = inputManager;
         this.lastCursorPosition = new Vector2f();
     }
 
     @Override
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
         if (!this.wasPressed && gameMouseEvent.isPressed()) {
-            this.lastCursorPosition = this.gameInput.getCursorPosition();
+            this.lastCursorPosition = this.inputManager.getCursorPosition();
         } else if (!gameMouseEvent.isPressed()) {
             if (mouseHasBeenDragged()) {
-                ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.gameInput.getCursorPosition());
+                ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.inputManager.getCursorPosition());
                 List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
-                SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, spatials);
+                SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, spatials);
                 this.worldCursor.setCurrentSelection(selectionGroup);
             } else {
                 Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor();
                 if (unitUnderCursor.isPresent()) {
                     Geometry unit = unitUnderCursor.get().getGeometry();
-                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandDelegator, Arrays.asList(unit));
+                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, Arrays.asList(unit));
                     this.worldCursor.setCurrentSelection(selectionGroup);
                 }
             }
@@ -93,7 +89,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     }
 
     private boolean mouseHasBeenDragged() {
-        Vector2f cursorPosition = this.gameInput.getCursorPosition();
+        Vector2f cursorPosition = this.inputManager.getCursorPosition();
         float distance = cursorPosition.distance(this.lastCursorPosition);
         return distance > 1;
     }

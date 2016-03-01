@@ -7,19 +7,15 @@ import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.engine.states.AnnihilationWinConditionState;
-import com.omnicrola.voxel.input.CursorCommandDelegator;
-import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
-import com.omnicrola.voxel.input.WorldCursor;
-import com.omnicrola.voxel.input.actions.SelectUnitsCursorStrategy;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeInputWrapper;
 import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
 import com.omnicrola.voxel.network.messages.SpawnUnitCommand;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
-import com.omnicrola.voxel.world.IWorldNode;
-import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 import java.util.List;
 
@@ -60,26 +56,12 @@ public class LevelStateLoader {
         camera.setLocation(levelDefinition.getCameraPosition());
 
         IGameInput inputManager = new JmeInputWrapper(this.voxelGameEngine.getInputManager(), this.voxelGameEngine.getFlyByCamera());
-        IWorldNode worldNode = this.voxelGameEngine.getWorldNode();
-        ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory = new ScreenSelectionEvaluatorFactory(camera);
-        WorldCursor worldCursor = new WorldCursor(inputManager, camera, screenSelectionEvaluatorFactory, worldNode);
+        IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
-        LevelState levelState = new LevelState(worldCursor, levelDefinition.getName());
+        LevelState levelState = new LevelState(levelDefinition.getName());
         addTeams(levelState, levelDefinition);
         addUnits(levelDefinition.getUnitPlacements());
         addStructures(levelDefinition.getStructures());
-
-        CursorCommandDelegator cursorStrategyFactory = new CursorCommandDelegator(
-                levelState,
-                inputManager,
-                this.cursor2dProvider,
-                worldCursor,
-                this.worldEntityBuilder,
-                this.worldManager,
-                terrainManager);
-        SelectUnitsCursorStrategy selectUnitsCursorStrategy = cursorStrategyFactory.setSelectStrategy();
-        worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
-        worldCursor.clearCursorStrategy();
 
         AnnihilationWinConditionState winCondition = new AnnihilationWinConditionState(this.worldManager, this.levelManager);
         this.voxelGameEngine.getStateManager().attach(winCondition);

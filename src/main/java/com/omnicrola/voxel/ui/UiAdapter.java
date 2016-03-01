@@ -10,7 +10,7 @@ import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.states.IStateTransition;
 import com.omnicrola.voxel.input.IUserSelectionObserver;
-import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.input.IWorldCursor;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 
@@ -22,26 +22,27 @@ import java.util.Map;
  */
 public class UiAdapter implements ILevelChangeObserver {
     private final Nifty niftyGui;
+    private final IWorldCursor worldCursor;
     private final ICommandProcessor commandProcessor;
     private final Map<GlobalGameState, IStateTransition> transitions;
     private AppStateManager stateManager;
     private final ArrayList<ILevelObserver> levelObservers;
-    private final ArrayList<IUserSelectionObserver> selectionObservers;
     private LevelState currentLevel;
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
+                     IWorldCursor worldCursor,
                      ICommandProcessor commandProcessor,
                      Map<GlobalGameState, IStateTransition> transitions,
                      AppStateManager stateManager) {
         this.niftyGui = niftyGui;
+        this.worldCursor = worldCursor;
         this.commandProcessor = commandProcessor;
         this.transitions = transitions;
         this.stateManager = stateManager;
 
         levelManager.addObserver(this);
         this.levelObservers = new ArrayList<>();
-        this.selectionObservers = new ArrayList<>();
     }
 
     public void addScreen(String screenName, ScreenBuilder screenBuilder) {
@@ -49,10 +50,7 @@ public class UiAdapter implements ILevelChangeObserver {
     }
 
     public void addUnitSelectionObserver(IUserSelectionObserver observer) {
-        this.selectionObservers.add(observer);
-        if (this.currentLevel != null) {
-            this.currentLevel.getWorldCursor().addSelectionObserver(observer);
-        }
+        this.worldCursor.addSelectionObserver(observer);
     }
 
     public void addCurrentLevelObserver(ILevelObserver levelObserver) {
@@ -78,13 +76,9 @@ public class UiAdapter implements ILevelChangeObserver {
     @Override
     public void levelChanged(LevelState currentLevelState) {
         if (this.currentLevel != null) {
-            WorldCursor worldCursor = this.currentLevel.getWorldCursor();
             this.levelObservers.forEach(o -> this.currentLevel.removeObserver(o));
-            this.selectionObservers.forEach(o -> worldCursor.removeSelectionObserver(o));
         }
         this.currentLevel = currentLevelState;
-        WorldCursor worldCursor = this.currentLevel.getWorldCursor();
         this.levelObservers.forEach(o -> this.currentLevel.addObserver(o));
-        this.selectionObservers.forEach(o -> worldCursor.addSelectionObserver(o));
     }
 }

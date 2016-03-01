@@ -3,6 +3,7 @@ package com.omnicrola.voxel.main.init;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.bullet.PhysicsSpace;
+import com.jme3.renderer.Camera;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
@@ -15,6 +16,9 @@ import com.omnicrola.voxel.engine.ShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.entities.build.ProjectileBuilder;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
+import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
+import com.omnicrola.voxel.input.WorldCursor;
+import com.omnicrola.voxel.jme.wrappers.impl.JmeInputWrapper;
 import com.omnicrola.voxel.jme.wrappers.impl.ParticleBuilder;
 import com.omnicrola.voxel.main.init.states.IStateInitializer;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
@@ -30,6 +34,7 @@ import com.omnicrola.voxel.terrain.data.VoxelType;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.UiManager;
+import com.omnicrola.voxel.world.IWorldNode;
 import com.omnicrola.voxel.world.WorldManager;
 import com.omnicrola.voxel.world.build.StructureBuilder;
 import com.omnicrola.voxel.world.build.UnitBuilder;
@@ -75,7 +80,9 @@ public class VoxelGameEngineInitializer {
 
     private InitializationContainer buildInitializationContainer(VoxelGameEngine voxelGameEngine) {
         PhysicsSpace physicsSpace = voxelGameEngine.getPhysicsSpace();
-        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode(), physicsSpace);
+        WorldCursor worldCursor = createWorldCursor(voxelGameEngine);
+
+        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode(), physicsSpace, worldCursor);
         AssetManager assetManager = voxelGameEngine.getAssetManager();
 
         VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
@@ -129,8 +136,17 @@ public class VoxelGameEngineInitializer {
                 levelManager,
                 worldCommandProcessor,
                 networkManager,
-                terrainManager);
+                terrainManager, worldEntityBuilder);
         return initializationContainer;
+    }
+
+    private WorldCursor createWorldCursor(VoxelGameEngine voxelGameEngine) {
+        Camera camera = voxelGameEngine.getCamera();
+        IWorldNode worldNode = voxelGameEngine.getWorldNode();
+        JmeInputWrapper inputManager = new JmeInputWrapper(voxelGameEngine.getInputManager(), voxelGameEngine.getFlyByCamera());
+        WorldCursor worldCursor = new WorldCursor(inputManager, camera, new ScreenSelectionEvaluatorFactory(camera), worldNode);
+
+        return worldCursor;
     }
 
     private TerrainManager createTerrainManager(VoxelGameEngine voxelGameEngine, WorldManager worldManager, VoxelTypeLibrary voxelTypeLibrary, MaterialRepository materialRepository) {

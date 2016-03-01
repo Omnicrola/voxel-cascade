@@ -6,10 +6,10 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
+import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -24,13 +24,15 @@ public class WorldManager {
 
     private IWorldNode worldNode;
     private PhysicsSpace physicsSpace;
+    private IWorldCursor worldCursor;
     private List<Unit> units;
     private List<Structure> structures;
     private List<Projectile> projectiles;
 
-    public WorldManager(IWorldNode worldNode, PhysicsSpace physicsSpace) {
+    public WorldManager(IWorldNode worldNode, PhysicsSpace physicsSpace, IWorldCursor worldCursor) {
         this.worldNode = worldNode;
         this.physicsSpace = physicsSpace;
+        this.worldCursor = worldCursor;
         this.units = new ArrayList<>();
         this.structures = new ArrayList<>();
         this.projectiles = new ArrayList<>();
@@ -90,4 +92,7 @@ public class WorldManager {
         return gameEntities;
     }
 
+    public IWorldCursor getWorldCursor() {
+        return worldCursor;
+    }
 }

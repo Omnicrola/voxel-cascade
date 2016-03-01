@@ -3,7 +3,6 @@ package com.omnicrola.voxel.data.level;
 import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.TeamData;
-import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.main.VoxelException;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
@@ -20,14 +19,12 @@ public class LevelState implements IDisposable {
     private final LevelStatistics statistics;
     private final HashMap<TeamData, Float> resources;
     private final ArrayList<ILevelObserver> observers;
-    private WorldCursor worldCursor;
     private String levelName;
     private boolean hasStarted;
 
-    public LevelState(WorldCursor worldCursor, String levelName) {
+    public LevelState(String levelName) {
         this.teams = new ArrayList<>();
         this.observers = new ArrayList<>();
-        this.worldCursor = worldCursor;
         this.levelName = levelName;
         this.statistics = new LevelStatistics();
         this.resources = new HashMap<>();
@@ -40,10 +37,6 @@ public class LevelState implements IDisposable {
 
     public String getLevelName() {
         return levelName;
-    }
-
-    public WorldCursor getWorldCursor() {
-        return worldCursor;
     }
 
     public TeamData getPlayerTeam() {
@@ -68,7 +61,6 @@ public class LevelState implements IDisposable {
 
     @Override
     public void dispose() {
-        this.getWorldCursor().dispose();
         this.observers.clear();
     }
 
