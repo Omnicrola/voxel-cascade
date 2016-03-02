@@ -16,8 +16,7 @@ public class CameraDolly {
     }
 
     public void moveCamera(float amount, boolean sideways) {
-        Vector3f velocity = new Vector3f();
-        Vector3f location = this.camera.getLocation().clone();
+        Vector3f location;
         if (sideways) {
             location = this.camera.getLocation().add(amount * CAMERA_MOVE_SPEED, 0, 0);
         } else {

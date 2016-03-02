@@ -57,7 +57,7 @@ public class LevelStatistics {
         return VoxelUtil.booleanData(unit, EntityDataKeys.IS_STRUCTURE);
     }
 
-    private TeamStatistics getTeamStatistics(TeamData teamData) {
+    public TeamStatistics getTeamStatistics(TeamData teamData) {
         TeamStatistics stats = this.teamStatistics.get(teamData);
         if (stats == null) {
             stats = new TeamStatistics("Team " + teamData.getId());

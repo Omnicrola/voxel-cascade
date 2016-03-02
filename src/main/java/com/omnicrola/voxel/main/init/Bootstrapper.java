@@ -24,8 +24,7 @@ public class Bootstrapper {
                 new InputMappingLoader(),
                 new GuiInitializer(guiBuilders),
                 stateInitializers,
-                gameXmlDataParser,
-                new CursorProviderBuilder());
+                gameXmlDataParser);
 
         BulletAppState bulletAppState = new BulletAppState();
         VoxelGameEngine gameEngine = new VoxelGameEngine(initializer, bulletAppState, new EngineShutdownHandler());

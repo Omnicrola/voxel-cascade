@@ -69,7 +69,7 @@ public class LevelState implements IDisposable {
     }
 
     public TeamStatistics getTeamStatistics(TeamData teamData) {
-        return this.getTeamStatistics(teamData);
+        return this.statistics.getTeamStatistics(teamData);
     }
 
     public void addTime(float seconds) {

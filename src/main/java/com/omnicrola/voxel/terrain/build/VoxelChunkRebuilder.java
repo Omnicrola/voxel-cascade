@@ -44,7 +44,7 @@ public class VoxelChunkRebuilder {
     }
 
     private void sweepAllThreeAxes(VoxelChunk chunk, Node parentNode, boolean backFace) {
-        int i, j, k, l, width, height, u, v, n, side = 0;
+        int u, v, n, side = 0;
 
         final int[] x = new int[]{0, 0, 0};
         final int[] q = new int[]{0, 0, 0};
