@@ -8,7 +8,7 @@ import com.omnicrola.voxel.world.CommandPackage;
  */
 public interface IWorldCommand extends Message {
 
-    public void execute(CommandPackage commandPackage);
+    void execute(CommandPackage commandPackage);
 
     boolean isLocal();
 

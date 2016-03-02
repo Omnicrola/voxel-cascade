@@ -31,9 +31,8 @@ public class ScreenSelectionEvaluator {
         if (contains(ray, b3, b4)) return true;
         if (contains(ray, b4, b1)) return true;
         if (contains(ray, b1, b2, b3)) return true;
-        if (contains(ray, b1, b3, b4)) return true;
+        return contains(ray, b1, b3, b4);
 
-        return false;
     }
 
     private boolean contains(Ray ray, Vector3f v1, Vector3f v2) {

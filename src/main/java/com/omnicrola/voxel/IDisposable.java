@@ -5,5 +5,5 @@ package com.omnicrola.voxel;
  */
 public interface IDisposable {
 
-    public abstract void dispose();
+    void dispose();
 }

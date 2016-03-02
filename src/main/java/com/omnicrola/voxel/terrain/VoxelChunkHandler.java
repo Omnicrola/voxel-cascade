@@ -96,10 +96,7 @@ public class VoxelChunkHandler {
 
     private boolean isSolid(Vec3i worldPosition) {
         byte voxel = this.getChunkContaining(worldPosition).getVoxelGlobal(worldPosition);
-        if (voxel == VoxelType.EMPTY.uniqueId()) {
-            return false;
-        }
-        return true;
+        return voxel != VoxelType.EMPTY.uniqueId();
     }
 
     public boolean isVoxelSolidAt(Vec3i location) {

@@ -14,7 +14,7 @@ import com.omnicrola.voxel.fx.MaterialToken;
 public interface IWorldBuilder {
     Geometry terrainVoxel(ColorRGBA color);
 
-    public Spatial projectile(Spatial emittingEntity, int projectileId);
+    Spatial projectile(Spatial emittingEntity, int projectileId);
 
     Spatial unit(int definitionId, TeamData teamData);
 

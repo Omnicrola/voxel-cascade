@@ -57,7 +57,7 @@ public enum EntityCommand implements IEntityCommand {
 
     private int priority;
 
-    private EntityCommand(int priority) {
+    EntityCommand(int priority) {
         this.priority = priority;
     }
 

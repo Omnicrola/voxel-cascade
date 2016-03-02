@@ -9,5 +9,5 @@ import com.omnicrola.voxel.jme.wrappers.IGameContainer;
  * Created by omnic on 1/17/2016.
  */
 public interface IControlFactory {
-    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter);
+    void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter);
 }
