@@ -5,13 +5,13 @@ import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.scene.Geometry;
-import com.jme3.scene.shape.Quad;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.TerrainManager;
-import com.omnicrola.voxel.ui.UiSelectionRectangle;
+import com.omnicrola.voxel.ui.select.RingMesh;
+import com.omnicrola.voxel.ui.select.UiSelectionRectangle;
 
 /**
  * Created by omnic on 2/28/2016.
@@ -27,19 +27,19 @@ public class ActivePlayInputStateInitializer implements IStateInitializer {
     }
 
     private UiSelectionRectangle buildSelectionRectangle(InitializationContainer initializationContainer) {
-        Material material = getMaterial(initializationContainer.getAssetManager());
-        Quad quad = new Quad(1, 1);
-        Geometry geometry = new Geometry("selection quad", quad);
+        Material material = getSelectionMaterial(initializationContainer.getAssetManager());
+        RingMesh ringMesh = new RingMesh();
+        Geometry geometry = new Geometry("selection quad", ringMesh);
         geometry.setMaterial(material);
 
-        UiSelectionRectangle uiSelectionRectangle = new UiSelectionRectangle(quad, geometry);
+        UiSelectionRectangle uiSelectionRectangle = new UiSelectionRectangle(ringMesh);
+        uiSelectionRectangle.attachChild(geometry);
         return uiSelectionRectangle;
     }
 
-    private Material getMaterial(AssetManager assetManager) {
-        ColorRGBA green = ColorRGBA.Green;
-        Material material = new Material(assetManager, GameConstants.MATERIAL_UNSHADED);
-        material.setColor("Color", green);
+    private Material getSelectionMaterial(AssetManager assetManager) {
+        Material material = new Material(assetManager, GameConstants.MATERIAL_GUI);
+        material.setColor("Color", new ColorRGBA(0.1f, 1.0f, 0.1f, 1.0f));
         return material;
     }
 

@@ -9,7 +9,7 @@ import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
-import com.omnicrola.voxel.ui.ISelectedUnit;
+import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;

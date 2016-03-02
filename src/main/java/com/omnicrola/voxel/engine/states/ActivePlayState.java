@@ -16,7 +16,7 @@ import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.TerrainManager;
-import com.omnicrola.voxel.ui.UiSelectionRectangle;
+import com.omnicrola.voxel.ui.select.UiSelectionRectangle;
 
 import java.util.ArrayList;
 

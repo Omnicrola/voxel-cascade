@@ -5,7 +5,7 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.input.controls.AnalogListener;
 import com.jme3.math.Vector2f;
 import com.omnicrola.voxel.input.GameInputAction;
-import com.omnicrola.voxel.ui.UiSelectionRectangle;
+import com.omnicrola.voxel.ui.select.UiSelectionRectangle;
 
 /**
  * Created by Eric on 2/29/2016.

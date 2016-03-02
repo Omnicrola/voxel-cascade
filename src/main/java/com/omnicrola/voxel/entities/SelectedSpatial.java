@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.ui.ISelectedUnit;
+import com.omnicrola.voxel.ui.select.ISelectedUnit;
 
 /**
  * Created by Eric on 1/26/2016.

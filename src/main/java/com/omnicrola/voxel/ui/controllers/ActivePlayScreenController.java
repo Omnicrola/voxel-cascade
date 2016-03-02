@@ -4,7 +4,7 @@ import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.ui.ISelectedUnit;
+import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
