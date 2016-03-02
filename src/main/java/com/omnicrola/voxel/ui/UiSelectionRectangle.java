@@ -26,15 +26,6 @@ public class UiSelectionRectangle extends Node {
         setVertex = new Vector3f();
     }
 
-    private void setQuadVertex(float x, float y, int index) {
-        VertexBuffer positionBuffer = quad.getBuffer(VertexBuffer.Type.Position);
-        FloatBuffer floatBuffer = (FloatBuffer) positionBuffer.getData();
-        this.setVertex.set(x, y, 0);
-        BufferUtils.setInBuffer(this.setVertex, floatBuffer, index);
-        positionBuffer.setUpdateNeeded();
-    }
-
-
     public void setVisible(boolean isVisible) {
         if (isVisible) {
             this.setCullHint(CullHint.Inherit);
@@ -54,12 +45,20 @@ public class UiSelectionRectangle extends Node {
         float top = Math.max(topLeft.y, bottomRight.y);
         float bottom = Math.min(topLeft.y, bottomRight.y);
 
-        setQuadVertex(left, bottom, 0); // lower left
-        setQuadVertex(right, bottom, 1); // lower right
-        setQuadVertex(right, bottom, 2); // upper right
-        setQuadVertex(left, top, 3); // upper left
-        System.out.println(top + " " + right + " " + bottom + " " + left);
+        VertexBuffer positionBuffer = quad.getBuffer(VertexBuffer.Type.Position);
+        FloatBuffer floatBuffer = (FloatBuffer) positionBuffer.getData();
 
+        BufferUtils.setInBuffer(vert2d(left, bottom), floatBuffer, 0);  // lower left
+        BufferUtils.setInBuffer(vert2d(right, bottom), floatBuffer, 1);  // lower right
+        BufferUtils.setInBuffer(vert2d(right, top), floatBuffer, 2);  // upper right
+        BufferUtils.setInBuffer(vert2d(left, top), floatBuffer, 3);  // upper left
+
+        positionBuffer.setUpdateNeeded();
+    }
+
+    private Vector3f vert2d(float x, float y) {
+        this.setVertex.set(x, y, 0);
+        return this.setVertex;
     }
 
     public void setLowerRight(Vector2f p) {
