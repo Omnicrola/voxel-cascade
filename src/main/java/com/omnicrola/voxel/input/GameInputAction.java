@@ -11,6 +11,7 @@ public enum GameInputAction implements IActionCode {
     DEBUG_SCENE_GRAPH,
     DEBUG_TARGET_OBJECT,
     DEBUG_REBUILD_TERRAIN,
+    DEBUG_TOGGLE_WIREFRAME,
 
     MOUSE_SECONDARY,
     MOUSE_PRIMARY,
@@ -24,7 +25,7 @@ public enum GameInputAction implements IActionCode {
     CAMERA_UP,
     CAMERA_DOWN,
 
-    MULTI_SELECT, DEBUG_TOGGLE_WIREFRAME;
+    MULTI_SELECT;
 
 
     @Override

@@ -23,4 +23,6 @@ public interface ITerrainManager {
     Vector3f getLowestNonSolidVoxel(Vector3f location);
 
     void globalRebuild();
+
+    Vector3f getHighestSolidVoxel(Vector3f location);
 }

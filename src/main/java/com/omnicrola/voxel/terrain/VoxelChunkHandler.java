@@ -94,6 +94,22 @@ public class VoxelChunkHandler {
         return new Vector3f(x, y, z);
     }
 
+    public Vector3f findHighestSolidVoxel(Vector3f location) {
+        float x = location.getX();
+        float y = 999;
+        float z = location.getZ();
+        boolean isEmpty = true;
+        while (isEmpty) {
+            Vec3i voxelPosition = Vec3i.round(x, y, z);
+            if (isSolid(voxelPosition)) {
+                isEmpty = false;
+            } else {
+                y--;
+            }
+        }
+        return new Vector3f(x, y, z);
+    }
+
     private boolean isSolid(Vec3i worldPosition) {
         byte voxel = this.getChunkContaining(worldPosition).getVoxelGlobal(worldPosition);
         return voxel != VoxelType.EMPTY.uniqueId();

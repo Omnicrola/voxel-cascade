@@ -51,6 +51,11 @@ public class TerrainManager implements ITerrainManager {
         return this.voxelChunkHandler.findLowestNonSolidVoxel(location);
     }
 
+    @Override
+    public Vector3f getHighestSolidVoxel(Vector3f location) {
+        return this.voxelChunkHandler.findHighestSolidVoxel(location);
+    }
+
     public void globalRebuild() {
         this.voxelChunkHandler.flagAllChunksForRebuild();
     }

@@ -4,10 +4,16 @@ import com.jme3.asset.AssetManager;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.highlight.CubeFactory;
+import com.omnicrola.voxel.terrain.highlight.HighlighterCubeCache;
+import com.omnicrola.voxel.terrain.highlight.TerrainHighlighterControl;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorToken;
 import com.omnicrola.voxel.world.WorldManager;
@@ -118,7 +124,19 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         cube.setLocalTranslation(0.5f, -0.5f, 0.5f);
         cube.setLocalScale(1.1f);
 
-        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(this.terrainManager, worldCursor, harvestCursor, cube);
+        CubeFactory cubeFactory = new CubeFactory(this.worldEntityBuilder);
+        cubeFactory.setScale(new Vector3f(1f, 1.1f, 1f));
+        cubeFactory.setColor(new ColorRGBA(0, 1, 0, 0.5f));
+        HighlighterCubeCache highlighterCubeCache = new HighlighterCubeCache(cubeFactory);
+        TerrainHighlighterControl terrainHighlighter = new TerrainHighlighterControl(this.worldManager.getWorldCursor(),
+                this.terrainManager,
+                highlighterCubeCache);
+
+        Node cursorNode = new Node();
+        cursorNode.addControl(terrainHighlighter);
+        this.worldManager.addEffect(new Effect(cursorNode));
+
+        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter, this.terrainManager, worldCursor, harvestCursor, cube);
         worldCursor.setCursorStrategy(harvestStrategy);
     }
 

@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.terrain.data;
 
+import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.IVoxelType;
 
@@ -31,5 +32,9 @@ public class VoxelData {
 
     public IVoxelType getType() {
         return voxel;
+    }
+
+    public Vector3f getLocation() {
+        return this.location.asVector3f();
     }
 }

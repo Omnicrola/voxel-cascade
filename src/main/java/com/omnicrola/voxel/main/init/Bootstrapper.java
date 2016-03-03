@@ -54,10 +54,10 @@ public class Bootstrapper {
 
     private static ArrayList<IStateInitializer> getStateInitializers() {
         ArrayList<IStateInitializer> stateInitializers = new ArrayList<>();
+        stateInitializers.add(new DebugStateInitializer());
         stateInitializers.add(new CommandStateInitializer(new CursorProviderBuilder()));
         stateInitializers.add(new ActivePlayInputStateInitializer());
         stateInitializers.add(new ClientNetworkStateInitializer());
-        stateInitializers.add(new DebugStateInitializer());
         stateInitializers.add(new GameOverStateInitializer());
         stateInitializers.add(new LoadingStateInitializer());
         stateInitializers.add(new MainMenuStateInitializer());
