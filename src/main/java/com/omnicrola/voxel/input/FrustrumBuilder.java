@@ -18,7 +18,7 @@ import com.omnicrola.voxel.settings.GameConstants;
 public class FrustrumBuilder {
     private static final float MIN_DISTANCE = 1.0f;
 
-    public static Geometry build(AssetManager assetManager, Camera camera, ScreenRectangle screenRectangle, float frustrumDistance) {
+    public static Geometry build(AssetManager assetManager, Camera camera, ScreenRectangle screenRectangle) {
         System.out.println("left " + camera.getFrustumLeft());
         System.out.println("right " + camera.getFrustumRight());
         System.out.println("top " + camera.getFrustumTop());

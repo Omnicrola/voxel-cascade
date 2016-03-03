@@ -6,6 +6,7 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
@@ -34,6 +35,7 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     private SelectionGroup currentSelection;
     private List<IUserSelectionObserver> observers;
     private IWorldNode worldRootNode;
+    private Geometry fustrum;
 
     public WorldCursor(IGameInput inputManager,
                        Camera camera,
@@ -179,6 +181,12 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
 
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
         ScreenSelectionEvaluator screenSelectionEvaluator = this.screenSelectionEvaluatorFactory.build(screenRectangle);
+        if (this.fustrum != null) {
+            this.getParent().detachChild(this.fustrum);
+        }
+        this.fustrum = this.screenSelectionEvaluatorFactory.projectSelectionFustrum(screenRectangle);
+        this.getParent().attachChild(fustrum);
+
         List<Spatial> children = this.worldRootNode.getUnitsNode().getChildren();
         List<Spatial> collect = children
                 .stream()

@@ -15,7 +15,6 @@ public class ScreenSelectionEvaluator {
     private final Vector3f b4;
 
     public ScreenSelectionEvaluator(Vector3f cameraLocation, Vector3f b1, Vector3f b2, Vector3f b3, Vector3f b4) {
-
         this.cameraLocation = cameraLocation;
         this.b1 = b1;
         this.b2 = b2;
@@ -32,7 +31,6 @@ public class ScreenSelectionEvaluator {
         if (contains(ray, b4, b1)) return true;
         if (contains(ray, b1, b2, b3)) return true;
         return contains(ray, b1, b3, b4);
-
     }
 
     private boolean contains(Ray ray, Vector3f v1, Vector3f v2) {

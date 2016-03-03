@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.input;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
@@ -22,17 +23,20 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     private WorldEntityBuilder worldEntityBuilder;
     private WorldManager worldManager;
     private ITerrainManager terrainManager;
+    private AssetManager assetManager;
 
     public CursorCommandAdaptor(InputManager inputManager,
                                 Cursor2dProvider cursor2dProvider,
                                 WorldEntityBuilder worldEntityBuilder,
                                 WorldManager worldManager,
-                                ITerrainManager terrainManager) {
+                                ITerrainManager terrainManager,
+                                AssetManager assetManager) {
         this.inputManager = inputManager;
         this.cursor2dProvider = cursor2dProvider;
         this.worldEntityBuilder = worldEntityBuilder;
         this.worldManager = worldManager;
         this.terrainManager = terrainManager;
+        this.assetManager = assetManager;
     }
 
     @Override

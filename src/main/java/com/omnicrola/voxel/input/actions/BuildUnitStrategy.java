@@ -49,7 +49,7 @@ public class BuildUnitStrategy implements ICursorStrategy {
                     Vector3f location = terrainUnderCursor.get().getContactPoint();
                     // TODO : make team id be the current player
                     int teamId = 1;
-                    UnitPlacement unitPlacement = new UnitPlacement(this.unitId, teamId, location);
+                    UnitPlacement unitPlacement = new UnitPlacement(this.unitId, teamId, location.add(0, 1, 0));
                     Unit newUnit = this.worldEntityBuilder.buildUnit(unitPlacement);
                     this.worldManager.addUnit(newUnit);
 

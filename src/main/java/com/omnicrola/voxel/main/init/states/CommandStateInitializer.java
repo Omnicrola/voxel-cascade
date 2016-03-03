@@ -37,7 +37,8 @@ public class CommandStateInitializer implements IStateInitializer {
                 cursor2dProvider,
                 worldEntityBuilder,
                 worldManager,
-                terrainManager);
+                terrainManager,
+                initializationContainer.getAssetManager());
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = cursorStrategyFactory.setSelectStrategy();
         worldCursor.setDefaultCursorStrategy(selectUnitsCursorStrategy);
         worldCursor.clearCursorStrategy();

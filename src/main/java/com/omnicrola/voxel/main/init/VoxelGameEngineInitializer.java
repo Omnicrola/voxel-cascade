@@ -136,7 +136,8 @@ public class VoxelGameEngineInitializer {
         Camera camera = voxelGameEngine.getCamera();
         IWorldNode worldNode = voxelGameEngine.getWorldNode();
         JmeInputWrapper inputManager = new JmeInputWrapper(voxelGameEngine.getInputManager(), voxelGameEngine.getFlyByCamera());
-        WorldCursor worldCursor = new WorldCursor(inputManager, camera, new ScreenSelectionEvaluatorFactory(camera), worldNode);
+        AssetManager assetManager = voxelGameEngine.getAssetManager();
+        WorldCursor worldCursor = new WorldCursor(inputManager, camera, new ScreenSelectionEvaluatorFactory(camera, assetManager), worldNode);
 
         return worldCursor;
     }

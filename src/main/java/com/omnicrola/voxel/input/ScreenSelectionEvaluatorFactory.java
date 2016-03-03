@@ -1,16 +1,20 @@
 package com.omnicrola.voxel.input;
 
+import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 
 /**
  * Created by omnic on 1/24/2016.
  */
 public class ScreenSelectionEvaluatorFactory {
     private Camera camera;
+    private AssetManager assetManager;
 
-    public ScreenSelectionEvaluatorFactory(Camera camera) {
+    public ScreenSelectionEvaluatorFactory(Camera camera, AssetManager assetManager) {
         this.camera = camera;
+        this.assetManager = assetManager;
     }
 
     public ScreenSelectionEvaluator build(ScreenRectangle screenRectangle) {
@@ -20,5 +24,9 @@ public class ScreenSelectionEvaluatorFactory {
         Vector3f b3 = this.camera.getWorldCoordinates(screenRectangle.getBottomRight(), distance);
         Vector3f b4 = this.camera.getWorldCoordinates(screenRectangle.getBottomLeft(), distance);
         return new ScreenSelectionEvaluator(this.camera.getLocation(),b1,b2,b3,b4);
+    }
+
+    public Geometry projectSelectionFustrum(ScreenRectangle screenRectangle){
+        return FrustrumBuilder.build(this.assetManager, this.camera,screenRectangle);
     }
 }
