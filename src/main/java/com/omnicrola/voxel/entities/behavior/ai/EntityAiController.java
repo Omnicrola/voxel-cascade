@@ -19,6 +19,7 @@ public class EntityAiController extends AbstractControl {
 
     public <T extends IAiState> T setState(Class<T> stateToken) {
         this.currentState = this.states.get(stateToken);
+        System.out.println("set state: " + this.currentState);
         return (T) this.currentState;
     }
 

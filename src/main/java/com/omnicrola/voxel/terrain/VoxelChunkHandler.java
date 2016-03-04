@@ -11,6 +11,7 @@ import com.omnicrola.voxel.terrain.data.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -94,20 +95,23 @@ public class VoxelChunkHandler {
         return new Vector3f(x, y, z);
     }
 
-    public Vector3f findHighestSolidVoxel(Vector3f location) {
+    public Optional<VoxelData> findHighestSolidVoxel(Vector3f location) {
         float x = location.getX();
         float y = 999;
         float z = location.getZ();
         boolean isEmpty = true;
+        Vec3i voxelPosition = Vec3i.round(location);
         while (isEmpty) {
-            Vec3i voxelPosition = Vec3i.round(x, y, z);
+            voxelPosition = Vec3i.round(x, y, z);
             if (isSolid(voxelPosition)) {
                 isEmpty = false;
+            } else if (y < 0) {
+                return Optional.empty();
             } else {
                 y--;
             }
         }
-        return new Vector3f(x, y, z);
+        return Optional.of(getVoxelAt(voxelPosition));
     }
 
     private boolean isSolid(Vec3i worldPosition) {

@@ -5,13 +5,13 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.entities.control.resources.HarvestQueue;
 import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.highlight.ITerrainHighlighter;
 
 import java.util.Optional;
@@ -50,9 +50,9 @@ public class HarvestCursorStrategy implements ICursorStrategy {
         } else {
             Optional<CollisionResult> terrainPositionUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
             if (terrainPositionUnderCursor.isPresent()) {
-                Vector3f contactPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
-                VoxelData voxelData = this.terrainManager.getVoxelAt(contactPoint);
-                VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelData, contactPoint);
+                Vector3f endPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
+                HarvestQueue harvestQueue = this.terrainHighlighter.getSelection(endPoint);
+                VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(harvestQueue);
                 currentSelection.orderHarvest(voxelHarvestTarget);
             }
             this.terrainHighlighter.setVisible(false);

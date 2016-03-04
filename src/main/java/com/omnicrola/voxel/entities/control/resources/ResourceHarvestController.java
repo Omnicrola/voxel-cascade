@@ -55,6 +55,7 @@ public class ResourceHarvestController extends AbstractControl {
                 startFx();
             }
             if (this.harvestTarget.hasResources()) {
+                updateFx();
                 harvest(tpf);
             } else {
                 this.harvestTarget.remove();
@@ -71,12 +72,17 @@ public class ResourceHarvestController extends AbstractControl {
         this.startedFx = true;
     }
 
+    private void updateFx() {
+        Vector3f location = this.harvestTarget.getLocation();
+        this.harvestFx.setLocation(location);
+    }
+
     private void stopFx() {
         this.harvestFx.resetDuration(0.1f);
         this.startedFx = false;
     }
 
-    public void harvest(float tpf) {
+    private void harvest(float tpf) {
         float resources = harvestTarget.removeResources(tpf);
         TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
         LevelState currentLevel = this.controlAdapter.getCurrentLevel();

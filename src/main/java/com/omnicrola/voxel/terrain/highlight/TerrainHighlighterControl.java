@@ -8,8 +8,14 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.util.Vec3i;
+import com.omnicrola.voxel.entities.control.resources.HarvestQueue;
+import com.omnicrola.voxel.entities.control.resources.VoxelDataHarvestComparator;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.data.VoxelData;
+
+import java.util.ArrayList;
+import java.util.Optional;
 
 /**
  * Created by Eric on 3/2/2016.
@@ -46,26 +52,45 @@ public class TerrainHighlighterControl extends AbstractControl implements ITerra
     }
 
     @Override
+    public HarvestQueue getSelection(Vector3f endPoint) {
+        ArrayList<VoxelData> selectedVoxels = findAllVoxelsInSelection(Vec3i.round(endPoint));
+        return new HarvestQueue(selectedVoxels, new VoxelDataHarvestComparator(this.startLocation));
+    }
+
+    @Override
     protected void controlUpdate(float tpf) {
         if (isActive()) {
             this.highlighterCubeCache.reset();
             Vec3i currentLocation = this.worldCursor.getSnappedLocation();
-            float startX = Math.min(startLocation.x, currentLocation.getX());
-            float startZ = Math.min(startLocation.z, currentLocation.getZ());
-            float endX = Math.max(startLocation.x, currentLocation.getX());
-            float endZ = Math.max(startLocation.z, currentLocation.getZ());
-            Vector3f location = new Vector3f();
+            ArrayList<VoxelData> selectedVoxels = findAllVoxelsInSelection(currentLocation);
+            selectedVoxels.forEach(v -> addSelectionCube(v.getLocation()));
+        }
+    }
 
-            for (float x = startX; x <= endX; x++) {
-                for (float z = startZ; z <= endZ; z++) {
-                    location.set(x, this.startLocation.y, z);
-                    Vec3i voxelLocation = Vec3i.round(this.terrainManager.getHighestSolidVoxel(location));
-                    Geometry cube = this.highlighterCubeCache.next();
-                    cube.setLocalTranslation(voxelLocation.asVector3f().addLocal(0.5f , 0.5f, 0.5f));
-                    this.parentNode.attachChild(cube);
+    private void addSelectionCube(Vector3f voxelLocation) {
+        Geometry cube = this.highlighterCubeCache.next();
+        cube.setLocalTranslation(voxelLocation.addLocal(0.5f, 0.5f, 0.5f));
+        this.parentNode.attachChild(cube);
+    }
+
+    private ArrayList<VoxelData> findAllVoxelsInSelection(Vec3i endLocation) {
+        float startX = Math.min(startLocation.x, endLocation.getX());
+        float startZ = Math.min(startLocation.z, endLocation.getZ());
+        float endX = Math.max(startLocation.x, endLocation.getX());
+        float endZ = Math.max(startLocation.z, endLocation.getZ());
+        Vector3f location = new Vector3f();
+
+        ArrayList<VoxelData> voxels = new ArrayList<>();
+        for (float x = startX; x <= endX; x++) {
+            for (float z = startZ; z <= endZ; z++) {
+                location.set(x, this.startLocation.y, z);
+                Optional<VoxelData> highestSolidVoxel = this.terrainManager.getHighestSolidVoxel(location);
+                if (highestSolidVoxel.isPresent()) {
+                    voxels.add(highestSolidVoxel.get());
                 }
             }
         }
+        return voxels;
     }
 
     private boolean isActive() {

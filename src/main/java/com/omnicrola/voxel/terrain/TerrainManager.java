@@ -6,6 +6,8 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
+import java.util.Optional;
+
 /**
  * Created by Eric on 2/28/2016.
  */
@@ -52,7 +54,7 @@ public class TerrainManager implements ITerrainManager {
     }
 
     @Override
-    public Vector3f getHighestSolidVoxel(Vector3f location) {
+    public Optional<VoxelData> getHighestSolidVoxel(Vector3f location) {
         return this.voxelChunkHandler.findHighestSolidVoxel(location);
     }
 
