@@ -61,7 +61,6 @@ public class VoxelConstructionPackage implements IConstructionPackage {
         if (this.currentTargetVoxel != null) {
             this.currentTargetLocation = this.currentTargetVoxel.getLocation();
         }
-        System.out.println("construction done, next target: " + this.currentTargetVoxel);
     }
 
     private float getAmountUsed(float tpf) {
@@ -69,13 +68,15 @@ public class VoxelConstructionPackage implements IConstructionPackage {
             return 0;
         }
         float totalRequired = this.voxelType.resourcesRequired();
-        float resourcesNeeded = totalRequired - getResourcesInCurrentVoxel();
+        float resourcesInCurrentVoxel = getResourcesInCurrentVoxel();
+        float resourcesNeeded = totalRequired - resourcesInCurrentVoxel;
         float resourcesUsed = BASE_BUILD_RATE * tpf;
-        if (resourcesNeeded >= resourcesUsed) {
-            return resourcesUsed;
-        } else {
-            return resourcesNeeded;
+
+        if (resourcesNeeded <= resourcesUsed) {
+            resourcesUsed = resourcesNeeded;
         }
+        this.currentTargetVoxel.setResources(resourcesInCurrentVoxel + resourcesUsed);
+        return resourcesUsed;
 
     }
 

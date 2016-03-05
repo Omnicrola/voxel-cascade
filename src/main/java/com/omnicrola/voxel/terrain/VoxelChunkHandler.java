@@ -12,6 +12,8 @@ import com.omnicrola.voxel.terrain.data.*;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
+import java.util.function.Function;
+import java.util.function.Predicate;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -79,39 +81,33 @@ public class VoxelChunkHandler {
         this.chunks.values().forEach(c -> c.flagForRebuild());
     }
 
-    public Vector3f findLowestNonSolidVoxel(Vector3f location) {
-        float x = location.getX();
-        float y = 0;
-        float z = location.getZ();
-        boolean belowGround = true;
-        while (belowGround) {
-            Vec3i voxelPosition = Vec3i.round(x, y, z);
-            if (isSolid(voxelPosition)) {
-                y++;
-            } else {
-                belowGround = false;
-            }
-        }
-        return new Vector3f(x, y, z);
+    public Optional<VoxelData> findLowestEmptyVoxel(Vector3f location) {
+        return raycastFromAbove(location, p -> isSolid(p), v -> getVoxelAt(v.translate(0, 1, 0)));
     }
 
     public Optional<VoxelData> findHighestSolidVoxel(Vector3f location) {
+        return raycastFromAbove(location, p -> isSolid(p), v -> getVoxelAt(v));
+    }
+
+    private Optional<VoxelData> raycastFromAbove(Vector3f location,
+                                                 Predicate<Vec3i> predicate,
+                                                 Function<Vec3i, VoxelData> mapper) {
         float x = location.getX();
-        float y = 999;
+        float y = GameConstants.MAXIMUM_VOXEL_HEIGHT;
         float z = location.getZ();
-        boolean isEmpty = true;
+        boolean hasNotBeenFound = true;
         Vec3i voxelPosition = Vec3i.round(location);
-        while (isEmpty) {
+        while (hasNotBeenFound) {
             voxelPosition = Vec3i.round(x, y, z);
-            if (isSolid(voxelPosition)) {
-                isEmpty = false;
-            } else if (y < 0) {
+            if (predicate.test(voxelPosition)) {
+                hasNotBeenFound = false;
+            } else if (y < GameConstants.MINIMUM_VOXEL_HEIGHT) {
                 return Optional.empty();
             } else {
                 y--;
             }
         }
-        return Optional.of(getVoxelAt(voxelPosition));
+        return Optional.of(mapper.apply(voxelPosition));
     }
 
     private boolean isSolid(Vec3i worldPosition) {

@@ -19,6 +19,8 @@ public class GameConstants {
     public static final byte TERRAIN_TYPE_1 = 1;
     public static final float VOXEL_SIZE = 0.5f;
     public static final int CHUNK_SIZE_CUBED = CHUNK_SIZE * CHUNK_SIZE * CHUNK_SIZE;
+    public static final float MAXIMUM_VOXEL_HEIGHT = 256;
+    public static final float MINIMUM_VOXEL_HEIGHT = 0;
 
     public static final String DIR_TEXTURES = "Textures/";
     public static final String DIR_MODELS = "Models/";
@@ -30,4 +32,5 @@ public class GameConstants {
     public static final String NODE_PROJECTILES = "PROJECTILES";
     public static final String NODE_FX = "FX";
     public static final String NODE_TERRAIN = "TERRAIN";
+
 }

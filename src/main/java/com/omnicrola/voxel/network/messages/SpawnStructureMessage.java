@@ -6,9 +6,12 @@ import com.omnicrola.voxel.commands.AbstractWorldCommand;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.world.CommandPackage;
-import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
+
+import java.util.Optional;
 
 /**
  * Created by Eric on 2/25/2016.
@@ -33,8 +36,11 @@ public class SpawnStructureMessage extends AbstractWorldCommand {
         Structure structure = entityBuilder.buildStructure(this.unitPlacement);
         worldManager.addStructure(structure);
 
-        Vector3f position = terrainManager.getLowestNonSolidVoxel(this.unitPlacement.getLocation());
-        structure.setLocation(position);
-        worldManager.addStructure(structure);
+        Optional<VoxelData> voxel = terrainManager.findLowestEmptyVoxel(this.unitPlacement.getLocation());
+        if (voxel.isPresent()) {
+            Vector3f location = voxel.get().getLocation();
+            structure.setLocation(location);
+            worldManager.addStructure(structure);
+        }
     }
 }

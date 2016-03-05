@@ -6,9 +6,12 @@ import com.omnicrola.voxel.commands.AbstractWorldCommand;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.world.CommandPackage;
-import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
+
+import java.util.Optional;
 
 /**
  * Created by Eric on 2/25/2016.
@@ -30,8 +33,12 @@ public class SpawnUnitCommand extends AbstractWorldCommand {
         WorldManager worldManager = commandPackage.getWorldManager();
         Unit gameUnit = entityBuilder.buildUnit(this.unitPlacement);
         ITerrainManager terrainManager = commandPackage.getTerrainManager();
-        Vector3f position = terrainManager.getLowestNonSolidVoxel(this.unitPlacement.getLocation());
-        gameUnit.setLocation(position);
-        worldManager.addUnit(gameUnit);
+
+        Optional<VoxelData> voxel = terrainManager.findLowestEmptyVoxel(this.unitPlacement.getLocation());
+        if (voxel.isPresent()) {
+            Vector3f location = voxel.get().getLocation();
+            gameUnit.setLocation(location);
+            worldManager.addUnit(gameUnit);
+        }
     }
 }

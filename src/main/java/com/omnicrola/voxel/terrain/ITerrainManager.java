@@ -22,9 +22,10 @@ public interface ITerrainManager {
 
     boolean isBelowTerrain(Geometry geometry);
 
-    Vector3f getLowestNonSolidVoxel(Vector3f location);
 
     void globalRebuild();
+
+    Optional<VoxelData> findLowestEmptyVoxel(Vector3f location);
 
     Optional<VoxelData> getHighestSolidVoxel(Vector3f location);
 

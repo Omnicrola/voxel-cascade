@@ -12,8 +12,10 @@ import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.control.construction.HarvestTerrainHighlightStrategy;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.build.BuildTerrainHighlightStrategy;
 import com.omnicrola.voxel.terrain.highlight.CubeFactory;
 import com.omnicrola.voxel.terrain.highlight.HighlighterCubeCache;
+import com.omnicrola.voxel.terrain.highlight.ITerrainHighlightStrategy;
 import com.omnicrola.voxel.terrain.highlight.TerrainHighlighterControl;
 import com.omnicrola.voxel.ui.Cursor2dProvider;
 import com.omnicrola.voxel.ui.CursorToken;
@@ -103,10 +105,10 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     @Override
     public void setBuildVoxelStrategy(byte type) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
-        Geometry placeholderVoxel = this.worldEntityBuilder.buildCube(ColorRGBA.Green);
+        Geometry cubeCursor = buildCubeCursor();
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
-        HarvestTerrainHighlightStrategy highlightStrategy = new HarvestTerrainHighlightStrategy(this.terrainManager);
+        BuildTerrainHighlightStrategy highlightStrategy = new BuildTerrainHighlightStrategy(this.terrainManager);
         TerrainHighlighterControl terrainHighlighter = buildTerrainHighlighterControl(highlightStrategy);
 
         BuildVoxelCursorStrategy buildVoxelCursorStrategy = new BuildVoxelCursorStrategy(
@@ -115,7 +117,7 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
                 type,
                 buildCursor,
                 this.terrainManager,
-                placeholderVoxel);
+                cubeCursor);
         worldCursor.setCursorStrategy(buildVoxelCursorStrategy);
     }
 
@@ -124,19 +126,24 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         JmeCursor harvestCursor = getCursor(CursorToken.HARVEST);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
-        Geometry cube = this.worldEntityBuilder.buildCube(ColorRGBA.White);
-        cube.getMaterial().getAdditionalRenderState().setWireframe(true);
-        cube.setLocalTranslation(0.5f, -0.5f, 0.5f);
-        cube.setLocalScale(1.1f);
+        Geometry cubeCursor = buildCubeCursor();
 
         HarvestTerrainHighlightStrategy highlightStrategy = new HarvestTerrainHighlightStrategy(this.terrainManager);
         TerrainHighlighterControl terrainHighlighter = buildTerrainHighlighterControl(highlightStrategy);
 
-        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter, this.terrainManager, worldCursor, harvestCursor, cube);
+        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter, this.terrainManager, worldCursor, harvestCursor, cubeCursor);
         worldCursor.setCursorStrategy(harvestStrategy);
     }
 
-    private TerrainHighlighterControl buildTerrainHighlighterControl(HarvestTerrainHighlightStrategy highlightStrategy) {
+    private Geometry buildCubeCursor() {
+        Geometry cubeCursor = this.worldEntityBuilder.buildCube(new ColorRGBA(1f, 1f, 1f, 0.25f));
+        cubeCursor.getMaterial().getAdditionalRenderState().setWireframe(true);
+        cubeCursor.setLocalTranslation(0.5f, -0.5f, 0.5f);
+        cubeCursor.setLocalScale(1.1f);
+        return cubeCursor;
+    }
+
+    private TerrainHighlighterControl buildTerrainHighlighterControl(ITerrainHighlightStrategy highlightStrategy) {
         CubeFactory cubeFactory = new CubeFactory(this.worldEntityBuilder);
         cubeFactory.setScale(new Vector3f(1f, 1.1f, 1f));
         cubeFactory.setColor(new ColorRGBA(0, 1, 0, 0.5f));

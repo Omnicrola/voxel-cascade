@@ -8,6 +8,9 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.physics.BetterCapsuleCollisionShape;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.data.VoxelData;
+
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/23/2016.
@@ -44,8 +47,11 @@ public class GroundVehicleControl extends CharacterControl {
         Vector3f physicsLocation = this.getPhysicsLocation();
         boolean isBelowTerrain = this.terrainManager.isBelowTerrain(this.geometry);
         if (isBelowTerrain) {
-            Vector3f newPosition = this.terrainManager.getLowestNonSolidVoxel(physicsLocation).add(0, 0.1f, 0);
-            this.warp(newPosition);
+            Optional<VoxelData> lowestEmptyVoxel = this.terrainManager.findLowestEmptyVoxel(physicsLocation);
+            if (lowestEmptyVoxel.isPresent()) {
+                Vector3f newPosition = lowestEmptyVoxel.get().getLocation();
+                this.warp(newPosition);
+            }
         }
     }
 }

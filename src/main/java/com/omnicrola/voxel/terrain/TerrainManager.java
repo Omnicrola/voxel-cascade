@@ -53,8 +53,8 @@ public class TerrainManager implements ITerrainManager {
     }
 
     @Override
-    public Vector3f getLowestNonSolidVoxel(Vector3f location) {
-        return this.voxelChunkHandler.findLowestNonSolidVoxel(location);
+    public Optional<VoxelData> findLowestEmptyVoxel(Vector3f location) {
+        return this.voxelChunkHandler.findLowestEmptyVoxel(location);
     }
 
     @Override
