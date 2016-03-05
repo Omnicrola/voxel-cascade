@@ -11,10 +11,10 @@ public class VoxelHarvestTarget implements IHarvestTarget {
     public static final float BASE_HARVEST_RATE = 1f;
     private VoxelData currentTargetVoxel;
     private Vector3f currentTargetLocation;
-    private HarvestQueue harvestQueue;
+    private VoxelQueue voxelQueue;
 
-    public VoxelHarvestTarget(HarvestQueue harvestQueue) {
-        this.harvestQueue = harvestQueue;
+    public VoxelHarvestTarget(VoxelQueue voxelQueue) {
+        this.voxelQueue = voxelQueue;
         removeResources(0f);
     }
 
@@ -26,7 +26,7 @@ public class VoxelHarvestTarget implements IHarvestTarget {
     @Override
     public boolean hasResources() {
         boolean currentTargetHasResources = this.currentTargetVoxel.getResources() > 0;
-        boolean queueIsNotEmpty = this.harvestQueue.isNotEmpty();
+        boolean queueIsNotEmpty = this.voxelQueue.isNotEmpty();
         return currentTargetHasResources || queueIsNotEmpty;
     }
 
@@ -42,13 +42,17 @@ public class VoxelHarvestTarget implements IHarvestTarget {
         if (this.currentTargetVoxel != null) {
             resources = this.currentTargetVoxel.getResources();
         }
-        if (resources <= 0 && this.harvestQueue.isNotEmpty()) {
+        if (resources <= 0 && this.voxelQueue.isNotEmpty()) {
             if (this.currentTargetVoxel != null) {
-                this.currentTargetVoxel.removeVoxel();
+                makeCurrentTargetEmpty();
             }
-            this.currentTargetVoxel = this.harvestQueue.pop();
+            this.currentTargetVoxel = this.voxelQueue.pop();
             this.currentTargetLocation = this.currentTargetVoxel.getLocation();
         }
+    }
+
+    private void makeCurrentTargetEmpty() {
+        this.currentTargetVoxel.removeVoxel();
     }
 
     private float getAmountRemoved(float tpf) {
@@ -68,6 +72,6 @@ public class VoxelHarvestTarget implements IHarvestTarget {
 
     @Override
     public void remove() {
-        this.currentTargetVoxel.removeVoxel();
+        makeCurrentTargetEmpty();
     }
 }

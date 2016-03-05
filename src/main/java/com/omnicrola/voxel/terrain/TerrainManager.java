@@ -15,10 +15,14 @@ public class TerrainManager implements ITerrainManager {
 
     private VoxelChunkHandler voxelChunkHandler;
     private VoxelTerrainGenerator voxelTerrainGenerator;
+    private VoxelTypeLibrary voxelTypeLibrary;
 
-    public TerrainManager(VoxelChunkHandler voxelChunkHandler, VoxelTerrainGenerator voxelTerrainGenerator) {
+    public TerrainManager(VoxelChunkHandler voxelChunkHandler,
+                          VoxelTerrainGenerator voxelTerrainGenerator,
+                          VoxelTypeLibrary voxelTypeLibrary) {
         this.voxelChunkHandler = voxelChunkHandler;
         this.voxelTerrainGenerator = voxelTerrainGenerator;
+        this.voxelTypeLibrary = voxelTypeLibrary;
     }
 
     @Override
@@ -56,6 +60,11 @@ public class TerrainManager implements ITerrainManager {
     @Override
     public Optional<VoxelData> getHighestSolidVoxel(Vector3f location) {
         return this.voxelChunkHandler.findHighestSolidVoxel(location);
+    }
+
+    @Override
+    public IVoxelType getVoxelType(byte voxelType) {
+        return this.voxelTypeLibrary.lookup(voxelType);
     }
 
     public void globalRebuild() {

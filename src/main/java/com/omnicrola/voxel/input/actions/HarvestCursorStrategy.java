@@ -5,7 +5,7 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.entities.control.resources.HarvestQueue;
+import com.omnicrola.voxel.entities.control.resources.VoxelQueue;
 import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
@@ -41,24 +41,32 @@ public class HarvestCursorStrategy implements ICursorStrategy {
     @Override
     public void executePrimary(GameMouseEvent mouseEvent, SelectionGroup currentSelection) {
         if (mouseEvent.isPressed()) {
-            Optional<CollisionResult> terrainPositionUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
-            if (terrainPositionUnderCursor.isPresent()) {
-                this.terrainHighlighter.setVisible(true);
-                Vector3f contactPoint = terrainPositionUnderCursor.get().getContactPoint();
-                this.terrainHighlighter.setStart(contactPoint);
-            }
+            startHighlightingTerrain();
         } else {
-            Optional<CollisionResult> terrainPositionUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
-            if (terrainPositionUnderCursor.isPresent()) {
-                Vector3f endPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
-                HarvestQueue harvestQueue = this.terrainHighlighter.getSelection(endPoint);
-                VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(harvestQueue);
-                currentSelection.orderHarvest(voxelHarvestTarget);
-            }
-            this.terrainHighlighter.setVisible(false);
-            this.worldCursor.clearCursorStrategy();
-            this.terrainHighlighter.clear();
+            harvestSelectedVoxels(currentSelection);
         }
+    }
+
+    private void startHighlightingTerrain() {
+        Optional<CollisionResult> terrainPositionUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
+        if (terrainPositionUnderCursor.isPresent()) {
+            this.terrainHighlighter.setVisible(true);
+            Vector3f contactPoint = terrainPositionUnderCursor.get().getContactPoint();
+            this.terrainHighlighter.setStart(contactPoint);
+        }
+    }
+
+    private void harvestSelectedVoxels(SelectionGroup currentSelection) {
+        Optional<CollisionResult> terrainPositionUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
+        if (terrainPositionUnderCursor.isPresent()) {
+            Vector3f endPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
+            VoxelQueue voxelQueue = this.terrainHighlighter.getSelection(endPoint);
+            VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelQueue);
+            currentSelection.orderHarvest(voxelHarvestTarget);
+        }
+        this.terrainHighlighter.setVisible(false);
+        this.worldCursor.clearCursorStrategy();
+        this.terrainHighlighter.clear();
     }
 
     @Override

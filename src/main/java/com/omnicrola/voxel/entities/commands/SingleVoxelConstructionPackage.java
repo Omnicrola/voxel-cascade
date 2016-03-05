@@ -9,7 +9,7 @@ import com.omnicrola.voxel.terrain.ITerrainManager;
 /**
  * Created by omnic on 2/11/2016.
  */
-public class VoxelConstructionPackage implements IConstructionPackage {
+public class SingleVoxelConstructionPackage implements IConstructionPackage {
 
     public static final float BASE_BUILD_RATE = 1f;
     private float resourcesRequired;
@@ -18,7 +18,7 @@ public class VoxelConstructionPackage implements IConstructionPackage {
     private Vec3i location;
     private Spatial ghostVoxel;
 
-    public VoxelConstructionPackage(ITerrainManager terrainManager,byte voxelType, Vec3i location, Spatial ghostVoxel) {
+    public SingleVoxelConstructionPackage(ITerrainManager terrainManager, byte voxelType, Vec3i location, Spatial ghostVoxel) {
         this.terrainManager = terrainManager;
         this.voxelType = voxelType;
         this.location = location;

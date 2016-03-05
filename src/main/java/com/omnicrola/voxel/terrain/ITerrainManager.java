@@ -27,4 +27,6 @@ public interface ITerrainManager {
     void globalRebuild();
 
     Optional<VoxelData> getHighestSolidVoxel(Vector3f location);
+
+    IVoxelType getVoxelType(byte voxelType);
 }

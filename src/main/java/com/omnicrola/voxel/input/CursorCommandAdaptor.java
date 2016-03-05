@@ -9,6 +9,7 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Effect;
+import com.omnicrola.voxel.entities.control.construction.HarvestTerrainHighlightStrategy;
 import com.omnicrola.voxel.input.actions.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.highlight.CubeFactory;
@@ -105,7 +106,11 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         Geometry placeholderVoxel = this.worldEntityBuilder.buildCube(ColorRGBA.Green);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
+        HarvestTerrainHighlightStrategy highlightStrategy = new HarvestTerrainHighlightStrategy(this.terrainManager);
+        TerrainHighlighterControl terrainHighlighter = buildTerrainHighlighterControl(highlightStrategy);
+
         BuildVoxelCursorStrategy buildVoxelCursorStrategy = new BuildVoxelCursorStrategy(
+                terrainHighlighter,
                 worldCursor,
                 type,
                 buildCursor,
@@ -124,20 +129,27 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         cube.setLocalTranslation(0.5f, -0.5f, 0.5f);
         cube.setLocalScale(1.1f);
 
-        CubeFactory cubeFactory = new CubeFactory(this.worldEntityBuilder);
-        cubeFactory.setScale(new Vector3f(1f, 1.1f, 1f));
-        cubeFactory.setColor(new ColorRGBA(0, 1, 0, 0.5f));
-        HighlighterCubeCache highlighterCubeCache = new HighlighterCubeCache(cubeFactory);
-        TerrainHighlighterControl terrainHighlighter = new TerrainHighlighterControl(this.worldManager.getWorldCursor(),
-                this.terrainManager,
-                highlighterCubeCache);
-
-        Node cursorNode = new Node();
-        cursorNode.addControl(terrainHighlighter);
-        this.worldManager.addEffect(new Effect(cursorNode));
+        HarvestTerrainHighlightStrategy highlightStrategy = new HarvestTerrainHighlightStrategy(this.terrainManager);
+        TerrainHighlighterControl terrainHighlighter = buildTerrainHighlighterControl(highlightStrategy);
 
         HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter, this.terrainManager, worldCursor, harvestCursor, cube);
         worldCursor.setCursorStrategy(harvestStrategy);
+    }
+
+    private TerrainHighlighterControl buildTerrainHighlighterControl(HarvestTerrainHighlightStrategy highlightStrategy) {
+        CubeFactory cubeFactory = new CubeFactory(this.worldEntityBuilder);
+        cubeFactory.setScale(new Vector3f(1f, 1.1f, 1f));
+        cubeFactory.setColor(new ColorRGBA(0, 1, 0, 0.5f));
+
+        HighlighterCubeCache highlighterCubeCache = new HighlighterCubeCache(cubeFactory);
+        TerrainHighlighterControl terrainHighlighterControl = new TerrainHighlighterControl(this.worldManager.getWorldCursor(),
+                highlighterCubeCache, highlightStrategy);
+
+        Node cursorNode = new Node();
+        cursorNode.addControl(terrainHighlighterControl);
+        this.worldManager.addEffect(new Effect(cursorNode));
+
+        return terrainHighlighterControl;
     }
 
     private JmeCursor getCursor(CursorToken cursorToken) {

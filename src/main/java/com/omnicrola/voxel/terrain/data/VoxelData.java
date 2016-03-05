@@ -37,4 +37,8 @@ public class VoxelData {
     public Vector3f getLocation() {
         return this.location.asVector3f();
     }
+
+    public void setType(IVoxelType voxelType) {
+        this.chunk.set(location, voxelType.uniqueId());
+    }
 }

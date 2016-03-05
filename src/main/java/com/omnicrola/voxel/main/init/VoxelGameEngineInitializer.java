@@ -142,11 +142,16 @@ public class VoxelGameEngineInitializer {
         return worldCursor;
     }
 
-    private TerrainManager createTerrainManager(VoxelGameEngine voxelGameEngine, WorldManager worldManager, VoxelTypeLibrary voxelTypeLibrary, MaterialRepository materialRepository) {
+    private TerrainManager createTerrainManager(VoxelGameEngine voxelGameEngine,
+                                                WorldManager worldManager,
+                                                VoxelTypeLibrary voxelTypeLibrary,
+                                                MaterialRepository materialRepository) {
+
         TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary, voxelGameEngine.getPhysicsSpace());
         VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
         VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
-        return new TerrainManager(voxelChunkHandler, voxelTerrainGenerator);
+        TerrainManager terrainManager = new TerrainManager(voxelChunkHandler, voxelTerrainGenerator, voxelTypeLibrary);
+        return terrainManager;
     }
 
     private WorldEntityBuilder createWorldEntityBuilder(AssetManager assetManager,

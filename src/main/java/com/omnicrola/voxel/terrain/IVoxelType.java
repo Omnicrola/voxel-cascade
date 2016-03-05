@@ -9,4 +9,6 @@ public interface IVoxelType {
     byte uniqueId();
 
     ColorRGBA color();
+
+    float resourcesRequired();
 }
