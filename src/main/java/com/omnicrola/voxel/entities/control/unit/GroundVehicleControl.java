@@ -15,7 +15,7 @@ import java.util.Optional;
 /**
  * Created by omnic on 1/23/2016.
  */
-public class GroundVehicleControl extends CharacterControl {
+public class GroundVehicleControl extends CharacterControl   {
 
     private final ITerrainManager terrainManager;
     private final float mass;

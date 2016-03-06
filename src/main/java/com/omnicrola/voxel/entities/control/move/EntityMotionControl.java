@@ -41,7 +41,7 @@ public class EntityMotionControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        float maxVelocity = this.movementDefinition.getMaxVelocity();
+        float maxVelocity = this.movementDefinition.getMaxVelocity() * tpf;
         float maxTurnSpeed = this.movementDefinition.getTurnspeed() * tpf;
         GroundVehicleControl physicsControl = getPhysicsControl();
 

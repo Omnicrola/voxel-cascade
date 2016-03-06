@@ -48,7 +48,7 @@ public class UnitGenerator {
         unitDefinition.weaponId = WeaponGenerator.ID_CANNON_WEAPON;
         unitDefinition.weaponEmissionOffset = new Vector3f(0, 0.5f, 0);
         unitDefinition.mass = 1f;
-        unitDefinition.movementDefinition = movementDef(3f, 0.1f);
+        unitDefinition.movementDefinition = movementDef(10f, 0.25f);
         unitDefinition.commands.add(EntityCommand.MOVE);
         unitDefinition.commands.add(EntityCommand.ATTACK);
         unitDefinition.commands.add(EntityCommand.STOP);
