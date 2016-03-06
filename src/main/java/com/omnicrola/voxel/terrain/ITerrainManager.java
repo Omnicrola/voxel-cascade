@@ -6,6 +6,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -30,4 +31,6 @@ public interface ITerrainManager {
     Optional<VoxelData> getHighestSolidVoxel(Vector3f location);
 
     IVoxelType getVoxelType(byte voxelType);
+
+    List<VoxelData> getNeighborsOf(VoxelData voxel);
 }

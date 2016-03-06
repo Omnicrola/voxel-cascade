@@ -41,4 +41,25 @@ public class VoxelData {
     public void setType(IVoxelType voxelType) {
         this.chunk.set(location, voxelType.uniqueId());
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        VoxelData voxelData = (VoxelData) o;
+
+        if (!chunk.equals(voxelData.chunk)) return false;
+        if (!location.equals(voxelData.location)) return false;
+        return voxel.equals(voxelData.voxel);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = chunk.hashCode();
+        result = 31 * result + location.hashCode();
+        result = 31 * result + voxel.hashCode();
+        return result;
+    }
+
 }

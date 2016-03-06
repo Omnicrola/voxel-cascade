@@ -6,6 +6,8 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -60,6 +62,51 @@ public class TerrainManager implements ITerrainManager {
     @Override
     public Optional<VoxelData> getHighestSolidVoxel(Vector3f location) {
         return this.voxelChunkHandler.findHighestSolidVoxel(location);
+    }
+
+    @Override
+    public List<VoxelData> getNeighborsOf(VoxelData voxel) {
+        ArrayList<VoxelData> voxels = new ArrayList<>();
+        // top layer
+        Vector3f location = voxel.getLocation();
+        voxels.add(getVoxelAt(location.add(-1, 1, -1)));
+        voxels.add(getVoxelAt(location.add(-1, 1, 0)));
+        voxels.add(getVoxelAt(location.add(-1, 1, 1)));
+
+        voxels.add(getVoxelAt(location.add(0, 1, -1)));
+        voxels.add(getVoxelAt(location.add(0, 1, 0)));
+        voxels.add(getVoxelAt(location.add(0, 1, 1)));
+
+        voxels.add(getVoxelAt(location.add(1, 1, -1)));
+        voxels.add(getVoxelAt(location.add(1, 1, 0)));
+        voxels.add(getVoxelAt(location.add(1, 1, 1)));
+
+        // middle layer
+        voxels.add(getVoxelAt(location.add(-1, 0, -1)));
+        voxels.add(getVoxelAt(location.add(-1, 0, 0)));
+        voxels.add(getVoxelAt(location.add(-1, 0, 1)));
+
+        voxels.add(getVoxelAt(location.add(0, 0, -1)));
+        voxels.add(getVoxelAt(location.add(0, 0, 1)));
+
+        voxels.add(getVoxelAt(location.add(1, 0, -1)));
+        voxels.add(getVoxelAt(location.add(1, 0, 0)));
+        voxels.add(getVoxelAt(location.add(1, 0, 1)));
+
+        // bottom layer
+        voxels.add(getVoxelAt(location.add(-1, -1, -1)));
+        voxels.add(getVoxelAt(location.add(-1, -1, 0)));
+        voxels.add(getVoxelAt(location.add(-1, -1, 1)));
+
+        voxels.add(getVoxelAt(location.add(0, -1, -1)));
+        voxels.add(getVoxelAt(location.add(0, -1, 0)));
+        voxels.add(getVoxelAt(location.add(0, -1, 1)));
+
+        voxels.add(getVoxelAt(location.add(1, -1, -1)));
+        voxels.add(getVoxelAt(location.add(1, -1, 0)));
+        voxels.add(getVoxelAt(location.add(1, -1, 1)));
+
+        return voxels;
     }
 
     @Override

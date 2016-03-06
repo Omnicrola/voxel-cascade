@@ -7,6 +7,7 @@ import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
+import com.omnicrola.voxel.entities.behavior.ai.pathing.VoxelAstarPathFinder;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.construction.BuildController;
@@ -50,7 +51,8 @@ public class EntityAiControlFactory implements IControlFactory {
                 weaponsController,
                 targetingController,
                 resourceHarvester,
-                buildController);
+                buildController,
+                entityControlAdapter);
 
         spatial.addControl(motionGovernor);
         spatial.addControl(targetingController);
@@ -61,15 +63,17 @@ public class EntityAiControlFactory implements IControlFactory {
     }
 
     protected EntityAiController buildAiController(EntityMotionControl motionGovernor,
-                                                 WeaponsController weaponsController,
-                                                 TargetingController targetingController,
-                                                 ResourceHarvestController resourceHarvester,
-                                                 BuildController buildController) {
+                                                   WeaponsController weaponsController,
+                                                   TargetingController targetingController,
+                                                   ResourceHarvestController resourceHarvester,
+                                                   BuildController buildController,
+                                                   EntityControlAdapter entityControlAdapter) {
         IAiState holdState = buildHoldState(targetingController, weaponsController, motionGovernor);
         AiAttackTargetState attackTargetState = new AiAttackTargetState(weaponsController, motionGovernor);
         AiBuildState buildState = new AiBuildState(motionGovernor, buildController);
         AiHarvestState harvestState = new AiHarvestState(resourceHarvester, motionGovernor);
-        AiMoveToLocationState moveState = new AiMoveToLocationState(motionGovernor);
+        VoxelAstarPathFinder pathFinder = new VoxelAstarPathFinder(entityControlAdapter.getTerrainManager());
+        AiMoveToLocationState moveState = new AiMoveToLocationState(motionGovernor, pathFinder);
         AiStopState stopState = new AiStopState();
 
         AiStateMap states = new AiStateMap();
