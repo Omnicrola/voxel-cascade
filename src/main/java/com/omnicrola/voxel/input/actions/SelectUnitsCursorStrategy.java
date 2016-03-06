@@ -38,20 +38,24 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
 
     @Override
     public void executePrimary(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
-        if (!this.wasPressed && gameMouseEvent.isPressed()) {
-            this.lastCursorPosition = this.inputManager.getCursorPosition();
-        } else if (!gameMouseEvent.isPressed()) {
-            if (mouseHasBeenDragged()) {
-                ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.inputManager.getCursorPosition());
-                List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
-                SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, spatials);
-                this.worldCursor.setCurrentSelection(selectionGroup);
-            } else {
-                Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor();
-                if (unitUnderCursor.isPresent()) {
-                    Geometry unit = unitUnderCursor.get().getGeometry();
-                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, Arrays.asList(unit));
+        boolean isNewMousePress = !this.wasPressed && gameMouseEvent.isPressed();
+        if (isNewMousePress) {
+            this.lastCursorPosition = this.inputManager.getCursorPosition().clone();
+        } else {
+            boolean mouseWasJustReleased = !gameMouseEvent.isPressed();
+            if (mouseWasJustReleased) {
+                if (mouseHasBeenDragged()) {
+                    ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.inputManager.getCursorPosition());
+                    List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
+                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, spatials);
                     this.worldCursor.setCurrentSelection(selectionGroup);
+                } else {
+                    Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor();
+                    if (unitUnderCursor.isPresent()) {
+                        Geometry unit = unitUnderCursor.get().getGeometry();
+                        SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, Arrays.asList(unit));
+                        this.worldCursor.setCurrentSelection(selectionGroup);
+                    }
                 }
             }
         }

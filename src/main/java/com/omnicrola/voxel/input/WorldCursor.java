@@ -6,7 +6,6 @@ import com.jme3.math.Ray;
 import com.jme3.math.Vector2f;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
@@ -29,19 +28,18 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     private final IGameInput inputManager;
     private final Camera camera;
     private final CollisionDistanceComparator collisionDistanceComparator;
-    private final ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory;
     private ICursorStrategy cursorStrategy;
     private ICursorStrategy defaultCursorStrategy;
     private SelectionGroup currentSelection;
     private List<IUserSelectionObserver> observers;
+    private SelectionFrustrumFactory selectionFrustrumFactory;
     private IWorldNode worldRootNode;
-    private Geometry fustrum;
 
     public WorldCursor(IGameInput inputManager,
                        Camera camera,
-                       ScreenSelectionEvaluatorFactory screenSelectionEvaluatorFactory,
+                       SelectionFrustrumFactory selectionFrustrumFactory,
                        IWorldNode worldRootNode) {
-        this.screenSelectionEvaluatorFactory = screenSelectionEvaluatorFactory;
+        this.selectionFrustrumFactory = selectionFrustrumFactory;
         this.worldRootNode = worldRootNode;
         this.observers = new ArrayList<>();
         this.inputManager = inputManager;
@@ -180,18 +178,13 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     }
 
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {
-        ScreenSelectionEvaluator screenSelectionEvaluator = this.screenSelectionEvaluatorFactory.build(screenRectangle);
-        if (this.fustrum != null) {
-            this.getParent().detachChild(this.fustrum);
-        }
-        this.fustrum = this.screenSelectionEvaluatorFactory.projectSelectionFustrum(screenRectangle);
-        this.getParent().attachChild(fustrum);
-
+        SelectionFrustrum selectionFrustrum = this.selectionFrustrumFactory.build(screenRectangle);
         List<Spatial> children = this.worldRootNode.getUnitsNode().getChildren();
+
         List<Spatial> collect = children
                 .stream()
                 .filter(s -> isSelectableUnit(s))
-                .filter(s -> screenSelectionEvaluator.isInSelection(s.getWorldTranslation()))
+                .filter(s -> selectionFrustrum.isContained(s.getWorldTranslation()))
                 .collect(Collectors.toList());
         return collect;
     }

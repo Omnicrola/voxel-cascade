@@ -3,7 +3,6 @@ package com.omnicrola.voxel.input;
 import com.jme3.asset.AssetManager;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Geometry;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -26,7 +25,4 @@ public class ScreenSelectionEvaluatorFactory {
         return new ScreenSelectionEvaluator(this.camera.getLocation(),b1,b2,b3,b4);
     }
 
-    public Geometry projectSelectionFustrum(ScreenRectangle screenRectangle){
-        return FrustrumBuilder.build(this.assetManager, this.camera,screenRectangle);
-    }
 }

@@ -40,6 +40,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     @Override
     public void simpleInitApp() {
         this.assetManager.registerLoader(EntityDefinitionXmlAssetLoader.class, GameConstants.UNIT_DEFINITION_FILE_EXTENSION);
+        setPauseOnLostFocus(false);
 
         loadNiftyGui();
         addLights();

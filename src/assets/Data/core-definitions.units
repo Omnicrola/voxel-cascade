@@ -130,7 +130,7 @@
     <structures>
         <structure global-id="1">
             <name>Core</name>
-            <description>Use this to orderBuild things</description>
+            <description>Use this to build things</description>
             <texture>voxel-face-green.png</texture>
             <model>building-core.obj</model>
             <color>
@@ -150,7 +150,7 @@
         </structure>
         <structure global-id="2">
             <name>Core</name>
-            <description>Use this to orderBuild things</description>
+            <description>Use this to build things</description>
             <texture>voxel-face-red.png</texture>
             <model>building-core.obj</model>
             <color>

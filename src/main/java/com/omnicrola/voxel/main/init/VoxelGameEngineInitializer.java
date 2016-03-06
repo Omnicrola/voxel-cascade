@@ -16,7 +16,7 @@ import com.omnicrola.voxel.engine.ShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.entities.build.ProjectileBuilder;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
-import com.omnicrola.voxel.input.ScreenSelectionEvaluatorFactory;
+import com.omnicrola.voxel.input.SelectionFrustrumFactory;
 import com.omnicrola.voxel.input.WorldCursor;
 import com.omnicrola.voxel.jme.wrappers.impl.JmeInputWrapper;
 import com.omnicrola.voxel.jme.wrappers.impl.ParticleBuilder;
@@ -136,9 +136,7 @@ public class VoxelGameEngineInitializer {
         Camera camera = voxelGameEngine.getCamera();
         IWorldNode worldNode = voxelGameEngine.getWorldNode();
         JmeInputWrapper inputManager = new JmeInputWrapper(voxelGameEngine.getInputManager(), voxelGameEngine.getFlyByCamera());
-        AssetManager assetManager = voxelGameEngine.getAssetManager();
-        WorldCursor worldCursor = new WorldCursor(inputManager, camera, new ScreenSelectionEvaluatorFactory(camera, assetManager), worldNode);
-
+        WorldCursor worldCursor = new WorldCursor(inputManager, camera, new SelectionFrustrumFactory(camera), worldNode);
         return worldCursor;
     }
 
