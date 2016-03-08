@@ -1,21 +1,25 @@
 package com.omnicrola.voxel.entities.behavior.ai.pathing;
 
-import com.jme3.math.Vector3f;
-
-import java.util.List;
-
 /**
  * Created by omnic on 3/5/2016.
  */
 public class NavigationPath {
 
-    private List<Vector3f> pathNodes;
+    private VoxelAstarPathFinder.PathNode startNode;
+    private VoxelAstarPathFinder.PathNode nextNode;
 
-    public NavigationPath(List<Vector3f> pathNodes) {
-        this.pathNodes = pathNodes;
+    public NavigationPath(VoxelAstarPathFinder.PathNode startNode) {
+        this.startNode = startNode;
+        this.nextNode = startNode;
     }
 
-    public Vector3f next() {
-        return this.pathNodes.remove(this.pathNodes.size());
+    public boolean hasNext() {
+        return this.nextNode.nextNode != null;
+    }
+
+    public VoxelAstarPathFinder.PathNode next() {
+        VoxelAstarPathFinder.PathNode currentNode = this.nextNode;
+        this.nextNode = this.nextNode.nextNode;
+        return currentNode;
     }
 }

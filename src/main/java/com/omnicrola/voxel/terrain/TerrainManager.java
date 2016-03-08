@@ -48,10 +48,22 @@ public class TerrainManager implements ITerrainManager {
     }
 
     @Override
+    public VoxelData getVoxelAt(Vec3i location) {
+        return this.voxelChunkHandler.getVoxelAt(location);
+    }
+
+    @Override
     public boolean isBelowTerrain(Geometry geometry) {
         Vector3f worldLocation = geometry.getWorldTranslation();
         Vec3i location = Vec3i.floor(worldLocation.add(0, 0.5f, 0));
         return this.voxelChunkHandler.isVoxelSolidAt(location);
+    }
+
+    @Override
+    public boolean isEmptyWithFloor(Vec3i gridLocation) {
+        boolean voxelIsEmpty = !this.voxelChunkHandler.isVoxelSolidAt(gridLocation);
+        boolean floorIsSolid = this.voxelChunkHandler.isVoxelSolidAt(new Vec3i(gridLocation.getX(), gridLocation.getY() - 1, gridLocation.getZ()));
+        return voxelIsEmpty && floorIsSolid;
     }
 
     @Override

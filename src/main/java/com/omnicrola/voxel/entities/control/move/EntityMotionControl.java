@@ -17,6 +17,7 @@ public class EntityMotionControl extends AbstractControl {
 
     private final Vector3f desiredVelocity;
     private MovementDefinition movementDefinition;
+    private boolean isStopping;
 
     public EntityMotionControl(MovementDefinition movementDefinition) {
         this.movementDefinition = movementDefinition;
@@ -41,6 +42,13 @@ public class EntityMotionControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
+        if (isStopping) {
+            GroundVehicleControl physicsControl = getPhysicsControl();
+            this.desiredVelocity.set(0, 0, 0);
+            physicsControl.setWalkDirection(this.desiredVelocity);
+            this.isStopping = false;
+            return;
+        }
         float maxVelocity = this.movementDefinition.getMaxVelocity() * tpf;
         float maxTurnSpeed = this.movementDefinition.getTurnspeed() * tpf;
         GroundVehicleControl physicsControl = getPhysicsControl();
@@ -82,5 +90,9 @@ public class EntityMotionControl extends AbstractControl {
 
     private GroundVehicleControl getPhysicsControl() {
         return this.spatial.getControl(GroundVehicleControl.class);
+    }
+
+    public void stop() {
+        this.isStopping = true;
     }
 }

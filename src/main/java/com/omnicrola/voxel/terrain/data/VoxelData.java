@@ -38,6 +38,10 @@ public class VoxelData {
         return this.location.asVector3f();
     }
 
+    public Vec3i getGridLocation() {
+        return this.location;
+    }
+
     public void setType(IVoxelType voxelType) {
         this.chunk.set(location, voxelType.uniqueId());
     }

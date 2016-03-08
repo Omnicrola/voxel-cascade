@@ -92,5 +92,9 @@ public class Vec3i implements Vec3iRead {
     public Vec3i translate(int x, int y, int z) {
         return new Vec3i(this.x + x, this.y + y, this.z + z);
     }
+
+    public float distance(Vector3f location) {
+        return 0;
+    }
 }
 

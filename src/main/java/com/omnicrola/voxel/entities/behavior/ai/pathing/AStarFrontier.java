@@ -11,7 +11,7 @@ import java.util.Queue;
 /**
  * Created by omnic on 3/5/2016.
  */
-public class Frontier {
+public class AStarFrontier {
 
     private class FrontierPrioritizer implements java.util.Comparator<VoxelData> {
         @Override
@@ -19,9 +19,9 @@ public class Frontier {
             float distance1 = v1.getLocation().distance(endLocation);
             float distance2 = v2.getLocation().distance(endLocation);
             if (distance1 > distance2) {
-                return -1;
-            } else if (distance2 < distance1) {
                 return 1;
+            } else if (distance2 < distance1) {
+                return -1;
             }
             return 0;
         }
@@ -32,7 +32,7 @@ public class Frontier {
     private Queue<VoxelData> currentFrontier;
     private final ArrayList<VoxelData> alreadyProcessed;
 
-    public Frontier(ITerrainManager terrainManager, Vector3f currentLocation, Vector3f endLocation) {
+    public AStarFrontier(ITerrainManager terrainManager, Vector3f currentLocation, Vector3f endLocation) {
         this.terrainManager = terrainManager;
         this.endLocation = endLocation;
         VoxelData current = terrainManager.getVoxelAt(currentLocation);

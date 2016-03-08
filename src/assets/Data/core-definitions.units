@@ -15,8 +15,8 @@
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement>
-                <max-velocity>10.0</max-velocity>
-                <turnspeed>0.25</turnspeed>
+                <max-velocity>5.0</max-velocity>
+                <turnspeed>99.0</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
             <controls/>
@@ -46,8 +46,8 @@
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement>
-                <max-velocity>10.0</max-velocity>
-                <turnspeed>0.25</turnspeed>
+                <max-velocity>5.0</max-velocity>
+                <turnspeed>99.0</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
             <controls/>
@@ -77,8 +77,8 @@
             <hitpoints>100.0</hitpoints>
             <mass>1.0</mass>
             <movement>
-                <max-velocity>10.0</max-velocity>
-                <turnspeed>0.25</turnspeed>
+                <max-velocity>5.0</max-velocity>
+                <turnspeed>99.0</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
             <controls/>

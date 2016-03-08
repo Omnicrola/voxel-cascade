@@ -73,7 +73,7 @@ public class EntityAiControlFactory implements IControlFactory {
         AiBuildState buildState = new AiBuildState(motionGovernor, buildController);
         AiHarvestState harvestState = new AiHarvestState(resourceHarvester, motionGovernor);
         VoxelAstarPathFinder pathFinder = new VoxelAstarPathFinder(entityControlAdapter.getTerrainManager());
-        AiMoveToLocationState moveState = new AiMoveToLocationState(motionGovernor, pathFinder);
+        AiMoveToLocationState moveState = new AiMoveToLocationState(motionGovernor, pathFinder, entityControlAdapter.getTerrainManager());
         AiStopState stopState = new AiStopState();
 
         AiStateMap states = new AiStateMap();

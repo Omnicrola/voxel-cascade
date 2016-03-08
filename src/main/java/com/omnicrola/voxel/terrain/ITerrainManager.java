@@ -21,6 +21,8 @@ public interface ITerrainManager {
 
     VoxelData getVoxelAt(Vector3f location);
 
+    VoxelData getVoxelAt(Vec3i location);
+
     boolean isBelowTerrain(Geometry geometry);
 
 
@@ -33,4 +35,6 @@ public interface ITerrainManager {
     IVoxelType getVoxelType(byte voxelType);
 
     List<VoxelData> getNeighborsOf(VoxelData voxel);
+
+    boolean isEmptyWithFloor(Vec3i gridLocation);
 }
