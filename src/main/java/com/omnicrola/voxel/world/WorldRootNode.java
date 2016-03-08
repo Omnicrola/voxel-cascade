@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.world;
 
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.physics.ProjectileCollisionAnalysisControl;
 import com.omnicrola.voxel.settings.GameConstants;
 
 /**
@@ -19,6 +20,9 @@ public class WorldRootNode extends Node implements IWorldNode {
         this.projectilesNode = new Node(GameConstants.NODE_PROJECTILES);
         this.fxNode = new Node(GameConstants.NODE_FX);
         this.terrainNode = new Node(GameConstants.NODE_TERRAIN);
+
+        this.projectilesNode.addControl(new ProjectileCollisionAnalysisControl(this));
+
         this.attachChild(unitsNode);
         this.attachChild(projectilesNode);
         this.attachChild(fxNode);
