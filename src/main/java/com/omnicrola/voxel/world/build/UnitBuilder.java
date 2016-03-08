@@ -11,7 +11,6 @@ import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.construction.BuildCursorValidityControl;
-import com.omnicrola.voxel.entities.control.unit.GroundVehicleControl;
 import com.omnicrola.voxel.fx.MaterialToken;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -42,7 +41,7 @@ public class UnitBuilder {
         List<IControlFactory> controlFactories = unitDefinition.getControlFactories();
         UnitDefinitionRepository definitionRepository = toolbox.getDefinitionRepository();
         controlFactories.forEach(f -> f.build(spatial, definitionRepository, this.entityControlAdapter));
-        spatial.getControl(GroundVehicleControl.class).setPhysicsLocation(unitPlacement.getLocation());
+        spatial.setLocalTranslation(unitPlacement.getLocation());
 
 
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);

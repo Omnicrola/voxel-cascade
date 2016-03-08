@@ -23,7 +23,7 @@ public class GroundVehicleControlFactory implements IControlFactory {
     @Override
     public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
         ITerrainManager terrainManager = entityControlAdapter.getTerrainManager();
-        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(terrainManager, this.mass);
+        GroundVehicleControl tankVehicleControl = new GroundVehicleControl(terrainManager);
         spatial.addControl(tankVehicleControl);
     }
 }

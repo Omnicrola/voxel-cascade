@@ -7,7 +7,6 @@ import com.omnicrola.voxel.entities.control.collision.CollisionController;
 import com.omnicrola.voxel.entities.control.collision.TerrainCollisionHandler;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.VoxelPhysicsControl;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
 import com.omnicrola.voxel.world.WorldManager;
@@ -38,7 +37,6 @@ public class VoxelChunkRebuilder {
             c.setUserData(EntityDataKeys.IS_TERRAIN, true);
             c.addControl(new CollisionController(new TerrainCollisionHandler(c, this.worldManager)));
         });
-        batchNode.addControl(new VoxelPhysicsControl(chunk.getWorldTranslation(), batchNode));
         chunk.attachChild(batchNode);
         chunk.clearRebuildFlag();
     }

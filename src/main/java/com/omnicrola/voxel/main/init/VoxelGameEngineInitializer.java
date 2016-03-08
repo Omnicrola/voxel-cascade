@@ -2,7 +2,6 @@ package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.renderer.Camera;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
@@ -74,10 +73,9 @@ public class VoxelGameEngineInitializer {
     }
 
     private InitializationContainer buildInitializationContainer(VoxelGameEngine voxelGameEngine) {
-        PhysicsSpace physicsSpace = voxelGameEngine.getPhysicsSpace();
         WorldCursor worldCursor = createWorldCursor(voxelGameEngine);
 
-        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode(), physicsSpace, worldCursor);
+        WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode(), worldCursor);
         AssetManager assetManager = voxelGameEngine.getAssetManager();
 
         VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
@@ -145,7 +143,7 @@ public class VoxelGameEngineInitializer {
                                                 VoxelTypeLibrary voxelTypeLibrary,
                                                 MaterialRepository materialRepository) {
 
-        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary, voxelGameEngine.getPhysicsSpace());
+        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary);
         VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
         VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
         TerrainManager terrainManager = new TerrainManager(voxelChunkHandler, voxelTerrainGenerator, voxelTypeLibrary);

@@ -83,4 +83,5 @@ public class ChunkId {
         int z = location.getZ() - this.z * GameConstants.CHUNK_SIZE;
         return new Vec3i(x, y, z);
     }
+
 }

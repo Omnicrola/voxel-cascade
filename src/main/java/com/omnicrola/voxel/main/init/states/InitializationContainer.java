@@ -2,7 +2,6 @@ package com.omnicrola.voxel.main.init.states;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.input.InputManager;
 import com.jme3.scene.Node;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
@@ -61,10 +60,6 @@ public class InitializationContainer {
 
     public MaterialRepository getMaterialRepository() {
         return materialRepository;
-    }
-
-    public PhysicsSpace getPhysicsSpace() {
-        return voxelGameEngine.getPhysicsSpace();
     }
 
     public AssetManager getAssetManager() {

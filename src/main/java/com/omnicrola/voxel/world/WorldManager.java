@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.world;
 
 import com.jme3.bounding.BoundingSphere;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.math.Vector3f;
@@ -23,15 +22,13 @@ import java.util.stream.Stream;
 public class WorldManager {
 
     private IWorldNode worldNode;
-    private PhysicsSpace physicsSpace;
     private IWorldCursor worldCursor;
     private List<Unit> units;
     private List<Structure> structures;
     private List<Projectile> projectiles;
 
-    public WorldManager(IWorldNode worldNode, PhysicsSpace physicsSpace, IWorldCursor worldCursor) {
+    public WorldManager(IWorldNode worldNode, IWorldCursor worldCursor) {
         this.worldNode = worldNode;
-        this.physicsSpace = physicsSpace;
         this.worldCursor = worldCursor;
         this.units = new ArrayList<>();
         this.structures = new ArrayList<>();
@@ -42,21 +39,21 @@ public class WorldManager {
         this.units.add(unit);
         Spatial spatial = unit.getSpatial();
         this.worldNode.getUnitsNode().attachChild(spatial);
-        this.physicsSpace.add(spatial);
+        //  this.physicsSpace.add(spatial);
     }
 
     public void addStructure(Structure structure) {
         this.structures.add(structure);
         Spatial spatial = structure.getSpatial();
         this.worldNode.getUnitsNode().attachChild(spatial);
-        this.physicsSpace.add(spatial);
+        //this.physicsSpace.add(spatial);
     }
 
     public void addProjectile(Projectile projectile) {
         this.projectiles.add(projectile);
         Spatial spatial = projectile.getSpatial();
         this.worldNode.getProjectilesNode().attachChild(spatial);
-        this.physicsSpace.add(spatial);
+        //this.physicsSpace.add(spatial);
     }
 
     public void addEffect(IGameEntity gameEntity) {
@@ -82,7 +79,7 @@ public class WorldManager {
         this.units.remove(spatial);
         this.structures.remove(spatial);
         this.projectiles.remove(spatial);
-        this.physicsSpace.remove(spatial);
+        //   this.physicsSpace.remove(spatial);
     }
 
     public List<IGameEntity> getAllUnits() {

@@ -2,7 +2,6 @@ package com.omnicrola.voxel.engine;
 
 import com.jme3.app.SimpleApplication;
 import com.jme3.bullet.BulletAppState;
-import com.jme3.bullet.PhysicsSpace;
 import com.jme3.font.BitmapFont;
 import com.jme3.light.AmbientLight;
 import com.jme3.light.DirectionalLight;
@@ -24,16 +23,18 @@ import de.lessvoid.nifty.Nifty;
 public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
 
     private VoxelGameEngineInitializer gameEngineInitializer;
-    protected BulletAppState bulletAppState;
+//    protected BulletAppState bulletAppState;
     private EngineShutdownHandler shutdownHandler;
     private Nifty niftyGui;
     private LightManager lightManager;
     private VoxelTickProvider ticProvider;
     private WorldRootNode worldRootNode;
 
-    public VoxelGameEngine(VoxelGameEngineInitializer gameEngineInitializer, BulletAppState bulletAppState, EngineShutdownHandler shutdownHandler) {
+    public VoxelGameEngine(VoxelGameEngineInitializer gameEngineInitializer,
+                           BulletAppState bulletAppState,
+                           EngineShutdownHandler shutdownHandler) {
         this.gameEngineInitializer = gameEngineInitializer;
-        this.bulletAppState = bulletAppState;
+//        this.bulletAppState = bulletAppState;
         this.shutdownHandler = shutdownHandler;
     }
 
@@ -48,9 +49,9 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         this.rootNode.attachChild(this.worldRootNode);
 
         this.ticProvider = new VoxelTickProvider();
-        this.stateManager.attach(this.bulletAppState);
+//        this.stateManager.attach(this.bulletAppState);
         this.gameEngineInitializer.initialize(this);
-        this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
+//        this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
     }
 
     private void addLights() {
@@ -110,10 +111,6 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         return guiFont;
     }
 
-    public PhysicsSpace getPhysicsSpace() {
-        return this.bulletAppState.getPhysicsSpace();
-    }
-
     public Nifty getNiftyGui() {
         return niftyGui;
     }
@@ -129,4 +126,5 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     public IWorldNode getWorldNode() {
         return this.worldRootNode;
     }
+
 }
