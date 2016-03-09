@@ -7,7 +7,7 @@ public class NullEntityMotionController extends EntityMotionControl {
     public static final EntityMotionControl NO_OP = new NullEntityMotionController();
 
     private NullEntityMotionController() {
-        super(null);
+        super(null, null);
     }
 
     @Override

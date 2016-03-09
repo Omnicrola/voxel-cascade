@@ -39,7 +39,7 @@ public class EntityAiControlFactory implements IControlFactory {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
         ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
 
-        EntityMotionControl motionGovernor = new EntityMotionControl(this.movementDefinition);
+        EntityMotionControl motionGovernor = new EntityMotionControl(this.movementDefinition, entityControlAdapter);
         IProjectileStrategy projectileFactory = createProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
         WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(), weaponDefinition, this.projectileOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(entityControlAdapter.getWorldManager());

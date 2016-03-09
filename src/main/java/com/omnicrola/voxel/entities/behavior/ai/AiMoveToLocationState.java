@@ -4,6 +4,7 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.entities.behavior.ai.pathing.VoxelAstarPathFinder;
 import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
@@ -48,11 +49,9 @@ public class AiMoveToLocationState implements IAiState {
             }
             if (this.navigationPath != null) {
                 Vector3f targetPosition = this.navigationPath.voxel.getGridLocation().asVector3f();
-                System.out.println("move toward: " + targetPosition);
                 this.motionGovernor.moveToward(targetPosition);
             }
         }
-
     }
 
     private void calculateNewPath(EntityAiController entityAiController) {
@@ -60,8 +59,6 @@ public class AiMoveToLocationState implements IAiState {
         long startTime = System.nanoTime();
         VoxelAstarPathFinder.PathNode path = this.pathFinder.findPath(currentLocation, this.targetLocation);
         float elapsed = (System.nanoTime() - startTime) / 1_000_000f;
-        System.out.println("Found path to : " + this.targetLocation + " from " + currentLocation);
-        System.out.println("Pathfinding time: " + elapsed);
         this.navigationPath = path;
         this.startOfPath = path;
 
@@ -70,7 +67,10 @@ public class AiMoveToLocationState implements IAiState {
 
     private void tracePath(VoxelAstarPathFinder.PathNode node, VoxelType voxelType) {
         if (node != null) {
-            this.terrainManager.getVoxelAt(node.voxel.getGridLocation().translate(0, -1, 0)).setType(voxelType);
+            VoxelData voxelAt = this.terrainManager.getVoxelAt(node.voxel.getGridLocation().translate(0, -1, 0));
+            if (!voxelAt.getType().equals(VoxelType.EMPTY)) {
+                voxelAt.setType(voxelType);
+            }
             tracePath(node.nextNode, voxelType);
         }
     }
@@ -79,6 +79,4 @@ public class AiMoveToLocationState implements IAiState {
         Vector3f currentLocation = entityAiController.getSpatial().getWorldTranslation();
         return currentLocation.distance(this.targetLocation) <= MINIMUM_DISTANCE;
     }
-
-
 }
