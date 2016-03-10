@@ -110,5 +110,6 @@ public class VoxelChunk extends Node {
             parent.detachChild(this);
         }
     }
+
 }
 

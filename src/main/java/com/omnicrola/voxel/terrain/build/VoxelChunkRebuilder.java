@@ -35,6 +35,7 @@ public class VoxelChunkRebuilder {
         Node batchNode = (Node) GeometryBatchFactory.optimize(node);
         batchNode.getChildren().forEach(c -> {
             c.setUserData(EntityDataKeys.IS_TERRAIN, true);
+            c.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
             c.addControl(new CollisionController(new TerrainCollisionHandler(c, this.worldManager)));
         });
         chunk.attachChild(batchNode);

@@ -1,11 +1,10 @@
 package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.entities.behavior.ai.pathing.NavigationPath;
 import com.omnicrola.voxel.entities.behavior.ai.pathing.VoxelAstarPathFinder;
 import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.terrain.data.VoxelData;
-import com.omnicrola.voxel.terrain.data.VoxelType;
 
 /**
  * Created by Eric on 2/17/2016.
@@ -16,11 +15,12 @@ public class AiMoveToLocationState implements IAiState {
     private EntityMotionControl motionGovernor;
     private VoxelAstarPathFinder pathFinder;
     private Vector3f targetLocation;
-    private VoxelAstarPathFinder.PathNode navigationPath;
-    private VoxelAstarPathFinder.PathNode startOfPath;
+    private NavigationPath navigationPath;
     private ITerrainManager terrainManager;
 
-    public AiMoveToLocationState(EntityMotionControl motionGovernor, VoxelAstarPathFinder pathFinder, ITerrainManager terrainManager) {
+    public AiMoveToLocationState(EntityMotionControl motionGovernor,
+                                 VoxelAstarPathFinder pathFinder,
+                                 ITerrainManager terrainManager) {
         this.motionGovernor = motionGovernor;
         this.pathFinder = pathFinder;
         this.terrainManager = terrainManager;
@@ -28,28 +28,24 @@ public class AiMoveToLocationState implements IAiState {
 
     public void setTarget(Vector3f targetLocation) {
         this.targetLocation = targetLocation;
-        tracePath(this.startOfPath, VoxelType.GREY);
+//        tracePath(this.startOfPath, VoxelType.GREY);
         this.navigationPath = null;
     }
 
     @Override
     public void update(EntityAiController entityAiController, float tpf) {
         if (hasArrived(entityAiController)) {
-            if (this.navigationPath.nextNode == null) {
-                tracePath(this.startOfPath, VoxelType.GREY);
-                this.startOfPath = null;
+            if (this.navigationPath.hasNext()) {
+                this.targetLocation = this.navigationPath.next();
+            } else {
                 this.motionGovernor.stop();
                 entityAiController.setState(AiStopState.class);
-            } else {
-                this.navigationPath = this.navigationPath.nextNode;
             }
         } else {
             if (this.navigationPath == null) {
                 calculateNewPath(entityAiController);
-            }
-            if (this.navigationPath != null) {
-                Vector3f targetPosition = this.navigationPath.voxel.getGridLocation().asVector3f();
-                this.motionGovernor.moveToward(targetPosition);
+            } else {
+                this.motionGovernor.moveToward(this.targetLocation);
             }
         }
     }
@@ -57,23 +53,23 @@ public class AiMoveToLocationState implements IAiState {
     private void calculateNewPath(EntityAiController entityAiController) {
         Vector3f currentLocation = entityAiController.getSpatial().getWorldTranslation();
         long startTime = System.nanoTime();
-        VoxelAstarPathFinder.PathNode path = this.pathFinder.findPath(currentLocation, this.targetLocation);
-        float elapsed = (System.nanoTime() - startTime) / 1_000_000f;
-        this.navigationPath = path;
-        this.startOfPath = path;
-
-        tracePath(path, VoxelType.BLUE);
-    }
-
-    private void tracePath(VoxelAstarPathFinder.PathNode node, VoxelType voxelType) {
-        if (node != null) {
-            VoxelData voxelAt = this.terrainManager.getVoxelAt(node.voxel.getGridLocation().translate(0, -1, 0));
-            if (!voxelAt.getType().equals(VoxelType.EMPTY)) {
-                voxelAt.setType(voxelType);
-            }
-            tracePath(node.nextNode, voxelType);
+        this.navigationPath = this.pathFinder.findPath(currentLocation, this.targetLocation);
+        if (this.navigationPath != null && this.navigationPath.hasNext()) {
+            this.targetLocation = this.navigationPath.next();
         }
+        float elapsed = (System.nanoTime() - startTime) / 1_000_000f;
+        System.out.println("path calculated in :" + elapsed);
     }
+
+//    private void tracePath(VoxelAstarPathFinder.PathNode node, VoxelType voxelType) {
+//        if (node != null) {
+//            VoxelData voxelAt = this.terrainManager.getVoxelAt(node.voxel.getGridLocation().translate(0, -1, 0));
+//            if (!voxelAt.getType().equals(VoxelType.EMPTY)) {
+//                voxelAt.setType(voxelType);
+//            }
+//            tracePath(node.nextNode, voxelType);
+//        }
+//    }
 
     private boolean hasArrived(EntityAiController entityAiController) {
         Vector3f currentLocation = entityAiController.getSpatial().getWorldTranslation();

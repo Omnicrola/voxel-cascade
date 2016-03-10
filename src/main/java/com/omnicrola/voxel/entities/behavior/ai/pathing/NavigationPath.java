@@ -1,25 +1,38 @@
 package com.omnicrola.voxel.entities.behavior.ai.pathing;
 
+import com.jme3.math.Vector3f;
+
+import java.util.ArrayList;
+import java.util.Collections;
+
 /**
  * Created by omnic on 3/5/2016.
  */
 public class NavigationPath {
 
-    private VoxelAstarPathFinder.PathNode startNode;
-    private VoxelAstarPathFinder.PathNode nextNode;
+
+    private final ArrayList<Vector3f> navigationPoints;
 
     public NavigationPath(VoxelAstarPathFinder.PathNode startNode) {
-        this.startNode = startNode;
-        this.nextNode = startNode;
+        this.navigationPoints = new ArrayList<>();
+        addToPath(startNode);
+        Collections.reverse(this.navigationPoints);
+    }
+
+    private void addToPath(VoxelAstarPathFinder.PathNode pathNode) {
+        if (pathNode != null) {
+            Vector3f location = pathNode.voxel.getLocation().addLocal(0.5f, 0.0f, 0.5f);
+            this.navigationPoints.add(location);
+            System.out.println("add node: " + location);
+            addToPath(pathNode.nextNode);
+        }
     }
 
     public boolean hasNext() {
-        return this.nextNode.nextNode != null;
+        return this.navigationPoints.size() > 0;
     }
 
-    public VoxelAstarPathFinder.PathNode next() {
-        VoxelAstarPathFinder.PathNode currentNode = this.nextNode;
-        this.nextNode = this.nextNode.nextNode;
-        return currentNode;
+    public Vector3f next() {
+        return this.navigationPoints.remove(0);
     }
 }

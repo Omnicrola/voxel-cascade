@@ -3,6 +3,7 @@ package com.omnicrola.voxel.terrain.build;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.terrain.VoxelChunkHandler;
+import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
 
 /**
@@ -22,7 +23,8 @@ public class FaceBuilder {
     public VoxelFace build(Vec3i globalLocation, int side) {
         IOcclusionCalculator occlusionCalculator = this.occlusionCalculators[side];
         OcclusionSet occlusionSet = occlusionCalculator.calculate(globalLocation);
-        IVoxelType type = this.voxelChunkHandler.getVoxelAt(globalLocation).getType();
+        VoxelData voxelAt = this.voxelChunkHandler.getVoxelAt(globalLocation);
+        IVoxelType type = voxelAt.getType();
         VoxelFace voxelFace = new VoxelFace(type, side, occlusionSet);
         return voxelFace;
     }

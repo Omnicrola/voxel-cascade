@@ -21,7 +21,8 @@ public class VoxelAstarPathFinder {
         this.terrainManager = terrainManager;
     }
 
-    public PathNode findPath(Vector3f startLocation, Vector3f targetLocation) {
+    public NavigationPath findPath(Vector3f startLocation, Vector3f targetLocation) {
+        System.out.println("find path from " + startLocation + " to " + targetLocation);
         HashMap<Vec3i, PathNode> examinedNodes = new HashMap<>();
         List<PathNode> frontier = new ArrayList<>();
         PathNode currentNode = new PathNode(this.terrainManager.getVoxelAt(startLocation));
@@ -51,12 +52,9 @@ public class VoxelAstarPathFinder {
                             possibleNextNode.nextNode = currentNode;
                         }
                         if (!possibleNextNode.onOpenList) {
-                            Vec3i pathLocation = possibleNextNode.voxel.getGridLocation();
-                            Vec3i targetNodeLocation = targetNode.voxel.getGridLocation();
                             if (possibleNextNode.equals(targetNode)) {
                                 possibleNextNode.nextNode = currentNode;
-                                return possibleNextNode;
-                            } else {
+                                return new NavigationPath(possibleNextNode);
                             }
                             possibleNextNode.onOpenList = true;
                             frontier.add(possibleNextNode);
@@ -76,7 +74,7 @@ public class VoxelAstarPathFinder {
         Vec3i g1 = previousNode.voxel.getGridLocation();
         Vec3i g2 = nextNode.voxel.getGridLocation();
         cost += compare(g1.getX(), g2.getX());
-        cost += compare(g1.getY(), g2.getY())*100;
+        cost += compare(g1.getY(), g2.getY()) * 100;
         cost += compare(g1.getZ(), g2.getZ());
         cost += previousNode.cost;
         cost += distanceSquared(previousNode, nextNode);
@@ -111,7 +109,7 @@ public class VoxelAstarPathFinder {
         public VoxelData voxel;
         public boolean onClosedList;
         public boolean onOpenList;
-        public float cost = Float.MAX_VALUE;
+        private float cost = Float.MAX_VALUE;
         public PathNode nextNode;
 
         public PathNode(VoxelData voxel) {

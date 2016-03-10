@@ -54,4 +54,5 @@ public class VoxelFace {
     public OcclusionSet getOcclusion() {
         return this.occlusionSet;
     }
+
 }
