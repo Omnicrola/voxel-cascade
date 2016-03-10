@@ -17,7 +17,10 @@ import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.IWorldCursor;
+import com.omnicrola.voxel.terrain.highlight.CubeFactory;
+import com.omnicrola.voxel.terrain.highlight.HighlighterCubeCache;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 import java.util.ArrayList;
 
@@ -26,8 +29,6 @@ import java.util.ArrayList;
  */
 public class DebugState extends AbstractAppState {
 
-
-    private WorldManager worldManager;
 
     private class ToggleDebugListener implements ActionListener {
 
@@ -55,10 +56,13 @@ public class DebugState extends AbstractAppState {
     private VoxelGameEngine game;
     private WireframeProcessor wireframeProcessor;
     private Node rootNode;
+    private WorldManager worldManager;
+    private WorldEntityBuilder worldEntityBuilder;
     private AssetManager assetManager;
 
-    public DebugState(WorldManager worldManager) {
+    public DebugState(WorldManager worldManager, WorldEntityBuilder worldEntityBuilder) {
         this.worldManager = worldManager;
+        this.worldEntityBuilder = worldEntityBuilder;
         this.listeners = new ArrayList<>();
     }
 
@@ -76,15 +80,32 @@ public class DebugState extends AbstractAppState {
 
         IWorldCursor worldCursor = worldManager.getWorldCursor();
         game.getInputManager().addListener(new ToggleDebugListener(), GameInputAction.TOGGLE_DEBUG_MODE.toString());
-        this.listeners.add(new Tuple(new DebugSceneGraphListener(this.game), GameInputAction.DEBUG_SCENE_GRAPH));
-        this.listeners.add(new Tuple(new DebugTargetListener(worldCursor), GameInputAction.DEBUG_TARGET_OBJECT));
-        this.listeners.add(new Tuple(new DebugReloadLevelListener(this.game), GameInputAction.DEBUG_RELOAD_LEVEL));
-        this.listeners.add(new Tuple(new DebugRebuildTerrainListener(this.game), GameInputAction.DEBUG_REBUILD_TERRAIN));
-        this.listeners.add(new Tuple(new DebugMouseLookListener(worldCursor, this.game), GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK));
-        this.listeners.add(new Tuple(new DebugPhysicsListener(this.game), GameInputAction.DEBUG_TOGGLE_PHYSICS));
-        this.listeners.add(new Tuple(new DebugToggleWireframeListener(), GameInputAction.DEBUG_TOGGLE_WIREFRAME));
+        this.listeners.add(new Tuple<>(new DebugSceneGraphListener(this.game), GameInputAction.DEBUG_SCENE_GRAPH));
+        this.listeners.add(new Tuple<>(new DebugTargetListener(worldCursor), GameInputAction.DEBUG_TARGET_OBJECT));
+        this.listeners.add(new Tuple<>(new DebugReloadLevelListener(this.game), GameInputAction.DEBUG_RELOAD_LEVEL));
+        this.listeners.add(new Tuple<>(new DebugRebuildTerrainListener(this.game), GameInputAction.DEBUG_REBUILD_TERRAIN));
+        this.listeners.add(new Tuple<>(new DebugMouseLookListener(worldCursor, this.game), GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK));
+        this.listeners.add(new Tuple<>(new DebugPhysicsListener(this.game), GameInputAction.DEBUG_TOGGLE_PHYSICS));
+        this.listeners.add(new Tuple<>(new DebugToggleWireframeListener(), GameInputAction.DEBUG_TOGGLE_WIREFRAME));
+        this.listeners.add(new Tuple<>(buildPathingListener(), GameInputAction.DEBUG_TOGGLE_PATHING));
 
         enableDebug();
+    }
+
+    private DebugToggleSelectionPathingDisplayListener buildPathingListener() {
+        HighlighterCubeCache cubeCache = createCubeCache(new ColorRGBA(0, 1f, 1f, 0.25f));
+        HighlighterCubeCache secondaryCache = createCubeCache(new ColorRGBA(0.9f, 0.9f, 0.9f, 0.25f));
+
+        DebugPathingState debugPathingState = new DebugPathingState(cubeCache, secondaryCache);
+        this.game.getStateManager().attach(debugPathingState);
+        return new DebugToggleSelectionPathingDisplayListener(debugPathingState);
+    }
+
+    private HighlighterCubeCache createCubeCache(ColorRGBA color) {
+        CubeFactory cubeFactory = new CubeFactory(this.worldEntityBuilder);
+        cubeFactory.setColor(color);
+        cubeFactory.setScale(new Vector3f(0.5f, 0.5f, 0.5f));
+        return new HighlighterCubeCache(cubeFactory);
     }
 
     @Override

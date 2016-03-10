@@ -41,6 +41,7 @@ public class InputMappingLoader {
         addKeyMapping(inputManager, GameInputAction.DEBUG_TOGGLE_WIREFRAME, KeyInput.KEY_4);
         addKeyMapping(inputManager, GameInputAction.DEBUG_TARGET_OBJECT, KeyInput.KEY_T);
         addKeyMapping(inputManager, GameInputAction.DEBUG_SCENE_GRAPH, KeyInput.KEY_G);
+        addKeyMapping(inputManager, GameInputAction.DEBUG_TOGGLE_PATHING, KeyInput.KEY_P);
     }
 
     private void addMouseMapping(InputManager inputManager, GameInputAction action, int buttonCode) {

@@ -13,18 +13,17 @@ public class NavigationPath {
 
     private final ArrayList<Vector3f> navigationPoints;
 
-    public NavigationPath(VoxelAstarPathFinder.PathNode startNode) {
+    public NavigationPath(PathNode startNode) {
         this.navigationPoints = new ArrayList<>();
         addToPath(startNode);
         Collections.reverse(this.navigationPoints);
     }
 
-    private void addToPath(VoxelAstarPathFinder.PathNode pathNode) {
+    private void addToPath(PathNode pathNode) {
         if (pathNode != null) {
             Vector3f location = pathNode.voxel.getLocation().addLocal(0.5f, 0.0f, 0.5f);
             this.navigationPoints.add(location);
-            System.out.println("add node: " + location);
-            addToPath(pathNode.nextNode);
+            addToPath(pathNode.cameFrom);
         }
     }
 

@@ -29,7 +29,7 @@ public class CommandStateInitializer implements IStateInitializer {
         InputManager inputManager = initializationContainer.getInputManager();
         WorldManager worldManager = initializationContainer.getWorldManager();
         IWorldCursor worldCursor = worldManager.getWorldCursor();
-        WorldEntityBuilder worldEntityBuilder =initializationContainer.getWorldEntityBuilder();
+        WorldEntityBuilder worldEntityBuilder = initializationContainer.getWorldEntityBuilder();
         ITerrainManager terrainManager = initializationContainer.getTerrainManager();
 
         CursorCommandAdaptor cursorStrategyFactory = new CursorCommandAdaptor(

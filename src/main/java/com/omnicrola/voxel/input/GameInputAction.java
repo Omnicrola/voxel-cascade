@@ -25,7 +25,7 @@ public enum GameInputAction implements IActionCode {
     CAMERA_UP,
     CAMERA_DOWN,
 
-    MULTI_SELECT;
+    MULTI_SELECT, DEBUG_TOGGLE_PATHING;
 
 
     @Override

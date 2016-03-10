@@ -123,4 +123,8 @@ public class ActivePlayState extends AbstractAppState {
     public ITerrainManager getTerrainManager() {
         return terrainManager;
     }
+
+    public IWorldCursor getWorldCursor() {
+        return worldCursor;
+    }
 }

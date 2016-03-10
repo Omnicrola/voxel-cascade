@@ -94,7 +94,17 @@ public class Vec3i implements Vec3iRead {
     }
 
     public float distance(Vector3f location) {
-        return 0;
+        float xd = this.x - location.x;
+        float yd = this.y - location.y;
+        float zd = this.z - location.z;
+        return (float) Math.sqrt(xd * xd + yd * yd + zd * zd);
+    }
+
+    public float distance(Vec3i gridLocation) {
+        float xd = this.x - gridLocation.x;
+        float yd = this.y - gridLocation.y;
+        float zd = this.z - gridLocation.z;
+        return (float) Math.sqrt(xd * xd + yd * yd + zd * zd);
     }
 }
 

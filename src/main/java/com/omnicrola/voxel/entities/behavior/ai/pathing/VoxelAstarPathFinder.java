@@ -1,157 +1,111 @@
 package com.omnicrola.voxel.entities.behavior.ai.pathing;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by omnic on 3/5/2016.
  */
 public class VoxelAstarPathFinder {
 
-    private ITerrainManager terrainManager;
+    private static final float D = 1.0f;
+    private final TerrainPathNodeAdapter terrainNodeAdapter;
+//    private ITerrainManager terrainManager;
+
 
     public VoxelAstarPathFinder(ITerrainManager terrainManager) {
-        this.terrainManager = terrainManager;
+//        this.terrainManager = terrainManager;
+        this.terrainNodeAdapter = new TerrainPathNodeAdapter(terrainManager);
+    }
+
+    public List<Vector3f> getAllNodesUsed() {
+        return this.terrainNodeAdapter.getAll()
+                .stream()
+                .map(n -> n.voxel.getGridLocation().asVector3f())
+                .collect(Collectors.toList());
     }
 
     public NavigationPath findPath(Vector3f startLocation, Vector3f targetLocation) {
-        System.out.println("find path from " + startLocation + " to " + targetLocation);
-        HashMap<Vec3i, PathNode> examinedNodes = new HashMap<>();
-        List<PathNode> frontier = new ArrayList<>();
-        PathNode currentNode = new PathNode(this.terrainManager.getVoxelAt(startLocation));
-        currentNode.cost = 0;
-        PathNode targetNode = new PathNode(this.terrainManager.getVoxelAt(targetLocation));
+        ArrayList<PathNode> frontier = new ArrayList<>();
+        this.terrainNodeAdapter.reset();
 
-        frontier.add(currentNode);
+        PathNode startNode = this.terrainNodeAdapter.getNodeAt(startLocation);
+        startNode.cost = 0;
+        startNode.isOnFrontier = true;
+        frontier.add(startNode);
+        PathNode goalNode = this.terrainNodeAdapter.getNodeAt(targetLocation);
+
+        long start = System.nanoTime();
+        int count = 0;
         while (frontier.size() > 0) {
-            currentNode = frontier.remove(0);
-            currentNode.onClosedList = true;
-
-            List<VoxelData> neighborVoxels = this.terrainManager.getNeighborsOf(currentNode.voxel);
-            for (VoxelData neighbor : neighborVoxels) {
-                if (terrainManager.isEmptyWithFloor(neighbor.getGridLocation())) {
-
-                    PathNode possibleNextNode;
-                    if (isNewNode(neighbor, examinedNodes)) {
-                        possibleNextNode = new PathNode(neighbor);
-                        examinedNodes.put(neighbor.getGridLocation(), possibleNextNode);
-                    } else {
-                        possibleNextNode = examinedNodes.get(neighbor.getGridLocation());
+            float elapsed = (System.nanoTime() - start) / 1_000_000f;
+            if (elapsed > 1) {
+                System.out.println("Exceeded 5ms pathfinding time. Nodes: " + count);
+                return null;
+            }
+            Collections.sort(frontier, (n1, n2) -> {
+                float d1 = n1.distance(goalNode);
+                float d2 = n2.distance(goalNode);
+                return Float.compare(d1, d2);
+            });
+            PathNode currentNode = frontier.remove(0);
+            count++;
+            currentNode.hasBeenProcessed = true;
+            List<PathNode> neighbors = this.terrainNodeAdapter.getNeighbors(currentNode);
+            for (PathNode neighbor : neighbors) {
+                if (neighbor.hasBeenProcessed) {
+                    continue;
+                }
+//                float cost = movementCost(neighbor, currentNode);
+                if (!neighbor.isOnFrontier) {
+                    neighbor.isOnFrontier = true;
+                    frontier.add(neighbor);
+//                } else if (cost < neighbor.cost) {
+//                    currentNode.cameFrom = neighbor;
+//                    neighbor.cost = cost;
+//                    neighbor.fScore = cost + heuristic(currentNode, neighbor);
+//                    if (neighbor.equals(goalNode)) {
+//                        return new NavigationPath(neighbor);
+//                    }
+                    currentNode.cameFrom = neighbor;
+                    if (neighbor.equals(goalNode)) {
+                        return new NavigationPath(neighbor);
                     }
-                    if (!possibleNextNode.onClosedList) {
-                        float cost = getCost(currentNode, possibleNextNode);
-                        if (cost < possibleNextNode.cost) {
-                            possibleNextNode.cost = cost;
-                            possibleNextNode.nextNode = currentNode;
-                        }
-                        if (!possibleNextNode.onOpenList) {
-                            if (possibleNextNode.equals(targetNode)) {
-                                possibleNextNode.nextNode = currentNode;
-                                return new NavigationPath(possibleNextNode);
-                            }
-                            possibleNextNode.onOpenList = true;
-                            frontier.add(possibleNextNode);
-                        }
-                    }
-
                 }
             }
-            frontier.sort(new DistanceToTargetComparator(targetLocation));
+
         }
 
         return null;
     }
 
-    private float getCost(PathNode previousNode, PathNode nextNode) {
-        float cost = 0;
-        Vec3i g1 = previousNode.voxel.getGridLocation();
-        Vec3i g2 = nextNode.voxel.getGridLocation();
-        cost += compare(g1.getX(), g2.getX());
-        cost += compare(g1.getY(), g2.getY()) * 100;
-        cost += compare(g1.getZ(), g2.getZ());
-        cost += previousNode.cost;
-        cost += distanceSquared(previousNode, nextNode);
-        return cost;
+    private float movementCost(PathNode neighbor, PathNode currentNode) {
+        float dx = Math.abs(neighbor.x() - currentNode.x());
+        float dy = Math.abs(neighbor.y() - currentNode.y());
+        float dz = Math.abs(neighbor.z() - currentNode.z());
+        return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
 
-    private float distanceSquared(PathNode n1, PathNode n2) {
-        Vec3i g1 = n1.voxel.getGridLocation();
-        Vec3i g2 = n2.voxel.getGridLocation();
-        float a = g1.getX() - g2.getX();
-        float b = g1.getY() - g2.getY();
-        float c = g1.getZ() - g2.getZ();
-        float distanceSq = a * a + b * b + c * c;
-        return distanceSq;
+    private float heuristic(PathNode node, PathNode nextNode) {
+        // standard Manhatten distance
+        float dx = Math.abs(node.x() - nextNode.x());
+        float dy = Math.abs(node.y() - nextNode.y());
+        float dz = Math.abs(node.z() - nextNode.z());
+        return D * (dx + dy + dz);
     }
 
-    private float compare(int x1, int x2) {
-        return (x1 == x2) ? 0 : 1;
-    }
 
-    private boolean isNewNode(VoxelData voxelData, HashMap<Vec3i, PathNode> examinedNodes) {
-        for (PathNode node : examinedNodes.values()) {
-            if (voxelData.getGridLocation().equals(node.voxel.getGridLocation())) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static class PathNode {
-
-        public VoxelData voxel;
-        public boolean onClosedList;
-        public boolean onOpenList;
-        private float cost = Float.MAX_VALUE;
-        public PathNode nextNode;
-
-        public PathNode(VoxelData voxel) {
-            this.voxel = voxel;
-        }
-
-        @Override
-        public boolean equals(Object o) {
-            if (this == o) return true;
-            if (!(o instanceof PathNode)) return false;
-
-            PathNode pathNode = (PathNode) o;
-
-            return pathNode.voxel.getGridLocation().equals(this.voxel.getGridLocation());
-
-        }
-
-        @Override
-        public int hashCode() {
-            return voxel != null ? voxel.getGridLocation().hashCode() : 0;
-        }
-    }
-
-    private class DistanceToTargetComparator implements Comparator<PathNode> {
-        private final Vector3f tempLocation;
-        private Vector3f targetLocation;
-
-        public DistanceToTargetComparator(Vector3f targetLocation) {
-            this.targetLocation = targetLocation;
-            this.tempLocation = new Vector3f();
-        }
+    private class FValueComparator implements Comparator<PathNode> {
 
         @Override
         public int compare(PathNode n1, PathNode n2) {
-            float distance1 = set(n1).distance(this.targetLocation);
-            float distance2 = set(n2).distance(this.targetLocation);
-            return Float.compare(distance1, distance2);
-        }
-
-        private Vector3f set(PathNode node) {
-            Vec3i l = node.voxel.getGridLocation();
-            return this.tempLocation.set(l.getX(), l.getY(), l.getZ());
+            return Float.compare(n1.fScore, n2.fScore);
         }
     }
 }
