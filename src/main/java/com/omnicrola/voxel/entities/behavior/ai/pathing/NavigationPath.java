@@ -32,6 +32,7 @@ public class NavigationPath {
     }
 
     public Vector3f next() {
-        return this.navigationPoints.remove(0);
+        Vector3f remove = this.navigationPoints.remove(0);
+        return remove;
     }
 }

@@ -7,18 +7,24 @@ import com.omnicrola.voxel.terrain.IVoxelType;
  * Created by omnic on 2/2/2016.
  */
 public enum VoxelType implements IVoxelType {
-    EMPTY((byte) 0, 1f, ColorRGBA.Black),
+    EMPTY((byte) 0, 1f, ColorRGBA.Black, false),
     BLUE((byte) 1, 1f, ColorRGBA.Blue),
     GREY((byte) 2, 1f, new ColorRGBA(0.5f, 0.5f, 0.5f, 1f));
 
-    private byte value;
-    private float resources;
-    private ColorRGBA color;
+    private final byte value;
+    private final float resources;
+    private final ColorRGBA color;
+    private final boolean isSolid;
 
-    VoxelType(byte value, float resources, ColorRGBA color) {
+    VoxelType(byte value, float resources, ColorRGBA color, boolean isSolid) {
         this.value = value;
         this.resources = resources;
         this.color = color;
+        this.isSolid = isSolid;
+    }
+
+    VoxelType(byte value, float resources, ColorRGBA color) {
+        this(value, resources, color, true);
     }
 
     @Override
@@ -34,5 +40,10 @@ public enum VoxelType implements IVoxelType {
     @Override
     public float resourcesRequired() {
         return this.resources;
+    }
+
+    @Override
+    public boolean isSolid() {
+        return this.isSolid;
     }
 }

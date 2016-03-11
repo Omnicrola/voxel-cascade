@@ -49,17 +49,17 @@ public class DebugPathingState extends AbstractAppState {
         ActivePlayState activePlayState = this.game.getStateManager().getState(ActivePlayState.class);
         IWorldCursor worldCursor = activePlayState.getWorldCursor();
         SelectionGroup selectionGroup = worldCursor.getCurrentSelection();
-        Vector3f centerPoint = selectionGroup.getCenterPoint();
+        Vector3f startPoint = selectionGroup.getCenterPoint();
         Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             VoxelAstarPathFinder pathFinder = getPathfinder();
-            Vector3f contactPoint = terrainUnderCursor.get().getContactPoint();
-            NavigationPath path = pathFinder.findPath(contactPoint, centerPoint);
+            Vector3f destination = terrainUnderCursor.get().getContactPoint();
+            NavigationPath path = pathFinder.findPath(startPoint, destination);
+            List<Vector3f> allNodesUsed = pathFinder.getAllNodesUsed();
+//            drawUsedNodes(allNodesUsed);
             if (path != null) {
                 drawPath(path);
             }
-            List<Vector3f> allNodesUsed = pathFinder.getAllNodesUsed();
-            drawUsedNodes(allNodesUsed);
         }
     }
 

@@ -36,6 +36,7 @@ public class TerrainPathNodeAdapter {
         List<Vec3i> neighborLocations = generateGridLocationsFrom(currentNode.voxel.getGridLocation());
         return neighborLocations.stream()
                 .map(l -> getNode(l))
+                .filter(n -> n.isViable)
                 .collect(Collectors.toList());
     }
 
@@ -64,7 +65,12 @@ public class TerrainPathNodeAdapter {
     private PathNode getNode(Vec3i gridLocation) {
         if (!this.positionNodeMap.containsKey(gridLocation)) {
             VoxelData voxel = this.terrainManager.getVoxelAt(gridLocation);
+            boolean isEmpty = !voxel.getType().isSolid();
+            VoxelData floorVoxel = this.terrainManager.getVoxelAt(gridLocation.translate(0, -1, 0));
+            boolean hasSolidFloor = floorVoxel.getType().isSolid();
+
             PathNode pathNode = new PathNode(voxel);
+            pathNode.isViable = isEmpty && hasSolidFloor;
             this.positionNodeMap.put(gridLocation, pathNode);
             return pathNode;
         }

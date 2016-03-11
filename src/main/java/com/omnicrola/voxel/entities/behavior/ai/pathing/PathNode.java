@@ -14,6 +14,8 @@ public class PathNode {
     float cost = Float.MAX_VALUE;
     PathNode cameFrom;
     public float fScore;
+    public boolean isViable;
+    public float priority;
 
     public PathNode(VoxelData voxel) {
         this.voxel = voxel;

@@ -11,4 +11,6 @@ public interface IVoxelType {
     ColorRGBA color();
 
     float resourcesRequired();
+
+    boolean isSolid();
 }

@@ -5,7 +5,6 @@ import com.omnicrola.voxel.terrain.ITerrainManager;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -50,9 +49,7 @@ public class VoxelAstarPathFinder {
                 return null;
             }
             Collections.sort(frontier, (n1, n2) -> {
-                float d1 = n1.distance(goalNode);
-                float d2 = n2.distance(goalNode);
-                return Float.compare(d1, d2);
+                return Float.compare(n1.priority, n2.priority);
             });
             PathNode currentNode = frontier.remove(0);
             count++;
@@ -62,24 +59,21 @@ public class VoxelAstarPathFinder {
                 if (neighbor.hasBeenProcessed) {
                     continue;
                 }
-//                float cost = movementCost(neighbor, currentNode);
+                float cost = currentNode.cost + movementCost(neighbor, currentNode);
+                if (cost < neighbor.cost) {
+                    neighbor.cost = cost;
+                    neighbor.priority = cost + heuristic(goalNode, neighbor);
+                    neighbor.cameFrom = currentNode;
+                }
                 if (!neighbor.isOnFrontier) {
-                    neighbor.isOnFrontier = true;
-                    frontier.add(neighbor);
-//                } else if (cost < neighbor.cost) {
-//                    currentNode.cameFrom = neighbor;
-//                    neighbor.cost = cost;
-//                    neighbor.fScore = cost + heuristic(currentNode, neighbor);
-//                    if (neighbor.equals(goalNode)) {
-//                        return new NavigationPath(neighbor);
-//                    }
-                    currentNode.cameFrom = neighbor;
                     if (neighbor.equals(goalNode)) {
+                        neighbor.cameFrom = currentNode;
                         return new NavigationPath(neighbor);
                     }
+                    neighbor.isOnFrontier = true;
+                    frontier.add(neighbor);
                 }
             }
-
         }
 
         return null;
@@ -93,19 +87,10 @@ public class VoxelAstarPathFinder {
     }
 
     private float heuristic(PathNode node, PathNode nextNode) {
-        // standard Manhatten distance
         float dx = Math.abs(node.x() - nextNode.x());
         float dy = Math.abs(node.y() - nextNode.y());
         float dz = Math.abs(node.z() - nextNode.z());
         return D * (dx + dy + dz);
     }
 
-
-    private class FValueComparator implements Comparator<PathNode> {
-
-        @Override
-        public int compare(PathNode n1, PathNode n2) {
-            return Float.compare(n1.fScore, n2.fScore);
-        }
-    }
 }
