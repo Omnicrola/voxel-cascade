@@ -26,9 +26,7 @@ import com.omnicrola.voxel.network.NetworkCommandQueue;
 import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.*;
-import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
-import com.omnicrola.voxel.terrain.build.TerrainQuadFactory;
-import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
+import com.omnicrola.voxel.terrain.build.*;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 import com.omnicrola.voxel.ui.UiManager;
 import com.omnicrola.voxel.world.IWorldNode;
@@ -182,7 +180,16 @@ public class VoxelGameEngineInitializer {
     }
 
     private VoxelChunkHandler buildVoxelChunkHandler(WorldManager worldManager, MaterialRepository materialRepository, TerrainAdapter terrainAdapter) {
-        TerrainQuadFactory quadFactory = new TerrainQuadFactory(materialRepository);
+        ITerrainQuadMeshStrategy[] meshStrategies  = new ITerrainQuadMeshStrategy[6];
+        meshStrategies[0] = new QuadMeshStrategy();
+        meshStrategies[1] = new QuadMeshStrategy();
+        meshStrategies[2] = new QuadMeshStrategy();
+        meshStrategies[3] = new QuadMeshStrategy();
+        meshStrategies[4] = new QuadMeshStrategy();
+        meshStrategies[5] = new QuadMeshStrategy();
+
+
+        TerrainQuadFactory quadFactory = new TerrainQuadFactory(materialRepository, meshStrategies);
         VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, worldManager);
 
         return new VoxelChunkHandler(terrainAdapter, voxelChunkRebuilder);

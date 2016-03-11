@@ -11,12 +11,14 @@ public class VoxelFace {
     private final IVoxelType type;
     private final int side;
     private final OcclusionSet occlusionSet;
+    private boolean isHalf;
     private final boolean isTransparent;
 
-    public VoxelFace(IVoxelType type, int side, OcclusionSet occlusionSet) {
+    public VoxelFace(IVoxelType type, int side, OcclusionSet occlusionSet, boolean isHalf) {
         this.type = type;
         this.side = side;
         this.occlusionSet = occlusionSet;
+        this.isHalf = isHalf;
         this.isTransparent = type == VoxelType.EMPTY;
     }
 
@@ -28,6 +30,14 @@ public class VoxelFace {
         return this.type;
     }
 
+    public OcclusionSet getOcclusion() {
+        return this.occlusionSet;
+    }
+
+    public boolean isHalf() {
+        return isHalf;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -36,6 +46,7 @@ public class VoxelFace {
         VoxelFace voxelFace = (VoxelFace) o;
 
         if (side != voxelFace.side) return false;
+        if (isHalf != voxelFace.isHalf) return false;
         if (isTransparent != voxelFace.isTransparent) return false;
         if (!type.equals(voxelFace.type)) return false;
         return occlusionSet.equals(voxelFace.occlusionSet);
@@ -47,12 +58,8 @@ public class VoxelFace {
         int result = type.hashCode();
         result = 31 * result + side;
         result = 31 * result + occlusionSet.hashCode();
+        result = 31 * result + (isHalf ? 1 : 0);
         result = 31 * result + (isTransparent ? 1 : 0);
         return result;
     }
-
-    public OcclusionSet getOcclusion() {
-        return this.occlusionSet;
-    }
-
 }

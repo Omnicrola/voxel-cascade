@@ -115,21 +115,29 @@ public class VoxelChunk extends Node {
         }
     }
 
-    public boolean isHalf(Vec3i location) {
+    private boolean isHalf(Vec3i location) {
         return this.halfFlags.get(bitIndex(location));
     }
 
-    public void setHalf(Vec3i location, boolean isHalf) {
+    public boolean isHalfGlobal(Vec3i location) {
+        Vec3i localize = this.chunkId.localize(location);
+        return isHalf(localize);
+    }
+
+    private void setHalf(Vec3i location, boolean isHalf) {
         this.halfFlags.set(bitIndex(location), isHalf);
     }
 
     public void setHalfGlobal(Vec3i location, boolean isHalf) {
         Vec3i localize = this.chunkId.localize(location);
-        setHalf(location, isHalf);
+        setHalf(localize, isHalf);
     }
 
     private int bitIndex(Vec3i location) {
-        return location.getX() + location.getY() * 2 + location.getZ() * 3;
+        int x = location.getX();
+        int y = location.getY() * 2;
+        int z = location.getZ() * 3;
+        return x + y + z;
     }
 
 }

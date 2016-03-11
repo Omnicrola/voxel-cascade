@@ -20,9 +20,11 @@ import java.nio.IntBuffer;
  */
 public class TerrainQuadFactory {
     private MaterialRepository materialRepository;
+    private ITerrainQuadMeshStrategy[] meshStrategies;
 
-    public TerrainQuadFactory(MaterialRepository materialRepository) {
+    public TerrainQuadFactory(MaterialRepository materialRepository, ITerrainQuadMeshStrategy[] meshStrategies) {
         this.materialRepository = materialRepository;
+        this.meshStrategies = meshStrategies;
     }
 
     public Geometry buildFront(final Vector3f bottomLeft,
@@ -55,12 +57,7 @@ public class TerrainQuadFactory {
                            IntBuffer indicies,
                            int side) {
 
-        final Vector3f[] vertices = new Vector3f[4];
-
-        vertices[0] = bottomLeft.multLocal(VoxelChunkRebuilder.VOXEL_SIZE);
-        vertices[1] = bottomRight.multLocal(VoxelChunkRebuilder.VOXEL_SIZE);
-        vertices[2] = topLeft.multLocal(VoxelChunkRebuilder.VOXEL_SIZE);
-        vertices[3] = topRight.multLocal(VoxelChunkRebuilder.VOXEL_SIZE);
+        final Vector3f[] vertices = this.meshStrategies[side].build(voxel, bottomLeft, bottomRight, topLeft, topRight);
 
         Mesh mesh = createMesh(voxel, indicies, vertices, side);
         Geometry geometry = createGeometry(voxel, mesh);

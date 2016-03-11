@@ -128,7 +128,7 @@ public class VoxelChunkHandler {
     public VoxelData getVoxelAt(Vec3i location) {
         VoxelChunk chunk = getChunkContaining(location);
         byte voxel = chunk.getVoxelGlobal(location);
-        boolean isHalf = chunk.isHalf(location);
+        boolean isHalf = chunk.isHalfGlobal(location);
         IVoxelType voxelType = this.terrainAdapter.lookupVoxelType(voxel);
         return new VoxelData(chunk, location, voxelType, isHalf);
     }

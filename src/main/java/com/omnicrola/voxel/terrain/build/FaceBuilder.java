@@ -25,7 +25,8 @@ public class FaceBuilder {
         OcclusionSet occlusionSet = occlusionCalculator.calculate(globalLocation);
         VoxelData voxelAt = this.voxelChunkHandler.getVoxelAt(globalLocation);
         IVoxelType type = voxelAt.getType();
-        VoxelFace voxelFace = new VoxelFace(type, side, occlusionSet);
+        boolean isHalf = voxelAt.isHalf();
+        VoxelFace voxelFace = new VoxelFace(type, side, occlusionSet, isHalf);
         return voxelFace;
     }
 

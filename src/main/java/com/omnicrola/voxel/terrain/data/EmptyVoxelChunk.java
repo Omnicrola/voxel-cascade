@@ -29,6 +29,6 @@ public class EmptyVoxelChunk extends VoxelChunk {
 
     @Override
     public VoxelFace getVoxelFace(int x, int y, int z, int side) {
-        return new VoxelFace(VoxelType.EMPTY, side, null);
+        return new VoxelFace(VoxelType.EMPTY, side, null, false);
     }
 }
