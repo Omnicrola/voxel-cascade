@@ -45,6 +45,11 @@ public class VoxelChunkHandler {
         chunk.setResourceGlobal(location, amount);
     }
 
+    public void setHalf(Vec3i location, boolean isHalf) {
+        VoxelChunk chunk = getChunkContaining(location);
+        chunk.setHalfGlobal(location, isHalf);
+    }
+
     public VoxelChunk getChunkContaining(Vec3i globalLocation) {
         ChunkId chunkId = ChunkId.fromGlobal(globalLocation);
         VoxelChunk voxelChunk = this.chunks.get(chunkId);
@@ -123,12 +128,15 @@ public class VoxelChunkHandler {
     public VoxelData getVoxelAt(Vec3i location) {
         VoxelChunk chunk = getChunkContaining(location);
         byte voxel = chunk.getVoxelGlobal(location);
+        boolean isHalf = chunk.isHalf(location);
         IVoxelType voxelType = this.terrainAdapter.lookupVoxelType(voxel);
-        return new VoxelData(chunk, location, voxelType);
+        return new VoxelData(chunk, location, voxelType, isHalf);
     }
 
     public void clearAll() {
         this.chunks.values().stream().forEach(c -> c.dispose());
         this.chunks.clear();
     }
+
+
 }

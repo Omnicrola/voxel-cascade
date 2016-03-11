@@ -44,7 +44,9 @@ public class TerrainPathNodeAdapter {
     private boolean isReachable(PathNode sourceNode, PathNode nextNode) {
         int y1 = sourceNode.voxel.getGridLocation().getY();
         int y2 = nextNode.voxel.getGridLocation().getY();
-        boolean isReachable = y1 == y2;
+        boolean isReachable = (y1 == y2) ||
+                sourceNode.voxel.isHalf() ||
+                nextNode.voxel.isHalf();
         return isReachable;
     }
 

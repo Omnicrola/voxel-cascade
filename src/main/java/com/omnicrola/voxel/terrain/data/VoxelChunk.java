@@ -7,6 +7,8 @@ import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.TerrainAdapter;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
 
+import java.util.BitSet;
+
 /**
  * Created by omnic on 1/31/2016.
  */
@@ -24,6 +26,7 @@ public class VoxelChunk extends Node {
     private boolean isDirty;
     private FaceBuilder faceBuilder;
     private TerrainAdapter terrainAdapter;
+    private BitSet halfFlags;
 
     public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder, TerrainAdapter terrainAdapter) {
         this.faceBuilder = faceBuilder;
@@ -34,6 +37,7 @@ public class VoxelChunk extends Node {
         this.voxels = new byte[size][size][size];
         this.resources = new float[size][size][size];
         this.isDirty = false;
+        this.halfFlags = new BitSet(GameConstants.CHUNK_SIZE_CUBED);
     }
 
     public void set(Vec3i location, byte type) {
@@ -109,6 +113,23 @@ public class VoxelChunk extends Node {
         if (parent != null) {
             parent.detachChild(this);
         }
+    }
+
+    public boolean isHalf(Vec3i location) {
+        return this.halfFlags.get(bitIndex(location));
+    }
+
+    public void setHalf(Vec3i location, boolean isHalf) {
+        this.halfFlags.set(bitIndex(location), isHalf);
+    }
+
+    public void setHalfGlobal(Vec3i location, boolean isHalf) {
+        Vec3i localize = this.chunkId.localize(location);
+        setHalf(location, isHalf);
+    }
+
+    private int bitIndex(Vec3i location) {
+        return location.getX() + location.getY() * 2 + location.getZ() * 3;
     }
 
 }

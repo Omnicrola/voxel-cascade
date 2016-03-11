@@ -23,8 +23,8 @@ public class VoxelDataTest extends TestCase {
 
     @Test
     public void testEqualsAndHash() throws Exception {
-        VoxelData voxelData1 = new VoxelData(mockVoxelChunk, mockLocation, mockType);
-        VoxelData voxelData2 = new VoxelData(mockVoxelChunk, mockLocation, mockType);
+        VoxelData voxelData1 = new VoxelData(mockVoxelChunk, mockLocation, mockType, isHalf);
+        VoxelData voxelData2 = new VoxelData(mockVoxelChunk, mockLocation, mockType, isHalf);
 
         assertEquals(voxelData1, voxelData1);
         assertEquals(voxelData1, voxelData2);

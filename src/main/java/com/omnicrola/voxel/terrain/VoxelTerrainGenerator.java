@@ -44,6 +44,9 @@ public class VoxelTerrainGenerator {
 //            byte voxelType = (Math.random() <0.5) ? VoxelType.GREY.uniqueId() : VoxelType.BLUE.uniqueId();
             voxelChunkHandler.set(location, VoxelType.GREY.uniqueId());
             voxelChunkHandler.setResource(location, 1f);
+            if(Math.random() < 0.5){
+                voxelChunkHandler.setHalf(location, true);
+            }
         }
     }
 }

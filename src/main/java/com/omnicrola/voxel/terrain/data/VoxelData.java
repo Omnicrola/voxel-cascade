@@ -11,11 +11,13 @@ public class VoxelData {
     private VoxelChunk chunk;
     private final Vec3i location;
     private final IVoxelType voxel;
+    private boolean isHalf;
 
-    public VoxelData(VoxelChunk chunk, Vec3i location, IVoxelType voxel) {
+    public VoxelData(VoxelChunk chunk, Vec3i location, IVoxelType voxel, boolean isHalf) {
         this.chunk = chunk;
         this.location = location;
         this.voxel = voxel;
+        this.isHalf = isHalf;
     }
 
     public float getResources() {
@@ -32,6 +34,10 @@ public class VoxelData {
 
     public IVoxelType getType() {
         return voxel;
+    }
+
+    public boolean isHalf() {
+        return this.isHalf;
     }
 
     public Vector3f getLocation() {
