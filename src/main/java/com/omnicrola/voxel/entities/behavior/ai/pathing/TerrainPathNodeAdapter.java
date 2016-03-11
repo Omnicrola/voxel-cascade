@@ -37,7 +37,15 @@ public class TerrainPathNodeAdapter {
         return neighborLocations.stream()
                 .map(l -> getNode(l))
                 .filter(n -> n.isViable)
+                .filter(n -> isReachable(n, currentNode))
                 .collect(Collectors.toList());
+    }
+
+    private boolean isReachable(PathNode sourceNode, PathNode nextNode) {
+        int y1 = sourceNode.voxel.getGridLocation().getY();
+        int y2 = nextNode.voxel.getGridLocation().getY();
+        boolean isReachable = y1 == y2;
+        return isReachable;
     }
 
     private List<Vec3i> generateGridLocationsFrom(Vec3i gridLocation) {

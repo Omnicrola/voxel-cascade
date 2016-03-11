@@ -48,9 +48,7 @@ public class VoxelAstarPathFinder {
                 System.out.println("Exceeded 5ms pathfinding time. Nodes: " + count);
                 return null;
             }
-            Collections.sort(frontier, (n1, n2) -> {
-                return Float.compare(n1.priority, n2.priority);
-            });
+            Collections.sort(frontier, (n1, n2) -> Float.compare(n1.priority, n2.priority));
             PathNode currentNode = frontier.remove(0);
             count++;
             currentNode.hasBeenProcessed = true;
