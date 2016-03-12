@@ -3,6 +3,8 @@ package com.omnicrola.voxel.terrain.build;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.IVoxelType;
 import com.omnicrola.voxel.terrain.VoxelChunkHandler;
+import com.omnicrola.voxel.terrain.build.occlusion.IOcclusionCalculator;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionSet;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
 

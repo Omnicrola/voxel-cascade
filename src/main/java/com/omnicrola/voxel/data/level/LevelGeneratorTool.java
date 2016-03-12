@@ -95,4 +95,22 @@ public class LevelGeneratorTool {
         unitPlacement.location = new Vector3f(x, y, z);
         return unitPlacement;
     }
+
+    public static LevelDefinition createTerrainTestLevel() {
+        LevelDefinition levelDefinition = new LevelDefinition();
+        levelDefinition.name = "Terrain Test";
+        levelDefinition.uuid = BASIC_LEVEL_UUID;
+        levelDefinition.cameraPosition = new Vector3f(18.321579f, 35.344772f, 13.436275f);
+        levelDefinition.cameraOrientation = new Quaternion(-0.047940716f, 0.86389023f, -0.49434453f, -0.08377844f);
+        levelDefinition.terrain.terrainOffset = new Vec3i(0, -1, 0);
+        levelDefinition.terrain.width = 100;
+        levelDefinition.terrain.depth = 100;
+        levelDefinition.terrain.verticalScale = 15;
+        levelDefinition.terrain.octaves = 8;
+        levelDefinition.terrain.seed = 12345;
+        levelDefinition.unitPlacements = createBasicUnits();
+        levelDefinition.structurePlacements = createBasicStructures();
+        levelDefinition.teams = createTeams();
+        return levelDefinition;
+    }
 }

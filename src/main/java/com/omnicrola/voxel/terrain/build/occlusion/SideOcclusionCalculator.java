@@ -1,7 +1,9 @@
-package com.omnicrola.voxel.terrain.build;
+package com.omnicrola.voxel.terrain.build.occlusion;
 
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.terrain.VoxelChunkHandler;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionCalculator;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionSet;
 
 /**
  * Created by Eric on 2/14/2016.

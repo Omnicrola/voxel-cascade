@@ -18,4 +18,8 @@ public class VoxelGameLauncher {
     public void launch() {
         this.gameEngine.start();
     }
+
+    public VoxelGameEngine getGame() {
+        return gameEngine;
+    }
 }

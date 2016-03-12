@@ -66,14 +66,6 @@ public class VoxelChunk extends Node {
         this.isDirty = false;
     }
 
-    public ChunkId getChunkId() {
-        return this.chunkId;
-    }
-
-    public byte getVoxelLocal(int x, int y, int z) {
-        return this.voxels[x][y][z];
-    }
-
     public byte getVoxelGlobal(Vec3i global) {
         Vec3i localize = this.chunkId.localize(global);
         return getVoxel(localize);
@@ -135,8 +127,8 @@ public class VoxelChunk extends Node {
 
     private int bitIndex(Vec3i location) {
         int x = location.getX();
-        int y = location.getY() * 2;
-        int z = location.getZ() * 3;
+        int y = location.getY() * GameConstants.CHUNK_SIZE;
+        int z = location.getZ() * GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE;
         return x + y + z;
     }
 

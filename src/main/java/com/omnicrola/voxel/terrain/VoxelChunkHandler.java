@@ -5,7 +5,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.debug.DebugTimer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
-import com.omnicrola.voxel.terrain.build.OcclusionCalculatorBuilder;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.data.*;
 

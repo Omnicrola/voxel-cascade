@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.omnicrola.voxel.terrain.IVoxelType;
-import com.omnicrola.voxel.terrain.build.OcclusionSet;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionSet;
 
 /**
  * Created by Eric on 2/3/2016.

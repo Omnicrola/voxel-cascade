@@ -9,7 +9,8 @@ import com.omnicrola.voxel.terrain.IVoxelType;
 public enum VoxelType implements IVoxelType {
     EMPTY((byte) 0, 1f, ColorRGBA.Black, false),
     BLUE((byte) 1, 1f, ColorRGBA.Blue),
-    GREY((byte) 2, 1f, new ColorRGBA(0.5f, 0.5f, 0.5f, 1f));
+    GREY((byte) 2, 1f, new ColorRGBA(0.5f, 0.5f, 0.5f, 1f)),
+    WHITE((byte) 3, 1f, ColorRGBA.White);
 
     private final byte value;
     private final float resources;

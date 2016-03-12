@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain.build;
+package com.omnicrola.voxel.terrain.build.occlusion;
 
 import com.omnicrola.voxel.terrain.VoxelChunkHandler;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;

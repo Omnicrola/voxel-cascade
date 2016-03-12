@@ -1,12 +1,13 @@
-package com.omnicrola.voxel.terrain.build;
+package com.omnicrola.voxel.terrain.build.mesh;
 
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
 
 /**
  * Created by Eric on 3/10/2016.
  */
-public class QuadMeshStrategy implements ITerrainQuadMeshStrategy {
+public class StandardQuadMeshStrategy implements ITerrainQuadMeshStrategy {
     @Override
     public Vector3f[] build(VoxelFace voxel,
                             Vector3f bottomLeft,

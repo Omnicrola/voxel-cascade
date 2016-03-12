@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain.build;
+package com.omnicrola.voxel.terrain.build.mesh;
 
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
@@ -9,6 +9,7 @@ import com.jme3.scene.Mesh;
 import com.jme3.scene.VertexBuffer;
 import com.jme3.util.BufferUtils;
 import com.omnicrola.voxel.engine.MaterialRepository;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionSet;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
 

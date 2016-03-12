@@ -19,11 +19,6 @@ public class EmptyVoxelChunk extends VoxelChunk {
     }
 
     @Override
-    public byte getVoxelLocal(int x, int y, int z) {
-        return 0;
-    }
-
-    @Override
     public void set(Vec3i location, byte type) {
     }
 

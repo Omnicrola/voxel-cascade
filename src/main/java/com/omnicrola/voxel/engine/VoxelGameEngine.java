@@ -29,6 +29,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
     private LightManager lightManager;
     private VoxelTickProvider ticProvider;
     private WorldRootNode worldRootNode;
+    private boolean isInitialized;
 
     public VoxelGameEngine(VoxelGameEngineInitializer gameEngineInitializer,
                            BulletAppState bulletAppState,
@@ -52,6 +53,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
 //        this.stateManager.attach(this.bulletAppState);
         this.gameEngineInitializer.initialize(this);
 //        this.bulletAppState.getPhysicsSpace().addCollisionListener(new MasterCollisionHandler());
+        this.isInitialized = true;
     }
 
     private void addLights() {
@@ -127,4 +129,7 @@ public class VoxelGameEngine extends SimpleApplication implements IActionQueue {
         return this.worldRootNode;
     }
 
+    public boolean isInitialized() {
+        return isInitialized;
+    }
 }

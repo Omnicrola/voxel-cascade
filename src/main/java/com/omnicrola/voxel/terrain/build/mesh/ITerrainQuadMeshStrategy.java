@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.terrain.build;
+package com.omnicrola.voxel.terrain.build.mesh;
 
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.terrain.data.VoxelFace;
