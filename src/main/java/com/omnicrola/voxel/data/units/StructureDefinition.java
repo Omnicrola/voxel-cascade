@@ -4,7 +4,6 @@ import com.jme3.math.ColorRGBA;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
 import com.omnicrola.voxel.entities.control.DeathControllerFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
-import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
 import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 
 import javax.xml.bind.annotation.*;
@@ -90,7 +89,6 @@ public class StructureDefinition {
 
     public List<IControlFactory> getControlFactories() {
         ArrayList<IControlFactory> controlFactories = new ArrayList<>(this.controlFactories);
-        controlFactories.add(new StructurePhysicsControlFactory());
         controlFactories.add(new CollisionControlFactory());
         controlFactories.add(new CommandControlFactory(this.commands, buildCommands));
         controlFactories.add(new DeathControllerFactory());

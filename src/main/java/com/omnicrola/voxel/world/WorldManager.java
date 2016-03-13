@@ -40,21 +40,18 @@ public class WorldManager {
         this.units.add(unit);
         Spatial spatial = unit.getSpatial();
         this.worldNode.getUnitsNode().attachChild(spatial);
-        //  this.physicsSpace.add(spatial);
     }
 
     public void addStructure(Structure structure) {
         this.structures.add(structure);
         Spatial spatial = structure.getSpatial();
         this.worldNode.getUnitsNode().attachChild(spatial);
-        //this.physicsSpace.add(spatial);
     }
 
     public void addProjectile(Projectile projectile) {
         this.projectiles.add(projectile);
         Spatial spatial = projectile.getSpatial();
         this.worldNode.getProjectilesNode().attachChild(spatial);
-        //this.physicsSpace.add(spatial);
     }
 
     public void addEffect(IGameEntity gameEntity) {
@@ -79,7 +76,6 @@ public class WorldManager {
         this.units.remove(spatial);
         this.structures.remove(spatial);
         this.projectiles.remove(spatial);
-        //   this.physicsSpace.remove(spatial);
     }
 
     public List<IGameEntity> getAllUnits() {
