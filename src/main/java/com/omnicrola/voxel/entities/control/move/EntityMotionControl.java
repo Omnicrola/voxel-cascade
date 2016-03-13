@@ -4,11 +4,14 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.control.AbstractControl;
 import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.data.VoxelData;
+import com.omnicrola.voxel.world.WorldManager;
+
+import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
@@ -60,21 +63,34 @@ public class EntityMotionControl extends AbstractControl {
             return;
         }
         updateCurrentVelocity(tpf);
-        updateGravity();
+        updateGravity(tpf);
         Vector3f newPosition = this.spatial.getWorldTranslation().add(this.currentVelocity.mult(tpf));
         this.spatial.setLocalTranslation(newPosition);
         this.spatial.setLocalRotation(this.rotation);
     }
 
-    private void updateGravity() {
+    private void updateGravity(float tpf) {
+        WorldManager worldManager = this.entityControlAdapter.getWorldManager();
+        Vector3f location = this.spatial.getWorldTranslation();
         ITerrainManager terrainManager = this.entityControlAdapter.getTerrainManager();
-        boolean belowTerrain = terrainManager.isBelowTerrain((Geometry) this.spatial);
-        if (belowTerrain) {
-            this.fallSpeed.add(GRAVITY);
-            Vector3f newPosition = this.spatial.getWorldTranslation().add(this.fallSpeed);
-            this.spatial.setLocalTranslation(newPosition);
+        VoxelData voxelAt = terrainManager.getVoxelAt(location);
+        if (voxelAt.isSolid()) {
+            Optional<VoxelData> lowestEmptyVoxel = terrainManager.findLowestEmptyVoxel(location);
+            if (lowestEmptyVoxel.isPresent()) {
+                VoxelData voxelData = lowestEmptyVoxel.get();
+                Vector3f newLocation = location.setY(voxelData.getLocation().y);
+                this.spatial.setLocalTranslation(newLocation);
+            }
+            this.fallSpeed.set(0, 0, 0);
         } else {
-            this.fallSpeed.set(0,0,0);
+            float distance = worldManager.distanceToTerrainFloor(location);
+            if (distance > 0) {
+                this.fallSpeed.addLocal(GRAVITY.mult(tpf));
+                Vector3f newLocation = location.add(this.fallSpeed.mult(tpf));
+                this.spatial.setLocalTranslation(newLocation);
+            } else {
+                this.fallSpeed.set(0, 0, 0);
+            }
         }
     }
 
@@ -84,9 +100,7 @@ public class EntityMotionControl extends AbstractControl {
 
         Vector3f currentVelocity = getLocation();
         Vector3f steering = this.desiredVelocity.subtract(currentVelocity);
-        truncate(steering, maxTurnSpeed);
         Vector3f newVelocity = currentVelocity.add(steering);
-        truncate(newVelocity, maxVelocity);
 
         if (newVelocity.length() > 0) {
             this.currentVelocity.set(newVelocity);
@@ -95,13 +109,6 @@ public class EntityMotionControl extends AbstractControl {
             this.currentVelocity.set(Vector3f.ZERO);
         }
         this.desiredVelocity.set(0, 0, 0);
-    }
-
-    private void truncate(Vector3f vector3f, float max) {
-//        if (vector3f.length() > max) {
-//            Vector3f truncated = vector3f.normalize().mult(max);
-//            vector3f.set(truncated);
-//        }
     }
 
     @Override

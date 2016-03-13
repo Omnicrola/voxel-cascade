@@ -1,19 +1,16 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
-import java.util.List;
 import java.util.Optional;
 
 /**
  * Created by Eric on 2/24/2016.
  */
 public interface ITerrainManager {
-    void globalReset();
 
     void load(TerrainDefinition terrain);
 
@@ -23,9 +20,6 @@ public interface ITerrainManager {
 
     VoxelData getVoxelAt(Vec3i location);
 
-    boolean isBelowTerrain(Geometry geometry);
-
-
     void globalRebuild();
 
     Optional<VoxelData> findLowestEmptyVoxel(Vector3f location);
@@ -34,7 +28,4 @@ public interface ITerrainManager {
 
     IVoxelType getVoxelType(byte voxelType);
 
-    List<VoxelData> getNeighborsOf(VoxelData voxel);
-
-    boolean isEmptyWithFloor(Vec3i gridLocation);
 }

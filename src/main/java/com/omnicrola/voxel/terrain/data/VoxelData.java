@@ -72,5 +72,7 @@ public class VoxelData {
         return result;
     }
 
-
+    public boolean isSolid() {
+        return this.voxel.isSolid();
+    }
 }

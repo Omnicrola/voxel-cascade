@@ -3,6 +3,7 @@ package com.omnicrola.voxel.world;
 import com.jme3.bounding.BoundingSphere;
 import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
+import com.jme3.math.Ray;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Projectile;
@@ -66,7 +67,6 @@ public class WorldManager {
         return VoxelUtil.convertToStream(collisionResults);
     }
 
-
     public void addTerrainChunk(VoxelChunk chunk) {
         this.worldNode.getTerrainNode().attachChild(chunk);
     }
@@ -91,5 +91,25 @@ public class WorldManager {
 
     public IWorldCursor getWorldCursor() {
         return worldCursor;
+    }
+
+    public float distanceToTerrainFloor(Vector3f location) {
+        Vector3f surface = getTerrainSurfaceFrom(location);
+        if (location.y > surface.y) {
+            return surface.distance(location);
+        } else {
+            return surface.distance(location) * -1;
+        }
+    }
+
+    private Vector3f getTerrainSurfaceFrom(Vector3f location) {
+        Ray ray = new Ray(location, new Vector3f(0, -1, 0));
+        CollisionResults results = new CollisionResults();
+        this.worldNode.getTerrainNode().collideWith(ray, results);
+        if (results.size() > 0) {
+            CollisionResult closestCollision = results.getClosestCollision();
+            return closestCollision.getContactPoint();
+        }
+        return new Vector3f(location).setY(0);
     }
 }

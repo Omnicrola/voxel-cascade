@@ -1,13 +1,10 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 /**
@@ -28,11 +25,6 @@ public class TerrainManager implements ITerrainManager {
     }
 
     @Override
-    public void globalReset() {
-        this.voxelChunkHandler.clearAll();
-    }
-
-    @Override
     public void load(TerrainDefinition terrain) {
         this.voxelTerrainGenerator.generate(terrain, this.voxelChunkHandler);
     }
@@ -44,26 +36,12 @@ public class TerrainManager implements ITerrainManager {
 
     @Override
     public VoxelData getVoxelAt(Vector3f location) {
-        return this.voxelChunkHandler.getVoxelAt(Vec3i.round(location));
+        return this.voxelChunkHandler.getVoxelAt(Vec3i.floor(location));
     }
 
     @Override
     public VoxelData getVoxelAt(Vec3i location) {
         return this.voxelChunkHandler.getVoxelAt(location);
-    }
-
-    @Override
-    public boolean isBelowTerrain(Geometry geometry) {
-        Vector3f worldLocation = geometry.getWorldTranslation();
-        Vec3i location = Vec3i.floor(worldLocation.add(0, 0.5f, 0));
-        return this.voxelChunkHandler.isVoxelSolidAt(location);
-    }
-
-    @Override
-    public boolean isEmptyWithFloor(Vec3i gridLocation) {
-        boolean voxelIsEmpty = !this.voxelChunkHandler.isVoxelSolidAt(gridLocation);
-        boolean floorIsSolid = this.voxelChunkHandler.isVoxelSolidAt(new Vec3i(gridLocation.getX(), gridLocation.getY() - 1, gridLocation.getZ()));
-        return voxelIsEmpty && floorIsSolid;
     }
 
     @Override
@@ -74,51 +52,6 @@ public class TerrainManager implements ITerrainManager {
     @Override
     public Optional<VoxelData> getHighestSolidVoxel(Vector3f location) {
         return this.voxelChunkHandler.findHighestSolidVoxel(location);
-    }
-
-    @Override
-    public List<VoxelData> getNeighborsOf(VoxelData voxel) {
-        ArrayList<VoxelData> voxels = new ArrayList<>();
-        // top layer
-        Vector3f location = voxel.getLocation();
-        voxels.add(getVoxelAt(location.add(-1, 1, -1)));
-        voxels.add(getVoxelAt(location.add(-1, 1, 0)));
-        voxels.add(getVoxelAt(location.add(-1, 1, 1)));
-
-        voxels.add(getVoxelAt(location.add(0, 1, -1)));
-        voxels.add(getVoxelAt(location.add(0, 1, 0)));
-        voxels.add(getVoxelAt(location.add(0, 1, 1)));
-
-        voxels.add(getVoxelAt(location.add(1, 1, -1)));
-        voxels.add(getVoxelAt(location.add(1, 1, 0)));
-        voxels.add(getVoxelAt(location.add(1, 1, 1)));
-
-        // middle layer
-        voxels.add(getVoxelAt(location.add(-1, 0, -1)));
-        voxels.add(getVoxelAt(location.add(-1, 0, 0)));
-        voxels.add(getVoxelAt(location.add(-1, 0, 1)));
-
-        voxels.add(getVoxelAt(location.add(0, 0, -1)));
-        voxels.add(getVoxelAt(location.add(0, 0, 1)));
-
-        voxels.add(getVoxelAt(location.add(1, 0, -1)));
-        voxels.add(getVoxelAt(location.add(1, 0, 0)));
-        voxels.add(getVoxelAt(location.add(1, 0, 1)));
-
-        // bottom layer
-        voxels.add(getVoxelAt(location.add(-1, -1, -1)));
-        voxels.add(getVoxelAt(location.add(-1, -1, 0)));
-        voxels.add(getVoxelAt(location.add(-1, -1, 1)));
-
-        voxels.add(getVoxelAt(location.add(0, -1, -1)));
-        voxels.add(getVoxelAt(location.add(0, -1, 0)));
-        voxels.add(getVoxelAt(location.add(0, -1, 1)));
-
-        voxels.add(getVoxelAt(location.add(1, -1, -1)));
-        voxels.add(getVoxelAt(location.add(1, -1, 0)));
-        voxels.add(getVoxelAt(location.add(1, -1, 1)));
-
-        return voxels;
     }
 
     @Override
