@@ -8,6 +8,7 @@ import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
 import com.omnicrola.voxel.entities.control.fx.ParticleEffectControlFactory;
 import com.omnicrola.voxel.entities.control.move.RotationControlFactory;
+import com.omnicrola.voxel.entities.control.resources.PassiveHarvestControlFactory;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -36,6 +37,7 @@ public class StructureGenerator {
         structureDefinition.description = "Extracts resources from underlying cubes";
         structureDefinition.controlFactories.add(new RotationControlFactory(new Vector3f(0,1,0), 1f));
         structureDefinition.controlFactories.add(new ParticleEffectControlFactory());
+        structureDefinition.controlFactories.add(new PassiveHarvestControlFactory(1f, 3f));
         return structureDefinition;
     }
 

@@ -2,6 +2,7 @@ package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
+import com.jme3.input.InputManager;
 import com.jme3.renderer.Camera;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
@@ -95,7 +96,8 @@ public class VoxelGameEngineInitializer {
 
         TerrainManager terrainManager = createTerrainManager(voxelGameEngine, worldManager, voxelTypeLibrary, materialRepository);
 
-        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager, terrainManager, worldManager, materialRepository);
+        InputManager inputManager = voxelGameEngine.getInputManager();
+        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager, terrainManager, worldManager, materialRepository, inputManager);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
 
 
@@ -156,7 +158,7 @@ public class VoxelGameEngineInitializer {
                                                         LevelManager levelManager,
                                                         ITerrainManager terrainManager,
                                                         WorldManager worldManager,
-                                                        MaterialRepository materialRepository) {
+                                                        MaterialRepository materialRepository, InputManager inputManager) {
         WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefintions);
         ProjectileBuilder projectileBuilder = new ProjectileBuilder(toolbox, materialRepository);
         ParticleBuilder particleBuilder = new ParticleBuilder(assetManager);
@@ -164,7 +166,9 @@ public class VoxelGameEngineInitializer {
                 particleBuilder,
                 worldManager,
                 projectileBuilder,
-                terrainManager, levelManager);
+                terrainManager,
+                levelManager,
+                inputManager);
         UnitBuilder unitBuilder = new UnitBuilder(toolbox, entityControlAdapter, materialRepository);
         StructureBuilder structureBuilder = new StructureBuilder(toolbox, entityControlAdapter, materialRepository);
         return new WorldEntityBuilder(unitDefintions, assetManager, unitBuilder, structureBuilder);

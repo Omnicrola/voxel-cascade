@@ -36,7 +36,7 @@ public class TerrainManager implements ITerrainManager {
 
     @Override
     public VoxelData getVoxelAt(Vector3f location) {
-        return this.voxelChunkHandler.getVoxelAt(Vec3i.floor(location));
+        return this.voxelChunkHandler.getVoxelAt(Vec3i.fromVec3(location));
     }
 
     @Override

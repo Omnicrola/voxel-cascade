@@ -101,9 +101,9 @@ public class VoxelChunkHandler {
         float y = GameConstants.MAXIMUM_VOXEL_HEIGHT;
         float z = location.getZ();
         boolean hasNotBeenFound = true;
-        Vec3i voxelPosition = Vec3i.round(location);
+        Vec3i voxelPosition = Vec3i.fromVec3(location);
         while (hasNotBeenFound) {
-            voxelPosition = Vec3i.round(x, y, z);
+            voxelPosition = Vec3i.fromVec3(x, y, z);
             if (predicate.test(voxelPosition)) {
                 hasNotBeenFound = false;
             } else if (y < GameConstants.MINIMUM_VOXEL_HEIGHT) {
