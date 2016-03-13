@@ -33,4 +33,5 @@ public class GameConstants {
     public static final String NODE_FX = "FX";
     public static final String NODE_TERRAIN = "TERRAIN";
 
+    public static final String SETTINGS_FILE = "voxel.settings";
 }

@@ -5,6 +5,8 @@ target/
 OpenAL64.dll
 bulletjme64.dll
 lwjgl64.dll
+voxel.settings
+
 
 # Mobile Tools for Java (J2ME)
 .mtj.tmp/

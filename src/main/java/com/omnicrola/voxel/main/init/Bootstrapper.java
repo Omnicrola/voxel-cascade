@@ -6,6 +6,9 @@ import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.main.init.states.*;
+import com.omnicrola.voxel.main.settings.DisplaySettings;
+import com.omnicrola.voxel.main.settings.GameSettings;
+import com.omnicrola.voxel.main.settings.GameSettingsRepository;
 import com.omnicrola.voxel.ui.CursorProviderBuilder;
 import com.omnicrola.voxel.ui.builders.*;
 
@@ -30,13 +33,16 @@ public class Bootstrapper {
         VoxelGameEngine gameEngine = new VoxelGameEngine(initializer, bulletAppState, new EngineShutdownHandler());
         gameEngine.setShowSettings(false);
 
+        GameSettings settings = GameSettingsRepository.load();
+        DisplaySettings displaySettings = settings.displaySettings;
+
         AppSettings appSettings = new AppSettings(true);
         appSettings.setSettingsDialogImage("Textures/splash.jpg");
-        appSettings.setResolution(1280, 600);
-        appSettings.setBitsPerPixel(32);
-        appSettings.setFrequency(60);
-        appSettings.setFrameRate(120);
-        appSettings.put("Samples", 4);
+        appSettings.setResolution(displaySettings.width, displaySettings.height);
+        appSettings.setBitsPerPixel(displaySettings.bpp);
+        appSettings.setFrequency(displaySettings.hz);
+        appSettings.setFrameRate(displaySettings.maxFps);
+        appSettings.put("Samples", displaySettings.antiAliasing);
 
         appSettings.setTitle("Voxel Cascade");
 
