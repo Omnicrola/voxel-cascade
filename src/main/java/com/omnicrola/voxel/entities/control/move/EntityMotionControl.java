@@ -104,7 +104,7 @@ public class EntityMotionControl extends AbstractControl {
 
         if (newVelocity.length() > 0) {
             this.currentVelocity.set(newVelocity);
-            this.rotation.lookAt(newVelocity, Vector3f.UNIT_Y);
+            this.rotation.lookAt(newVelocity.setY(0), Vector3f.UNIT_Y);
         } else {
             this.currentVelocity.set(Vector3f.ZERO);
         }
