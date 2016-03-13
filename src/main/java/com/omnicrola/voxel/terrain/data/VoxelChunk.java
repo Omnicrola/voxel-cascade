@@ -37,7 +37,7 @@ public class VoxelChunk extends Node {
         this.voxels = new byte[size][size][size];
         this.resources = new float[size][size][size];
         this.isDirty = false;
-        this.halfFlags = new BitSet(GameConstants.CHUNK_SIZE_CUBED);
+        this.halfFlags = new BitSet(GameConstants.CHUNK_SIZE_CUBED + 3);
     }
 
     public void set(Vec3i location, byte type) {
@@ -75,7 +75,6 @@ public class VoxelChunk extends Node {
         Vec3i global = this.chunkId.globalize(x, y, z);
         return this.faceBuilder.build(global, side);
     }
-
 
     @Override
     public void detachAllChildren() {
@@ -126,11 +125,10 @@ public class VoxelChunk extends Node {
     }
 
     private int bitIndex(Vec3i location) {
-        int x = location.getX();
-        int y = location.getY() * GameConstants.CHUNK_SIZE;
-        int z = location.getZ() * GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE;
+        int x = Math.abs(location.getX());
+        int y = Math.abs(location.getY() * GameConstants.CHUNK_SIZE);
+        int z = Math.abs(location.getZ() * GameConstants.CHUNK_SIZE * GameConstants.CHUNK_SIZE);
         return x + y + z;
     }
-
 }
 

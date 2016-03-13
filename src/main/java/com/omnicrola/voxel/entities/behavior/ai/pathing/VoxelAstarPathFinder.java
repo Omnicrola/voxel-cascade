@@ -15,11 +15,8 @@ public class VoxelAstarPathFinder {
 
     private static final float D = 1.0f;
     private final TerrainPathNodeAdapter terrainNodeAdapter;
-//    private ITerrainManager terrainManager;
-
 
     public VoxelAstarPathFinder(ITerrainManager terrainManager) {
-//        this.terrainManager = terrainManager;
         this.terrainNodeAdapter = new TerrainPathNodeAdapter(terrainManager);
     }
 
@@ -44,8 +41,8 @@ public class VoxelAstarPathFinder {
         int count = 0;
         while (frontier.size() > 0) {
             float elapsed = (System.nanoTime() - start) / 1_000_000f;
-            if (elapsed > 1) {
-                System.out.println("Exceeded 5ms pathfinding time. Nodes: " + count);
+            if (elapsed > 10) {
+//                System.out.println("Exceeded 5ms pathfinding time. Nodes: " + count);
                 return null;
             }
             Collections.sort(frontier, (n1, n2) -> Float.compare(n1.priority, n2.priority));
@@ -57,7 +54,7 @@ public class VoxelAstarPathFinder {
                 if (neighbor.hasBeenProcessed) {
                     continue;
                 }
-                float cost = currentNode.cost + movementCost(neighbor, currentNode);
+                float cost = currentNode.cost + movementCost(currentNode, neighbor);
                 if (cost < neighbor.cost) {
                     neighbor.cost = cost;
                     neighbor.priority = cost + heuristic(goalNode, neighbor);
@@ -77,9 +74,9 @@ public class VoxelAstarPathFinder {
         return null;
     }
 
-    private float movementCost(PathNode neighbor, PathNode currentNode) {
+    private float movementCost(PathNode currentNode, PathNode neighbor) {
         float dx = Math.abs(neighbor.x() - currentNode.x());
-        float dy = Math.abs(neighbor.y() - currentNode.y());
+        float dy = Math.abs(neighbor.y() - currentNode.y()) * 2;
         float dz = Math.abs(neighbor.z() - currentNode.z());
         return (float) Math.sqrt(dx * dx + dy * dy + dz * dz);
     }
@@ -90,5 +87,4 @@ public class VoxelAstarPathFinder {
         float dz = Math.abs(node.z() - nextNode.z());
         return D * (dx + dy + dz);
     }
-
 }

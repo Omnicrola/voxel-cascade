@@ -10,7 +10,6 @@ import java.util.Collections;
  */
 public class NavigationPath {
 
-
     private final ArrayList<Vector3f> navigationPoints;
 
     public NavigationPath(PathNode startNode) {
@@ -21,7 +20,8 @@ public class NavigationPath {
 
     private void addToPath(PathNode pathNode) {
         if (pathNode != null) {
-            Vector3f location = pathNode.voxel.getLocation().addLocal(0.5f, 0.0f, 0.5f);
+            float addY = pathNode.voxel.isHalf() ? 0.5f : 0f;
+            Vector3f location = pathNode.voxel.getLocation().addLocal(0.5f, addY, 0.5f);
             this.navigationPoints.add(location);
             addToPath(pathNode.cameFrom);
         }

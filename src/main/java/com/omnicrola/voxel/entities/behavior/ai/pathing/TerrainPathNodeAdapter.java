@@ -44,10 +44,14 @@ public class TerrainPathNodeAdapter {
     private boolean isReachable(PathNode sourceNode, PathNode nextNode) {
         int y1 = sourceNode.voxel.getGridLocation().getY();
         int y2 = nextNode.voxel.getGridLocation().getY();
-        boolean isReachable = (y1 == y2) ||
-                sourceNode.voxel.isHalf() ||
-                nextNode.voxel.isHalf();
-        return isReachable;
+        int difference = Math.abs(y1 - y2);
+        if (difference == 0) {
+            return true;
+        }
+        if(sourceNode.voxel.isHalf() || nextNode.voxel.isHalf()){
+            return true;
+        }
+        return false;
     }
 
     private List<Vec3i> generateGridLocationsFrom(Vec3i gridLocation) {
@@ -75,18 +79,17 @@ public class TerrainPathNodeAdapter {
     private PathNode getNode(Vec3i gridLocation) {
         if (!this.positionNodeMap.containsKey(gridLocation)) {
             VoxelData voxel = this.terrainManager.getVoxelAt(gridLocation);
-            boolean isEmpty = !voxel.getType().isSolid();
+            boolean isEmpty = !voxel.getType().isSolid() || voxel.isHalf();
             VoxelData floorVoxel = this.terrainManager.getVoxelAt(gridLocation.translate(0, -1, 0));
             boolean hasSolidFloor = floorVoxel.getType().isSolid();
 
             PathNode pathNode = new PathNode(voxel);
-            pathNode.isViable = isEmpty && hasSolidFloor;
+            pathNode.isViable = (isEmpty && hasSolidFloor);
             this.positionNodeMap.put(gridLocation, pathNode);
             return pathNode;
         }
         return this.positionNodeMap.get(gridLocation);
     }
-
 
     public Collection<PathNode> getAll() {
         return this.positionNodeMap.values();

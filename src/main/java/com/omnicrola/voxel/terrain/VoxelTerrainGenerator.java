@@ -39,15 +39,18 @@ public class VoxelTerrainGenerator {
     }
 
     private void fillZ(VoxelChunkHandler voxelChunkHandler, int x, int z, float height) {
-        for (int y = 0; y <= height; y++) {
-            Vec3i location = new Vec3i(x, y, z);
-//            byte voxelType = (Math.random() <0.5) ? VoxelType.GREY.uniqueId() : VoxelType.BLUE.uniqueId();
+        int y;
+        Vec3i location = new Vec3i();
+
+        for (y = 0; y <= height; y++) {
+            location = new Vec3i(x, y, z);
             voxelChunkHandler.set(location, VoxelType.GREY.uniqueId());
             voxelChunkHandler.setResource(location, 1f);
-            if(Math.random() < 0.125){
-                voxelChunkHandler.setHalf(location, true);
-                voxelChunkHandler.set(location, VoxelType.WHITE.uniqueId());
-            }
+        }
+
+        if (Math.random() < 0.125) {
+            voxelChunkHandler.setHalf(location, true);
+            voxelChunkHandler.set(location, VoxelType.WHITE.uniqueId());
         }
     }
 }

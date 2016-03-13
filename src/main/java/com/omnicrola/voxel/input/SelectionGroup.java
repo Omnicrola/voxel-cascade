@@ -66,7 +66,7 @@ public class SelectionGroup {
 
     public void orderBuild(IConstructionPackage constructionPackage) {
         Optional<EntityAiController> firstController = getEntityAiControllerStream().findFirst();
-        if(firstController.isPresent()){
+        if (firstController.isPresent()) {
             EntityAiController entityAiController = firstController.get();
             entityAiController.setState(AiBuildState.class).setPackage(constructionPackage);
         }
@@ -131,6 +131,9 @@ public class SelectionGroup {
     }
 
     public Vector3f getCenterPoint() {
+        if (this.selection.size() <= 0) {
+            return new Vector3f();
+        }
         float averageX = getAsDouble(Vector3f::getX);
         float averageY = getAsDouble(Vector3f::getY);
         float averageZ = getAsDouble(Vector3f::getZ);
@@ -153,6 +156,4 @@ public class SelectionGroup {
                 .collect(Collectors.toList());
         return currentSize != this.selection.size();
     }
-
-
 }

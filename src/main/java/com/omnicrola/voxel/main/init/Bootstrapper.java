@@ -61,7 +61,6 @@ public class Bootstrapper {
 
     private static ArrayList<IStateInitializer> getStateInitializers() {
         ArrayList<IStateInitializer> stateInitializers = new ArrayList<>();
-        stateInitializers.add(new DebugStateInitializer());
         stateInitializers.add(new CommandStateInitializer(new CursorProviderBuilder()));
         stateInitializers.add(new ActivePlayInputStateInitializer());
         stateInitializers.add(new ClientNetworkStateInitializer());
@@ -69,6 +68,7 @@ public class Bootstrapper {
         stateInitializers.add(new LoadingStateInitializer());
         stateInitializers.add(new MainMenuStateInitializer());
         stateInitializers.add(new ShadowStateInitializer());
+        stateInitializers.add(new DebugStateInitializer());
         return stateInitializers;
     }
 }
