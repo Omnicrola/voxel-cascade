@@ -39,6 +39,7 @@ public class StructureBuilder {
         UnitDefinitionRepository definitionRepository = toolbox.getDefinitionRepository();
         controlFactories.forEach(f -> f.build(spatial, definitionRepository, this.entityControlAdapter));
 
+        spatial.setLocalTranslation(unitPlacement.getLocation());
         TeamData teamData = toolbox.getTeamData(unitPlacement.getTeamId());
 
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
@@ -47,6 +48,8 @@ public class StructureBuilder {
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
         spatial.setUserData(EntityDataKeys.HITPOINTS, structureDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
+
+
 
         return new Structure(spatial);
     }

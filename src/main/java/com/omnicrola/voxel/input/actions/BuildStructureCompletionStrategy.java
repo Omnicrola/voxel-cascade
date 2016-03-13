@@ -2,6 +2,7 @@ package com.omnicrola.voxel.input.actions;
 
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.level.UnitPlacement;
+import com.omnicrola.voxel.debug.DebugSpatialPositionControl;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.world.WorldManager;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
@@ -31,7 +32,7 @@ public class BuildStructureCompletionStrategy implements IBuildCompletionStrateg
 
     @Override
     public boolean isAbleToBuild() {
-        // TODO : add cost
+
         return true;
     }
 }
