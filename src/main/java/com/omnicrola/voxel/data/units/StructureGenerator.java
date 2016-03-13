@@ -6,6 +6,7 @@ import com.omnicrola.voxel.entities.commands.BuildStructureCommand;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
+import com.omnicrola.voxel.entities.control.move.RotationControlFactory;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -32,6 +33,7 @@ public class StructureGenerator {
         structureDefinition.name = "Resource Extractor";
         structureDefinition.buildCost = 5;
         structureDefinition.description = "Extracts resources from underlying cubes";
+        structureDefinition.controlFactories.add(new RotationControlFactory(new Vector3f(0,1,0), 1f));
         return structureDefinition;
     }
 

@@ -184,7 +184,11 @@
             <hitpoints>100.0</hitpoints>
             <commands/>
             <build-targets/>
-            <controls/>
+            <controls>
+                <rotation-control speed="1.0">
+                    <axis x="0.0" y="1.0" z="0.0"/>
+                </rotation-control>
+            </controls>
         </structure>
         <structure global-id="100">
             <name>Turret</name>

@@ -9,6 +9,7 @@ import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
+import com.omnicrola.voxel.entities.control.move.RotationControlFactory;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -118,11 +119,14 @@ public class GameXmlDataParser {
             return JAXBContext.newInstance(
                     XmlGameDefinitions.class,
                     LevelDefinition.class,
+                    // commands
                     EntityCommand.class,
                     BuildUnitCommand.class,
                     BuildStructureCommand.class,
                     BuildVoxelCommand.class,
-                    AutomatedWeaponControlFactory.class
+                    // controls
+                    AutomatedWeaponControlFactory.class,
+                    RotationControlFactory.class
             );
         } catch (JAXBException e) {
             e.printStackTrace();
