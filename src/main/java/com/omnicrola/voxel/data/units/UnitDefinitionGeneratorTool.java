@@ -34,6 +34,7 @@ public class UnitDefinitionGeneratorTool {
         ArrayList<StructureDefinition> structures = new ArrayList<>();
         structures.add(StructureGenerator.createPlayerCoreBuilding());
         structures.add(StructureGenerator.createEnemyCoreBuilding());
+        structures.add(StructureGenerator.createExtractor());
         structures.add(StructureGenerator.createTurret());
         return structures;
     }

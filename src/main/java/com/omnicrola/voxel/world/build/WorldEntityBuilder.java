@@ -43,6 +43,12 @@ public class WorldEntityBuilder {
         UnitDefinition unitDefinition = getUnitDefinition(unitId);
         return this.unitBuilder.buildPlaceholder(unitDefinition, buildRadius, selectionGroup);
     }
+
+    public Spatial buildPlaceholderStructure(int globalId, float buildRadius, SelectionGroup selectionGroup) {
+        StructureDefinition structureDefinition = getStructureDefinition(globalId);
+        return this.structureBuilder.buildPlaceholder(structureDefinition, buildRadius, selectionGroup);
+    }
+
     public Structure buildStructure(UnitPlacement unitPlacement) {
         StructureDefinition structureDefinition = getStructureDefinition(unitPlacement.getUnitId());
         return this.structureBuilder.build(unitPlacement, structureDefinition);
@@ -76,4 +82,7 @@ public class WorldEntityBuilder {
         return definition;
     }
 
+    public float getStructureCost(int globalId) {
+        return getStructureDefinition(globalId).getBuildCost();
+    }
 }

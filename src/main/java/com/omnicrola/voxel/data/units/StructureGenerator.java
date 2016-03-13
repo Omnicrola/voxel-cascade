@@ -2,6 +2,7 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.entities.commands.BuildStructureCommand;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
@@ -13,11 +14,24 @@ public class StructureGenerator {
     public static final int BUILDING_PLAYER_CORE_ID = 1;
     public static final int BUILDING_ENEMY_CORE_ID = 2;
     public static final int ID_TURRET = 100;
+    public static final int ID_EXTRACTOR = 101;
 
     public static StructureDefinition createPlayerCoreBuilding() {
         StructureDefinition structureDefinition = createCore();
         structureDefinition.modelTexture = "voxel-face-green.png";
         structureDefinition.globalId = BUILDING_PLAYER_CORE_ID;
+        return structureDefinition;
+    }
+
+    public static StructureDefinition createExtractor() {
+        StructureDefinition structureDefinition = new StructureDefinition();
+        structureDefinition.globalId = ID_EXTRACTOR;
+        structureDefinition.modelTexture = "voxel-face-green.png";
+        structureDefinition.modelGeometry = "extractor.obj";
+        structureDefinition.hitpoints = 100;
+        structureDefinition.name = "Resource Extractor";
+        structureDefinition.buildCost = 5;
+        structureDefinition.description = "Extracts resources from underlying cubes";
         return structureDefinition;
     }
 
@@ -35,8 +49,10 @@ public class StructureGenerator {
         structureDefinition.name = "Core";
         structureDefinition.description = "Use this to build things";
         structureDefinition.hitpoints = 500;
+        structureDefinition.buildCost = 100;
         structureDefinition.commands.add(EntityCommand.BUILD);
         structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK, 10f));
+        structureDefinition.buildCommands.add(new BuildStructureCommand(StructureGenerator.ID_EXTRACTOR, 10f));
         return structureDefinition;
     }
 
@@ -48,6 +64,7 @@ public class StructureGenerator {
         structureDefinition.name = "Turret";
         structureDefinition.description = "Static defense";
         structureDefinition.hitpoints = 250;
+        structureDefinition.buildCost = 10;
         structureDefinition.controlFactories.add(new AutomatedWeaponControlFactory() {{
             this.weaponId = WeaponGenerator.ID_CANNON_WEAPON;
             this.weaponOffset = new Vector3f(0, 1, 0);

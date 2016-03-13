@@ -10,6 +10,9 @@ import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.IControlFactory;
+import com.omnicrola.voxel.entities.control.construction.BuildCursorValidityControl;
+import com.omnicrola.voxel.fx.MaterialToken;
+import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 import java.util.List;
@@ -30,10 +33,7 @@ public class StructureBuilder {
     }
 
     public Structure build(UnitPlacement unitPlacement, StructureDefinition structureDefinition) {
-        Spatial spatial = toolbox.getModel(structureDefinition.getModel());
-        spatial.setName(structureDefinition.getName());
-        Material material = materialRepository.createMaterial(structureDefinition.getTexture());
-        spatial.setMaterial(material);
+        Spatial spatial = buildSpatial(structureDefinition);
 
         List<IControlFactory> controlFactories = structureDefinition.getControlFactories();
         UnitDefinitionRepository definitionRepository = toolbox.getDefinitionRepository();
@@ -49,6 +49,22 @@ public class StructureBuilder {
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
 
         return new Structure(spatial);
+    }
 
+    private Spatial buildSpatial(StructureDefinition structureDefinition) {
+        Spatial spatial = toolbox.getModel(structureDefinition.getModel());
+        spatial.setName(structureDefinition.getName());
+        Material material = materialRepository.createMaterial(structureDefinition.getTexture());
+        spatial.setMaterial(material);
+        return spatial;
+    }
+
+    public Spatial buildPlaceholder(StructureDefinition structureDefinition, float buildRadius, SelectionGroup selectionGroup) {
+        Spatial spatial = buildSpatial(structureDefinition);
+        Material validMaterial = materialRepository.getMaterial(MaterialToken.BUILD_VALID);
+        Material invalidMaterial = materialRepository.getMaterial(MaterialToken.BUILD_NOT_VALID);
+        BuildCursorValidityControl buildCursorValidityControl = new BuildCursorValidityControl(selectionGroup, buildRadius, validMaterial, invalidMaterial);
+        spatial.addControl(buildCursorValidityControl);
+        return spatial;
     }
 }

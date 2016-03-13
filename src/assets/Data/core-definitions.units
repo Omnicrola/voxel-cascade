@@ -13,6 +13,7 @@
             <texture>voxel-face-red.png</texture>
             <model>tank.obj</model>
             <hitpoints>100.0</hitpoints>
+            <build-cost>0.0</build-cost>
             <mass>1.0</mass>
             <movement>
                 <max-velocity>5.0</max-velocity>
@@ -44,6 +45,7 @@
             <texture>voxel-face-green.png</texture>
             <model>tank.obj</model>
             <hitpoints>100.0</hitpoints>
+            <build-cost>0.0</build-cost>
             <mass>1.0</mass>
             <movement>
                 <max-velocity>5.0</max-velocity>
@@ -75,6 +77,7 @@
             <texture>voxel-face-blue.png</texture>
             <model>tank.obj</model>
             <hitpoints>100.0</hitpoints>
+            <build-cost>0.0</build-cost>
             <mass>1.0</mass>
             <movement>
                 <max-velocity>5.0</max-velocity>
@@ -139,12 +142,14 @@
                 <b>1.0</b>
                 <a>1.0</a>
             </color>
+            <build-cost>100.0</build-cost>
             <hitpoints>500.0</hitpoints>
             <commands>
                 <command>BUILD</command>
             </commands>
             <build-targets>
                 <unit unit-id="1" build-range="10.0" priority="1"/>
+                <structure structure-id="101" build-radius="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>
@@ -159,13 +164,26 @@
                 <b>1.0</b>
                 <a>1.0</a>
             </color>
+            <build-cost>100.0</build-cost>
             <hitpoints>500.0</hitpoints>
             <commands>
                 <command>BUILD</command>
             </commands>
             <build-targets>
                 <unit unit-id="1" build-range="10.0" priority="1"/>
+                <structure structure-id="101" build-radius="10.0" priority="1"/>
             </build-targets>
+            <controls/>
+        </structure>
+        <structure global-id="101">
+            <name>Resource Extractor</name>
+            <description>Extracts resources from underlying cubes</description>
+            <texture>voxel-face-green.png</texture>
+            <model>extractor.obj</model>
+            <build-cost>5.0</build-cost>
+            <hitpoints>100.0</hitpoints>
+            <commands/>
+            <build-targets/>
             <controls/>
         </structure>
         <structure global-id="100">
@@ -173,6 +191,7 @@
             <description>Static defense</description>
             <texture>voxel-face-red.png</texture>
             <model>turret.obj</model>
+            <build-cost>10.0</build-cost>
             <hitpoints>250.0</hitpoints>
             <commands/>
             <build-targets/>

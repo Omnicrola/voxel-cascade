@@ -85,21 +85,30 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     @Override
     public void setBuildUnitStrategy(int unitId, float buildRadius, SelectionGroup selectionGroup) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
-        Spatial exampleBuildTarget = createValidityCheckingModel(unitId, buildRadius, selectionGroup);
+        Spatial exampleBuildTarget = this.worldEntityBuilder.buildPlaceholderUnit(unitId, buildRadius, selectionGroup);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
-        BuildUnitStrategy buildUnitStrategy = new BuildUnitStrategy(
-                unitId,
+        BuildUnitCompletionStrategy buildUnitCompletionStrategy = new BuildUnitCompletionStrategy(unitId, worldEntityBuilder, worldManager);
+        BuildCursorStrategy buildCursorStrategy = new BuildCursorStrategy(
                 buildCursor,
                 exampleBuildTarget,
-                worldEntityBuilder,
-                worldManager);
-        worldCursor.setCursorStrategy(buildUnitStrategy);
+                worldCursor,
+                buildUnitCompletionStrategy);
+        worldCursor.setCursorStrategy(buildCursorStrategy);
     }
 
-    private Spatial createValidityCheckingModel(int unitId, float buildRadius, SelectionGroup selectionGroup) {
-        Spatial placeholder = this.worldEntityBuilder.buildPlaceholderUnit(unitId, buildRadius, selectionGroup);
-        return placeholder;
+    public void setBuildStructureStrategy(int globalId, float buildRadius, SelectionGroup selectionGroup) {
+        JmeCursor cursor = getCursor(CursorToken.BUILD);
+        Spatial placeholder = this.worldEntityBuilder.buildPlaceholderStructure(globalId, buildRadius, selectionGroup);
+        IWorldCursor worldCursor = this.worldManager.getWorldCursor();
+
+        BuildStructureCompletionStrategy buildUnitCompletionStrategy = new BuildStructureCompletionStrategy(globalId, worldEntityBuilder, worldManager);
+        BuildCursorStrategy buildCursorStrategy = new BuildCursorStrategy(
+                cursor,
+                placeholder,
+                worldCursor,
+                buildUnitCompletionStrategy);
+        worldCursor.setCursorStrategy(buildCursorStrategy);
     }
 
     @Override
@@ -162,5 +171,4 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     private JmeCursor getCursor(CursorToken cursorToken) {
         return this.cursor2dProvider.getCursor(cursorToken);
     }
-
 }

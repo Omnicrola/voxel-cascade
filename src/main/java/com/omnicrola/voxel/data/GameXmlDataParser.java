@@ -4,6 +4,7 @@ import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.XmlGameDefinitions;
+import com.omnicrola.voxel.entities.commands.BuildStructureCommand;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
@@ -119,6 +120,7 @@ public class GameXmlDataParser {
                     LevelDefinition.class,
                     EntityCommand.class,
                     BuildUnitCommand.class,
+                    BuildStructureCommand.class,
                     BuildVoxelCommand.class,
                     AutomatedWeaponControlFactory.class
             );

@@ -5,10 +5,10 @@ import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.entities.behavior.ai.EntityAiControlFactory;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
-import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.DeathControllerFactory;
-import com.omnicrola.voxel.entities.control.unit.GroundVehicleControlFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
+import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
+import com.omnicrola.voxel.entities.control.unit.GroundVehicleControlFactory;
 
 import javax.xml.bind.annotation.*;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
@@ -47,6 +47,9 @@ public class UnitDefinition {
 
     @XmlElement(name = "hitpoints", required = true)
     protected float hitpoints;
+
+    @XmlElement(name = "build-cost")
+    protected float buildCost;
 
     @XmlElement(name = "mass", required = true)
     protected float mass;
@@ -103,6 +106,10 @@ public class UnitDefinition {
 
     public String getTexture() {
         return modelTexture;
+    }
+
+    public float getBuildCost() {
+        return buildCost;
     }
 
     public List<IControlFactory> getControlFactories() {

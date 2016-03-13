@@ -2,10 +2,10 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.omnicrola.voxel.entities.commands.IEntityCommand;
-import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 import com.omnicrola.voxel.entities.control.DeathControllerFactory;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.StructurePhysicsControlFactory;
+import com.omnicrola.voxel.entities.control.collision.CollisionControlFactory;
 
 import javax.xml.bind.annotation.*;
 import java.util.ArrayList;
@@ -38,14 +38,17 @@ public class StructureDefinition {
     @XmlElement(name = "color", required = true)
     protected ColorRGBA color;
 
+    @XmlElement(name = "build-cost")
+    public float buildCost;
+
     @XmlElement(name = "hitpoints", required = true)
     protected float hitpoints;
 
     @XmlElementWrapper(name = "commands")
     @XmlAnyElement(lax = true)
-    protected List<IEntityCommand> commands  = new ArrayList<>();
+    protected List<IEntityCommand> commands = new ArrayList<>();
 
-    @XmlElementWrapper(name="build-targets")
+    @XmlElementWrapper(name = "build-targets")
     @XmlAnyElement(lax = true)
     protected List<IEntityCommand> buildCommands = new ArrayList<>();
 
@@ -79,6 +82,10 @@ public class StructureDefinition {
 
     public float getHitpoints() {
         return hitpoints;
+    }
+
+    public float getBuildCost() {
+        return buildCost;
     }
 
     public List<IControlFactory> getControlFactories() {
