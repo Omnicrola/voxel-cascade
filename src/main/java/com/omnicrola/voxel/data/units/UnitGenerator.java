@@ -2,6 +2,7 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.entities.commands.BuildStructureCommand;
 import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -13,6 +14,7 @@ public class UnitGenerator {
     public static final int ID_RED_TANK = 1;
     public static final int ID_GREEN_TANK = 2;
     public static final int ID_BLUE_TANK = 3;
+    public static final int ID_BUILDER = 4;
 
     public static UnitDefinition createBlueTank() {
         UnitDefinition unitDefinition = buildTank();
@@ -53,8 +55,24 @@ public class UnitGenerator {
         unitDefinition.commands.add(EntityCommand.ATTACK);
         unitDefinition.commands.add(EntityCommand.STOP);
         unitDefinition.commands.add(EntityCommand.HARVEST);
+        return unitDefinition;
+    }
+
+    public static UnitDefinition createBuilder() {
+        UnitDefinition unitDefinition = new UnitDefinition();
+        unitDefinition.globalId = ID_BUILDER;
+        unitDefinition.name = "Builder";
+        unitDefinition.description = "Build things!";
+        unitDefinition.hitpoints = 50;
+        unitDefinition.modelGeometry = "builder-unit.obj";
+        unitDefinition.modelTexture = "companion-cube.jpg";
+        unitDefinition.movementDefinition = movementDef(2f, 1f);
+        unitDefinition.commands.add(EntityCommand.MOVE);
+        unitDefinition.commands.add(EntityCommand.STOP);
+        unitDefinition.commands.add(EntityCommand.HARVEST);
         unitDefinition.commands.add(EntityCommand.BUILD);
         unitDefinition.buildCommands.add(new BuildVoxelCommand(GameConstants.TERRAIN_TYPE_1));
+        unitDefinition.buildCommands.add(new BuildStructureCommand(StructureGenerator.ID_EXTRACTOR, 2f));
         return unitDefinition;
     }
 

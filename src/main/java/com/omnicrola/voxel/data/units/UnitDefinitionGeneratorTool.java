@@ -44,6 +44,7 @@ public class UnitDefinitionGeneratorTool {
         unitDefinitions.add(UnitGenerator.createRedTank());
         unitDefinitions.add(UnitGenerator.createGreenTank());
         unitDefinitions.add(UnitGenerator.createBlueTank());
+        unitDefinitions.add(UnitGenerator.createBuilder());
         return unitDefinitions;
     }
 

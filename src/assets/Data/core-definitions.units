@@ -26,11 +26,8 @@
                 <command>ATTACK</command>
                 <command>STOP</command>
                 <command>HARVEST</command>
-                <command>BUILD</command>
             </commands>
-            <build-targets>
-                <voxel type="1"/>
-            </build-targets>
+            <build-targets/>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
         <unit global-id="2" weapon-id="1001">
@@ -58,11 +55,8 @@
                 <command>ATTACK</command>
                 <command>STOP</command>
                 <command>HARVEST</command>
-                <command>BUILD</command>
             </commands>
-            <build-targets>
-                <voxel type="1"/>
-            </build-targets>
+            <build-targets/>
             <weapon-offset x="0.0" y="0.5" z="0.0"/>
         </unit>
         <unit global-id="3" weapon-id="1000">
@@ -90,12 +84,35 @@
                 <command>ATTACK</command>
                 <command>STOP</command>
                 <command>HARVEST</command>
+            </commands>
+            <build-targets/>
+            <weapon-offset x="0.0" y="0.5" z="0.0"/>
+        </unit>
+        <unit global-id="4" weapon-id="0">
+            <name>Builder</name>
+            <description>Build things!</description>
+            <texture>companion-cube.jpg</texture>
+            <model>builder-unit.obj</model>
+            <hitpoints>50.0</hitpoints>
+            <build-cost>0.0</build-cost>
+            <mass>0.0</mass>
+            <movement>
+                <max-velocity>2.0</max-velocity>
+                <turnspeed>1.0</turnspeed>
+                <personal-radius>1.0</personal-radius>
+            </movement>
+            <controls/>
+            <commands>
+                <command>MOVE</command>
+                <command>STOP</command>
+                <command>HARVEST</command>
                 <command>BUILD</command>
             </commands>
             <build-targets>
                 <voxel type="1"/>
+                <structure structure-id="101" build-radius="2.0" priority="1"/>
             </build-targets>
-            <weapon-offset x="0.0" y="0.5" z="0.0"/>
+            <weapon-offset x="0.0" y="1.0" z="0.0"/>
         </unit>
     </units>
     <weapons>
@@ -148,8 +165,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="1" build-range="10.0" priority="1"/>
-                <structure structure-id="101" build-radius="10.0" priority="1"/>
+                <unit unit-id="4" build-range="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>
@@ -170,8 +186,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="1" build-range="10.0" priority="1"/>
-                <structure structure-id="101" build-radius="10.0" priority="1"/>
+                <unit unit-id="4" build-range="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>

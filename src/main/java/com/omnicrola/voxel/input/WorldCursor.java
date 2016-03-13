@@ -74,9 +74,9 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
         this.worldRootNode.getTerrainNode().collideWith(pickRay, results);
         if (results.size() > 0) {
             Vector3f contactPoint = results.getClosestCollision().getContactPoint();
-            contactPoint.setX((float) Math.round(contactPoint.x) - 0.5f);
+            contactPoint.setX((float) Math.round(contactPoint.x));
             contactPoint.setY((float) Math.round(contactPoint.y));
-            contactPoint.setZ((float) Math.round(contactPoint.z) - 0.5f);
+            contactPoint.setZ((float) Math.round(contactPoint.z));
             this.setLocalTranslation(contactPoint);
         }
     }
@@ -174,7 +174,7 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
 
     public Vec3i getSnappedLocation() {
         Vector3f p = this.getLocalTranslation();
-        return Vec3i.fromVec3(p);
+        return Vec3i.floor(p);
     }
 
     public List<Spatial> selectAllUnitsIn(ScreenRectangle screenRectangle) {

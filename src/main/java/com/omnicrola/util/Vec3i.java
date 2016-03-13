@@ -19,13 +19,12 @@ public class Vec3i implements Vec3iRead {
     @XmlAttribute(name = "z", required = true)
     private int z;
 
-    public static Vec3i fromVec3(Vector3f location) {
-        return fromVec3(location.x, location.y, location.z);
+    public static Vec3i floor(Vector3f location) {
+        return floor(location.x, location.y, location.z);
     }
 
-    public static Vec3i fromVec3(float x, float y, float z) {
-//        return new Vec3i(Math.round(x), Math.round(y), Math.round(z));
-        return new Vec3i((int) x, (int) y, (int) z);
+    public static Vec3i floor(float x, float y, float z) {
+        return new Vec3i(Math.round(x), Math.round(y), Math.round(z));
     }
 
 //    public static Vec3i floor(Vector3f location) {

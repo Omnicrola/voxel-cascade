@@ -28,7 +28,6 @@ public class AiMoveToLocationState implements IAiState {
 
     public void setTarget(Vector3f targetLocation) {
         this.targetLocation = targetLocation;
-//        tracePath(this.startOfPath, VoxelType.GREY);
         this.navigationPath = null;
     }
 
@@ -52,24 +51,11 @@ public class AiMoveToLocationState implements IAiState {
 
     private void calculateNewPath(EntityAiController entityAiController) {
         Vector3f currentLocation = entityAiController.getSpatial().getWorldTranslation();
-        long startTime = System.nanoTime();
         this.navigationPath = this.pathFinder.findPath(currentLocation, this.targetLocation);
         if (this.navigationPath != null && this.navigationPath.hasNext()) {
             this.targetLocation = this.navigationPath.next();
         }
-        float elapsed = (System.nanoTime() - startTime) / 1_000_000f;
-        System.out.println("path calculated in :" + elapsed);
     }
-
-//    private void tracePath(VoxelAstarPathFinder.PathNode node, VoxelType voxelType) {
-//        if (node != null) {
-//            VoxelData voxelAt = this.terrainManager.getVoxelAt(node.voxel.getGridLocation().translate(0, -1, 0));
-//            if (!voxelAt.getType().equals(VoxelType.EMPTY)) {
-//                voxelAt.setType(voxelType);
-//            }
-//            tracePath(node.nextNode, voxelType);
-//        }
-//    }
 
     private boolean hasArrived(EntityAiController entityAiController) {
         Vector3f currentLocation = entityAiController.getSpatial().getWorldTranslation();

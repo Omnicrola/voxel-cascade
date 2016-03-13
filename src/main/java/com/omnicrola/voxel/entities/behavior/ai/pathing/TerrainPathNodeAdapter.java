@@ -28,7 +28,7 @@ public class TerrainPathNodeAdapter {
     }
 
     public PathNode getNodeAt(Vector3f location) {
-        Vec3i gridLocation = Vec3i.fromVec3(location);
+        Vec3i gridLocation = Vec3i.floor(location);
         return getNode(gridLocation);
     }
 

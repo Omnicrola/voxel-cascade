@@ -23,7 +23,7 @@ public class ParticleEffectControlFactory implements IControlFactory {
         Effect effect = entityControlAdapter.getParticleBuilder().cubicHarvest();
         entityControlAdapter.getWorldManager().addEffect(effect);
 
-        Vector3f offset = new Vector3f(-0.5f, 0f, -0.5f);
+        Vector3f offset = new Vector3f(0f, 0f, 0f);
         ParticleAttachmentControl particleAttachmentControl = new ParticleAttachmentControl(effect, entityControlAdapter, offset);
         spatial.addControl(particleAttachmentControl);
     }

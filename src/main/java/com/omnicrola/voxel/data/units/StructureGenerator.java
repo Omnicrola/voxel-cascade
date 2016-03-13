@@ -2,7 +2,6 @@ package com.omnicrola.voxel.data.units;
 
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.entities.commands.BuildStructureCommand;
 import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
@@ -57,8 +56,7 @@ public class StructureGenerator {
         structureDefinition.hitpoints = 500;
         structureDefinition.buildCost = 100;
         structureDefinition.commands.add(EntityCommand.BUILD);
-        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK, 10f));
-        structureDefinition.buildCommands.add(new BuildStructureCommand(StructureGenerator.ID_EXTRACTOR, 10f));
+        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_BUILDER, 10f));
         return structureDefinition;
     }
 
