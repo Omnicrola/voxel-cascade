@@ -31,7 +31,7 @@ public class NavigationGridDistributorTest extends TestCase {
         NavigationGridDistributor navigationGridDistributor = new NavigationGridDistributor(mockSelectionGroup);
         Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f());
         List<Vector3f> distributedPoints = drainIterator(distribute);
-        assertEquals(4, distributedPoints.size());
+        assertEquals(9, distributedPoints.size());
         assertEquals(new Vector3f(-0.5f, 0, -0.5f), distributedPoints.get(0));
         assertEquals(new Vector3f(-0.5f, 0, 0.5f), distributedPoints.get(1));
         assertEquals(new Vector3f(-0.5f, 0, 0.5f), distributedPoints.get(1));
@@ -46,7 +46,7 @@ public class NavigationGridDistributorTest extends TestCase {
         NavigationGridDistributor navigationGridDistributor = new NavigationGridDistributor(mockSelectionGroup);
         Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f());
         List<Vector3f> points = drainIterator(distribute);
-        assertEquals(4, points.size());
+        assertEquals(9, points.size());
     }
 
     @Test
@@ -57,16 +57,26 @@ public class NavigationGridDistributorTest extends TestCase {
         NavigationGridDistributor navigationGridDistributor = new NavigationGridDistributor(mockSelectionGroup);
         Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f());
         List<Vector3f> distributedPoints = drainIterator(distribute);
-        assertEquals(9, distributedPoints.size());
+        assertEquals(16, distributedPoints.size());
         assertEquals(new Vector3f(-1f, 0, -1f), distributedPoints.get(0));
         assertEquals(new Vector3f(-1f, 0, 0f), distributedPoints.get(1));
         assertEquals(new Vector3f(-1f, 0, 1f), distributedPoints.get(2));
-        assertEquals(new Vector3f(0f, 0, -1f), distributedPoints.get(3));
-        assertEquals(new Vector3f(0f, 0, 0f), distributedPoints.get(4));
-        assertEquals(new Vector3f(0f, 0, 1f), distributedPoints.get(5));
-        assertEquals(new Vector3f(1f, 0, -1f), distributedPoints.get(6));
-        assertEquals(new Vector3f(1f, 0, 0f), distributedPoints.get(7));
-        assertEquals(new Vector3f(1f, 0, 1f), distributedPoints.get(8));
+        assertEquals(new Vector3f(-1f, 0, 2f), distributedPoints.get(3));
+
+        assertEquals(new Vector3f(0f, 0, -1f), distributedPoints.get(4));
+        assertEquals(new Vector3f(0f, 0, 0f), distributedPoints.get(5));
+        assertEquals(new Vector3f(0f, 0, 1f), distributedPoints.get(6));
+        assertEquals(new Vector3f(0f, 0, 2f), distributedPoints.get(7));
+
+        assertEquals(new Vector3f(1f, 0, -1f), distributedPoints.get(8));
+        assertEquals(new Vector3f(1f, 0, 0f), distributedPoints.get(9));
+        assertEquals(new Vector3f(1f, 0, 1f), distributedPoints.get(10));
+        assertEquals(new Vector3f(1f, 0, 2f), distributedPoints.get(11));
+
+        assertEquals(new Vector3f(2f, 0, -1f), distributedPoints.get(12));
+        assertEquals(new Vector3f(2f, 0, 0f), distributedPoints.get(13));
+        assertEquals(new Vector3f(2f, 0, 1f), distributedPoints.get(14));
+        assertEquals(new Vector3f(2f, 0, 2f), distributedPoints.get(15));
     }
 
     private static <T> List<T> drainIterator(Iterator<T> iterator) {

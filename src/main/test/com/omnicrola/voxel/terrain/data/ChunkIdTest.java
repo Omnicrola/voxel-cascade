@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.terrain.data;
 
-import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
 import junit.framework.TestCase;
 import org.junit.Test;
@@ -76,7 +75,7 @@ public class ChunkIdTest extends TestCase {
     public void testGlobalize() throws Exception {
         ChunkId chunkId = new ChunkId(2, 2, 2);
 
-        assertEquals(new Vector3f(33, 33, 33), chunkId.globalize(1, 1, 1));
-        assertEquals(new Vector3f(37, 39, 43), chunkId.globalize(5, 7, 11));
+        assertEquals(new Vec3i(33, 33, 33), chunkId.globalize(1, 1, 1));
+        assertEquals(new Vec3i(37, 39, 43), chunkId.globalize(5, 7, 11));
     }
 }

@@ -5,11 +5,8 @@
 
     <groupId>com.omnicrola.voxel-cascade</groupId>
     <artifactId>voxel-cascade</artifactId>
-    <packaging>pom</packaging>
-    <version>1.0-SNAPSHOT</version>
-    <modules>
-        <module>voxel-cascade-server</module>
-    </modules>
+    <packaging>jar</packaging>
+    <version>1.1-ALPHA</version>
     <name>Voxel Cascade</name>
 
     <properties>
@@ -23,8 +20,14 @@
     </properties>
 
     <build>
+        <resources>
+            <resource>
+                <directory>src/assets</directory>
+            </resource>
+        </resources>
         <plugins>
             <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>2.3.2</version>
                 <configuration>
@@ -37,6 +40,9 @@
                 <groupId>com.googlecode.mavennatives</groupId>
                 <artifactId>maven-nativedependencies-plugin</artifactId>
                 <version>0.0.7</version>
+                <configuration>
+                    <nativesTargetDir>${project.build.directory}/dist/lib</nativesTargetDir>
+                </configuration>
                 <executions>
                     <execution>
                         <id>unpacknatives</id>
@@ -59,35 +65,28 @@
                             <classpathPrefix>lib/</classpathPrefix>
                         </manifest>
                     </archive>
+                    <outputDirectory>${project.build.directory}/dist</outputDirectory>
                 </configuration>
             </plugin>
             <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.2.1</version>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <version>2.10</version>
                 <executions>
                     <execution>
-                        <id>bundle-project-sources</id>
+                        <id>copy-dependencies</id>
                         <phase>package</phase>
                         <goals>
-                            <goal>single</goal>
+                            <goal>copy-dependencies</goal>
                         </goals>
                         <configuration>
-                            <descriptors>
-                                <descriptor>src/META-INF/assembly.xml</descriptor>
-                            </descriptors>
+                            <excludeScope>test</excludeScope>
+                            <includeScope>compile</includeScope>
+                            <outputDirectory>${project.build.directory}/dist/lib</outputDirectory>
+                            <overWriteReleases>false</overWriteReleases>
+                            <overWriteSnapshots>false</overWriteSnapshots>
+                            <overWriteIfNewer>true</overWriteIfNewer>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <groupId>org.dstovall</groupId>
-                <artifactId>onejar-maven-plugin</artifactId>
-                <version>1.4.4</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>one-jar</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -99,52 +98,62 @@
             <groupId>org.slick2d</groupId>
             <artifactId>slick2d-core</artifactId>
             <version>1.0.0</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-core</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-desktop</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-lwjgl</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-bullet-natives</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
 
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-bullet</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-networking</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-terrain</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>com.jme3</groupId>
             <artifactId>jme3-niftygui</artifactId>
             <version>${jme3.version}</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
             <groupId>org.bushe</groupId>
             <artifactId>eventbus</artifactId>
             <version>1.4</version>
+            <scope>compile</scope>
         </dependency>
 
 
@@ -182,5 +191,6 @@
             <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
         </pluginRepository>
     </pluginRepositories>
+
 
 </project>

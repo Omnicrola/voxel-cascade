@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.data.level;
 
-import sun.plugin.dom.exception.InvalidStateException;
 
 import java.util.List;
 import java.util.Optional;
@@ -25,7 +24,7 @@ public class LevelDefinitionRepository {
         if (level.isPresent()) {
             return level.get();
         }
-        throw new InvalidStateException("Level with UUID " + levelGlobalId +
+        throw new RuntimeException("Level with UUID " + levelGlobalId +
                 " cannot be found in loaded definitions (" +
                 this.levels.size() + " are loaded)");
     }
