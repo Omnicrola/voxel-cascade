@@ -1,8 +1,8 @@
 package com.omnicrola.voxel.data.read;
 
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
@@ -32,6 +32,7 @@ public class ProductionFileReaderStrategy implements IFileReaderStrategy {
             ArrayList<File> files = new ArrayList<>();
             while (entries.hasMoreElements()) {
                 final String name = entries.nextElement().getName();
+                logger.log(Level.FINE, "jar file: " + name);
                 if (name.startsWith(directoryPath + "/")) { //filter according to the path
                     logger.log(Level.FINE, "Found : " + name);
                     files.add(new File(name));
@@ -46,7 +47,17 @@ public class ProductionFileReaderStrategy implements IFileReaderStrategy {
     }
 
     @Override
-    public FileInputStream getInputStream(File file) {
-        return null;
+    public InputStream getInputStream(File file) {
+        logger.log(Level.FINE, "Loading resource from stream: " + file.getPath());
+        System.out.println("Loading resource from stream: " + file.getPath());
+        System.out.println(getResourceAsStream("\\" + file.getPath()));
+        System.out.println(getResourceAsStream("/" + file.getPath()));
+        System.out.println(getResourceAsStream(file.getAbsolutePath()));
+        InputStream resourceStream = getResourceAsStream("\\" + file.getPath());
+        return resourceStream;
+    }
+
+    private InputStream getResourceAsStream(String name) {
+        return this.getClass().getResourceAsStream(name);
     }
 }

@@ -6,7 +6,7 @@ OpenAL64.dll
 bulletjme64.dll
 lwjgl64.dll
 voxel.settings
-voxel-cascade.log
+voxel-cascade.log*
 
 
 # Mobile Tools for Java (J2ME)

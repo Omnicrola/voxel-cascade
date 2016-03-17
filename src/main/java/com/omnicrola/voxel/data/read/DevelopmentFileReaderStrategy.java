@@ -5,6 +5,7 @@ import sun.misc.Launcher;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Arrays;
@@ -36,8 +37,9 @@ public class DevelopmentFileReaderStrategy implements IFileReaderStrategy {
     }
 
     @Override
-    public FileInputStream getInputStream(File file) {
+    public InputStream getInputStream(File file) {
         try {
+            logger.log(Level.FINE, "Loading filestream for : " + file.getName());
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
             logger.log(Level.SEVERE, e.getMessage());

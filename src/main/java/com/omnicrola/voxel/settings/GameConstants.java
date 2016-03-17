@@ -34,4 +34,5 @@ public class GameConstants {
     public static final String NODE_TERRAIN = "TERRAIN";
 
     public static final String SETTINGS_FILE = "voxel.settings";
+    public static final String PROPERTY_LOG_LEVEL = "voxel-log-level";
 }

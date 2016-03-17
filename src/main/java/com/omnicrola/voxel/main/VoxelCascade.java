@@ -2,6 +2,7 @@ package com.omnicrola.voxel.main;
 
 import com.omnicrola.voxel.main.init.Bootstrapper;
 import com.omnicrola.voxel.main.init.VoxelGameLauncher;
+import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
 import java.net.URL;
@@ -16,27 +17,30 @@ import java.util.logging.SimpleFormatter;
  */
 public class VoxelCascade {
 
-    private static final Logger logger = Logger.getLogger(VoxelCascade.class.getName());
+    private static Logger LOGGER;
 
 
     public static void main(String[] args) {
         try {
-//        printClasspath();
             startLogging();
+            printClasspath();
             VoxelGameLauncher voxelGameLauncher = Bootstrapper.bootstrap();
             voxelGameLauncher.launch();
         } catch (Exception e) {
-            logger.log(Level.SEVERE, "Exception during startup: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, "Exception during startup: " + e.getMessage());
+            e.printStackTrace();
         }
     }
 
     private static void startLogging() {
-        Logger logger = Logger.getLogger("");
+        Logger baselogger = Logger.getLogger("");
+        Level logLevel = getLogLevel();
+        baselogger.setLevel(logLevel);
         FileHandler fh;
 
         try {
             fh = new FileHandler("voxel-cascade.log");
-            logger.addHandler(fh);
+            baselogger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
 
@@ -45,14 +49,20 @@ public class VoxelCascade {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        LOGGER = Logger.getLogger(VoxelCascade.class.getName());
+    }
+
+    private static Level getLogLevel() {
+        String property = System.getProperty(GameConstants.PROPERTY_LOG_LEVEL, "WARNING");
+        return Level.parse(property);
     }
 
     private static void printClasspath() {
-        final ClassLoader systemClassLoader = ClassLoader
-                .getSystemClassLoader();
+        final ClassLoader systemClassLoader = ClassLoader.getSystemClassLoader();
         final URL[] urls = ((URLClassLoader) systemClassLoader).getURLs();
+        LOGGER.log(Level.FINE, "Dumping classpath");
         for (final URL url : urls) {
-            System.out.println("url: " + url.getFile());
+            LOGGER.log(Level.FINE, "  Classpath: " + url.getFile());
         }
     }
 }

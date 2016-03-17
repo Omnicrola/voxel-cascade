@@ -18,7 +18,9 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.*;
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -81,16 +83,6 @@ public class GameXmlDataParser {
         try {
             return (LevelDefinition) unmarshaller.unmarshal(stream);
         } catch (JAXBException e) {
-            logger.log(Level.SEVERE, e.getMessage());
-        }
-        return null;
-    }
-
-    private static FileInputStream getFileInputStream(File f) {
-        try {
-            // TODO:  need to use a strategy here? for JAR/IDE
-            return new FileInputStream(f);
-        } catch (FileNotFoundException e) {
             logger.log(Level.SEVERE, e.getMessage());
         }
         return null;

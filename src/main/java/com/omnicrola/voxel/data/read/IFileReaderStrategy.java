@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.data.read;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.InputStream;
 import java.util.List;
 
 /**
@@ -10,5 +10,5 @@ import java.util.List;
 public interface IFileReaderStrategy {
     List<File> getDirectoryContents(String directoryPath);
 
-    FileInputStream getInputStream(File file);
+    InputStream getInputStream(File file);
 }
