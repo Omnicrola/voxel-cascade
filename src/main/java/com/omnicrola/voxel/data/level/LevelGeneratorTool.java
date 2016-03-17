@@ -4,6 +4,7 @@ import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.read.DevelopmentFileReaderStrategy;
 import com.omnicrola.voxel.data.units.StructureGenerator;
 import com.omnicrola.voxel.data.units.UnitGenerator;
 
@@ -24,7 +25,7 @@ public class LevelGeneratorTool {
     public static final int OPPONENT_TEAM_ID = 2;
 
     public static void main(String[] args) throws FileNotFoundException {
-        GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
+        GameXmlDataParser gameXmlDataParser = new GameXmlDataParser(new DevelopmentFileReaderStrategy());
         File outputFile = new File("src/assets/Data/levels/basic.level");
         LevelDefinition levelDefinition = createBasicLevelDefinition();
         gameXmlDataParser.writeLevel(new FileOutputStream(outputFile), levelDefinition);

@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.data.units;
 
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.read.DevelopmentFileReaderStrategy;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,7 +15,7 @@ public class UnitDefinitionGeneratorTool {
 
     public static void main(String[] args) throws Exception {
         File outputFile = new File("src/assets/Data/core-definitions.units");
-        GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
+        GameXmlDataParser gameXmlDataParser = new GameXmlDataParser(new DevelopmentFileReaderStrategy());
         FileOutputStream stream = new FileOutputStream(outputFile);
 
         XmlGameDefinitions coreDefinitions = createCoreDefinitions();

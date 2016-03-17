@@ -3,6 +3,7 @@ package com.omnicrola.voxel.data.units;
 import com.jme3.math.ColorRGBA;
 import com.omnicrola.util.TestTools;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.read.DevelopmentFileReaderStrategy;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +28,7 @@ public class XmlGameDefinitionsFunctionalTest extends TestTools {
 
     @Before
     public void setup() {
-        this.gameXmlDataParser = new GameXmlDataParser();
+        this.gameXmlDataParser = new GameXmlDataParser(new DevelopmentFileReaderStrategy());
         this.testFile = new File("units-test.units");
         this.testFile.deleteOnExit();
     }

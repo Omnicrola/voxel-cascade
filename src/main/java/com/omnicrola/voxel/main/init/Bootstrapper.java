@@ -3,6 +3,8 @@ package com.omnicrola.voxel.main.init;
 import com.jme3.bullet.BulletAppState;
 import com.jme3.system.AppSettings;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.read.FileReaderStrategyFactory;
+import com.omnicrola.voxel.data.read.IFileReaderStrategy;
 import com.omnicrola.voxel.engine.EngineShutdownHandler;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.main.init.states.*;
@@ -22,7 +24,8 @@ public class Bootstrapper {
 
         ArrayList<IGuiBuilder> guiBuilders = getiGuiBuilders();
         ArrayList<IStateInitializer> stateInitializers = getStateInitializers();
-        GameXmlDataParser gameXmlDataParser = new GameXmlDataParser();
+        IFileReaderStrategy fileReaderStrategy = FileReaderStrategyFactory.build();
+        GameXmlDataParser gameXmlDataParser = new GameXmlDataParser(fileReaderStrategy);
         VoxelGameEngineInitializer initializer = new VoxelGameEngineInitializer(
                 new InputMappingLoader(),
                 new GuiInitializer(guiBuilders),

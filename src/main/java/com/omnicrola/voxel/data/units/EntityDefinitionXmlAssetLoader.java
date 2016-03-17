@@ -3,6 +3,8 @@ package com.omnicrola.voxel.data.units;
 import com.jme3.asset.AssetInfo;
 import com.jme3.asset.AssetLoader;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.read.FileReaderStrategyFactory;
+import com.omnicrola.voxel.data.read.IFileReaderStrategy;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -15,7 +17,8 @@ public class EntityDefinitionXmlAssetLoader implements AssetLoader {
     private final GameXmlDataParser definitionLoader;
 
     public EntityDefinitionXmlAssetLoader() {
-        this.definitionLoader = new GameXmlDataParser();
+        IFileReaderStrategy fileReaderStrategy = FileReaderStrategyFactory.build();
+        this.definitionLoader = new GameXmlDataParser(fileReaderStrategy);
     }
 
     @Override
