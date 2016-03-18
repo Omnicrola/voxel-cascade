@@ -47,19 +47,24 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
                 if (mouseHasBeenDragged()) {
                     ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.inputManager.getCursorPosition());
                     List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
-                    SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, spatials);
+                    SelectionGroup selectionGroup = selectUnits(spatials);
                     this.worldCursor.setCurrentSelection(selectionGroup);
                 } else {
                     Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor();
                     if (unitUnderCursor.isPresent()) {
                         Geometry unit = unitUnderCursor.get().getGeometry();
-                        SelectionGroup selectionGroup = new SelectionGroup(this.cursorCommandAdaptor, Arrays.asList(unit));
+                        SelectionGroup selectionGroup = selectUnits(Arrays.asList(unit));
                         this.worldCursor.setCurrentSelection(selectionGroup);
                     }
                 }
             }
         }
         this.wasPressed = gameMouseEvent.isPressed();
+    }
+
+    private SelectionGroup selectUnits(List<Spatial> spatials) {
+        spatials.forEach(u->u.setUserData(EntityDataKeys.IS_CURRENTLY_SELECTED, true));
+        return new SelectionGroup(this.cursorCommandAdaptor, spatials);
     }
 
     @Override

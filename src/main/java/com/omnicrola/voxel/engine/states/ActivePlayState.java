@@ -16,7 +16,7 @@ import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.TerrainManager;
-import com.omnicrola.voxel.ui.select.UiSelectionRectangle;
+import com.omnicrola.voxel.ui.IUiManager;
 
 import java.util.ArrayList;
 
@@ -29,16 +29,16 @@ public class ActivePlayState extends AbstractAppState {
     private InputManager inputManager;
     private TerrainManager terrainManager;
     private IWorldCursor worldCursor;
-    private UiSelectionRectangle selectionRectangle;
+    private IUiManager uiManager;
 
     public ActivePlayState(LevelManager levelManager,
                            TerrainManager terrainManager,
                            IWorldCursor worldCursor,
-                           UiSelectionRectangle selectionRectangle) {
+                           IUiManager uiManager) {
         this.levelManager = levelManager;
         this.terrainManager = terrainManager;
         this.worldCursor = worldCursor;
-        this.selectionRectangle = selectionRectangle;
+        this.uiManager = uiManager;
         this.inputs = new ArrayList<>();
     }
 
@@ -57,7 +57,7 @@ public class ActivePlayState extends AbstractAppState {
     private void attachWorldCursor(VoxelGameEngine voxelGameEngine) {
         Node fxNode = voxelGameEngine.getWorldNode().getFxNode();
         this.worldCursor.attachTo(fxNode);
-        voxelGameEngine.getGuiNode().attachChild(this.selectionRectangle);
+        this.uiManager.attach(voxelGameEngine.getGuiNode());
     }
 
     private void initializeKeybindings(VoxelGameEngine voxelGameEngine) {
@@ -69,12 +69,6 @@ public class ActivePlayState extends AbstractAppState {
         addStateInput(GameInputAction.MOUSE_PRIMARY, primaryCursorListener);
         addStateInput(GameInputAction.MOUSE_SECONDARY, new ExecuteSecondaryCursorListener(this.worldCursor));
 
-        InputManager inputManager = voxelGameEngine.getInputManager();
-        SelectionRectangleListener selectionRectangleListener = new SelectionRectangleListener(inputManager, this.selectionRectangle);
-        addStateInput(GameInputAction.MOUSE_PRIMARY, selectionRectangleListener);
-        addStateInput(GameInputAction.MOUSE_MOVEMENT, selectionRectangleListener);
-        addStateInput(GameInputAction.MOUSE_MOVEMENT, selectionRectangleListener);
-
         CameraDolly cameraDolly = new CameraDolly(voxelGameEngine.getCamera());
         PanCameraListener panCameraListener = new PanCameraListener(cameraDolly);
         panCameraListener.registerInputs(this);
@@ -85,8 +79,10 @@ public class ActivePlayState extends AbstractAppState {
         super.setEnabled(enabled);
         if (enabled) {
             this.inputs.forEach(t -> addListener(t));
+            this.uiManager.bindInput();
         } else {
             this.inputs.forEach(t -> removeListener(t));
+            this.uiManager.unbindInput();
         }
     }
 

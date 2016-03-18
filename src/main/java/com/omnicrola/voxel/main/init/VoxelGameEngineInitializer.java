@@ -3,7 +3,10 @@ package com.omnicrola.voxel.main.init;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
+import com.jme3.material.Material;
+import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.Camera;
+import com.jme3.scene.Geometry;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
@@ -33,6 +36,8 @@ import com.omnicrola.voxel.terrain.build.mesh.*;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 import com.omnicrola.voxel.ui.UiManager;
+import com.omnicrola.voxel.ui.select.RingMesh;
+import com.omnicrola.voxel.ui.select.UiSelectionRectangle;
 import com.omnicrola.voxel.world.IWorldNode;
 import com.omnicrola.voxel.world.WorldManager;
 import com.omnicrola.voxel.world.build.StructureBuilder;
@@ -98,8 +103,8 @@ public class VoxelGameEngineInitializer {
 
         InputManager inputManager = voxelGameEngine.getInputManager();
         WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager, terrainManager, worldManager, materialRepository, inputManager);
-        UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui());
-
+        UiSelectionRectangle selectionRectangle = buildSelectionRectangle(assetManager);
+        UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui(), inputManager, selectionRectangle);
 
         WorldCommandProcessor worldCommandProcessor = new WorldCommandProcessor(
                 networkCommandQueue,
@@ -120,7 +125,6 @@ public class VoxelGameEngineInitializer {
                 levelManager);
         levelLoadingAdapter.setStateLoader(levelStateLoader);
 
-
         InitializationContainer initializationContainer = new InitializationContainer(
                 worldManager,
                 voxelTypeLibrary,
@@ -129,8 +133,25 @@ public class VoxelGameEngineInitializer {
                 levelManager,
                 worldCommandProcessor,
                 networkManager,
-                terrainManager, worldEntityBuilder);
+                terrainManager, worldEntityBuilder, uiManager);
         return initializationContainer;
+    }
+
+    private UiSelectionRectangle buildSelectionRectangle(AssetManager assetManager) {
+        Material material = getSelectionMaterial(assetManager);
+        RingMesh ringMesh = new RingMesh();
+        Geometry geometry = new Geometry("selection quad", ringMesh);
+        geometry.setMaterial(material);
+
+        UiSelectionRectangle uiSelectionRectangle = new UiSelectionRectangle(ringMesh);
+        uiSelectionRectangle.attachChild(geometry);
+        return uiSelectionRectangle;
+    }
+
+    private Material getSelectionMaterial(AssetManager assetManager) {
+        Material material = new Material(assetManager, GameConstants.MATERIAL_GUI);
+        material.setColor("Color", new ColorRGBA(0.1f, 1.0f, 0.1f, 1.0f));
+        return material;
     }
 
     private WorldCursor createWorldCursor(VoxelGameEngine voxelGameEngine) {
@@ -179,7 +200,6 @@ public class VoxelGameEngineInitializer {
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
         return voxelTypeLibrary;
     }
-
 
     private VoxelTerrainGenerator buildTerrainGenerator(VoxelTypeLibrary voxelTypeLibrary) {
         PerlinNoiseGenerator perlinNoiseGenerator = new PerlinNoiseGenerator();

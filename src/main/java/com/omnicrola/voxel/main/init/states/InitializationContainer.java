@@ -12,6 +12,7 @@ import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
+import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.world.WorldManager;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import de.lessvoid.nifty.Nifty;
@@ -29,6 +30,7 @@ public class InitializationContainer {
     private NetworkManager networkManager;
     private TerrainManager terrainManager;
     private WorldEntityBuilder worldEntityBuilder;
+    private IUiManager uiManager;
 
     public InitializationContainer(WorldManager worldManager,
                                    VoxelTypeLibrary voxelTypeLibrary,
@@ -38,7 +40,8 @@ public class InitializationContainer {
                                    WorldCommandProcessor worldCommandProcessor,
                                    NetworkManager networkManager,
                                    TerrainManager terrainManager,
-                                   WorldEntityBuilder worldEntityBuilder) {
+                                   WorldEntityBuilder worldEntityBuilder,
+                                   IUiManager uiManager) {
         this.worldManager = worldManager;
         this.voxelTypeLibrary = voxelTypeLibrary;
         this.materialRepository = materialRepository;
@@ -48,6 +51,7 @@ public class InitializationContainer {
         this.networkManager = networkManager;
         this.terrainManager = terrainManager;
         this.worldEntityBuilder = worldEntityBuilder;
+        this.uiManager = uiManager;
     }
 
     public WorldManager getWorldManager() {
@@ -104,5 +108,9 @@ public class InitializationContainer {
 
     public Node getGuiNode() {
         return this.voxelGameEngine.getGuiNode();
+    }
+
+    public IUiManager getUiManager() {
+        return uiManager;
     }
 }

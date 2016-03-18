@@ -26,11 +26,10 @@ public class DevelopmentFileReaderStrategy implements IFileReaderStrategy {
         try {
             final URL url = Launcher.class.getResource("/" + directoryPath);
             if (url != null) {
-                logger.log(Level.INFO, "Loading from IDE: " + url);
                 final File apps = new File(url.toURI());
                 List<String> files = Arrays.asList(apps.listFiles())
                         .stream()
-                        .map(f -> f.getName())
+                        .map(f -> f.getAbsoluteFile().getAbsolutePath())
                         .collect(Collectors.toList());
                 return files;
             }
@@ -46,7 +45,7 @@ public class DevelopmentFileReaderStrategy implements IFileReaderStrategy {
             logger.log(Level.FINE, "Loading filestream for : " + file);
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
-            logger.log(Level.SEVERE, e.getMessage());
+            logger.log(Level.SEVERE, file + " - " + e.getMessage());
         }
         return null;
     }
