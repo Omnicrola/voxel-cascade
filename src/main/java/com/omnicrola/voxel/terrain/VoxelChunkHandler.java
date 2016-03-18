@@ -5,8 +5,8 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.debug.DebugTimer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
-import com.omnicrola.voxel.terrain.build.occlusion.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
+import com.omnicrola.voxel.terrain.build.occlusion.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.data.*;
 
 import java.util.HashMap;
@@ -14,11 +14,15 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by omnic on 1/31/2016.
  */
 public class VoxelChunkHandler {
+
+    private static final Logger LOGGER = Logger.getLogger(VoxelChunkHandler.class.getName());
 
     private final Map<ChunkId, VoxelChunk> chunks;
     private TerrainAdapter terrainAdapter;
@@ -77,9 +81,13 @@ public class VoxelChunkHandler {
                 .forEach(c -> {
                     this.debugTimer.reset();
                     this.voxelChunkRebuilder.rebuild(c);
-                    float elapsed = this.debugTimer.mark();
-                    System.out.println("Rebuilt chunk " + c.toString() + " in " + elapsed + "ms");
+                    logRebuildTime(c);
                 });
+    }
+
+    private void logRebuildTime(VoxelChunk chunk) {
+        float elapsed = this.debugTimer.mark();
+        LOGGER.log(Level.FINE, "Rebuilt chunk " + chunk.toString() + " in " + elapsed + "ms");
     }
 
     public void flagAllChunksForRebuild() {
@@ -137,6 +145,4 @@ public class VoxelChunkHandler {
         this.chunks.values().stream().forEach(c -> c.dispose());
         this.chunks.clear();
     }
-
-
 }
