@@ -18,7 +18,6 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-import java.io.File;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -62,11 +61,11 @@ public class GameXmlDataParser {
         try {
             logger.log(Level.INFO, "Loading levels from '" + levelPath + "'");
             Unmarshaller unmarshaller = getUnmarshaller();
-            List<File> allFilesInDirectory = this.fileReaderStrategy.getDirectoryContents(levelPath);
+            List<String> allFilesInDirectory = this.fileReaderStrategy.getDirectoryContents(levelPath);
             logger.log(Level.INFO, "Found " + allFilesInDirectory.size() + " files in level directory");
             List<LevelDefinition> levels = allFilesInDirectory
                     .stream()
-                    .filter(f -> f.getName().endsWith(".level"))
+                    .filter(f -> f.endsWith(".level"))
                     .map(f -> this.fileReaderStrategy.getInputStream(f))
                     .map(stream -> loadSingleLevel(stream, unmarshaller))
                     .collect(Collectors.toList());

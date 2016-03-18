@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.data.read;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -25,17 +24,17 @@ public class ProductionFileReaderStrategy implements IFileReaderStrategy {
     }
 
     @Override
-    public List<File> getDirectoryContents(String directoryPath) {
+    public List<String> getDirectoryContents(String directoryPath) {
         logger.log(Level.INFO, "Loading from JAR");
         try {
             final Enumeration<JarEntry> entries = jar.entries(); //gives ALL entries in jar
-            ArrayList<File> files = new ArrayList<>();
+            ArrayList<String> files = new ArrayList<>();
             while (entries.hasMoreElements()) {
                 final String name = entries.nextElement().getName();
                 logger.log(Level.FINE, "jar file: " + name);
                 if (name.startsWith(directoryPath + "/")) { //filter according to the path
                     logger.log(Level.FINE, "Found : " + name);
-                    files.add(new File(name));
+                    files.add(name);
                 }
             }
             jar.close();
@@ -47,13 +46,9 @@ public class ProductionFileReaderStrategy implements IFileReaderStrategy {
     }
 
     @Override
-    public InputStream getInputStream(File file) {
-        logger.log(Level.FINE, "Loading resource from stream: " + file.getPath());
-        System.out.println("Loading resource from stream: " + file.getPath());
-        System.out.println(getResourceAsStream("\\" + file.getPath()));
-        System.out.println(getResourceAsStream("/" + file.getPath()));
-        System.out.println(getResourceAsStream(file.getAbsolutePath()));
-        InputStream resourceStream = getResourceAsStream("\\" + file.getPath());
+    public InputStream getInputStream(String file) {
+        logger.log(Level.FINE, "Loading resource from stream: " + file);
+        InputStream resourceStream = getResourceAsStream("/" + file);
         return resourceStream;
     }
 

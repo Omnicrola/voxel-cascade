@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Created by Eric on 3/16/2016.
@@ -21,13 +22,16 @@ public class DevelopmentFileReaderStrategy implements IFileReaderStrategy {
     private static final Logger logger = Logger.getLogger(DevelopmentFileReaderStrategy.class.getName());
 
     @Override
-    public List<File> getDirectoryContents(String directoryPath) {
+    public List<String> getDirectoryContents(String directoryPath) {
         try {
             final URL url = Launcher.class.getResource("/" + directoryPath);
             if (url != null) {
                 logger.log(Level.INFO, "Loading from IDE: " + url);
                 final File apps = new File(url.toURI());
-                List<File> files = Arrays.asList(apps.listFiles());
+                List<String> files = Arrays.asList(apps.listFiles())
+                        .stream()
+                        .map(f -> f.getName())
+                        .collect(Collectors.toList());
                 return files;
             }
         } catch (URISyntaxException e) {
@@ -37,9 +41,9 @@ public class DevelopmentFileReaderStrategy implements IFileReaderStrategy {
     }
 
     @Override
-    public InputStream getInputStream(File file) {
+    public InputStream getInputStream(String file) {
         try {
-            logger.log(Level.FINE, "Loading filestream for : " + file.getName());
+            logger.log(Level.FINE, "Loading filestream for : " + file);
             return new FileInputStream(file);
         } catch (FileNotFoundException e) {
             logger.log(Level.SEVERE, e.getMessage());
