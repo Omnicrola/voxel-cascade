@@ -28,4 +28,20 @@ public class SelectedSpatial implements ISelectedUnit {
     public void removeDecoration(IDecoration decoration) {
         decoration.detatchFrom(this.spatial);
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof SelectedSpatial)) return false;
+
+        SelectedSpatial that = (SelectedSpatial) o;
+
+        return spatial.equals(that.spatial);
+
+    }
+
+    @Override
+    public int hashCode() {
+        return spatial.hashCode();
+    }
 }
