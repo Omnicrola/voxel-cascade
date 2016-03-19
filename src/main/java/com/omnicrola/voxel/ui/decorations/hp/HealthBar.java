@@ -45,7 +45,7 @@ public class HealthBar extends Node implements IDecoration {
         this.setLocalTranslation(targetPosition);
         float hitpoints = VoxelUtil.floatData(this.targetUnit, EntityDataKeys.HITPOINTS);
         float maxHitpoints = VoxelUtil.floatData(this.targetUnit, EntityDataKeys.MAX_HITPOINTS);
-        float percentage = maxHitpoints / hitpoints;
+        float percentage = hitpoints / maxHitpoints;
         setPercent(percentage);
     }
 
