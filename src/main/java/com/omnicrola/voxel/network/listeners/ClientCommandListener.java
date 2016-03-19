@@ -7,10 +7,16 @@ import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.IWorldCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by Eric on 2/22/2016.
  */
 public class ClientCommandListener implements MessageListener<Client> {
+
+    private static final Logger LOGGER = Logger.getLogger(ClientCommandListener.class.getName());
+
     private IActionQueue actionQueue;
     private ICommandProcessor commandProcessor;
 
@@ -27,7 +33,7 @@ public class ClientCommandListener implements MessageListener<Client> {
     }
 
     private Object addCommand(IWorldCommand command) {
-        System.out.println("C <= recieved message: " + command);
+        LOGGER.log(Level.FINE, "C <= recieved message: " + command);
         this.commandProcessor.addCommand(command);
         return null;
     }

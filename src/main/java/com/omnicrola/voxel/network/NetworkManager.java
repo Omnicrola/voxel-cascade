@@ -8,11 +8,15 @@ import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by omnic on 2/28/2016.
  */
 public class NetworkManager implements INetworkManager {
+
+    private static final Logger LOGGER = Logger.getLogger(NetworkManager.class.getName());
 
     private Client networkClient;
     private VoxelServerEngine voxelServerEngine;
@@ -29,6 +33,7 @@ public class NetworkManager implements INetworkManager {
     @Override
     public void disconnect() {
         if (this.networkClient != null) {
+            LOGGER.log(Level.INFO, "Disconnecting from server...");
             this.networkClient.close();
             this.networkClient = null;
         }
@@ -37,22 +42,27 @@ public class NetworkManager implements INetworkManager {
     @Override
     public boolean connectTo(String serverAddress) {
         try {
+            LOGGER.log(Level.FINE, "Connecting to server : " + serverAddress);
             this.networkClient = Network.connectToServer(serverAddress, GameConstants.SERVER_PORT);
+            LOGGER.log(Level.FINE, "Loading network listeners..");
             this.clientListenerBuilder.attach(networkClient, this.commandProcessor);
+            LOGGER.log(Level.FINE, "Starting network client...");
             this.networkClient.start();
+            LOGGER.log(Level.FINE, "Sending handshake message...");
             this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
             return true;
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.log(Level.SEVERE, "Could not connect to server : " + e.getMessage());
             return false;
         }
     }
 
     @Override
     public void startMultiplayerServer() {
+        LOGGER.log(Level.INFO, "Starting local multiplayer instance");
         this.voxelServerEngine = new VoxelServerEngine();
         this.voxelServerEngine.enqueue(() -> {
-            System.out.println("Multiplayer Start!");
+            LOGGER.log(Level.INFO, "Multiplayer server is running.");
             return null;
         });
         this.voxelServerEngine.start();
@@ -62,6 +72,7 @@ public class NetworkManager implements INetworkManager {
     @Override
     public void shutdownMultiplayer() {
         if (this.voxelServerEngine != null) {
+            LOGGER.log(Level.INFO, "Closing multiplayer server");
             this.voxelServerEngine.stop();
             this.voxelServerEngine = null;
         }
