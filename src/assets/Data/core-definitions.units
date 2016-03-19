@@ -110,9 +110,9 @@
             </commands>
             <build-targets>
                 <voxel type="1"/>
-                <structure structure-id="101" build-radius="2.0" priority="1"/>
-                <structure structure-id="100" build-radius="2.0" priority="1"/>
-                <structure structure-id="102" build-radius="2.0" priority="1"/>
+                <structure structure-id="101" label="Extractor" build-radius="2.0" priority="1"/>
+                <structure structure-id="100" label="Turret" build-radius="2.0" priority="1"/>
+                <structure structure-id="102" label="Tank Factory" build-radius="2.0" priority="1"/>
             </build-targets>
             <weapon-offset x="0.0" y="1.0" z="0.0"/>
         </unit>
@@ -167,7 +167,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="4" build-range="10.0" priority="1"/>
+                <unit unit-id="4" label="Builder" build-range="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>
@@ -188,7 +188,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="4" build-range="10.0" priority="1"/>
+                <unit unit-id="4" label="Builder" build-range="10.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>
@@ -235,7 +235,7 @@
                 <command>BUILD</command>
             </commands>
             <build-targets>
-                <unit unit-id="1" build-range="5.0" priority="1"/>
+                <unit unit-id="1" label="Tank" build-range="5.0" priority="1"/>
             </build-targets>
             <controls/>
         </structure>

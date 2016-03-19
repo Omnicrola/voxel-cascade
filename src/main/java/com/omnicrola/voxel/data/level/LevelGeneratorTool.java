@@ -54,6 +54,7 @@ public class LevelGeneratorTool {
         unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_PLAYER_CORE_ID, PLAYER_TEAM_ID, 20, 2f, 0));
         unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, PLAYER_TEAM_ID, 20, 2f, 6));
         unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, PLAYER_TEAM_ID, 20, 2f, -6));
+        unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TANK_FACTORY, PLAYER_TEAM_ID, 18, 2f, -5));
 
         unitPlacements.add(createUnitPlacement(StructureGenerator.BUILDING_ENEMY_CORE_ID, OPPONENT_TEAM_ID, -20, 2f, 0));
         unitPlacements.add(createUnitPlacement(StructureGenerator.ID_TURRET, OPPONENT_TEAM_ID, -20, 2f, 6));

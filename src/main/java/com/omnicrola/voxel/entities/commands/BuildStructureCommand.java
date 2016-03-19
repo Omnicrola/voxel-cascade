@@ -16,6 +16,9 @@ public class BuildStructureCommand implements IEntityCommand {
     @XmlAttribute(name = "structure-id", required = true)
     private int globalId;
 
+    @XmlAttribute(name = "label", required = true)
+    private String label;
+
     @XmlAttribute(name = "build-radius")
     private float buildRadius;
 
@@ -25,7 +28,8 @@ public class BuildStructureCommand implements IEntityCommand {
     public BuildStructureCommand() {
     }
 
-    public BuildStructureCommand(int globalId, float buildRadius) {
+    public BuildStructureCommand(String label, int globalId, float buildRadius) {
+        this.label = label;
         this.globalId = globalId;
         this.buildRadius = buildRadius;
     }
@@ -37,7 +41,7 @@ public class BuildStructureCommand implements IEntityCommand {
 
     @Override
     public String getName() {
-        return "Build " + this.globalId;
+        return this.label;
     }
 
     @Override

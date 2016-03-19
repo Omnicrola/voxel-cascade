@@ -17,7 +17,10 @@ public class BuildUnitCommand implements IEntityCommand {
     @XmlAttribute(name = "unit-id", required = true)
     private int unitId;
 
-    @XmlAttribute(name="build-range")
+    @XmlAttribute(name = "label", required = true)
+    private String label;
+
+    @XmlAttribute(name = "build-range")
     private float buildRadius = 1.0f;
 
     @XmlAttribute(name = "priority")
@@ -31,7 +34,7 @@ public class BuildUnitCommand implements IEntityCommand {
 
     @Override
     public String getName() {
-        return "Build " + this.unitId;
+        return label;
     }
 
     @Override
@@ -42,7 +45,8 @@ public class BuildUnitCommand implements IEntityCommand {
     public BuildUnitCommand() {
     }
 
-    public BuildUnitCommand(int unitId, float buildRadius) {
+    public BuildUnitCommand(String label, int unitId, float buildRadius) {
+        this.label = label;
         this.unitId = unitId;
         this.buildRadius = buildRadius;
     }

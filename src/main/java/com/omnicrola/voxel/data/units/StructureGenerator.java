@@ -57,7 +57,7 @@ public class StructureGenerator {
         structureDefinition.hitpoints = 500;
         structureDefinition.buildCost = 100;
         structureDefinition.commands.add(EntityCommand.BUILD);
-        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_BUILDER, 10f));
+        structureDefinition.buildCommands.add(new BuildUnitCommand("Builder", UnitGenerator.ID_BUILDER, 10f));
         return structureDefinition;
     }
 
@@ -87,7 +87,7 @@ public class StructureGenerator {
         structureDefinition.hitpoints = 250;
         structureDefinition.buildCost = 10;
         structureDefinition.commands.add(EntityCommand.BUILD);
-        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK, 5f));
+        structureDefinition.buildCommands.add(new BuildUnitCommand("Tank", UnitGenerator.ID_RED_TANK, 5f));
         return structureDefinition;
     }
 }
