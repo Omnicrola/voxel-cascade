@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.main.init;
 
 import com.jme3.app.state.AppStateManager;
+import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.GlobalGameState;
@@ -12,6 +13,9 @@ import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.builders.IGuiBuilder;
+import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
+import com.omnicrola.voxel.ui.decorations.hp.HealthBarFactory;
+import com.omnicrola.voxel.world.WorldManager;
 import de.lessvoid.nifty.Nifty;
 
 import java.util.HashMap;
@@ -35,18 +39,30 @@ public class GuiInitializer {
     }
 
     private UiAdapter buildUiAdapter(InitializationContainer initializationContainer) {
+        AssetManager assetManager = initializationContainer.getAssetManager();
         Nifty niftyGui = initializationContainer.getNiftyGui();
         LevelManager levelManager = initializationContainer.getLevelManager();
         AppStateManager stateManager = initializationContainer.getStateManager();
         WorldCommandProcessor worldCommandProcessor = initializationContainer.getWorldCommandProcessor();
-        IWorldCursor worldCursor = initializationContainer.getWorldManager().getWorldCursor();
+        WorldManager worldManager = initializationContainer.getWorldManager();
+        IWorldCursor worldCursor = worldManager.getWorldCursor();
 
         Map<GlobalGameState, IStateTransition> transitions = new HashMap<>();
         transitions.put(GlobalGameState.MULTIPLAYER_LOAD, new TransitionMultiplayerLoad());
         transitions.put(GlobalGameState.ACTIVE_PLAY, new TransitionActivePlay());
         transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());
 
-        return new UiAdapter(niftyGui, levelManager, worldCursor, worldCommandProcessor, transitions, stateManager);
+        HealthBarFactory healthBarFactory = new HealthBarFactory(assetManager);
+        SpatialDecorator spatialDecorator = new SpatialDecorator(worldManager, healthBarFactory);
+        UiAdapter uiAdapter = new UiAdapter(
+                niftyGui,
+                levelManager,
+                worldCursor,
+                worldCommandProcessor,
+                transitions,
+                stateManager,
+                spatialDecorator);
+        return uiAdapter;
     }
 
 }

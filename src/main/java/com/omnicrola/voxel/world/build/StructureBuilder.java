@@ -47,8 +47,8 @@ public class StructureBuilder {
         spatial.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
         spatial.setUserData(EntityDataKeys.IS_TARGETABLE, true);
         spatial.setUserData(EntityDataKeys.HITPOINTS, structureDefinition.getHitpoints());
+        spatial.setUserData(EntityDataKeys.MAX_HITPOINTS, structureDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
-
 
 
         return new Structure(spatial);

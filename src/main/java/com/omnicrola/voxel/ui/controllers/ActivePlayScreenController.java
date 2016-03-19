@@ -4,14 +4,15 @@ import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
+import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
+import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
@@ -72,9 +73,24 @@ public class ActivePlayScreenController extends AbstractScreenController {
     }
 
     public void setCurrentSelection(SelectionGroup currentSelection) {
+        removeHealthBarsFromSelection();
         this.currentSelection = currentSelection;
         updateSelectionList();
+        addHealthbarsToSelection();
         setCommandLabels(this.currentSelection.getAvailableCommands());
+    }
+
+
+    private void removeHealthBarsFromSelection() {
+        if (this.currentSelection != null) {
+            ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
+            this.currentSelection.getSelections().forEach(u -> decorator.removeHealthbar(u));
+        }
+    }
+
+    private void addHealthbarsToSelection() {
+        ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
+        this.currentSelection.getSelections().forEach(u -> decorator.addHealthbar(u));
     }
 
     public void updateStats(LevelState currentLevel) {

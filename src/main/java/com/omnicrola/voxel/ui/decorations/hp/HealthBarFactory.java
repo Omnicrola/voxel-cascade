@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.ui.select;
+package com.omnicrola.voxel.ui.decorations.hp;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.font.BitmapFont;
@@ -7,6 +7,7 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
+import com.jme3.scene.control.BillboardControl;
 import com.jme3.scene.shape.Quad;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.ui.builders.UiConstants;
@@ -24,23 +25,25 @@ public class HealthBarFactory {
 
     public HealthBar build() {
         Geometry backgroundBar = new Geometry("Quad", new Quad(0.9f, 0.3f));
-        Geometry foregroundBar = new Geometry("Quad", new Quad(.86f, 0.04f));
-
         backgroundBar.setLocalTranslation(-0.45f, 0.42f, 0.5f);
-        foregroundBar.setLocalTranslation(-0.43f, 0.44f, 0.51f);
-
         Material backgroundMaterial = new Material(assetManager, GameConstants.MATERIAL_UNSHADED);
         backgroundMaterial.setTexture("ColorMap", assetManager.loadTexture("Interface/healthbar.png"));
         backgroundBar.setMaterial(backgroundMaterial);
 
+
+        Geometry foregroundBar = new Geometry("Quad", new Quad(.86f, 0.04f));
+        foregroundBar.setLocalTranslation(-0.43f, 0.44f, 0.51f);
         Material foregroundMaterial = new Material(assetManager, GameConstants.MATERIAL_UNSHADED);
-        foregroundMaterial.setColor("m_Color", ColorRGBA.Green);
+        foregroundMaterial.setColor("Color", ColorRGBA.Green);
         foregroundBar.setMaterial(foregroundMaterial);
 
         BitmapText bitmapText = buildText();
 
-        HealthBar healthBar = new HealthBar("health", backgroundBar, foregroundBar, bitmapText);
-        healthBar.addControl(new HealthBarControl());
+        HealthBar healthBar = new HealthBar(foregroundBar, bitmapText);
+        healthBar.attachChild(backgroundBar);
+        healthBar.attachChild(foregroundBar);
+        healthBar.attachChild(bitmapText);
+        healthBar.addControl(new BillboardControl());
 
         return healthBar;
     }

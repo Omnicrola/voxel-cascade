@@ -63,7 +63,6 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     }
 
     private SelectionGroup selectUnits(List<Spatial> spatials) {
-        spatials.forEach(u->u.setUserData(EntityDataKeys.IS_CURRENTLY_SELECTED, true));
         return new SelectionGroup(this.cursorCommandAdaptor, spatials);
     }
 

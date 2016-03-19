@@ -11,6 +11,8 @@ import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.states.IStateTransition;
 import com.omnicrola.voxel.input.IUserSelectionObserver;
 import com.omnicrola.voxel.input.IWorldCursor;
+import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
+import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 
@@ -21,25 +23,30 @@ import java.util.Map;
  * Created by Eric on 2/26/2016.
  */
 public class UiAdapter implements ILevelChangeObserver {
+
+    private final ArrayList<ILevelObserver> levelObservers;
+
     private final Nifty niftyGui;
     private final IWorldCursor worldCursor;
     private final ICommandProcessor commandProcessor;
     private final Map<GlobalGameState, IStateTransition> transitions;
     private AppStateManager stateManager;
-    private final ArrayList<ILevelObserver> levelObservers;
     private LevelState currentLevel;
+    private SpatialDecorator spatialDecorator;
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
                      IWorldCursor worldCursor,
                      ICommandProcessor commandProcessor,
                      Map<GlobalGameState, IStateTransition> transitions,
-                     AppStateManager stateManager) {
+                     AppStateManager stateManager,
+                     SpatialDecorator spatialDecorator) {
         this.niftyGui = niftyGui;
         this.worldCursor = worldCursor;
         this.commandProcessor = commandProcessor;
         this.transitions = transitions;
         this.stateManager = stateManager;
+        this.spatialDecorator = spatialDecorator;
 
         levelManager.addObserver(this);
         this.levelObservers = new ArrayList<>();
@@ -80,5 +87,9 @@ public class UiAdapter implements ILevelChangeObserver {
         }
         this.currentLevel = currentLevelState;
         this.levelObservers.forEach(o -> this.currentLevel.addObserver(o));
+    }
+
+    public ISpatialDecorator getSpatialDecorator() {
+        return this.spatialDecorator;
     }
 }
