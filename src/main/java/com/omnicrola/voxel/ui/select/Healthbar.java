@@ -1,61 +1,24 @@
 package com.omnicrola.voxel.ui.select;
 
-import com.jme3.asset.AssetManager;
-import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
-import com.jme3.material.Material;
-import com.jme3.math.ColorRGBA;
-import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
-import com.jme3.scene.control.BillboardControl;
-import com.jme3.scene.shape.Quad;
 
 /**
  * Created by omnic on 3/17/2016.
  */
 public class HealthBar extends Node {
 
-    private boolean visible = true;
-    private Geometry healthBar;
+    private final Geometry background;
+    private final Geometry healthBar;
+    private final BitmapText bitmapText;
 
-    public HealthBar(AssetManager assetManager, String name) {
+    public HealthBar(String name, Geometry background, Geometry healthBar, BitmapText bitmapText) {
         super(name);
-
-        Geometry bgBar = new Geometry("Quad", new Quad(0.9f, 0.3f));
-        healthBar = new Geometry("Quad", new Quad(.86f, 0.04f));
-
-        bgBar.setLocalTranslation(-0.45f, 0.42f, 0.5f);
-        healthBar.setLocalTranslation(-0.43f, 0.44f, 0.51f);
-
-        Material background = new Material(assetManager, "Common/MatDefs/Misc/Unshaded.j3md");
-
-        Material mat = background.clone();
-        mat.setColor("m_Color", ColorRGBA.Green);
-
-        background.setTexture("ColorMap", assetManager.loadTexture("Interface/ui/healthbar.png"));
-
-
-        BitmapFont fnt = assetManager.loadFont("Interface/Fonts/Default.fnt");
-        BitmapText txt = new BitmapText(fnt, false);
-        txt.setQueueBucket(RenderQueue.Bucket.Opaque);
-        txt.setSize( 0.2f );
-        txt.setText(name);
-        txt.setColor(ColorRGBA.White);
-        txt.setLocalTranslation(-0.43f, 0.73f, 0.52f);
-
-        bgBar.setMaterial(background);
-        healthBar.setMaterial(mat);
-
-        attachChild(bgBar);
-        attachChild(healthBar);
-        attachChild(txt);
-
-        BillboardControl billboardControl = new BillboardControl();
-        addControl(billboardControl);
-
-        HealthBarControl healthBarControl = new HealthBarControl(this);
-        addControl(healthBarControl);
+        this.background = background;
+        this.healthBar = healthBar;
+        this.bitmapText = bitmapText;
+        setPercent(1.0f);
     }
 
     public void setPercent(float percent) {
@@ -71,11 +34,4 @@ public class HealthBar extends Node {
         return healthBar.getLocalScale().getX();
     }
 
-    public void setVisible(boolean visible) {
-        this.visible = visible;
-    }
-
-    public boolean isVisible() {
-        return visible;
-    }
 }
