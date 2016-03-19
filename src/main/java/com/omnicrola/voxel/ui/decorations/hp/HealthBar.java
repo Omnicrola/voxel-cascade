@@ -73,14 +73,16 @@ public class HealthBar extends Node implements IDecoration {
         }
         if (0f < percent && percent <= 1f) {
             this.foreground.setLocalScale(percent, 1f, 1f);
-            if(percent < 0.2f){
+            if (percent < 0.2f) {
                 setBarColor(ColorRGBA.Red);
+            } else {
+                setBarColor(ColorRGBA.Green);
             }
         }
     }
 
     private void setBarColor(ColorRGBA color) {
-
+        this.foreground.getMaterial().setColor("Color", color);
     }
 
     @Override
@@ -93,5 +95,10 @@ public class HealthBar extends Node implements IDecoration {
         this.targetUnit = null;
     }
 
-
+    @Override
+    public void removeFromWorld() {
+        if (this.parent != null) {
+            this.parent.detachChild(this);
+        }
+    }
 }

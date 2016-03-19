@@ -9,4 +9,6 @@ public interface IDecoration {
     void attachTo(Spatial spatial);
 
     void detatchFrom(Spatial spatial);
+
+    void removeFromWorld();
 }

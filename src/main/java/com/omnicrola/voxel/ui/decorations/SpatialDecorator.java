@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.ui.decorations;
 
-import com.jme3.scene.Node;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.ui.decorations.hp.HealthBar;
 import com.omnicrola.voxel.ui.decorations.hp.HealthBarFactory;
@@ -47,12 +46,15 @@ public class SpatialDecorator implements ISpatialDecorator {
     @Override
     public void removeSelectionDecorations(ISelectedUnit selectedUnit) {
         HealthBar healthBar = this.healthbars.remove(selectedUnit);
-        if (healthBar != null) {
-            selectedUnit.removeDecoration(healthBar);
-            Node parent = healthBar.getParent();
-            if (parent != null) {
-                parent.detachChild(healthBar);
-            }
+        SelectionRing selectionRing = this.selectionRings.remove(selectedUnit);
+        detatchDecoration(selectedUnit, healthBar);
+        detatchDecoration(selectedUnit, selectionRing);
+    }
+
+    private void detatchDecoration(ISelectedUnit selectedUnit, IDecoration decoration) {
+        if (decoration != null) {
+            selectedUnit.removeDecoration(decoration);
+            decoration.removeFromWorld();
         }
     }
 }
