@@ -17,6 +17,7 @@ public class StructureGenerator {
     public static final int BUILDING_ENEMY_CORE_ID = 2;
     public static final int ID_TURRET = 100;
     public static final int ID_EXTRACTOR = 101;
+    public static final int ID_TANK_FACTORY = 102;
 
     public static StructureDefinition createPlayerCoreBuilding() {
         StructureDefinition structureDefinition = createCore();
@@ -34,7 +35,7 @@ public class StructureGenerator {
         structureDefinition.name = "Resource Extractor";
         structureDefinition.buildCost = 5;
         structureDefinition.description = "Extracts resources from underlying cubes";
-        structureDefinition.controlFactories.add(new RotationControlFactory(new Vector3f(0,1,0), 1f));
+        structureDefinition.controlFactories.add(new RotationControlFactory(new Vector3f(0, 1, 0), 1f));
         structureDefinition.controlFactories.add(new ParticleEffectControlFactory());
         structureDefinition.controlFactories.add(new PassiveHarvestControlFactory(1f, 3f));
         return structureDefinition;
@@ -73,6 +74,20 @@ public class StructureGenerator {
             this.weaponId = WeaponGenerator.ID_CANNON_WEAPON;
             this.weaponOffset = new Vector3f(0, 1, 0);
         }});
+        return structureDefinition;
+    }
+
+    public static StructureDefinition createTankFactory() {
+        StructureDefinition structureDefinition = new StructureDefinition();
+        structureDefinition.globalId = ID_TANK_FACTORY;
+        structureDefinition.modelGeometry = "builder-unit.obj";
+        structureDefinition.modelTexture = "companion-cube.jpg";
+        structureDefinition.name = "Tank Factory";
+        structureDefinition.description = "Roll out!";
+        structureDefinition.hitpoints = 250;
+        structureDefinition.buildCost = 10;
+        structureDefinition.commands.add(EntityCommand.BUILD);
+        structureDefinition.buildCommands.add(new BuildUnitCommand(UnitGenerator.ID_RED_TANK, 5f));
         return structureDefinition;
     }
 }

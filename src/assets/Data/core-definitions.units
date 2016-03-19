@@ -111,6 +111,8 @@
             <build-targets>
                 <voxel type="1"/>
                 <structure structure-id="101" build-radius="2.0" priority="1"/>
+                <structure structure-id="100" build-radius="2.0" priority="1"/>
+                <structure structure-id="102" build-radius="2.0" priority="1"/>
             </build-targets>
             <weapon-offset x="0.0" y="1.0" z="0.0"/>
         </unit>
@@ -221,6 +223,21 @@
                     <weapon-offset x="0.0" y="1.0" z="0.0"/>
                 </weapon-control>
             </controls>
+        </structure>
+        <structure global-id="102">
+            <name>Tank Factory</name>
+            <description>Roll out!</description>
+            <texture>companion-cube.jpg</texture>
+            <model>builder-unit.obj</model>
+            <build-cost>10.0</build-cost>
+            <hitpoints>250.0</hitpoints>
+            <commands>
+                <command>BUILD</command>
+            </commands>
+            <build-targets>
+                <unit unit-id="1" build-range="5.0" priority="1"/>
+            </build-targets>
+            <controls/>
         </structure>
     </structures>
 </GameDefinitions>

@@ -37,6 +37,7 @@ public class UnitDefinitionGeneratorTool {
         structures.add(StructureGenerator.createEnemyCoreBuilding());
         structures.add(StructureGenerator.createExtractor());
         structures.add(StructureGenerator.createTurret());
+        structures.add(StructureGenerator.createTankFactory());
         return structures;
     }
 

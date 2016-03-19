@@ -73,6 +73,8 @@ public class UnitGenerator {
         unitDefinition.commands.add(EntityCommand.BUILD);
         unitDefinition.buildCommands.add(new BuildVoxelCommand(GameConstants.TERRAIN_TYPE_1));
         unitDefinition.buildCommands.add(new BuildStructureCommand(StructureGenerator.ID_EXTRACTOR, 2f));
+        unitDefinition.buildCommands.add(new BuildStructureCommand(StructureGenerator.ID_TURRET, 2f));
+        unitDefinition.buildCommands.add(new BuildStructureCommand(StructureGenerator.ID_TANK_FACTORY, 2f));
         return unitDefinition;
     }
 
