@@ -148,12 +148,16 @@ public class SelectionGroup {
                 .getAsDouble();
     }
 
-    public boolean update(float tpf) {
-        int currentSize = this.selection.size();
+    public List<ISelectedUnit> update(float tpf) {
+        List<ISelectedUnit> removedUnits = this.selection
+                .stream()
+                .filter(s -> VoxelUtil.isDead(s))
+                .map(s->new SelectedSpatial(s))
+                .collect(Collectors.toList());
         this.selection = this.selection
                 .stream()
                 .filter(s -> VoxelUtil.isAlive(s))
                 .collect(Collectors.toList());
-        return currentSize != this.selection.size();
+        return removedUnits;
     }
 }

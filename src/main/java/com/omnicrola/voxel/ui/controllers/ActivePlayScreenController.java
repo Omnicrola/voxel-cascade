@@ -150,8 +150,10 @@ public class ActivePlayScreenController extends AbstractScreenController {
         }
     }
 
-    public void selectionHasUpdated() {
+    public void selectionHasUpdated(List<ISelectedUnit> removedUnits) {
         updateSelectionList();
+        ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
+        removedUnits.forEach(decorator::removeSelectionDecorations);
         setCommandLabels(this.currentSelection.getAvailableCommands());
     }
 }

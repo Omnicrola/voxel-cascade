@@ -43,4 +43,8 @@ public class VoxelUtil {
     public static boolean isAlive(Spatial spatial) {
         return floatData(spatial, EntityDataKeys.HITPOINTS) > 0f;
     }
+
+    public static boolean isDead(Spatial spatial) {
+        return ! isAlive(spatial);
+    }
 }

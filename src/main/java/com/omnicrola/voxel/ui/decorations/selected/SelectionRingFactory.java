@@ -2,8 +2,10 @@ package com.omnicrola.voxel.ui.decorations.selected;
 
 import com.jme3.asset.AssetManager;
 import com.jme3.material.Material;
+import com.jme3.material.RenderState;
 import com.jme3.math.Quaternion;
 import com.jme3.math.Vector3f;
+import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import com.jme3.texture.Texture;
@@ -31,9 +33,11 @@ public class SelectionRingFactory {
         Material material = new Material(assetManager, GameConstants.MATERIAL_UNSHADED);
         Texture texture = assetManager.loadTexture("Interface/selection-ring.png");
         material.setTexture("ColorMap", texture);
+        material.getAdditionalRenderState().setBlendMode(RenderState.BlendMode.Alpha);
         geometry.setMaterial(material);
+        geometry.setQueueBucket(RenderQueue.Bucket.Transparent);
 
-        DecorationPlacementHelper placementHelper = new DecorationPlacementHelper(new Vector3f());
+        DecorationPlacementHelper placementHelper = new DecorationPlacementHelper(new Vector3f(0, 0.01f, 0));
         placementHelper.setPosition(DecorationPlacementHelper.Position.BOTTOM);
         SelectionRing selectionRing = new SelectionRing(geometry, placementHelper);
         selectionRing.addControl(new RotationControl(new Vector3f(0, 1, 0), 1f));

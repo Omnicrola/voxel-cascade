@@ -2,6 +2,9 @@ package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.input.IUserSelectionObserver;
 import com.omnicrola.voxel.input.SelectionGroup;
+import com.omnicrola.voxel.ui.select.ISelectedUnit;
+
+import java.util.List;
 
 /**
  * Created by Eric on 1/26/2016.
@@ -19,8 +22,8 @@ public class UiCurrentSelectionObserver implements IUserSelectionObserver {
     }
 
     @Override
-    public void notifySelectionUpdated(SelectionGroup currentSelection) {
-        this.activePlayScreenController.selectionHasUpdated();
+    public void notifySelectionUpdated(SelectionGroup currentSelection, List<ISelectedUnit> removedUnits) {
+        this.activePlayScreenController.selectionHasUpdated(removedUnits);
     }
 
 }

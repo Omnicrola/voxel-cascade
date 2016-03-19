@@ -50,6 +50,16 @@ public class DecorationPlacementHelper {
         return adjustmentStore;
     }
 
+    public float getBoundingRadiusX(Spatial spatial) {
+        BoundingVolume worldBound = spatial.getWorldBound();
+        if (worldBound.getType().equals(BoundingVolume.Type.AABB)) {
+            return ((BoundingBox) worldBound).getXExtent() / 2f;
+        } else if (worldBound.getType().equals(BoundingVolume.Type.Sphere)) {
+            return ((BoundingSphere) worldBound).getRadius();
+        }
+        return 0;
+    }
+
     public enum Position {
         TOP, BOTTOM;
     }

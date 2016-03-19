@@ -25,7 +25,15 @@ public class SelectionRing extends Node implements IDecoration {
         super.updateLogicalState(tpf);
         if (this.targetSpatial != null) {
             this.placementHelper.adjustPosition(this, this.targetSpatial);
+            adjustScale();
         }
+    }
+
+    private void adjustScale() {
+        float radius = this.placementHelper.getBoundingRadiusX(this.targetSpatial);
+        float scaleAdjustment = 5.0f;
+        float scale = radius * scaleAdjustment;
+        this.setLocalScale(scale);
     }
 
     @Override

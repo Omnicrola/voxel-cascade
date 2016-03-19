@@ -13,6 +13,7 @@ import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 import com.omnicrola.voxel.world.IWorldNode;
 
@@ -63,9 +64,9 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
         super.updateLogicalState(tpf);
         Ray pickRay = getPickRay();
         setPositionToNearestVoxel(pickRay);
-        boolean hasChanged = this.currentSelection.update(tpf);
-        if (hasChanged) {
-            notifySelectionUpdated();
+        List<ISelectedUnit> removedUnits = this.currentSelection.update(tpf);
+        if (removedUnits.size() > 0) {
+            notifySelectionUpdated(removedUnits);
         }
     }
 
@@ -121,8 +122,8 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
         this.observers.forEach(o -> o.notifyNewSelection(this.currentSelection));
     }
 
-    private void notifySelectionUpdated() {
-        this.observers.forEach(o -> o.notifySelectionUpdated(this.currentSelection));
+    private void notifySelectionUpdated(List<ISelectedUnit> removedUnits) {
+        this.observers.forEach(o -> o.notifySelectionUpdated(this.currentSelection, removedUnits));
     }
 
     public Optional<CollisionResult> getUnitUnderCursor() {
