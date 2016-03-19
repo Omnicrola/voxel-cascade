@@ -5,11 +5,13 @@ import com.jme3.font.BitmapFont;
 import com.jme3.font.BitmapText;
 import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
+import com.jme3.math.Vector3f;
 import com.jme3.renderer.queue.RenderQueue;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.shape.Quad;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.ui.builders.UiConstants;
+import com.omnicrola.voxel.ui.decorations.DecorationPlacementHelper;
 
 /**
  * Created by Eric on 3/18/2016.
@@ -43,7 +45,8 @@ public class HealthBarFactory {
 
         BitmapText bitmapText = buildText();
 
-        HealthBar healthBar = new HealthBar(foregroundBar, bitmapText);
+        DecorationPlacementHelper placementHelper = new DecorationPlacementHelper(new Vector3f(0, 0.5f, 0));
+        HealthBar healthBar = new HealthBar(foregroundBar, bitmapText, placementHelper);
         healthBar.attachChild(backgroundBar);
         healthBar.attachChild(foregroundBar);
         healthBar.attachChild(bitmapText);

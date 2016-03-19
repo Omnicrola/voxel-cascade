@@ -3,6 +3,7 @@ package com.omnicrola.voxel.ui.decorations.selected;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.ui.decorations.DecorationPlacementHelper;
 import com.omnicrola.voxel.ui.decorations.IDecoration;
 
 /**
@@ -11,10 +12,20 @@ import com.omnicrola.voxel.ui.decorations.IDecoration;
 public class SelectionRing extends Node implements IDecoration {
     private Geometry ring;
     private Spatial targetSpatial;
+    private DecorationPlacementHelper placementHelper;
 
-    public SelectionRing(Geometry ring) {
+    public SelectionRing(Geometry ring, DecorationPlacementHelper placementHelper) {
         this.ring = ring;
+        this.placementHelper = placementHelper;
         this.attachChild(ring);
+    }
+
+    @Override
+    public void updateLogicalState(float tpf) {
+        super.updateLogicalState(tpf);
+        if (this.targetSpatial != null) {
+            this.placementHelper.adjustPosition(this, this.targetSpatial);
+        }
     }
 
     @Override
