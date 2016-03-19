@@ -15,6 +15,7 @@ import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.builders.IGuiBuilder;
 import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
 import com.omnicrola.voxel.ui.decorations.hp.HealthBarFactory;
+import com.omnicrola.voxel.ui.decorations.selected.SelectionRingFactory;
 import com.omnicrola.voxel.world.WorldManager;
 import de.lessvoid.nifty.Nifty;
 
@@ -53,7 +54,8 @@ public class GuiInitializer {
         transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());
 
         HealthBarFactory healthBarFactory = new HealthBarFactory(assetManager);
-        SpatialDecorator spatialDecorator = new SpatialDecorator(worldManager, healthBarFactory);
+        SelectionRingFactory selectionRingFactory = new SelectionRingFactory(assetManager);
+        SpatialDecorator spatialDecorator = new SpatialDecorator(worldManager, healthBarFactory, selectionRingFactory);
         UiAdapter uiAdapter = new UiAdapter(
                 niftyGui,
                 levelManager,

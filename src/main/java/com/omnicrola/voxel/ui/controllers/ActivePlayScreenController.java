@@ -84,13 +84,13 @@ public class ActivePlayScreenController extends AbstractScreenController {
     private void removeHealthBarsFromSelection() {
         if (this.currentSelection != null) {
             ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
-            this.currentSelection.getSelections().forEach(u -> decorator.removeHealthbar(u));
+            this.currentSelection.getSelections().forEach(u -> decorator.removeSelectionDecorations(u));
         }
     }
 
     private void addHealthbarsToSelection() {
         ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
-        this.currentSelection.getSelections().forEach(u -> decorator.addHealthbar(u));
+        this.currentSelection.getSelections().forEach(u -> decorator.addSelectionDecorations(u));
     }
 
     public void updateStats(LevelState currentLevel) {
