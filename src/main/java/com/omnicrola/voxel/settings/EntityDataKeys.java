@@ -18,4 +18,5 @@ public class EntityDataKeys {
     public static final String PROJECTILE_EMITTING_ENTITY = "emitting-entity";
     public static final String IS_COLLIDABLE = "is-collidable";
     public static final String HARVEST_RANGE = "orderHarvest-range";
+    public static final String WORLD_ID = "world-id";
 }

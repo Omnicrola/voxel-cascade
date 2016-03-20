@@ -9,6 +9,7 @@ import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
 import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
 import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 
@@ -24,14 +25,12 @@ import java.util.stream.Stream;
  * Created by omnic on 1/24/2016.
  */
 public class SelectionGroup {
-    private final NavigationGridDistributor gridDistributor;
     private CursorCommandAdaptor cursorCommandAdaptor;
     private List<Spatial> selection;
 
     public SelectionGroup(CursorCommandAdaptor cursorStrategyFactory, List<Spatial> selection) {
         this.cursorCommandAdaptor = cursorStrategyFactory;
         this.selection = selection;
-        this.gridDistributor = new NavigationGridDistributor(this);
     }
 
     public SelectionGroup() {
@@ -40,11 +39,6 @@ public class SelectionGroup {
 
     public int count() {
         return this.selection.size();
-    }
-
-    public void orderMoveToLocation(Vector3f vector3f) {
-        Iterator<Vector3f> navPoints = this.gridDistributor.distribute(vector3f);
-        getEntityAiControllerStream().forEach(ai -> ai.setState(AiMoveToLocationState.class).setTarget(navPoints.next()));
     }
 
     public void orderStop() {
@@ -72,27 +66,6 @@ public class SelectionGroup {
         }
     }
 
-    public float getLargestUnitSize() {
-        Optional<Float> largest = this.selection
-                .stream()
-                .map(u -> getPersonalRadius(u))
-                .sorted()
-                .findFirst();
-        if (largest.isPresent()) {
-            return largest.get();
-        } else {
-            return 1.0f;
-        }
-    }
-
-    private float getPersonalRadius(Spatial spatial) {
-        EntityMotionControl motionControl = spatial.getControl(EntityMotionControl.class);
-        if (motionControl == null) {
-            return 0;
-        } else {
-            return motionControl.getPersonalRadius();
-        }
-    }
 
     public List<ISelectedUnit> getSelections() {
         return this.selection
@@ -119,17 +92,7 @@ public class SelectionGroup {
         return commandCollector.getCommandsCommonToAllEntities(this, cursorCommandAdaptor);
     }
 
-    private Stream<EntityAiController> getEntityAiControllerStream() {
-        return this.selection
-                .stream()
-                .map(u -> getAi(u))
-                .filter(ai -> ai != null);
-    }
-
-    private EntityAiController getAi(Spatial spatial) {
-        return spatial.getControl(EntityAiController.class);
-    }
-
+    
     public Vector3f getCenterPoint() {
         if (this.selection.size() <= 0) {
             return new Vector3f();
@@ -152,12 +115,21 @@ public class SelectionGroup {
         List<ISelectedUnit> removedUnits = this.selection
                 .stream()
                 .filter(s -> VoxelUtil.isDead(s))
-                .map(s->new SelectedSpatial(s))
+                .map(s -> new SelectedSpatial(s))
                 .collect(Collectors.toList());
         this.selection = this.selection
                 .stream()
                 .filter(s -> VoxelUtil.isAlive(s))
                 .collect(Collectors.toList());
         return removedUnits;
+    }
+
+    public int[] getUnitIds() {
+        int[] ids = new int[selection.size()];
+        for (int i = 0; i < selection.size(); i++) {
+            Spatial spatial = this.selection.get(i);
+            ids[i] = VoxelUtil.integerData(spatial, EntityDataKeys.WORLD_ID);
+        }
+        return ids;
     }
 }

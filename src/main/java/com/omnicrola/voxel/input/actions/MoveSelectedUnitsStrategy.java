@@ -5,6 +5,8 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.commands.MoveUnitsCommand;
+import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
@@ -20,11 +22,14 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
     private final Node empty3dCursor;
     protected IWorldCursor worldCursor;
     private JmeCursor cursor2d;
+    private WorldCommandProcessor worldCommandProcessor;
 
     public MoveSelectedUnitsStrategy(IWorldCursor worldCursor,
-                                     JmeCursor cursor2d) {
+                                     JmeCursor cursor2d,
+                                     WorldCommandProcessor worldCommandProcessor) {
         this.worldCursor = worldCursor;
         this.cursor2d = cursor2d;
+        this.worldCommandProcessor = worldCommandProcessor;
         this.empty3dCursor = new Node();
     }
 
@@ -58,7 +63,9 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
         Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             Vector3f location = terrainUnderCursor.get().getContactPoint();
-            currentSelection.orderMoveToLocation(location);
+            MoveUnitsCommand moveUnitsCommand = new MoveUnitsCommand(location, currentSelection.getUnitIds());
+            this.worldCommandProcessor.addCommand(moveUnitsCommand);
+//            currentSelection.orderMoveToLocation(location);
         }
     }
 }

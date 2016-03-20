@@ -45,6 +45,14 @@ public class VoxelUtil {
     }
 
     public static boolean isDead(Spatial spatial) {
-        return ! isAlive(spatial);
+        return !isAlive(spatial);
+    }
+
+    public static int integerData(Spatial spatial, String key) {
+        Integer userData = spatial.getUserData(key);
+        if (userData == null) {
+            return 0;
+        }
+        return userData;
     }
 }

@@ -29,7 +29,7 @@ public class NavigationGridDistributorTest extends TestCase {
         when(mockSelectionGroup.getLargestUnitSize()).thenReturn(1f);
 
         NavigationGridDistributor navigationGridDistributor = new NavigationGridDistributor(mockSelectionGroup);
-        Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f());
+        Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f(), selectedUnits);
         List<Vector3f> distributedPoints = drainIterator(distribute);
         assertEquals(9, distributedPoints.size());
         assertEquals(new Vector3f(-0.5f, 0, -0.5f), distributedPoints.get(0));
@@ -44,7 +44,7 @@ public class NavigationGridDistributorTest extends TestCase {
         when(mockSelectionGroup.getLargestUnitSize()).thenReturn(1f);
 
         NavigationGridDistributor navigationGridDistributor = new NavigationGridDistributor(mockSelectionGroup);
-        Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f());
+        Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f(), selectedUnits);
         List<Vector3f> points = drainIterator(distribute);
         assertEquals(9, points.size());
     }
@@ -55,7 +55,7 @@ public class NavigationGridDistributorTest extends TestCase {
         when(mockSelectionGroup.getLargestUnitSize()).thenReturn(1f);
 
         NavigationGridDistributor navigationGridDistributor = new NavigationGridDistributor(mockSelectionGroup);
-        Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f());
+        Iterator<Vector3f> distribute = navigationGridDistributor.distribute(new Vector3f(), selectedUnits);
         List<Vector3f> distributedPoints = drainIterator(distribute);
         assertEquals(16, distributedPoints.size());
         assertEquals(new Vector3f(-1f, 0, -1f), distributedPoints.get(0));

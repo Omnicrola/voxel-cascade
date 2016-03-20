@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.input;
 
-import com.jme3.asset.AssetManager;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.input.InputManager;
 import com.jme3.math.ColorRGBA;
@@ -8,6 +7,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.control.construction.HarvestTerrainHighlightStrategy;
 import com.omnicrola.voxel.input.actions.*;
@@ -32,20 +32,20 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     private WorldEntityBuilder worldEntityBuilder;
     private WorldManager worldManager;
     private ITerrainManager terrainManager;
-    private AssetManager assetManager;
+    private WorldCommandProcessor worldCommandProcessor;
 
     public CursorCommandAdaptor(InputManager inputManager,
                                 Cursor2dProvider cursor2dProvider,
                                 WorldEntityBuilder worldEntityBuilder,
                                 WorldManager worldManager,
                                 ITerrainManager terrainManager,
-                                AssetManager assetManager) {
+                                WorldCommandProcessor worldCommandProcessor) {
         this.inputManager = inputManager;
         this.cursor2dProvider = cursor2dProvider;
         this.worldEntityBuilder = worldEntityBuilder;
         this.worldManager = worldManager;
         this.terrainManager = terrainManager;
-        this.assetManager = assetManager;
+        this.worldCommandProcessor = worldCommandProcessor;
     }
 
     @Override
@@ -53,7 +53,7 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         JmeCursor defaultCursor = getCursor(CursorToken.DEFAULT);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(
-                this, worldCursor, this.inputManager, defaultCursor);
+                this, worldCursor, this.inputManager, defaultCursor, worldCommandProcessor);
         worldCursor.setCursorStrategy(selectUnitsCursorStrategy);
         return selectUnitsCursorStrategy;
     }
@@ -70,7 +70,7 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     public void setMoveStrategy() {
         JmeCursor moveCursor = getCursor(CursorToken.MOVE);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
-        MoveSelectedUnitsStrategy moveSelectedUnitsStrategy = new MoveSelectedUnitsStrategy(worldCursor, moveCursor);
+        MoveSelectedUnitsStrategy moveSelectedUnitsStrategy = new MoveSelectedUnitsStrategy(worldCursor, moveCursor, worldCommandProcessor);
         worldCursor.setCursorStrategy(moveSelectedUnitsStrategy);
     }
 

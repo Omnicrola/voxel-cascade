@@ -80,7 +80,7 @@ public class WorldCommandProcessor implements ICommandProcessor {
                     uiManager,
                     worldManager,
                     this,
-                    terrainManager);
+                    terrainManager, entityCommandAdapter);
         }
         return this.commandPackage;
     }

@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.world;
 
+import com.omnicrola.voxel.commands.EntityCommandAdapter;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.LevelManager;
@@ -21,6 +22,7 @@ public class CommandPackage {
     private IUiManager uiManager;
     private ICommandProcessor commandProcessor;
     private ITerrainManager terrainManager;
+    private EntityCommandAdapter entityCommandAdapter;
 
     public CommandPackage(
             IShutdown shutdown,
@@ -30,7 +32,8 @@ public class CommandPackage {
             IUiManager uiManager,
             WorldManager worldManager,
             ICommandProcessor commandProcessor,
-            ITerrainManager terrainManager) {
+            ITerrainManager terrainManager,
+            EntityCommandAdapter entityCommandAdapter) {
         this.shutdown = shutdown;
         this.levelManager = levelManager;
         this.networkManager = networkManager;
@@ -39,6 +42,7 @@ public class CommandPackage {
         this.worldManager = worldManager;
         this.commandProcessor = commandProcessor;
         this.terrainManager = terrainManager;
+        this.entityCommandAdapter = entityCommandAdapter;
     }
 
     public ILevelManager getLevelManager() {
@@ -73,5 +77,9 @@ public class CommandPackage {
 
     public ITerrainManager getTerrainManager() {
         return terrainManager;
+    }
+
+    public EntityCommandAdapter getEntityCommandAdapter() {
+        return this.entityCommandAdapter;
     }
 }

@@ -10,11 +10,14 @@ import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.input.IWorldCursor;
+import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -107,5 +110,21 @@ public class WorldManager {
             return closestCollision.getContactPoint();
         }
         return new Vector3f(location).setY(0);
+    }
+
+    public List<Spatial> selectEntities(int[] unitIds) {
+        Arrays.sort(unitIds);
+        List<Spatial> units = this.units.stream()
+                .map(u -> u.getSpatial())
+                .filter(s -> hasId(s, unitIds))
+                .collect(Collectors.toList());
+
+        return units;
+    }
+
+    private boolean hasId(Spatial spatial, int[] unitIds) {
+        int id = VoxelUtil.integerData(spatial, EntityDataKeys.WORLD_ID);
+        int index = Arrays.binarySearch(unitIds, id);
+        return index > 0;
     }
 }
