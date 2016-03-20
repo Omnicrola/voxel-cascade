@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.input.actions;
 
 import com.jme3.math.Vector3f;
-import com.omnicrola.voxel.commands.BuildStructureWorldCommand;
+import com.omnicrola.voxel.commands.OrderBuildStructureWorldCommand;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 
@@ -24,7 +24,7 @@ public class BuildStructureCompletionStrategy implements IBuildCompletionStrateg
         location.setX((int) location.x);
         location.setZ((int) location.z);
         UnitPlacement unitPlacement = new UnitPlacement(this.globalId, teamId, location);
-        BuildStructureWorldCommand buildUnitEntityCommand = new BuildStructureWorldCommand(unitPlacement);
+        OrderBuildStructureWorldCommand buildUnitEntityCommand = new OrderBuildStructureWorldCommand(unitPlacement);
         this.commandProcessor.addCommand(buildUnitEntityCommand);
     }
 

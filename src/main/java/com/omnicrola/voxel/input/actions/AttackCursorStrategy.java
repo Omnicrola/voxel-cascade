@@ -6,8 +6,8 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.commands.AttackLocationCommand;
-import com.omnicrola.voxel.commands.AttackTargetCommand;
+import com.omnicrola.voxel.commands.OrderAttackLocationCommand;
+import com.omnicrola.voxel.commands.OrderAttackTargetCommand;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
@@ -76,7 +76,7 @@ public class AttackCursorStrategy implements ICursorStrategy {
     private void issueAttackLocationCommand(SelectionGroup currentSelection, Optional<CollisionResult> terrainUnderCursor) {
         Vector3f terrainLocation = terrainUnderCursor.get().getContactPoint();
         int[] unitIds = currentSelection.getUnitIds();
-        AttackLocationCommand attackLocationCommand = new AttackLocationCommand(terrainLocation, unitIds);
+        OrderAttackLocationCommand attackLocationCommand = new OrderAttackLocationCommand(terrainLocation, unitIds);
         this.commandProcessor.addCommand(attackLocationCommand);
     }
 
@@ -84,7 +84,7 @@ public class AttackCursorStrategy implements ICursorStrategy {
         Geometry geometry = unitUnderCursor.get().getGeometry();
         int targetId = VoxelUtil.integerData(geometry, EntityDataKeys.WORLD_ID);
         int[] unitIds = currentSelection.getUnitIds();
-        AttackTargetCommand attackTargetCommand = new AttackTargetCommand(targetId, unitIds);
+        OrderAttackTargetCommand attackTargetCommand = new OrderAttackTargetCommand(targetId, unitIds);
         this.commandProcessor.addCommand(attackTargetCommand);
     }
 }

@@ -7,6 +7,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.commands.OrderStopWorldCommand;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.control.construction.HarvestTerrainHighlightStrategy;
@@ -82,13 +83,19 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         worldCursor.setCursorStrategy(emptyBuildStrategy);
     }
 
+    public void setStopStrategy(SelectionGroup selectionGroup) {
+        int[] unitIds = selectionGroup.getUnitIds();
+        OrderStopWorldCommand orderStopWorldCommand = new OrderStopWorldCommand(unitIds);
+        this.worldCommandProcessor.addCommand(orderStopWorldCommand);
+    }
+
     @Override
     public void setBuildUnitStrategy(int unitId, float buildRadius, SelectionGroup selectionGroup) {
         JmeCursor buildCursor = getCursor(CursorToken.BUILD);
         Spatial exampleBuildTarget = this.worldEntityBuilder.buildPlaceholderUnit(unitId, buildRadius, selectionGroup);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
-        BuildUnitCompletionStrategy buildUnitCompletionStrategy = new BuildUnitCompletionStrategy(unitId, worldEntityBuilder, worldManager);
+        BuildUnitCompletionStrategy buildUnitCompletionStrategy = new BuildUnitCompletionStrategy(unitId, worldCommandProcessor);
         BuildCursorStrategy buildCursorStrategy = new BuildCursorStrategy(
                 buildCursor,
                 exampleBuildTarget,
@@ -102,7 +109,7 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         Spatial placeholder = this.worldEntityBuilder.buildPlaceholderStructure(globalId, buildRadius, selectionGroup);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
 
-        BuildStructureCompletionStrategy buildUnitCompletionStrategy = new BuildStructureCompletionStrategy(globalId, worldEntityBuilder, worldManager);
+        BuildStructureCompletionStrategy buildUnitCompletionStrategy = new BuildStructureCompletionStrategy(globalId, worldCommandProcessor);
         BuildCursorStrategy buildCursorStrategy = new BuildCursorStrategy(
                 cursor,
                 placeholder,

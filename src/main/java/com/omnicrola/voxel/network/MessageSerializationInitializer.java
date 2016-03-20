@@ -20,12 +20,13 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(SpawnStructureMessage.class);
         Serializer.registerClass(StartLevelCommand.class);
 
-        Serializer.registerClass(MoveUnitsCommand.class);
-        Serializer.registerClass(AttackTargetCommand.class);
-        Serializer.registerClass(AttackLocationCommand.class);
-        Serializer.registerClass(HarvestVoxelsCommand.class);
-        Serializer.registerClass(BuildEntityWorldCommand.class);
-        Serializer.registerClass(BuildStructureWorldCommand.class);
+        Serializer.registerClass(OrderMoveToLocationCommand.class);
+        Serializer.registerClass(OrderAttackTargetCommand.class);
+        Serializer.registerClass(OrderAttackLocationCommand.class);
+        Serializer.registerClass(OrderHarvestVoxelsCommand.class);
+        Serializer.registerClass(OrderBuildEntityWorldCommand.class);
+        Serializer.registerClass(OrderBuildStructureWorldCommand.class);
+        Serializer.registerClass(OrderStopWorldCommand.class);
 
         Serializer.registerClass(UnitPlacement.class);
     }

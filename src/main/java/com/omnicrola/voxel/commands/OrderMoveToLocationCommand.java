@@ -12,23 +12,24 @@ import java.util.List;
  * Created by Eric on 3/19/2016.
  */
 @Serializable
-public class AttackLocationCommand extends AbstractWorldCommand {
-    private Vector3f terrainLocation;
+public class OrderMoveToLocationCommand extends AbstractWorldCommand {
+
+    private Vector3f location;
     private int[] unitIds;
 
-    public AttackLocationCommand() {
+    public OrderMoveToLocationCommand() {
     }
 
-    public AttackLocationCommand(Vector3f terrainLocation, int[] unitIds) {
-        this.terrainLocation = terrainLocation;
+    public OrderMoveToLocationCommand(Vector3f location, int[] unitIds) {
+        this.location = location;
         this.unitIds = unitIds;
     }
 
     @Override
     public void execute(CommandPackage commandPackage) {
-        WorldManager worldManager = commandPackage.getWorldManager();
         EntityCommandAdapter entityCommandAdapter = commandPackage.getEntityCommandAdapter();
-        List<Spatial> units = worldManager.selectEntities(this.unitIds);
-        entityCommandAdapter.attackLocation(units, this.terrainLocation);
+        WorldManager worldManager = commandPackage.getWorldManager();
+        List<Spatial> selectedUnits = worldManager.selectEntities(this.unitIds);
+        entityCommandAdapter.orderMoveToLocation(location, selectedUnits);
     }
 }

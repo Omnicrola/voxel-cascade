@@ -6,7 +6,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.commands.ICommandProcessor;
-import com.omnicrola.voxel.commands.MoveUnitsCommand;
+import com.omnicrola.voxel.commands.OrderMoveToLocationCommand;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
@@ -63,7 +63,7 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
         Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
         if (terrainUnderCursor.isPresent()) {
             Vector3f location = terrainUnderCursor.get().getContactPoint();
-            MoveUnitsCommand moveUnitsCommand = new MoveUnitsCommand(location, currentSelection.getUnitIds());
+            OrderMoveToLocationCommand moveUnitsCommand = new OrderMoveToLocationCommand(location, currentSelection.getUnitIds());
             this.worldCommandProcessor.addCommand(moveUnitsCommand);
 //            currentSelection.orderMoveToLocation(location);
         }

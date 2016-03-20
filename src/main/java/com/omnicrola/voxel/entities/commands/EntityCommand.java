@@ -36,7 +36,7 @@ public enum EntityCommand implements IEntityCommand {
     STOP(3) {
         @Override
         public List<CommandGroup> execute(SelectionGroup selectionGroup, CursorCommandAdaptor cursorCommandAdaptor) {
-            selectionGroup.orderStop();
+            cursorCommandAdaptor.setStopStrategy(selectionGroup);
             return null;
         }
     },

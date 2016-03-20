@@ -11,14 +11,14 @@ import java.util.List;
  * Created by Eric on 3/19/2016.
  */
 @Serializable
-public class AttackTargetCommand extends AbstractWorldCommand {
+public class OrderAttackTargetCommand extends AbstractWorldCommand {
     private int targetId;
     private int[] unitIds;
 
-    public AttackTargetCommand() {
+    public OrderAttackTargetCommand() {
     }
 
-    public AttackTargetCommand(int targetId, int[] unitIds) {
+    public OrderAttackTargetCommand(int targetId, int[] unitIds) {
         this.targetId = targetId;
         this.unitIds = unitIds;
     }
@@ -29,6 +29,6 @@ public class AttackTargetCommand extends AbstractWorldCommand {
         List<Spatial> units = worldManager.selectEntities(this.unitIds);
         Spatial spatial = worldManager.selectEntity(this.targetId);
         EntityCommandAdapter entityCommandAdapter = commandPackage.getEntityCommandAdapter();
-        entityCommandAdapter.attackTarget(units, spatial);
+        entityCommandAdapter.orderAttackTarget(units, spatial);
     }
 }

@@ -11,13 +11,13 @@ import com.omnicrola.voxel.world.build.WorldEntityBuilder;
  * Created by Eric on 3/19/2016.
  */
 @Serializable
-public class BuildStructureWorldCommand extends AbstractWorldCommand {
+public class OrderBuildStructureWorldCommand extends AbstractWorldCommand {
     private UnitPlacement unitPlacement;
 
-    public BuildStructureWorldCommand() {
+    public OrderBuildStructureWorldCommand() {
     }
 
-    public BuildStructureWorldCommand(UnitPlacement unitPlacement) {
+    public OrderBuildStructureWorldCommand(UnitPlacement unitPlacement) {
         this.unitPlacement = unitPlacement;
     }
 

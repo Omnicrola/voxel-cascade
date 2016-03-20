@@ -41,10 +41,6 @@ public class SelectionGroup {
         return this.selection.size();
     }
 
-    public void orderStop() {
-        getEntityAiControllerStream().forEach(ai -> ai.setState(AiStopState.class));
-    }
-
     public void orderBuild(IConstructionPackage constructionPackage) {
         Optional<EntityAiController> firstController = getEntityAiControllerStream().findFirst();
         if (firstController.isPresent()) {
@@ -52,7 +48,6 @@ public class SelectionGroup {
             entityAiController.setState(AiBuildState.class).setPackage(constructionPackage);
         }
     }
-
 
     public List<ISelectedUnit> getSelections() {
         return this.selection

@@ -19,14 +19,14 @@ import java.util.stream.Collectors;
  * Created by Eric on 3/19/2016.
  */
 @Serializable
-public class HarvestVoxelsCommand extends AbstractWorldCommand {
+public class OrderHarvestVoxelsCommand extends AbstractWorldCommand {
     private int[] unitIds;
     private List<Vec3i> voxels;
 
-    public HarvestVoxelsCommand() {
+    public OrderHarvestVoxelsCommand() {
     }
 
-    public HarvestVoxelsCommand(int[] unitIds, List<Vec3i> voxels) {
+    public OrderHarvestVoxelsCommand(int[] unitIds, List<Vec3i> voxels) {
         this.unitIds = unitIds;
         this.voxels = voxels;
     }
@@ -44,6 +44,6 @@ public class HarvestVoxelsCommand extends AbstractWorldCommand {
         VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelQueue);
 
         EntityCommandAdapter entityCommandAdapter = commandPackage.getEntityCommandAdapter();
-        entityCommandAdapter.harvest(units, voxelHarvestTarget);
+        entityCommandAdapter.orderHarvest(units, voxelHarvestTarget);
     }
 }

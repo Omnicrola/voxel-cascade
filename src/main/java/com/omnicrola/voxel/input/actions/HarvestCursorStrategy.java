@@ -6,7 +6,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.commands.HarvestVoxelsCommand;
+import com.omnicrola.voxel.commands.OrderHarvestVoxelsCommand;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
@@ -63,7 +63,7 @@ public class HarvestCursorStrategy implements ICursorStrategy {
             Vector3f endPoint = terrainPositionUnderCursor.get().getContactPoint().subtract(0, 1, 0);
             List<Vec3i> voxels = this.terrainHighlighter.getSelection(endPoint);
             int[] unitIds = currentSelection.getUnitIds();
-            HarvestVoxelsCommand harvestVoxelsCommand = new HarvestVoxelsCommand(unitIds, voxels);
+            OrderHarvestVoxelsCommand harvestVoxelsCommand = new OrderHarvestVoxelsCommand(unitIds, voxels);
             this.commandProcessor.addCommand(harvestVoxelsCommand);
         }
         this.terrainHighlighter.setVisible(false);

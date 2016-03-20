@@ -16,23 +16,27 @@ public class EntityCommandAdapter {
 
     NavigationGridDistributor gridDistributor;
 
-    public void moveToLocation(Vector3f location, List<Spatial> selectedUnits) {
+    public void orderMoveToLocation(Vector3f location, List<Spatial> selectedUnits) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location, selectedUnits);
         getEntityAiControllerStream(selectedUnits)
                 .forEach(ai -> ai.setState(AiMoveToLocationState.class)
                         .setTarget(navPoints.next()));
     }
 
-    public void attackLocation(List<Spatial> units, Vector3f location) {
+    public void orderStop(List<Spatial> units) {
+        getEntityAiControllerStream(units).forEach(ai -> ai.setState(AiStopState.class));
+    }
+
+    public void orderAttackLocation(List<Spatial> units, Vector3f location) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location, units);
         getEntityAiControllerStream(units).forEach(ai -> ai.setState(AiMoveToLocationState.class).setTarget(navPoints.next()));
     }
 
-    public void attackTarget(List<Spatial> units, Spatial target) {
+    public void orderAttackTarget(List<Spatial> units, Spatial target) {
         getEntityAiControllerStream(units).forEach(ai -> ai.setState(AiAttackTargetState.class).setTarget(target));
     }
 
-    public void harvest(List<Spatial> units, VoxelHarvestTarget voxelHarvestTarget) {
+    public void orderHarvest(List<Spatial> units, VoxelHarvestTarget voxelHarvestTarget) {
         getEntityAiControllerStream(units)
                 .forEach(ai -> ai.setState(AiHarvestState.class)
                         .setTarget(voxelHarvestTarget));
