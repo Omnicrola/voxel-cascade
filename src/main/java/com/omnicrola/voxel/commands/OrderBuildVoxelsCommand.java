@@ -23,6 +23,9 @@ public class OrderBuildVoxelsCommand extends AbstractWorldCommand {
     private List<Vec3i> selectedVoxels;
     private byte voxelType;
 
+    public OrderBuildVoxelsCommand() {
+    }
+
     public OrderBuildVoxelsCommand(int[] unitIds, List<Vec3i> selectedVoxels, byte voxelType) {
         this.unitIds = unitIds;
         this.selectedVoxels = selectedVoxels;

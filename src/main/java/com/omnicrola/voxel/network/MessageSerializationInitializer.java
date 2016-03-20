@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.network;
 
 import com.jme3.network.serializing.Serializer;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.commands.*;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
@@ -30,5 +31,6 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(OrderStopWorldCommand.class);
 
         Serializer.registerClass(UnitPlacement.class);
+        Serializer.registerClass(Vec3i.class);
     }
 }

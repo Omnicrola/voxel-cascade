@@ -2,12 +2,13 @@ package com.omnicrola.voxel.commands;
 
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.IShutdown;
+import com.omnicrola.voxel.entities.behavior.ai.NavigationGridDistributor;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.world.CommandPackage;
-import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -72,15 +73,17 @@ public class WorldCommandProcessor implements ICommandProcessor {
 
     private CommandPackage getCommandPackage() {
         if (this.commandPackage == null) {
+            EntityCommandAdapter entityCommandAdapter = new EntityCommandAdapter(new NavigationGridDistributor());
             this.commandPackage = new CommandPackage(
-                    shutdown,
-                    levelManager,
-                    networkManager,
-                    entityBuilder,
-                    uiManager,
-                    worldManager,
+                    this.shutdown,
+                    this.levelManager,
+                    this.networkManager,
+                    this.entityBuilder,
+                    this.uiManager,
+                    this.worldManager,
                     this,
-                    terrainManager, entityCommandAdapter);
+                    this.terrainManager,
+                    entityCommandAdapter);
         }
         return this.commandPackage;
     }

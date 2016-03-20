@@ -1,6 +1,7 @@
 package com.omnicrola.util;
 
 import com.jme3.math.Vector3f;
+import com.jme3.network.serializing.Serializable;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -9,6 +10,7 @@ import javax.xml.bind.annotation.XmlAttribute;
 /**
  * Created by omnic on 1/16/2016.
  */
+@Serializable
 @XmlAccessorType(XmlAccessType.FIELD)
 public class Vec3i implements Vec3iRead {
 

@@ -16,7 +16,11 @@ import java.util.stream.Stream;
  */
 public class EntityCommandAdapter {
 
-    NavigationGridDistributor gridDistributor;
+    private final NavigationGridDistributor gridDistributor;
+
+    public EntityCommandAdapter(NavigationGridDistributor gridDistributor) {
+        this.gridDistributor = gridDistributor;
+    }
 
     public void orderMoveToLocation(Vector3f location, List<Spatial> selectedUnits) {
         Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location, selectedUnits);
