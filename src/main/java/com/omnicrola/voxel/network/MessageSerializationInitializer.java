@@ -1,10 +1,7 @@
 package com.omnicrola.voxel.network;
 
 import com.jme3.network.serializing.Serializer;
-import com.omnicrola.voxel.commands.AttackLocationCommand;
-import com.omnicrola.voxel.commands.AttackTargetCommand;
-import com.omnicrola.voxel.commands.MoveUnitsCommand;
-import com.omnicrola.voxel.commands.StartLevelCommand;
+import com.omnicrola.voxel.commands.*;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.LoadLevelCommand;
@@ -26,6 +23,7 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(MoveUnitsCommand.class);
         Serializer.registerClass(AttackTargetCommand.class);
         Serializer.registerClass(AttackLocationCommand.class);
+        Serializer.registerClass(HarvestVoxelsCommand.class);
 
         Serializer.registerClass(UnitPlacement.class);
     }

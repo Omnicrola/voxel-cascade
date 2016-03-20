@@ -5,8 +5,8 @@ import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.MoveUnitsCommand;
-import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
@@ -22,11 +22,11 @@ public class MoveSelectedUnitsStrategy implements ICursorStrategy {
     private final Node empty3dCursor;
     protected IWorldCursor worldCursor;
     private JmeCursor cursor2d;
-    private WorldCommandProcessor worldCommandProcessor;
+    private ICommandProcessor worldCommandProcessor;
 
     public MoveSelectedUnitsStrategy(IWorldCursor worldCursor,
                                      JmeCursor cursor2d,
-                                     WorldCommandProcessor worldCommandProcessor) {
+                                     ICommandProcessor worldCommandProcessor) {
         this.worldCursor = worldCursor;
         this.cursor2d = cursor2d;
         this.worldCommandProcessor = worldCommandProcessor;

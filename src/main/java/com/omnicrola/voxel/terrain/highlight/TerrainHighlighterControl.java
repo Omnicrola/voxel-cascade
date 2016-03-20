@@ -7,12 +7,12 @@ import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.entities.control.resources.VoxelQueue;
-import com.omnicrola.voxel.entities.control.resources.VoxelDataHarvestComparator;
+import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by Eric on 3/2/2016.
@@ -51,10 +51,12 @@ public class TerrainHighlighterControl extends AbstractControl implements ITerra
     }
 
     @Override
-    public VoxelQueue getSelection(Vector3f endPoint) {
+    public List<Vec3i> getSelection(Vector3f endPoint) {
         List<VoxelData> selectedVoxels = this.highlightStrategy.findAllVoxelsInSelection(this.startLocation, endPoint);
-        VoxelQueue voxelQueue = new VoxelQueue(selectedVoxels, new VoxelDataHarvestComparator(this.startLocation));
-        return voxelQueue;
+        return selectedVoxels
+                .stream()
+                .map(v -> v.getGridLocation())
+                .collect(Collectors.toList());
     }
 
     @Override

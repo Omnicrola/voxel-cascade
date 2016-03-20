@@ -62,7 +62,7 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     public void setAttackStrategy() {
         JmeCursor attackCursor = getCursor(CursorToken.ATTACK);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
-        AttackCursorStrategy attackCursorStrategy = new AttackCursorStrategy(worldCursor, attackCursor);
+        AttackCursorStrategy attackCursorStrategy = new AttackCursorStrategy(worldCursor, attackCursor, worldCommandProcessor);
         worldCursor.setCursorStrategy(attackCursorStrategy);
     }
 
@@ -140,7 +140,12 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         HarvestTerrainHighlightStrategy highlightStrategy = new HarvestTerrainHighlightStrategy(this.terrainManager);
         TerrainHighlighterControl terrainHighlighter = buildTerrainHighlighterControl(highlightStrategy);
 
-        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter, this.terrainManager, worldCursor, harvestCursor, cubeCursor);
+        HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter,
+                this.terrainManager,
+                worldCursor,
+                harvestCursor,
+                cubeCursor,
+                worldCommandProcessor);
         worldCursor.setCursorStrategy(harvestStrategy);
     }
 

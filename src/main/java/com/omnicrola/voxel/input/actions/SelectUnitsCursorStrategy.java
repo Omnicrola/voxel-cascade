@@ -6,7 +6,7 @@ import com.jme3.input.InputManager;
 import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.commands.WorldCommandProcessor;
+import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.input.*;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -30,7 +30,7 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
                                      IWorldCursor worldCursor,
                                      InputManager inputManager,
                                      JmeCursor defaultCursor,
-                                     WorldCommandProcessor worldCommandProcessor) {
+                                     ICommandProcessor worldCommandProcessor) {
         super(worldCursor, defaultCursor, worldCommandProcessor);
         this.cursorCommandAdaptor = cursorCommandAdaptor;
         this.worldCursor = worldCursor;

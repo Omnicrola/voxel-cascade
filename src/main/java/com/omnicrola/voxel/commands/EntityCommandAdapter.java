@@ -2,10 +2,8 @@ package com.omnicrola.voxel.commands;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.entities.behavior.ai.AiAttackTargetState;
-import com.omnicrola.voxel.entities.behavior.ai.AiMoveToLocationState;
-import com.omnicrola.voxel.entities.behavior.ai.EntityAiController;
-import com.omnicrola.voxel.entities.behavior.ai.NavigationGridDistributor;
+import com.omnicrola.voxel.entities.behavior.ai.*;
+import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 
 import java.util.Iterator;
 import java.util.List;
@@ -32,6 +30,12 @@ public class EntityCommandAdapter {
 
     public void attackTarget(List<Spatial> units, Spatial target) {
         getEntityAiControllerStream(units).forEach(ai -> ai.setState(AiAttackTargetState.class).setTarget(target));
+    }
+
+    public void harvest(List<Spatial> units, VoxelHarvestTarget voxelHarvestTarget) {
+        getEntityAiControllerStream(units)
+                .forEach(ai -> ai.setState(AiHarvestState.class)
+                        .setTarget(voxelHarvestTarget));
     }
 
     private Stream<EntityAiController> getEntityAiControllerStream(List<Spatial> selectedUnits) {

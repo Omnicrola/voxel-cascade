@@ -45,10 +45,6 @@ public class SelectionGroup {
         getEntityAiControllerStream().forEach(ai -> ai.setState(AiStopState.class));
     }
 
-    public void orderHarvest(VoxelHarvestTarget voxelHarvestTarget) {
-        getEntityAiControllerStream().forEach(ai -> ai.setState(AiHarvestState.class).setTarget(voxelHarvestTarget));
-    }
-
     public void orderBuild(IConstructionPackage constructionPackage) {
         Optional<EntityAiController> firstController = getEntityAiControllerStream().findFirst();
         if (firstController.isPresent()) {
