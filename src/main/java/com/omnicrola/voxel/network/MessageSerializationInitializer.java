@@ -26,6 +26,7 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(OrderHarvestVoxelsCommand.class);
         Serializer.registerClass(OrderBuildEntityWorldCommand.class);
         Serializer.registerClass(OrderBuildStructureWorldCommand.class);
+        Serializer.registerClass(OrderBuildVoxelsCommand.class);
         Serializer.registerClass(OrderStopWorldCommand.class);
 
         Serializer.registerClass(UnitPlacement.class);

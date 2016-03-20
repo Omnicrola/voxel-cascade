@@ -1,25 +1,17 @@
 package com.omnicrola.voxel.input;
 
 import com.jme3.math.Vector3f;
-import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.SelectedSpatial;
-import com.omnicrola.voxel.entities.behavior.ai.*;
-import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityCommandController;
-import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
-import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -39,14 +31,6 @@ public class SelectionGroup {
 
     public int count() {
         return this.selection.size();
-    }
-
-    public void orderBuild(IConstructionPackage constructionPackage) {
-        Optional<EntityAiController> firstController = getEntityAiControllerStream().findFirst();
-        if (firstController.isPresent()) {
-            EntityAiController entityAiController = firstController.get();
-            entityAiController.setState(AiBuildState.class).setPackage(constructionPackage);
-        }
     }
 
     public List<ISelectedUnit> getSelections() {

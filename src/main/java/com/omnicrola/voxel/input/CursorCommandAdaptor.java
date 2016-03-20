@@ -132,8 +132,8 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
                 worldCursor,
                 type,
                 buildCursor,
-                this.terrainManager,
-                cubeCursor);
+                cubeCursor,
+                this.worldCommandProcessor);
         worldCursor.setCursorStrategy(buildVoxelCursorStrategy);
     }
 

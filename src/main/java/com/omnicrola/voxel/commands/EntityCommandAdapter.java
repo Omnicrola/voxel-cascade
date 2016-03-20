@@ -3,10 +3,12 @@ package com.omnicrola.voxel.commands;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.behavior.ai.*;
+import com.omnicrola.voxel.entities.control.construction.VoxelConstructionPackage;
 import com.omnicrola.voxel.entities.control.resources.VoxelHarvestTarget;
 
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Stream;
 
 /**
@@ -40,6 +42,14 @@ public class EntityCommandAdapter {
         getEntityAiControllerStream(units)
                 .forEach(ai -> ai.setState(AiHarvestState.class)
                         .setTarget(voxelHarvestTarget));
+    }
+
+    public void orderBuild(List<Spatial> units, VoxelConstructionPackage constructionPackage) {
+        Optional<EntityAiController> firstController = getEntityAiControllerStream(units).findFirst();
+        if (firstController.isPresent()) {
+            EntityAiController entityAiController = firstController.get();
+            entityAiController.setState(AiBuildState.class).setPackage(constructionPackage);
+        }
     }
 
     private Stream<EntityAiController> getEntityAiControllerStream(List<Spatial> selectedUnits) {

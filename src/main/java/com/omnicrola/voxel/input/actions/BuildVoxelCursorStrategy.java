@@ -6,15 +6,15 @@ import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.entities.control.construction.VoxelConstructionPackage;
-import com.omnicrola.voxel.entities.control.resources.VoxelQueue;
+import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.commands.OrderBuildVoxelsCommand;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.highlight.ITerrainHighlighter;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,8 +23,8 @@ import java.util.Optional;
 public class BuildVoxelCursorStrategy implements ICursorStrategy {
     private byte voxelType;
     private final JmeCursor buildCursor;
-    private final ITerrainManager terrainManager;
     private final Spatial placeholderVoxel;
+    private ICommandProcessor commandProcessor;
     private final Node cursor3d;
     private ITerrainHighlighter terrainHighlighter;
     private IWorldCursor worldCursor;
@@ -34,14 +34,14 @@ public class BuildVoxelCursorStrategy implements ICursorStrategy {
                                     IWorldCursor worldCursor,
                                     byte voxelType,
                                     JmeCursor buildCursor,
-                                    ITerrainManager terrainManager,
-                                    Spatial placeholderVoxel) {
+                                    Spatial placeholderVoxel,
+                                    ICommandProcessor commandProcessor) {
         this.terrainHighlighter = terrainHighlighter;
         this.worldCursor = worldCursor;
         this.voxelType = voxelType;
         this.buildCursor = buildCursor;
-        this.terrainManager = terrainManager;
         this.placeholderVoxel = placeholderVoxel;
+        this.commandProcessor = commandProcessor;
         this.cursor3d = new Node();
         this.cursor3d.attachChild(placeholderVoxel);
     }
@@ -53,8 +53,17 @@ public class BuildVoxelCursorStrategy implements ICursorStrategy {
         } else {
             Optional<CollisionResult> terrainUnderCursor = this.worldCursor.getTerrainPositionUnderCursor();
             if (terrainUnderCursor.isPresent()) {
-                buildAtMouseLocation(gameMouseEvent, currentSelection);
+                buildAtMouseLocation(currentSelection);
+                resetHighlighter(gameMouseEvent);
             }
+        }
+    }
+
+    private void resetHighlighter(GameMouseEvent gameMouseEvent) {
+        this.terrainHighlighter.setVisible(false);
+        this.terrainHighlighter.clear();
+        if (!gameMouseEvent.isMultiSelecting()) {
+            this.worldCursor.clearCursorStrategy();
         }
     }
 
@@ -67,22 +76,17 @@ public class BuildVoxelCursorStrategy implements ICursorStrategy {
         }
     }
 
-    private void buildAtMouseLocation(GameMouseEvent gameMouseEvent, SelectionGroup currentSelection) {
+    private void buildAtMouseLocation(SelectionGroup currentSelection) {
         Vec3i snappedLocation = this.worldCursor.getSnappedLocation();
         this.placeholderVoxel.setLocalTranslation(snappedLocation.asVector3f());
+        sendBuildCommand(currentSelection, snappedLocation);
+    }
 
-        VoxelQueue voxelQueue = this.terrainHighlighter.getSelection(snappedLocation.asVector3f());
-        VoxelConstructionPackage voxelConstructionPackage = new VoxelConstructionPackage(
-                this.terrainManager,
-                this.voxelType,
-                voxelQueue);
-
-        currentSelection.orderBuild(voxelConstructionPackage);
-        this.terrainHighlighter.setVisible(false);
-        this.terrainHighlighter.clear();
-        if (!gameMouseEvent.isMultiSelecting()) {
-            this.worldCursor.clearCursorStrategy();
-        }
+    private void sendBuildCommand(SelectionGroup currentSelection, Vec3i snappedLocation) {
+        List<Vec3i> selectedVoxels = this.terrainHighlighter.getSelection(snappedLocation.asVector3f());
+        int[] unitIds = currentSelection.getUnitIds();
+        OrderBuildVoxelsCommand orderBuildVoxelsCommand = new OrderBuildVoxelsCommand(unitIds, selectedVoxels, voxelType);
+        commandProcessor.addCommand(orderBuildVoxelsCommand);
     }
 
     @Override
