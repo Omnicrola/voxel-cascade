@@ -45,15 +45,6 @@ public class SelectionGroup {
         getEntityAiControllerStream().forEach(ai -> ai.setState(AiStopState.class));
     }
 
-    public void orderAttackTarget(Geometry target) {
-        getEntityAiControllerStream().forEach(ai -> ai.setState(AiAttackTargetState.class).setTarget(target));
-    }
-
-    public void orderAttackLocation(Vector3f location) {
-        Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location);
-        getEntityAiControllerStream().forEach(ai -> ai.setState(AiMoveToLocationState.class).setTarget(navPoints.next()));
-    }
-
     public void orderHarvest(VoxelHarvestTarget voxelHarvestTarget) {
         getEntityAiControllerStream().forEach(ai -> ai.setState(AiHarvestState.class).setTarget(voxelHarvestTarget));
     }
@@ -92,7 +83,7 @@ public class SelectionGroup {
         return commandCollector.getCommandsCommonToAllEntities(this, cursorCommandAdaptor);
     }
 
-    
+
     public Vector3f getCenterPoint() {
         if (this.selection.size() <= 0) {
             return new Vector3f();

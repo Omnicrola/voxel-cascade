@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.network;
 
 import com.jme3.network.serializing.Serializer;
+import com.omnicrola.voxel.commands.AttackLocationCommand;
+import com.omnicrola.voxel.commands.AttackTargetCommand;
 import com.omnicrola.voxel.commands.MoveUnitsCommand;
 import com.omnicrola.voxel.commands.StartLevelCommand;
 import com.omnicrola.voxel.data.level.UnitPlacement;
@@ -22,6 +24,8 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(StartLevelCommand.class);
 
         Serializer.registerClass(MoveUnitsCommand.class);
+        Serializer.registerClass(AttackTargetCommand.class);
+        Serializer.registerClass(AttackLocationCommand.class);
 
         Serializer.registerClass(UnitPlacement.class);
     }

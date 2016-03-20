@@ -17,6 +17,9 @@ import com.omnicrola.voxel.util.VoxelUtil;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -24,6 +27,7 @@ import java.util.stream.Stream;
  * Created by Eric on 2/22/2016.
  */
 public class WorldManager {
+    private static final Logger LOGGER = Logger.getLogger(WorldManager.class.getName());
 
     private IWorldNode worldNode;
     private IWorldCursor worldCursor;
@@ -126,5 +130,19 @@ public class WorldManager {
         int id = VoxelUtil.integerData(spatial, EntityDataKeys.WORLD_ID);
         int index = Arrays.binarySearch(unitIds, id);
         return index > 0;
+    }
+
+    public Spatial selectEntity(int targetId) {
+        Optional<Spatial> first = this.units
+                .stream()
+                .map(u -> u.getSpatial())
+                .filter(u -> VoxelUtil.integerData(u, EntityDataKeys.WORLD_ID) == targetId)
+                .findFirst();
+        if (first.isPresent()) {
+            return first.get();
+        } else {
+            LOGGER.log(Level.SEVERE, "Could not find entity with ID: " + targetId);
+            return null;
+        }
     }
 }

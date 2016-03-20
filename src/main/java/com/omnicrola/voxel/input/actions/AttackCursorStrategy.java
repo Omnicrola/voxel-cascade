@@ -3,12 +3,18 @@ package com.omnicrola.voxel.input.actions;
 import com.jme3.collision.CollisionResult;
 import com.jme3.cursors.plugins.JmeCursor;
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Geometry;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.commands.AttackLocationCommand;
+import com.omnicrola.voxel.commands.AttackTargetCommand;
+import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
+import com.omnicrola.voxel.settings.EntityDataKeys;
+import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.Optional;
 
@@ -18,11 +24,13 @@ import java.util.Optional;
 public class AttackCursorStrategy implements ICursorStrategy {
     private final Node empty3dCursor;
     private JmeCursor cursor2d;
+    private ICommandProcessor commandProcessor;
     private IWorldCursor worldCursor;
 
-    public AttackCursorStrategy(IWorldCursor worldCursor, JmeCursor cursor2d) {
+    public AttackCursorStrategy(IWorldCursor worldCursor, JmeCursor cursor2d, ICommandProcessor commandProcessor) {
         this.worldCursor = worldCursor;
         this.cursor2d = cursor2d;
+        this.commandProcessor = commandProcessor;
         this.empty3dCursor = new Node();
     }
 
@@ -53,14 +61,30 @@ public class AttackCursorStrategy implements ICursorStrategy {
     private void attackTarget(SelectionGroup currentSelection) {
         Optional<CollisionResult> unitUnderCursor = worldCursor.getUnitUnderCursor();
         if (unitUnderCursor.isPresent()) {
-            currentSelection.orderAttackTarget(unitUnderCursor.get().getGeometry());
+            issueAttackTargetCommand(currentSelection, unitUnderCursor);
+//            currentSelection.orderAttackTarget(unitUnderCursor.get().getGeometry());
         } else {
             Optional<CollisionResult> terrainUnderCursor = worldCursor.getTerrainPositionUnderCursor();
             if (terrainUnderCursor.isPresent()) {
-                Vector3f terrainLocation = terrainUnderCursor.get().getContactPoint();
-                currentSelection.orderAttackLocation(terrainLocation);
+                issueAttackLocationCommand(currentSelection, terrainUnderCursor);
+//                currentSelection.orderAttackLocation(terrainLocation);
             }
         }
         worldCursor.clearCursorStrategy();
+    }
+
+    private void issueAttackLocationCommand(SelectionGroup currentSelection, Optional<CollisionResult> terrainUnderCursor) {
+        Vector3f terrainLocation = terrainUnderCursor.get().getContactPoint();
+        int[] unitIds = currentSelection.getUnitIds();
+        AttackLocationCommand attackLocationCommand = new AttackLocationCommand(terrainLocation, unitIds);
+        this.commandProcessor.addCommand(attackLocationCommand);
+    }
+
+    private void issueAttackTargetCommand(SelectionGroup currentSelection, Optional<CollisionResult> unitUnderCursor) {
+        Geometry geometry = unitUnderCursor.get().getGeometry();
+        int targetId = VoxelUtil.integerData(geometry, EntityDataKeys.WORLD_ID);
+        int[] unitIds = currentSelection.getUnitIds();
+        AttackTargetCommand attackTargetCommand = new AttackTargetCommand(targetId, unitIds);
+        this.commandProcessor.addCommand(attackTargetCommand);
     }
 }

@@ -2,6 +2,7 @@ package com.omnicrola.voxel.commands;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.entities.behavior.ai.AiAttackTargetState;
 import com.omnicrola.voxel.entities.behavior.ai.AiMoveToLocationState;
 import com.omnicrola.voxel.entities.behavior.ai.EntityAiController;
 import com.omnicrola.voxel.entities.behavior.ai.NavigationGridDistributor;
@@ -22,6 +23,15 @@ public class EntityCommandAdapter {
         getEntityAiControllerStream(selectedUnits)
                 .forEach(ai -> ai.setState(AiMoveToLocationState.class)
                         .setTarget(navPoints.next()));
+    }
+
+    public void attackLocation(List<Spatial> units, Vector3f location) {
+        Iterator<Vector3f> navPoints = this.gridDistributor.distribute(location, units);
+        getEntityAiControllerStream(units).forEach(ai -> ai.setState(AiMoveToLocationState.class).setTarget(navPoints.next()));
+    }
+
+    public void attackTarget(List<Spatial> units, Spatial target) {
+        getEntityAiControllerStream(units).forEach(ai -> ai.setState(AiAttackTargetState.class).setTarget(target));
     }
 
     private Stream<EntityAiController> getEntityAiControllerStream(List<Spatial> selectedUnits) {
