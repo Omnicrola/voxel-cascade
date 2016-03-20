@@ -11,7 +11,7 @@ import com.omnicrola.voxel.world.build.WorldEntityBuilder;
  * Created by Eric on 3/19/2016.
  */
 @Serializable
-public class OrderBuildStructureWorldCommand extends AbstractWorldCommand {
+public class OrderBuildStructureWorldCommand extends AbstractWorldCommand implements IEntityCreator {
     private UnitPlacement unitPlacement;
 
     public OrderBuildStructureWorldCommand() {
@@ -27,5 +27,10 @@ public class OrderBuildStructureWorldCommand extends AbstractWorldCommand {
         WorldManager worldManager = commandPackage.getWorldManager();
         Structure newStructure = entityBuilder.buildStructure(unitPlacement);
         worldManager.addStructure(newStructure);
+    }
+
+    @Override
+    public void setInstanceId(int instanceId) {
+        this.unitPlacement.setInstanceId(instanceId);
     }
 }

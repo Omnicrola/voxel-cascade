@@ -3,6 +3,7 @@ package com.omnicrola.voxel.server.network;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
+import com.omnicrola.voxel.commands.IEntityCreator;
 import com.omnicrola.voxel.commands.IWorldCommand;
 
 /**
@@ -14,7 +15,15 @@ public class ServerCommandListener implements MessageListener<HostedConnection> 
         if (message instanceof IWorldCommand) {
             IWorldCommand worldCommand = (IWorldCommand) message;
             worldCommand.setIsLocal(true);
+            handleInstanceIds(worldCommand);
             hostedConnection.getServer().broadcast(worldCommand);
+        }
+    }
+
+    private void handleInstanceIds(IWorldCommand worldCommand) {
+        if (worldCommand instanceof IEntityCreator) {
+            int id = ServerInstanceIdProvider.INSTANCE.getNextId();
+            ((IEntityCreator) worldCommand).setInstanceId(id);
         }
     }
 }

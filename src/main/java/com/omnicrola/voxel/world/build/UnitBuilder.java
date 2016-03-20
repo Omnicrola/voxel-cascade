@@ -51,6 +51,8 @@ public class UnitBuilder {
         spatial.setUserData(EntityDataKeys.HARVEST_RANGE, 2f);
         spatial.setUserData(EntityDataKeys.HITPOINTS, unitDefinition.getHitpoints());
         spatial.setUserData(EntityDataKeys.MAX_HITPOINTS, unitDefinition.getHitpoints());
+
+        spatial.setUserData(EntityDataKeys.WORLD_ID, unitPlacement.getInstanceId());
         spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
         return new Unit(spatial);
 

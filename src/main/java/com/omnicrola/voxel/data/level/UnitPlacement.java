@@ -7,6 +7,7 @@ import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 /**
@@ -25,6 +26,10 @@ public class UnitPlacement {
     @XmlElement(name = "location", required = true)
     @XmlJavaTypeAdapter(VectorXmlTypeAdapter.class)
     protected Vector3f location;
+
+    @XmlTransient
+    // should only be set by the multiplayer server
+    private int instanceId;
 
     public UnitPlacement() {
     }
@@ -45,5 +50,13 @@ public class UnitPlacement {
 
     public int getTeamId() {
         return teamId;
+    }
+
+    public int getInstanceId() {
+        return instanceId;
+    }
+
+    public void setInstanceId(int instanceId) {
+        this.instanceId = instanceId;
     }
 }

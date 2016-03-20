@@ -129,7 +129,7 @@ public class WorldManager {
     private boolean hasId(Spatial spatial, int[] unitIds) {
         int id = VoxelUtil.integerData(spatial, EntityDataKeys.WORLD_ID);
         int index = Arrays.binarySearch(unitIds, id);
-        return index > 0;
+        return index >= 0;
     }
 
     public Spatial selectEntity(int targetId) {

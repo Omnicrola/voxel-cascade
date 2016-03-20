@@ -1,12 +1,10 @@
 package com.omnicrola.voxel.main;
 
-import com.omnicrola.voxel.data.read.ProductionFileReaderStrategy;
 import com.omnicrola.voxel.main.init.Bootstrapper;
 import com.omnicrola.voxel.main.init.VoxelGameLauncher;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.logging.FileHandler;
@@ -43,12 +41,15 @@ public class VoxelCascade {
 
         try {
             fh = new FileHandler("voxel-cascade.log");
+            fh.setLevel(logLevel);
             baselogger.addHandler(fh);
             SimpleFormatter formatter = new SimpleFormatter();
             fh.setFormatter(formatter);
         } catch (SecurityException e) {
+            System.err.println("Unable to initialize logger!");
             e.printStackTrace();
         } catch (IOException e) {
+            System.err.println("Unable to initialize logger!");
             e.printStackTrace();
         }
         LOGGER = Logger.getLogger(VoxelCascade.class.getName());

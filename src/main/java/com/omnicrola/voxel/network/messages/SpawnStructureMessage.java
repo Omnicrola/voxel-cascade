@@ -3,6 +3,7 @@ package com.omnicrola.voxel.network.messages;
 import com.jme3.math.Vector3f;
 import com.jme3.network.serializing.Serializable;
 import com.omnicrola.voxel.commands.AbstractWorldCommand;
+import com.omnicrola.voxel.commands.IEntityCreator;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.terrain.ITerrainManager;
@@ -17,7 +18,7 @@ import java.util.Optional;
  * Created by Eric on 2/25/2016.
  */
 @Serializable
-public class SpawnStructureMessage extends AbstractWorldCommand {
+public class SpawnStructureMessage extends AbstractWorldCommand implements IEntityCreator {
     private UnitPlacement unitPlacement;
 
     public SpawnStructureMessage() {
@@ -42,5 +43,10 @@ public class SpawnStructureMessage extends AbstractWorldCommand {
             structure.setLocation(location);
             worldManager.addStructure(structure);
         }
+    }
+
+    @Override
+    public void setInstanceId(int id) {
+        this.unitPlacement.setInstanceId(id);
     }
 }
