@@ -141,7 +141,6 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         TerrainHighlighterControl terrainHighlighter = buildTerrainHighlighterControl(highlightStrategy);
 
         HarvestCursorStrategy harvestStrategy = new HarvestCursorStrategy(terrainHighlighter,
-                this.terrainManager,
                 worldCursor,
                 harvestCursor,
                 cubeCursor,

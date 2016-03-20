@@ -24,6 +24,8 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(AttackTargetCommand.class);
         Serializer.registerClass(AttackLocationCommand.class);
         Serializer.registerClass(HarvestVoxelsCommand.class);
+        Serializer.registerClass(BuildEntityWorldCommand.class);
+        Serializer.registerClass(BuildStructureWorldCommand.class);
 
         Serializer.registerClass(UnitPlacement.class);
     }

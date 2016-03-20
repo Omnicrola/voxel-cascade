@@ -12,7 +12,6 @@ import com.omnicrola.voxel.input.GameMouseEvent;
 import com.omnicrola.voxel.input.ICursorStrategy;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.highlight.ITerrainHighlighter;
 
 import java.util.List;
@@ -23,20 +22,17 @@ import java.util.Optional;
  */
 public class HarvestCursorStrategy implements ICursorStrategy {
     private final ITerrainHighlighter terrainHighlighter;
-    private ITerrainManager terrainManager;
     private IWorldCursor worldCursor;
     private final JmeCursor cursor2d;
     private final Geometry cursor3d;
     private ICommandProcessor commandProcessor;
 
     public HarvestCursorStrategy(ITerrainHighlighter terrainHighlighter,
-                                 ITerrainManager terrainManager,
                                  IWorldCursor worldCursor,
                                  JmeCursor cursor2d,
                                  Geometry cursorNode,
                                  ICommandProcessor commandProcessor) {
         this.terrainHighlighter = terrainHighlighter;
-        this.terrainManager = terrainManager;
         this.worldCursor = worldCursor;
         this.cursor2d = cursor2d;
         this.cursor3d = cursorNode;
@@ -69,8 +65,6 @@ public class HarvestCursorStrategy implements ICursorStrategy {
             int[] unitIds = currentSelection.getUnitIds();
             HarvestVoxelsCommand harvestVoxelsCommand = new HarvestVoxelsCommand(unitIds, voxels);
             this.commandProcessor.addCommand(harvestVoxelsCommand);
-//            VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelQueue);
-//            currentSelection.orderHarvest(voxelHarvestTarget);
         }
         this.terrainHighlighter.setVisible(false);
         this.worldCursor.clearCursorStrategy();

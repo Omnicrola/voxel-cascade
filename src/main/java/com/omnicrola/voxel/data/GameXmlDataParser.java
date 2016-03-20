@@ -6,7 +6,7 @@ import com.omnicrola.voxel.data.read.IFileReaderStrategy;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.data.units.XmlGameDefinitions;
 import com.omnicrola.voxel.entities.commands.BuildStructureCommand;
-import com.omnicrola.voxel.entities.commands.BuildUnitCommand;
+import com.omnicrola.voxel.entities.commands.BuildUnitEntityCommand;
 import com.omnicrola.voxel.entities.commands.BuildVoxelCommand;
 import com.omnicrola.voxel.entities.commands.EntityCommand;
 import com.omnicrola.voxel.entities.control.AutomatedWeaponControlFactory;
@@ -118,7 +118,7 @@ public class GameXmlDataParser {
                     LevelDefinition.class,
                     // commands
                     EntityCommand.class,
-                    BuildUnitCommand.class,
+                    BuildUnitEntityCommand.class,
                     BuildStructureCommand.class,
                     BuildVoxelCommand.class,
                     // controls

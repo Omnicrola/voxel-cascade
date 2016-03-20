@@ -12,7 +12,7 @@ import java.util.List;
  * Created by Eric on 1/30/2016.
  */
 @XmlRootElement(name = "unit")
-public class BuildUnitCommand implements IEntityCommand {
+public class BuildUnitEntityCommand implements IEntityCommand {
 
     @XmlAttribute(name = "unit-id", required = true)
     private int unitId;
@@ -42,10 +42,10 @@ public class BuildUnitCommand implements IEntityCommand {
         return this.priority;
     }
 
-    public BuildUnitCommand() {
+    public BuildUnitEntityCommand() {
     }
 
-    public BuildUnitCommand(String label, int unitId, float buildRadius) {
+    public BuildUnitEntityCommand(String label, int unitId, float buildRadius) {
         this.label = label;
         this.unitId = unitId;
         this.buildRadius = buildRadius;
