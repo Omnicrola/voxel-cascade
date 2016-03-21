@@ -20,16 +20,16 @@ public class MainMenuScreenController extends AbstractScreenController {
         this.uiAdapter = uiAdapter;
     }
 
-    @NiftyEventSubscriber(id = "BUTTON_START")
-    @SubscriberLink(UiToken.BUTTON_START)
+    @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_START")
+    @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_START)
     public void start(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.ACTIVE_PLAY);
+        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOAD);
     }
 
-    @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER")
-    @SubscriberLink(UiToken.BUTTON_MULTIPLAYER)
+    @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_JOIN")
+    @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_JOIN)
     public void launchMultiplayer(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOAD);
+        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_JOIN);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")

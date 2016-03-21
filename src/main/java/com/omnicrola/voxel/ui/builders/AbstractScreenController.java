@@ -24,7 +24,7 @@ public abstract class AbstractScreenController implements ScreenController {
     @Override
     public void bind(Nifty nifty, Screen screen) {
         this.niftyUiWrapper = new NiftyUiWrapper(nifty, screen);
-        assertEventSubscribers(this, UiToken.BUTTON_START);
+        assertEventSubscribers(this, UiToken.BUTTON_MULTIPLAYER_START);
     }
 
     protected IUi ui() {

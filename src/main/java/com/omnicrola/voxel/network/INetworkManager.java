@@ -11,4 +11,8 @@ public interface INetworkManager {
     void startMultiplayerServer();
 
     void shutdownMultiplayer();
+
+    void addObserver(INetworkObserver networkObserver);
+
+    void startListeningForServers();
 }

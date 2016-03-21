@@ -35,4 +35,5 @@ public class GameConstants {
 
     public static final String SETTINGS_FILE = "voxel.settings";
     public static final String PROPERTY_LOG_LEVEL = "voxel-log-level";
+    public static final int SERVER_BROADCAST_PORT = 5534;
 }

@@ -24,6 +24,7 @@ public class NetworkManager implements INetworkManager {
     private ClientListenerBuilder clientListenerBuilder;
     private NetworkCommandQueue networkCommandQueue;
     private WorldCommandProcessor commandProcessor;
+    private ServerBroadcastReceiver serverBroadcastReciever;
 
     public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue) {
         this.clientListenerBuilder = clientListenerBuilder;
@@ -91,5 +92,15 @@ public class NetworkManager implements INetworkManager {
 
     public void setCommandProcessor(WorldCommandProcessor commandProcessor) {
         this.commandProcessor = commandProcessor;
+    }
+
+    @Override
+    public void startListeningForServers() {
+        this.serverBroadcastReciever.start();
+    }
+
+    @Override
+    public void addObserver(INetworkObserver networkObserver) {
+        this.serverBroadcastReciever.addObserver(networkObserver);
     }
 }

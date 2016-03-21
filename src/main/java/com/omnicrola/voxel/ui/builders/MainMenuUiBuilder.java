@@ -76,12 +76,12 @@ public class MainMenuUiBuilder implements IGuiBuilder {
                         width("50%");
 
                         // add control
-                        control(new ButtonBuilder(UiToken.BUTTON_START.toString(), "Start") {{
+                        control(new ButtonBuilder(UiToken.BUTTON_MULTIPLAYER_START.toString(), "New Game") {{
                             height(percentage(40));
                             width(percentage(50));
                         }});
                         // add control
-                        control(new ButtonBuilder(UiToken.BUTTON_MULTIPLAYER.toString(), "Multiplayer") {{
+                        control(new ButtonBuilder(UiToken.BUTTON_MULTIPLAYER_JOIN.toString(), "Join Game") {{
                             height(percentage(40));
                             width(percentage(50));
                         }});

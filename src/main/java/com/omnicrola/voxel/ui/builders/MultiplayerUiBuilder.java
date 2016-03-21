@@ -55,11 +55,6 @@ public class MultiplayerUiBuilder implements IGuiBuilder {
                         height(percentage(75));
                         width(percentage(75));
 
-                        text(new TextBuilder() {{
-                            text("Loading...");
-                            font(UiConstants.DEFAULT_FONT);
-                        }});
-
                         control(new ButtonBuilder(UiToken.BUTTON_START_MULTIPLAYER.toString(), "Start") {{
                             alignCenter();
                             valignCenter();

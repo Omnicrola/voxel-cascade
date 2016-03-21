@@ -8,9 +8,11 @@ import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.states.IStateTransition;
 import com.omnicrola.voxel.engine.states.transitions.TransitionActivePlay;
 import com.omnicrola.voxel.engine.states.transitions.TransitionMainMenu;
+import com.omnicrola.voxel.engine.states.transitions.TransitionMultiplayerJoin;
 import com.omnicrola.voxel.engine.states.transitions.TransitionMultiplayerLoad;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
+import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.builders.IGuiBuilder;
 import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
@@ -47,8 +49,10 @@ public class GuiInitializer {
         WorldCommandProcessor worldCommandProcessor = initializationContainer.getWorldCommandProcessor();
         WorldManager worldManager = initializationContainer.getWorldManager();
         IWorldCursor worldCursor = worldManager.getWorldCursor();
+        NetworkManager networkManager = initializationContainer.getNetworkManager();
 
         Map<GlobalGameState, IStateTransition> transitions = new HashMap<>();
+        transitions.put(GlobalGameState.MULTIPLAYER_JOIN, new TransitionMultiplayerJoin());
         transitions.put(GlobalGameState.MULTIPLAYER_LOAD, new TransitionMultiplayerLoad());
         transitions.put(GlobalGameState.ACTIVE_PLAY, new TransitionActivePlay());
         transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());
@@ -63,7 +67,8 @@ public class GuiInitializer {
                 worldCommandProcessor,
                 transitions,
                 stateManager,
-                spatialDecorator);
+                spatialDecorator,
+                networkManager);
         return uiAdapter;
     }
 
