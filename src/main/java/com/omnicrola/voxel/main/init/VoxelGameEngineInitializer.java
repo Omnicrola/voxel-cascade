@@ -28,6 +28,7 @@ import com.omnicrola.voxel.main.init.states.InitializationContainer;
 import com.omnicrola.voxel.network.ClientListenerBuilder;
 import com.omnicrola.voxel.network.NetworkCommandQueue;
 import com.omnicrola.voxel.network.NetworkManager;
+import com.omnicrola.voxel.network.ServerBroadcastReceiver;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.*;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
@@ -97,7 +98,8 @@ public class VoxelGameEngineInitializer {
         ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
 
         ClientListenerBuilder clientListenerBuilder = new ClientListenerBuilder(voxelGameEngine);
-        NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue);
+        ServerBroadcastReceiver serverBroadcastReceiver = new ServerBroadcastReceiver(voxelGameEngine);
+        NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue, serverBroadcastReceiver);
 
         TerrainManager terrainManager = createTerrainManager(voxelGameEngine, worldManager, voxelTypeLibrary, materialRepository);
 

@@ -23,12 +23,14 @@ public class NetworkManager implements INetworkManager {
 
     private ClientListenerBuilder clientListenerBuilder;
     private NetworkCommandQueue networkCommandQueue;
+    private ServerBroadcastReceiver serverBroadcastReceiver;
     private WorldCommandProcessor commandProcessor;
-    private ServerBroadcastReceiver serverBroadcastReciever;
 
-    public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue) {
+    public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue,
+                          ServerBroadcastReceiver serverBroadcastReceiver) {
         this.clientListenerBuilder = clientListenerBuilder;
         this.networkCommandQueue = networkCommandQueue;
+        this.serverBroadcastReceiver = serverBroadcastReceiver;
     }
 
     @Override
@@ -96,11 +98,11 @@ public class NetworkManager implements INetworkManager {
 
     @Override
     public void startListeningForServers() {
-        this.serverBroadcastReciever.start();
+        this.serverBroadcastReceiver.start();
     }
 
     @Override
     public void addObserver(INetworkObserver networkObserver) {
-        this.serverBroadcastReciever.addObserver(networkObserver);
+        this.serverBroadcastReceiver.addObserver(networkObserver);
     }
 }

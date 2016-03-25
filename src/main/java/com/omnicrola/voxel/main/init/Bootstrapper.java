@@ -58,6 +58,7 @@ public class Bootstrapper {
         guiBuilders.add(new ActivePlayUiBuilder());
         guiBuilders.add(new GameOverUiBuilder());
         guiBuilders.add(new MainMenuUiBuilder());
+        guiBuilders.add(new MultiplayerBrowserUiBuilder());
         guiBuilders.add(new MultiplayerUiBuilder());
         return guiBuilders;
     }

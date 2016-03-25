@@ -15,7 +15,7 @@ public class ServerBroadcastReceiver {
 
     private final List<INetworkObserver> observers;
     private IActionQueue actionQueue;
-    private BroadcastReceiver broadcastReceiverThread;
+    private MultiplayerDiscoveryManager broadcastSocketPoolThread;
 
     public ServerBroadcastReceiver(IActionQueue actionQueue) {
         this.actionQueue = actionQueue;
@@ -23,18 +23,18 @@ public class ServerBroadcastReceiver {
     }
 
     public void start() {
-        if (this.broadcastReceiverThread == null) {
-            this.broadcastReceiverThread = new BroadcastReceiver();
-            this.broadcastReceiverThread.start();
+        if (this.broadcastSocketPoolThread == null) {
+            this.broadcastSocketPoolThread = new MultiplayerDiscoveryManager();
+            this.broadcastSocketPoolThread.start();
         } else {
             LOGGER.log(Level.WARNING, "Broadcast receiver already started.");
         }
     }
 
     public void stop() {
-        if (this.broadcastReceiverThread != null) {
-            this.broadcastReceiverThread.stop();
-            this.broadcastReceiverThread = null;
+        if (this.broadcastSocketPoolThread != null) {
+            this.broadcastSocketPoolThread.stop();
+            this.broadcastSocketPoolThread = null;
         }
     }
 
