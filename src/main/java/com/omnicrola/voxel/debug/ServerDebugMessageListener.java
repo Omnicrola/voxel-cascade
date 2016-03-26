@@ -15,6 +15,6 @@ public class ServerDebugMessageListener implements MessageListener<HostedConnect
 
     @Override
     public void messageReceived(HostedConnection hostedConnection, Message message) {
-        LOGGER.log(Level.FINE, "S <= recieved : " + message);
+        LOGGER.log(Level.FINER, "S <= recieved : " + message);
     }
 }
