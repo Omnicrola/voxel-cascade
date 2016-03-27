@@ -26,8 +26,6 @@ public class MainMenuState extends AbstractAppState {
     public void setEnabled(boolean enabled) {
         super.setEnabled(enabled);
         if (enabled) {
-
-        } else {
             this.niftyGui.gotoScreen(UiScreen.MAIN_MENU.toString());
         }
     }

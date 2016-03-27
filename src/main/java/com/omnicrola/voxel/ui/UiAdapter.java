@@ -37,6 +37,7 @@ public class UiAdapter implements ILevelChangeObserver {
     private LevelState currentLevel;
     private SpatialDecorator spatialDecorator;
     private INetworkManager networkManager;
+    private IStateTransition currentTransition;
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
@@ -78,8 +79,11 @@ public class UiAdapter implements ILevelChangeObserver {
     }
 
     public void transitionTo(GlobalGameState globalGameState) {
-        IStateTransition stateTranstion = this.transitions.get(globalGameState);
-        stateTranstion.enter(this.niftyGui, this.stateManager);
+        if (this.currentTransition != null) {
+            this.currentTransition.exit(this.niftyGui, this.stateManager);
+        }
+        this.currentTransition = this.transitions.get(globalGameState);
+        this.currentTransition.enter(this.niftyGui, this.stateManager);
     }
 
     public void sendCommand(IWorldCommand command) {

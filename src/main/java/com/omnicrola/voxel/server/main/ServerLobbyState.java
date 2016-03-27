@@ -7,6 +7,9 @@ import com.omnicrola.voxel.network.BroadcastPacketParser;
 import com.omnicrola.voxel.network.messages.StartGameMessage;
 import com.omnicrola.voxel.server.network.*;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created by omnic on 3/25/2016.
  */
@@ -63,5 +66,16 @@ public class ServerLobbyState extends AbstractAppState {
         this.setEnabled(false);
 
         activeGame.broadcast(new StartGameMessage());
+    }
+
+    @Override
+    public void update(float tpf) {
+        super.update(tpf);
+    }
+
+    @Override
+    public void cleanup() {
+        super.cleanup();
+        Logger.getLogger(ServerLobbyState.class.getName()).log(Level.INFO, "Closing server lobby");
     }
 }
