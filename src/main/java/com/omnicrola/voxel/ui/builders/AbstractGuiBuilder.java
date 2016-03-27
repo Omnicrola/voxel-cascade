@@ -13,8 +13,8 @@ public abstract class AbstractGuiBuilder implements IGuiBuilder {
         return new ButtonBuilder(token.toString(), text) {{
             alignCenter();
             valignCenter();
-            height(pixels(width));
-            width(pixels(height));
+            height(pixels(height));
+            width(pixels(width));
         }};
     }
 
@@ -23,6 +23,8 @@ public abstract class AbstractGuiBuilder implements IGuiBuilder {
             text(":");
             font(UiConstants.DEFAULT_FONT);
             width(pixels(width));
+            align(Align.Left);
+            textHAlign(Align.Left);
         }};
     }
 

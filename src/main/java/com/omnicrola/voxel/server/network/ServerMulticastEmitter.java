@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.server.network;
 
+import com.omnicrola.voxel.network.BroadcastPacketParser;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
@@ -15,8 +16,14 @@ import java.util.logging.Logger;
 public class ServerMulticastEmitter extends Thread {
     private static final Logger LOGGER = Logger.getLogger(ServerMulticastEmitter.class.getName());
 
-    private boolean isRunning = true;
     private static final String BROADCAST_IP = "0.0.0.0";
+
+    private boolean isRunning = true;
+    private BroadcastPacketParser broadcastPacketParser;
+
+    public ServerMulticastEmitter(BroadcastPacketParser broadcastPacketParser) {
+        this.broadcastPacketParser = broadcastPacketParser;
+    }
 
     public void setIsRunning(boolean isRunning) {
         this.isRunning = isRunning;
@@ -32,11 +39,10 @@ public class ServerMulticastEmitter extends Thread {
 
             while (this.isRunning) {
                 LOGGER.log(Level.FINE, "Server waiting for broadcast packets...");
-                DatagramPacket packet = getDatagramPacket(socket);
+                DatagramPacket packetReceived = getDatagramPacket(socket);
 
-                if (isDiscoveryRequest(packet)) {
-                    byte[] sendData = GameConstants.SERVER_DISCOVERY_RESPONSE.getBytes();
-                    DatagramPacket sendPacket = new DatagramPacket(sendData, sendData.length, packet.getAddress(), packet.getPort());
+                if (isDiscoveryRequest(packetReceived)) {
+                    DatagramPacket sendPacket = this.broadcastPacketParser.buildResponse(packetReceived.getAddress(), packetReceived.getPort(), 0);
                     socket.send(sendPacket);
                     LOGGER.log(Level.FINE, "Sent packet back to : " + sendPacket.getAddress().getHostAddress());
                 }

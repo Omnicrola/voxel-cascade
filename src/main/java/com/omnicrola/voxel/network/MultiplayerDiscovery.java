@@ -2,19 +2,17 @@ package com.omnicrola.voxel.network;
 
 import com.omnicrola.voxel.engine.IActionQueue;
 
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.util.stream.Collectors;
 
 /**
  * Created by Eric on 3/20/2016.
  */
 public class MultiplayerDiscovery {
     private static final Logger LOGGER = Logger.getLogger(MultiplayerDiscovery.class.getName());
-    private List<InetAddress> lastServerList;
+    private List<VoxelGameServer> lastServerList;
 
     private IActionQueue actionQueue;
     private MultiplayerDiscoveryManager multiplayerDiscoveryManager;
@@ -26,7 +24,7 @@ public class MultiplayerDiscovery {
 
     public void startSearching() {
         if (this.multiplayerDiscoveryManager == null) {
-            this.multiplayerDiscoveryManager = new MultiplayerDiscoveryManager();
+            this.multiplayerDiscoveryManager = new MultiplayerDiscoveryManager(new BroadcastPacketParser());
             this.multiplayerDiscoveryManager.start();
         } else {
             LOGGER.log(Level.WARNING, "Broadcast receiver already started.");
@@ -44,18 +42,18 @@ public class MultiplayerDiscovery {
         if (this.multiplayerDiscoveryManager == null) {
             return false;
         }
-        List<InetAddress> activeServers = this.multiplayerDiscoveryManager.getActiveServers();
+        List<VoxelGameServer> activeServers = this.multiplayerDiscoveryManager.getActiveServers();
         if (serversChanged(activeServers)) {
             return true;
         }
         return false;
     }
 
-    private boolean serversChanged(List<InetAddress> activeServers) {
+    private boolean serversChanged(List<VoxelGameServer> activeServers) {
         if (activeServers.size() != this.lastServerList.size()) {
             return true;
         }
-        for (InetAddress address : activeServers) {
+        for (VoxelGameServer address : activeServers) {
             if (!this.lastServerList.contains(address)) {
                 return false;
             }
@@ -65,9 +63,7 @@ public class MultiplayerDiscovery {
 
     public List<VoxelGameServer> getServers() {
         this.lastServerList = this.multiplayerDiscoveryManager.getActiveServers();
-        return this.lastServerList.stream()
-                .map(s -> new VoxelGameServer(s))
-                .collect(Collectors.toList());
+        return this.lastServerList;
     }
 
     public void cleanup() {

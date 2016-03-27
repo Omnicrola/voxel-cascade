@@ -17,11 +17,17 @@ import java.util.logging.Logger;
 public class MultiplayerDiscoveryManager extends Thread {
     private static final Logger LOGGER = Logger.getLogger(MultiplayerDiscoveryManager.class.getName());
     private static final int SOCKET_TIMEOUT = 5000;
-    public List<InetAddress> activeServers = new ArrayList<>();
+    public List<VoxelGameServer> activeServers = new ArrayList<>();
     private final Object LIST_MUTEX = new Object();
     private boolean isRunning = true;
 
-    public List<InetAddress> getActiveServers() {
+    private BroadcastPacketParser serverPacketParser;
+
+    public MultiplayerDiscoveryManager(BroadcastPacketParser serverPacketParser) {
+        this.serverPacketParser = serverPacketParser;
+    }
+
+    public List<VoxelGameServer> getActiveServers() {
         synchronized (LIST_MUTEX) {
             return new ArrayList<>(this.activeServers);
         }
@@ -75,7 +81,7 @@ public class MultiplayerDiscoveryManager extends Thread {
         if (isResponseMessage(receivePacket)) {
             synchronized (LIST_MUTEX) {
                 if (!activeServers.contains(receivePacket.getAddress())) {
-                    this.activeServers.add(receivePacket.getAddress());
+                    this.activeServers.add(parseData(receivePacket));
                 }
                 LOGGER.log(Level.FINE, "Added server : " + receivePacket.getAddress().getHostAddress());
             }
@@ -88,8 +94,12 @@ public class MultiplayerDiscoveryManager extends Thread {
         }
     }
 
+    private VoxelGameServer parseData(DatagramPacket receivePacket) {
+        return this.serverPacketParser.parse(receivePacket);
+    }
+
     private boolean isResponseMessage(DatagramPacket receivePacket) {
-        return new String(receivePacket.getData()).trim().equals(GameConstants.SERVER_DISCOVERY_RESPONSE);
+        return new String(receivePacket.getData()).trim().startsWith(GameConstants.SERVER_DISCOVERY_RESPONSE);
     }
 
     private void sentRequestPacket(InetAddress inetAddress, DatagramSocket broadcastSocket) {

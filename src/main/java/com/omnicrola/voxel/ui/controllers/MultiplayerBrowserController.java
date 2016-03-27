@@ -44,11 +44,19 @@ public class MultiplayerBrowserController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "MULTIPLAYER_SERVER_LIST")
     public void selectedServerChanged(String id, DropDownSelectionChangedEvent event) {
         this.currentlySelectedServer = (VoxelGameServer) event.getSelection();
+        updateServerInformation();
+    }
+
+    private void updateServerInformation() {
+        ui().getElement(UiToken.LABEL_SERVER_IP).setText("IP: " + this.currentlySelectedServer.getAddress());
+        ui().getElement(UiToken.LABEL_SERVER_NAME).setText("Name: " + this.currentlySelectedServer.getName());
+        ui().getElement(UiToken.LABEL_SERVER_PLAYERS).setText("Players: " + this.currentlySelectedServer.getPlayers());
     }
 
     public void updateServerList(List<VoxelGameServer> newServers) {
         DropDown<VoxelGameServer> serverDropdown = ui().getDropdown(UiToken.MULTIPLAYER_SERVER_LIST);
         serverDropdown.removeAllItems(this.servers);
+        serverDropdown.addItem(VoxelGameServer.EMPTY);
         serverDropdown.addAllItems(newServers);
         this.servers = newServers;
     }

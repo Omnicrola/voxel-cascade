@@ -3,6 +3,7 @@ package com.omnicrola.voxel.server.main;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.omnicrola.voxel.network.BroadcastPacketParser;
 import com.omnicrola.voxel.network.messages.StartGameMessage;
 import com.omnicrola.voxel.server.network.*;
 
@@ -39,7 +40,7 @@ public class ServerLobbyState extends AbstractAppState {
     }
 
     private void enable() {
-        this.serverMulticastEmitter = new ServerMulticastEmitter();
+        this.serverMulticastEmitter = new ServerMulticastEmitter(new BroadcastPacketParser());
         VoxelNetworkServerFactory voxelNetworkServerFactory = new VoxelNetworkServerFactory();
         INetworkServer server = voxelNetworkServerFactory.build();
         this.serverLobbyManager = new ServerLobbyManager(server);

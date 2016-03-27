@@ -70,11 +70,11 @@ public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
         return new PanelBuilder() {
             {
                 childLayoutHorizontal();
-                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_CANCEL, "Cancel", 50, 200));
+                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_CANCEL, "Cancel", 200, 50));
                 panel(new PanelBuilder() {{
                     width("*");
                 }});
-                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN, "Join", 50, 200));
+                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN, "Join", 200, 50));
             }
         };
     }

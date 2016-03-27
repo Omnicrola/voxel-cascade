@@ -33,12 +33,8 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
                     panel(centerPanel());
                     panel(spacerH(10));
                 }
-
-
             });
-
         }});
-
     }
 
     private PanelBuilder centerPanel() {
@@ -46,6 +42,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
             childLayoutVertical();
             panel(spacerV(10));
             panel(new PanelBuilder() {{
+                childLayoutVertical();
                 panel(serverInformationPanel());
                 panel(buttonPanel());
             }});
@@ -54,7 +51,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
     }
 
     private PanelBuilder serverInformationPanel() {
-        return new PanelBuilder(){{
+        return new PanelBuilder() {{
             childLayoutVertical();
             text(createText(UiToken.LABEL_SERVER_IP, 100));
             text(createText(UiToken.LABEL_SERVER_NAME, 100));
@@ -72,5 +69,4 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
             control(createButton(UiToken.BUTTON_MULTIPLAYER_LOBBY_JOIN, "JOIN", 200, 50));
         }};
     }
-
 }
