@@ -52,7 +52,7 @@ public class GuiInitializer {
         NetworkManager networkManager = initializationContainer.getNetworkManager();
 
         Map<GlobalGameState, IStateTransition> transitions = new HashMap<>();
-        transitions.put(GlobalGameState.MULTIPLAYER_JOIN, new TransitionMultiplayerJoin());
+        transitions.put(GlobalGameState.MULTIPLAYER_BROWSE, new TransitionMultiplayerJoin());
         transitions.put(GlobalGameState.MULTIPLAYER_LOAD, new TransitionMultiplayerLoad());
         transitions.put(GlobalGameState.ACTIVE_PLAY, new TransitionActivePlay());
         transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());

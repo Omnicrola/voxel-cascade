@@ -29,7 +29,7 @@ public class MainMenuScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_JOIN")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_JOIN)
     public void launchMultiplayer(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_JOIN);
+        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_BROWSE);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")
