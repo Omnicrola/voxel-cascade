@@ -30,7 +30,8 @@ public class MultiplayerBrowserController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_BROWSE_JOIN")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN)
     public void triggerJoin(String id, ButtonClickedEvent buttonClickedEvent) {
-        System.out.println("Joining! " + this.currentlySelectedServer);
+        this.uiAdapter.joinServerLobby(this.currentlySelectedServer);
+        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOBBY);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_BROWSE_CANCEL")

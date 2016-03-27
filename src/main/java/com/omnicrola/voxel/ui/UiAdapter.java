@@ -13,6 +13,7 @@ import com.omnicrola.voxel.input.IUserSelectionObserver;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.network.INetworkObserver;
+import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
 import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
 import de.lessvoid.nifty.Nifty;
@@ -78,7 +79,7 @@ public class UiAdapter implements ILevelChangeObserver {
 
     public void transitionTo(GlobalGameState globalGameState) {
         IStateTransition stateTranstion = this.transitions.get(globalGameState);
-        stateTranstion.run(this.niftyGui, this.stateManager);
+        stateTranstion.enter(this.niftyGui, this.stateManager);
     }
 
     public void sendCommand(IWorldCommand command) {
@@ -100,5 +101,10 @@ public class UiAdapter implements ILevelChangeObserver {
 
     public void addNetworkObserver(INetworkObserver networkObserver) {
         this.networkManager.addObserver(networkObserver);
+    }
+
+    public void joinServerLobby(VoxelGameServer multiplayerServer) {
+        this.networkManager.stopListeningForServers();
+        this.networkManager.connectTo(multiplayerServer.getAddress());
     }
 }

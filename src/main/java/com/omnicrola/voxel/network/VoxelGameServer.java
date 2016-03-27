@@ -16,4 +16,8 @@ public class VoxelGameServer {
     public String toString() {
         return address.getHostAddress() + " " + address.getHostName();
     }
+
+    public String getAddress() {
+        return address.getHostAddress();
+    }
 }

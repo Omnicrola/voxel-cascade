@@ -8,6 +8,7 @@ import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
+import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
