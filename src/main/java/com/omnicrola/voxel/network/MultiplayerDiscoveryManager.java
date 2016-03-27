@@ -64,7 +64,6 @@ public class MultiplayerDiscoveryManager extends Thread {
 
                 waitForResponse(socket);
                 socket.close();
-
             } catch (IOException ex) {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
@@ -80,18 +79,26 @@ public class MultiplayerDiscoveryManager extends Thread {
 
         if (isResponseMessage(receivePacket)) {
             synchronized (LIST_MUTEX) {
-                if (!activeServers.contains(receivePacket.getAddress())) {
+                if (serverIsNotAlreadyListed(receivePacket.getAddress())) {
                     this.activeServers.add(parseData(receivePacket));
+                    LOGGER.log(Level.FINE, "Added server : " + receivePacket.getAddress().getHostAddress());
+                    System.out.println("Added server: " + receivePacket.getAddress().getHostAddress());
                 }
-                LOGGER.log(Level.FINE, "Added server : " + receivePacket.getAddress().getHostAddress());
             }
         } else {
             String data = new String(receivePacket.getData());
             String msg = "Received a malformed broadcast packet. \n" + data + " \n " + receivePacket.getAddress().getHostAddress();
             LOGGER.log(Level.WARNING, msg);
-
-
         }
+    }
+
+    private boolean serverIsNotAlreadyListed(InetAddress address) {
+        for (VoxelGameServer server : this.activeServers) {
+            if (server.getAddress().equals(address.getHostAddress())) {
+                return false;
+            }
+        }
+        return true;
     }
 
     private VoxelGameServer parseData(DatagramPacket receivePacket) {
@@ -111,7 +118,6 @@ public class MultiplayerDiscoveryManager extends Thread {
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, null, e);
         }
-
     }
 
     private boolean validInterface(NetworkInterface networkInterface) {

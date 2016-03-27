@@ -9,5 +9,5 @@ public interface INetworkObserver {
 
     public void availableServersChanged(List<VoxelGameServer> servers);
 
-    public void multiplayerGameChanged(MultiplayerGame multiplayerGame);
+    public void multiplayerGameChanged(VoxelGameServer multiplayerGame);
 }

@@ -23,4 +23,9 @@ public class NiftyButtonWrapper implements IUiButton {
     public void setText(String text) {
         this.button.setText(text);
     }
+
+    @Override
+    public void setFocus() {
+        this.button.setFocus();
+    }
 }

@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.network.INetworkObserver;
-import com.omnicrola.voxel.network.MultiplayerGame;
 import com.omnicrola.voxel.network.VoxelGameServer;
 
 import java.util.List;
@@ -22,7 +21,7 @@ public class AvailableServerChangeObserver implements INetworkObserver {
     }
 
     @Override
-    public void multiplayerGameChanged(MultiplayerGame multiplayerGame) {
+    public void multiplayerGameChanged(VoxelGameServer multiplayerGame) {
 
     }
 }

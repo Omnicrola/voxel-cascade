@@ -7,6 +7,7 @@ import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.controls.DropDown;
+import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.button.ButtonControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -41,5 +42,10 @@ public class NiftyUiWrapper implements IUi {
     @Override
     public <T> DropDown<T> getDropdown(UiToken token) {
         return this.screen.findNiftyControl(token.toString(), DropDown.class);
+    }
+
+    @Override
+    public <T> ListBox<T> getListBox(UiToken token) {
+        return this.screen.findNiftyControl(token.toString(), ListBox.class);
     }
 }

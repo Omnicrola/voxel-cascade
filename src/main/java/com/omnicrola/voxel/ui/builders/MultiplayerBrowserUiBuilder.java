@@ -5,8 +5,11 @@ import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.AvailableServerChangeObserver;
 import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
-import de.lessvoid.nifty.builder.*;
-import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
+import de.lessvoid.nifty.builder.ControlBuilder;
+import de.lessvoid.nifty.builder.LayerBuilder;
+import de.lessvoid.nifty.builder.PanelBuilder;
+import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import de.lessvoid.nifty.tools.Color;
 
 /**
@@ -41,7 +44,7 @@ public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
                             height(percentage(80));
                             childLayoutVertical();
 
-                            control(serverCombobox());
+                            control(serverList());
                             panel(serverInformationPanel());
                             panel(buttonPanel());
                         }
@@ -79,11 +82,13 @@ public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
         };
     }
 
-
-    private ControlBuilder serverCombobox() {
-        return new DropDownBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()) {{
+    private ControlBuilder serverList() {
+        return new ListBoxBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()) {{
             width("*");
-            height(pixels(30));
+            displayItems(10);
+            selectionModeSingle();
+            optionalVerticalScrollbar();
+            hideHorizontalScrollbar();
         }};
     }
 }

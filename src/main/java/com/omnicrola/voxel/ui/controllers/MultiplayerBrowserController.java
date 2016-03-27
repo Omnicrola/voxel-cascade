@@ -6,13 +6,16 @@ import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
+import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
-import de.lessvoid.nifty.controls.DropDown;
-import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
+import de.lessvoid.nifty.controls.ListBox;
+import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
+import de.lessvoid.nifty.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by Eric on 3/20/2016.
@@ -42,9 +45,19 @@ public class MultiplayerBrowserController extends AbstractScreenController {
 
     @SubscriberLink(UiToken.MULTIPLAYER_SERVER_LIST)
     @NiftyEventSubscriber(id = "MULTIPLAYER_SERVER_LIST")
-    public void selectedServerChanged(String id, DropDownSelectionChangedEvent event) {
-        this.currentlySelectedServer = (VoxelGameServer) event.getSelection();
-        updateServerInformation();
+    public void selectedServerChanged(String id, ListBoxSelectionChangedEvent event) {
+        Optional<VoxelGameServer> selection = event.getSelection().stream().findFirst();
+        if (selection.isPresent()) {
+            this.currentlySelectedServer = selection.get();
+            updateServerInformation();
+        }
+    }
+
+    @Override
+    public void bind(Nifty nifty, Screen screen) {
+        super.bind(nifty, screen);
+        ListBox<VoxelGameServer> serverDropdown = ui().getListBox(UiToken.MULTIPLAYER_SERVER_LIST);
+        serverDropdown.addItem(VoxelGameServer.EMPTY);
     }
 
     private void updateServerInformation() {
@@ -54,9 +67,8 @@ public class MultiplayerBrowserController extends AbstractScreenController {
     }
 
     public void updateServerList(List<VoxelGameServer> newServers) {
-        DropDown<VoxelGameServer> serverDropdown = ui().getDropdown(UiToken.MULTIPLAYER_SERVER_LIST);
+        ListBox<VoxelGameServer> serverDropdown = ui().getListBox(UiToken.MULTIPLAYER_SERVER_LIST);
         serverDropdown.removeAllItems(this.servers);
-        serverDropdown.addItem(VoxelGameServer.EMPTY);
         serverDropdown.addAllItems(newServers);
         this.servers = newServers;
     }

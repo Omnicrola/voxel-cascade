@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.engine.GlobalGameState;
-import com.omnicrola.voxel.network.MultiplayerGame;
+import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
@@ -14,7 +14,7 @@ import de.lessvoid.nifty.controls.ButtonClickedEvent;
  */
 public class MultiplayerLobbyScreenController extends AbstractScreenController {
     private UiAdapter uiAdapter;
-    private MultiplayerGame currentGame;
+    private VoxelGameServer currentGame;
 
     public MultiplayerLobbyScreenController(UiAdapter uiAdapter) {
         this.uiAdapter = uiAdapter;
@@ -32,10 +32,10 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
         this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOAD);
     }
 
-    public void setCurrentGame(MultiplayerGame multiplayerGame) {
+    public void setCurrentGame(VoxelGameServer multiplayerGame) {
         this.currentGame = multiplayerGame;
-        ui().getElement(UiToken.LABEL_SERVER_IP).setText("IP: " + multiplayerGame.getServerIp());
-        ui().getElement(UiToken.LABEL_SERVER_NAME).setText("Name: " + multiplayerGame.getServerName());
-        ui().getElement(UiToken.LABEL_SERVER_PLAYERS).setText("Players: " + multiplayerGame.getPlayerCount());
+        ui().getElement(UiToken.LABEL_SERVER_IP).setText("IP: " + multiplayerGame.getAddress());
+        ui().getElement(UiToken.LABEL_SERVER_NAME).setText("Name: " + multiplayerGame.getName());
+        ui().getElement(UiToken.LABEL_SERVER_PLAYERS).setText("Players: " + multiplayerGame.getPlayers());
     }
 }

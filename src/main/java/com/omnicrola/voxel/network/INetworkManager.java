@@ -1,7 +1,5 @@
 package com.omnicrola.voxel.network;
 
-import java.net.InetAddress;
-
 /**
  * Created by Eric on 2/24/2016.
  */
@@ -20,4 +18,5 @@ public interface INetworkManager {
 
     void startListeningForServers();
 
+    void joinLobby(VoxelGameServer multiplayerServer);
 }

@@ -5,4 +5,6 @@ package com.omnicrola.voxel.ui.nifty;
  */
 public interface IUiButton {
     void setText(String text);
+
+    void setFocus();
 }

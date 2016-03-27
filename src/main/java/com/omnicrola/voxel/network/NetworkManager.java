@@ -8,7 +8,6 @@ import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +29,7 @@ public class NetworkManager implements INetworkManager {
     private MultiplayerDiscovery multiplayerDiscovery;
     private WorldCommandProcessor commandProcessor;
     private List<INetworkObserver> observers;
+    private VoxelGameServer currentGame;
 
     public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue,
                           MultiplayerDiscovery multiplayerDiscovery) {
@@ -45,6 +45,14 @@ public class NetworkManager implements INetworkManager {
             LOGGER.log(Level.INFO, "Disconnecting from server...");
             this.networkClient.close();
             this.networkClient = null;
+        }
+    }
+
+    @Override
+    public void joinLobby(VoxelGameServer multiplayerServer) {
+        if (connectTo(multiplayerServer.getAddress())) {
+            this.currentGame = multiplayerServer;
+            this.observers.forEach(o -> o.multiplayerGameChanged(multiplayerServer));
         }
     }
 
