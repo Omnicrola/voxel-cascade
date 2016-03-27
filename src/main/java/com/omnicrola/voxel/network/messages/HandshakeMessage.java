@@ -9,18 +9,18 @@ import com.jme3.network.serializing.Serializable;
 @Serializable
 public class HandshakeMessage extends AbstractMessage {
 
-    private String version;
+    private int version;
 
     public HandshakeMessage() {
         super(true);
     }
 
-    public HandshakeMessage(String version) {
+    public HandshakeMessage(int version) {
         this();
         this.version = version;
     }
 
-    public String getVersion() {
+    public int getVersion() {
         return this.version;
     }
 }

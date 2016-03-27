@@ -18,8 +18,8 @@ public class ServerHandshakeListener extends AbstractMessageListener<HandshakeMe
 
     @Override
     protected void processMessage(HostedConnection connection, HandshakeMessage message) {
-        String clientVersion = message.getVersion();
-        if (clientVersion.equals(GameConstants.GAME_VERSION)) {
+        int clientVersion = message.getVersion();
+        if (clientVersion == GameConstants.GAME_VERSION) {
             connection.send(new HandshakeMessage(GameConstants.GAME_VERSION));
             LOGGER.log(Level.INFO, "Client connected: " + connection.getId() + " " + connection.getAddress());
         } else {

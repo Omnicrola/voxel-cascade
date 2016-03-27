@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.commands.ChangeScreenCommand;
+import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
+import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
@@ -32,8 +34,9 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_LOBBY_JOIN")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_LOBBY_JOIN)
-    public void triggerJoin(String id, ButtonClickedEvent buttonClickedEvent) {
-        System.out.println("JOIN");
+    public void createGame(String id, ButtonClickedEvent buttonClickedEvent) {
+        StartMultiplayerGameCommand startGameCommand = new StartMultiplayerGameCommand(LevelGeneratorTool.BASIC_LEVEL_UUID);
+        this.uiAdapter.sendCommand(startGameCommand);
     }
 
     public void setCurrentGame(VoxelGameServer multiplayerGame) {

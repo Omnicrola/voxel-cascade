@@ -4,8 +4,6 @@ import com.jme3.network.Network;
 import com.jme3.network.Server;
 import com.omnicrola.voxel.debug.ServerDebugMessageListener;
 import com.omnicrola.voxel.network.MessageSerializationInitializer;
-import com.omnicrola.voxel.network.messages.HandshakeMessage;
-import com.omnicrola.voxel.server.network.listeners.ServerHandshakeListener;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
@@ -23,7 +21,7 @@ public class VoxelNetworkServerFactory {
         try {
             LOGGER.log(Level.FINE, "Initializing JME network server");
             MessageSerializationInitializer.init();
-            Server server = Network.createServer(GameConstants.SERVER_PORT);
+            Server server = Network.createServer(GameConstants.GAME_NAME, GameConstants.GAME_VERSION, GameConstants.SERVER_PORT, GameConstants.SERVER_PORT);
             loadMessageListeners(server);
             return new VoxelNetworkServer(server);
         } catch (IOException e) {

@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.commands.ChangeScreenCommand;
+import com.omnicrola.voxel.commands.CreateMultiplayerGameCommand;
 import com.omnicrola.voxel.commands.ShutdownAndExitCommand;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
@@ -24,7 +25,7 @@ public class MainMenuScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_START")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_START)
     public void createMultiplayerGame(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MULTIPLAYER_CREATE));
+        this.uiAdapter.sendCommand(new CreateMultiplayerGameCommand());
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_JOIN")

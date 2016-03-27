@@ -67,8 +67,8 @@ public class NetworkManager implements INetworkManager {
 
     private boolean connectTo(String serverAddress) {
         try {
-            LOGGER.log(Level.FINE, "Connecting to server : " + serverAddress);
-            this.networkClient = Network.connectToServer(serverAddress, GameConstants.SERVER_PORT);
+            LOGGER.log(Level.INFO, "Connecting to server : " + serverAddress + ":" + GameConstants.SERVER_PORT);
+            this.networkClient = Network.connectToServer(GameConstants.GAME_NAME, GameConstants.GAME_VERSION, serverAddress, GameConstants.SERVER_PORT);
             LOGGER.log(Level.FINE, "Loading network listeners..");
             this.clientListenerBuilder.attach(networkClient, this.commandProcessor);
             LOGGER.log(Level.FINE, "Starting network client...");
@@ -90,26 +90,26 @@ public class NetworkManager implements INetworkManager {
             LOGGER.log(Level.INFO, "Multiplayer server is running.");
             return null;
         });
-        attemptToJoinLocalhost();
         this.voxelServerEngine.start();
+        attemptToJoinLocalhost();
     }
 
     private void attemptToJoinLocalhost() {
-        if (voxelServerEngine != null) {
-            this.voxelServerEngine.enqueue(() -> {
-                try {
-                    VoxelGameServer localhost = new VoxelGameServer(InetAddress.getByName("127.0.0.1"), 1);
-                    if (joinLobby(localhost)) {
-                        LOGGER.log(Level.INFO, "Joined local server");
-                    } else {
-                        attemptToJoinLocalhost();
-                    }
-                } catch (UnknownHostException e) {
-                    LOGGER.log(Level.SEVERE, null, e);
-                }
-                return null;
-            });
+//        if (voxelServerEngine != null) {
+//            this.voxelServerEngine.enqueue(() -> {
+        try {
+            VoxelGameServer localhost = new VoxelGameServer(InetAddress.getByName("localhost"), 1);
+            if (joinLobby(localhost)) {
+                LOGGER.log(Level.INFO, "Joined local server");
+            } else {
+                attemptToJoinLocalhost();
+            }
+        } catch (UnknownHostException e) {
+            LOGGER.log(Level.SEVERE, null, e);
         }
+//                return null;
+//            });
+//        }
     }
 
     @Override

@@ -26,7 +26,7 @@ public class GameConstants {
     public static final String DIR_MODELS = "Models/";
 
     public static final int SERVER_PORT = 5150;
-    public static final String GAME_VERSION = "0.0.1";
+    public static final int GAME_VERSION = 12;
     public static final String NODE_UNITS = "ALL_UNITS";
     public static final String NODE_WORLD_ROOT = "WORLD_ROOT";
     public static final String NODE_PROJECTILES = "PROJECTILES";
@@ -40,4 +40,5 @@ public class GameConstants {
     public static final String SERVER_DISCOVERY_REQUEST = "server-discovery-request";
     public static final String SERVER_DISCOVERY_RESPONSE = "server-discovery-response";
     public static final String SERVER_BROADCAST_DEFAULT_IP = "255.255.255.255";
+    public static final String GAME_NAME = "Voxel Cascade";
 }

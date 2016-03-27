@@ -21,8 +21,8 @@ public class VoxelNetworkServer implements INetworkServer {
     }
 
     @Override
-    public void removeMessageListener(MessageListener l) {
-
+    public void removeMessageListener(MessageListener listener) {
+        this.networkServer.removeMessageListener(listener);
     }
 
     @Override
@@ -37,6 +37,6 @@ public class VoxelNetworkServer implements INetworkServer {
 
     @Override
     public void start() {
-//        this.networkServer.start();
+        this.networkServer.start();
     }
 }

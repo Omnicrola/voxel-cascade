@@ -14,6 +14,7 @@ import java.util.logging.Logger;
  * Created by omnic on 3/25/2016.
  */
 public class ServerLobbyState extends AbstractAppState {
+    private static final Logger LOGGER = Logger.getLogger(ServerLobbyState.class.getName());
 
     private ServerMulticastEmitter serverMulticastEmitter;
     private ServerLobbyManager serverLobbyManager;
@@ -48,6 +49,7 @@ public class ServerLobbyState extends AbstractAppState {
     }
 
     private void enable() {
+        LOGGER.log(Level.INFO, "Starting server lobby");
         this.serverMulticastEmitter = new ServerMulticastEmitter(new BroadcastPacketParser());
         INetworkServer server = this.voxelNetworkServerFactory.build();
         this.serverLobbyManager = new ServerLobbyManager(server);

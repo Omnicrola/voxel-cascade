@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.world;
 
+import com.jme3.app.state.AppState;
+import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.commands.EntityCommandAdapter;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.data.ILevelManager;
@@ -23,6 +25,7 @@ public class CommandPackage {
     private ICommandProcessor commandProcessor;
     private ITerrainManager terrainManager;
     private EntityCommandAdapter entityCommandAdapter;
+    private AppStateManager stateManager;
 
     public CommandPackage(
             IShutdown shutdown,
@@ -33,7 +36,8 @@ public class CommandPackage {
             WorldManager worldManager,
             ICommandProcessor commandProcessor,
             ITerrainManager terrainManager,
-            EntityCommandAdapter entityCommandAdapter) {
+            EntityCommandAdapter entityCommandAdapter,
+            AppStateManager stateManager) {
         this.shutdown = shutdown;
         this.levelManager = levelManager;
         this.networkManager = networkManager;
@@ -43,6 +47,7 @@ public class CommandPackage {
         this.commandProcessor = commandProcessor;
         this.terrainManager = terrainManager;
         this.entityCommandAdapter = entityCommandAdapter;
+        this.stateManager = stateManager;
     }
 
     public ILevelManager getLevelManager() {
@@ -81,5 +86,12 @@ public class CommandPackage {
 
     public EntityCommandAdapter getEntityCommandAdapter() {
         return this.entityCommandAdapter;
+    }
+
+    public void enableState(Class<? extends AppState> stateClass) {
+        this.stateManager.getState(stateClass).setEnabled(true);
+    }
+    public void disableState(Class<? extends AppState> stateClass) {
+        this.stateManager.getState(stateClass).setEnabled(false);
     }
 }

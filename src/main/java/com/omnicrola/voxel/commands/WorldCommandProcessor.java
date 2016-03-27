@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.commands;
 
+import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.IShutdown;
 import com.omnicrola.voxel.entities.behavior.ai.NavigationGridDistributor;
@@ -12,11 +13,14 @@ import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * Created by omnic on 2/28/2016.
  */
 public class WorldCommandProcessor implements ICommandProcessor {
+
+    private static final Logger LOGGER = Logger.getLogger(WorldCommandProcessor.class.getName());
 
     private final List<IWorldCommand> commands;
     private final List<IWorldCommand> commandCopy;
@@ -30,6 +34,7 @@ public class WorldCommandProcessor implements ICommandProcessor {
     private IUiManager uiManager;
     private WorldManager worldManager;
     private ITerrainManager terrainManager;
+    private AppStateManager stateManager;
 
     public WorldCommandProcessor(INetworkCommandQueue networkCommandQueue,
                                  IShutdown shutdown,
@@ -38,7 +43,8 @@ public class WorldCommandProcessor implements ICommandProcessor {
                                  WorldEntityBuilder entityBuilder,
                                  IUiManager uiManager,
                                  WorldManager worldManager,
-                                 ITerrainManager terrainManager) {
+                                 ITerrainManager terrainManager,
+                                 AppStateManager stateManager) {
         this.networkCommandQueue = networkCommandQueue;
         this.shutdown = shutdown;
         this.levelManager = levelManager;
@@ -47,6 +53,7 @@ public class WorldCommandProcessor implements ICommandProcessor {
         this.uiManager = uiManager;
         this.worldManager = worldManager;
         this.terrainManager = terrainManager;
+        this.stateManager = stateManager;
         this.commands = new ArrayList<>();
         this.commandCopy = new ArrayList<>();
     }
@@ -83,7 +90,8 @@ public class WorldCommandProcessor implements ICommandProcessor {
                     this.worldManager,
                     this,
                     this.terrainManager,
-                    entityCommandAdapter);
+                    entityCommandAdapter,
+                    this.stateManager);
         }
         return this.commandPackage;
     }
