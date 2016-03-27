@@ -6,20 +6,18 @@ import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.AvailableServerChangeObserver;
 import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
 import de.lessvoid.nifty.builder.*;
-import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
-import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
+import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.tools.Color;
 
 /**
  * Created by Eric on 3/20/2016.
  */
-public class MultiplayerBrowserUiBuilder implements IGuiBuilder {
+public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
     @Override
     public void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.MULTIPLAYER_BROWSE.toString();
         MultiplayerBrowserController multiplayerController = new MultiplayerBrowserController(uiAdapter);
         uiAdapter.addNetworkObserver(new AvailableServerChangeObserver(multiplayerController));
-
 
         uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(multiplayerController);
@@ -43,7 +41,7 @@ public class MultiplayerBrowserUiBuilder implements IGuiBuilder {
                             height(percentage(80));
                             childLayoutVertical();
 
-                            control(serverBrowserScrollpane());
+                            control(serverCombobox());
                             panel(serverInformationPanel());
                             panel(buttonPanel());
                         }
@@ -62,54 +60,30 @@ public class MultiplayerBrowserUiBuilder implements IGuiBuilder {
     private PanelBuilder serverInformationPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
-            text(createText(UiToken.LABEL_SERVER_NAME));
-            text(createText(UiToken.LABEL_SERVER_IP));
-            text(createText(UiToken.LABEL_SERVER_PLAYERS));
-        }};
-    }
-
-    private TextBuilder createText(UiToken id) {
-        return new TextBuilder(id.toString()) {{
-            text(":");
-            font(UiConstants.DEFAULT_FONT);
-            width(pixels(100));
+            text(createText(UiToken.LABEL_SERVER_NAME, 100));
+            text(createText(UiToken.LABEL_SERVER_IP, 100));
+            text(createText(UiToken.LABEL_SERVER_PLAYERS, 100));
         }};
     }
 
     private PanelBuilder buttonPanel() {
-        return new PanelBuilder() {{
-            childLayoutHorizontal();
-            control(new ButtonBuilder(UiToken.BUTTON_MULTIPLAYER_BROWSE_CANCEL.toString(), "Cancel") {{
-                alignCenter();
-                valignCenter();
-                height(pixels(50));
-                width(pixels(200));
-            }});
-            panel(new PanelBuilder() {{
-                width("*");
-            }});
-            control(new ButtonBuilder(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN.toString(), "Join") {{
-                alignCenter();
-                valignCenter();
-                height(pixels(50));
-                width(pixels(200));
-            }});
-
-        }};
+        return new PanelBuilder() {
+            {
+                childLayoutHorizontal();
+                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_CANCEL, "Cancel", 50, 200));
+                panel(new PanelBuilder() {{
+                    width("*");
+                }});
+                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN, "Join", 50, 200));
+            }
+        };
     }
 
-    private ControlBuilder serverBrowserScrollpane() {
-        return new ScrollPanelBuilder("multiplayer-server-list") {{
-            parameter("horizontal", "false");
-            childLayoutVertical();
-            height("*");
+
+    private ControlBuilder serverCombobox() {
+        return new DropDownBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()) {{
             width("*");
-            style("autoscroll");
-            panel(new PanelBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()) {{
-                childLayoutVertical();
-                x(pixels(0));
-                y(pixels(0));
-            }});
+            height(pixels(30));
         }};
     }
 }

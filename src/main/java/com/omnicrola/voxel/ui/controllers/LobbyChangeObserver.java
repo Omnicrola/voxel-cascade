@@ -7,22 +7,22 @@ import com.omnicrola.voxel.network.VoxelGameServer;
 import java.util.List;
 
 /**
- * Created by Eric on 3/20/2016.
+ * Created by Eric on 3/27/2016.
  */
-public class AvailableServerChangeObserver implements INetworkObserver {
-    private MultiplayerBrowserController multiplayerController;
+public class LobbyChangeObserver implements INetworkObserver {
+    private MultiplayerLobbyScreenController lobbyController;
 
-    public AvailableServerChangeObserver(MultiplayerBrowserController multiplayerController) {
-        this.multiplayerController = multiplayerController;
+    public LobbyChangeObserver(MultiplayerLobbyScreenController lobbyController) {
+        this.lobbyController = lobbyController;
     }
 
     @Override
     public void availableServersChanged(List<VoxelGameServer> servers) {
-        this.multiplayerController.updateServerList(servers);
+
     }
 
     @Override
     public void multiplayerGameChanged(MultiplayerGame multiplayerGame) {
-
+        lobbyController.setCurrentGame(multiplayerGame);
     }
 }

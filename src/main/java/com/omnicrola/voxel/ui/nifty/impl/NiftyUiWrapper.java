@@ -1,11 +1,12 @@
 package com.omnicrola.voxel.ui.nifty.impl;
 
 import com.omnicrola.voxel.main.VoxelException;
-import com.omnicrola.voxel.ui.nifty.IUi;
 import com.omnicrola.voxel.ui.UiToken;
+import com.omnicrola.voxel.ui.nifty.IUi;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.button.ButtonControl;
 import de.lessvoid.nifty.elements.Element;
 import de.lessvoid.nifty.screen.Screen;
@@ -35,5 +36,10 @@ public class NiftyUiWrapper implements IUi {
     public IUiButton getButton(UiToken token) {
         ButtonControl button = this.screen.findControl(token.toString(), ButtonControl.class);
         return new NiftyButtonWrapper(this.nifty, this.screen, button);
+    }
+
+    @Override
+    public <T> DropDown<T> getDropdown(UiToken token) {
+        return this.screen.findNiftyControl(token.toString(), DropDown.class);
     }
 }
