@@ -3,7 +3,7 @@ package com.omnicrola.voxel.ui.builders;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
-import com.omnicrola.voxel.ui.controllers.AvailableServerChangeObserver;
+import com.omnicrola.voxel.ui.controllers.observers.AvailableServerChangeObserver;
 import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;

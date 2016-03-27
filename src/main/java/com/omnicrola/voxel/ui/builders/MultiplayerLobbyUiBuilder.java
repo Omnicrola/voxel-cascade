@@ -3,7 +3,6 @@ package com.omnicrola.voxel.ui.builders;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
-import com.omnicrola.voxel.ui.controllers.LobbyChangeObserver;
 import com.omnicrola.voxel.ui.controllers.MultiplayerLobbyScreenController;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
@@ -18,7 +17,6 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
     public void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.MULTIPLAYER_LOBBY.toString();
         MultiplayerLobbyScreenController lobbyController = new MultiplayerLobbyScreenController(uiAdapter);
-        uiAdapter.addNetworkObserver(new LobbyChangeObserver(lobbyController));
 
         uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(lobbyController);
@@ -37,7 +35,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
         }});
     }
 
-    private PanelBuilder centerPanel() {
+    protected PanelBuilder centerPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
             panel(spacerV(10));
@@ -50,7 +48,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
         }};
     }
 
-    private PanelBuilder serverInformationPanel() {
+    protected PanelBuilder serverInformationPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
             text(createText(UiToken.LABEL_SERVER_IP, 100));
@@ -59,7 +57,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
         }};
     }
 
-    private PanelBuilder buttonPanel() {
+    protected PanelBuilder buttonPanel() {
         return new PanelBuilder() {{
             childLayoutHorizontal();
             control(createButton(UiToken.BUTTON_MULTIPLAYER_LOBBY_CANCEL, "Cancel", 200, 50));

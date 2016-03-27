@@ -59,12 +59,16 @@ public abstract class AbstractScreenController implements ScreenController {
     }
 
     @Override
-    public void onStartScreen() {
-
+    public final void onStartScreen() {
+        screenOpen();
     }
+
+    protected abstract void screenOpen();
 
     @Override
-    public void onEndScreen() {
-
+    public final void onEndScreen() {
+        screenClose();
     }
+
+    protected abstract void screenClose();
 }

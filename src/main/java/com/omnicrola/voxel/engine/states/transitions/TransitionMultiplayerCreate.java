@@ -3,17 +3,21 @@ package com.omnicrola.voxel.engine.states.transitions;
 import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.engine.states.IStateTransition;
+import com.omnicrola.voxel.network.ClientNetworkState;
+import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.ui.UiScreen;
 import de.lessvoid.nifty.Nifty;
 
 /**
  * Created by omnic on 2/27/2016.
  */
-public class TransitionMultiplayerLoad implements IStateTransition {
+public class TransitionMultiplayerCreate implements IStateTransition {
 
     @Override
     public void enter(Nifty niftyGui, AppStateManager stateManager) {
-        niftyGui.gotoScreen(UiScreen.MULTIPLAYER_LOAD.toString());
+        NetworkManager networkManager = stateManager.getState(ClientNetworkState.class).getNetworkManager();
+        networkManager.startLocalMultiplayerServer();
+        niftyGui.gotoScreen(UiScreen.MULTIPLAYER_CREATE.toString());
     }
 
     @Override
@@ -23,6 +27,6 @@ public class TransitionMultiplayerLoad implements IStateTransition {
 
     @Override
     public GlobalGameState transitionKey() {
-        return GlobalGameState.MULTIPLAYER_LOAD;
+        return GlobalGameState.MULTIPLAYER_CREATE;
     }
 }

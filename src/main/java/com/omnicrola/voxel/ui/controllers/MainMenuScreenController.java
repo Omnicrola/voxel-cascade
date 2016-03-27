@@ -23,7 +23,7 @@ public class MainMenuScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_START")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_START)
     public void start(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOAD);
+        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_CREATE);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_JOIN")
@@ -38,5 +38,13 @@ public class MainMenuScreenController extends AbstractScreenController {
         this.uiAdapter.sendCommand(new ShutdownAndExitCommand());
     }
 
+    @Override
+    protected void screenOpen() {
 
+    }
+
+    @Override
+    protected void screenClose() {
+
+    }
 }

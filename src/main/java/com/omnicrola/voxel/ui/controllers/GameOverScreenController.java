@@ -35,7 +35,7 @@ public class GameOverScreenController extends AbstractScreenController {
 
 
     @Override
-    public void onStartScreen() {
+    protected void screenOpen() {
         IUiElement resultsPanel = ui().getElement(UiToken.TEAM_RESULTS_PANEL);
         IUiElement resultsContainer = ui().getElement(UiToken.TEAM_RESULTS_CONTAINER);
         IUiElement elapsedTimeLabel = ui().getElement(UiToken.ELAPSED_TIME);
@@ -49,6 +49,10 @@ public class GameOverScreenController extends AbstractScreenController {
         teamStatistics.forEach(s -> addStats(resultsPanel, s));
     }
 
+    @Override
+    protected void screenClose() {
+
+    }
 
     private void addStats(IUiElement resultsPanel, TeamStatistics teamStatistics) {
         resultsPanel.addElement(teamRow(

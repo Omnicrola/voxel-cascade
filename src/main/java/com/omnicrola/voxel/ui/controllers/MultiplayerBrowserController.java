@@ -6,12 +6,10 @@ import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
-import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
-import de.lessvoid.nifty.screen.Screen;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -54,10 +52,15 @@ public class MultiplayerBrowserController extends AbstractScreenController {
     }
 
     @Override
-    public void bind(Nifty nifty, Screen screen) {
-        super.bind(nifty, screen);
+    protected void screenOpen() {
         ListBox<VoxelGameServer> serverDropdown = ui().getListBox(UiToken.MULTIPLAYER_SERVER_LIST);
+        serverDropdown.removeAllItems(serverDropdown.getItems());
         serverDropdown.addItem(VoxelGameServer.EMPTY);
+    }
+
+    @Override
+    protected void screenClose() {
+
     }
 
     private void updateServerInformation() {

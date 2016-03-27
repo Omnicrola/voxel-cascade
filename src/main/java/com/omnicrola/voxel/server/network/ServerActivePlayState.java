@@ -42,7 +42,9 @@ public class ServerActivePlayState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
-        this.currentGame.cleanup();
+        if (this.currentGame != null) {
+            this.currentGame.cleanup();
+        }
     }
 
     public void setCurrentGame(ActiveMultiplayerGame currentGame) {

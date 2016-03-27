@@ -107,4 +107,12 @@ public class UiAdapter implements ILevelChangeObserver {
         this.networkManager.stopListeningForServers();
         this.networkManager.joinLobby(multiplayerServer);
     }
+
+    public VoxelGameServer getCurrentServer() {
+        return this.networkManager.getCurrentServer();
+    }
+
+    public void removeNetworkObserver(INetworkObserver observer) {
+        this.networkManager.removeObserver(observer);
+    }
 }

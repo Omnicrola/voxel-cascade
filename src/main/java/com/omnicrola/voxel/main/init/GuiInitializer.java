@@ -51,7 +51,7 @@ public class GuiInitializer {
         Map<GlobalGameState, IStateTransition> transitions = new HashMap<>();
         transitions.put(GlobalGameState.MULTIPLAYER_LOBBY, new TransitionToMultiplayerLobby());
         transitions.put(GlobalGameState.MULTIPLAYER_BROWSE, new TransitionMultiplayerBrowse());
-        transitions.put(GlobalGameState.MULTIPLAYER_LOAD, new TransitionMultiplayerLoad());
+        transitions.put(GlobalGameState.MULTIPLAYER_CREATE, new TransitionMultiplayerCreate());
         transitions.put(GlobalGameState.ACTIVE_PLAY, new TransitionActivePlay());
         transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());
 

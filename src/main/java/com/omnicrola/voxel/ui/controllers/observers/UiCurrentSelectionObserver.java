@@ -1,7 +1,8 @@
-package com.omnicrola.voxel.ui.controllers;
+package com.omnicrola.voxel.ui.controllers.observers;
 
 import com.omnicrola.voxel.input.IUserSelectionObserver;
 import com.omnicrola.voxel.input.SelectionGroup;
+import com.omnicrola.voxel.ui.controllers.ActivePlayScreenController;
 import com.omnicrola.voxel.ui.select.ISelectedUnit;
 
 import java.util.List;

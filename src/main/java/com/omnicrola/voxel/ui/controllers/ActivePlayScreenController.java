@@ -9,6 +9,8 @@ import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
+import com.omnicrola.voxel.ui.controllers.observers.UiCurrentSelectionObserver;
+import com.omnicrola.voxel.ui.controllers.observers.UiLevelObserver;
 import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
@@ -40,6 +42,16 @@ public class ActivePlayScreenController extends AbstractScreenController {
         super.bind(nifty, screen);
         this.uiAdapter.addUnitSelectionObserver(new UiCurrentSelectionObserver(this));
         this.uiAdapter.addCurrentLevelObserver(new UiLevelObserver(this));
+    }
+
+    @Override
+    protected void screenOpen() {
+
+    }
+
+    @Override
+    protected void screenClose() {
+
     }
 
     @NiftyEventSubscriber(id = "ACTION_1")

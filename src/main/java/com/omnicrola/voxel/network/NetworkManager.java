@@ -8,6 +8,8 @@ import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,7 +59,11 @@ public class NetworkManager implements INetworkManager {
     }
 
     @Override
-    public boolean connectTo(String serverAddress) {
+    public VoxelGameServer getCurrentServer() {
+        return this.currentGame;
+    }
+
+    private boolean connectTo(String serverAddress) {
         try {
             LOGGER.log(Level.FINE, "Connecting to server : " + serverAddress);
             this.networkClient = Network.connectToServer(serverAddress, GameConstants.SERVER_PORT);
@@ -75,7 +81,7 @@ public class NetworkManager implements INetworkManager {
     }
 
     @Override
-    public void startMultiplayerServer() {
+    public void startLocalMultiplayerServer() {
         LOGGER.log(Level.INFO, "Starting local multiplayer instance");
         this.voxelServerEngine = new VoxelServerEngine();
         this.voxelServerEngine.enqueue(() -> {
@@ -83,7 +89,12 @@ public class NetworkManager implements INetworkManager {
             return null;
         });
         this.voxelServerEngine.start();
-        connectTo("localhost");
+        try {
+            VoxelGameServer localhost = new VoxelGameServer(InetAddress.getByName("localhost"), 1);
+            joinLobby(localhost);
+        } catch (UnknownHostException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+        }
     }
 
     @Override
@@ -128,5 +139,10 @@ public class NetworkManager implements INetworkManager {
     @Override
     public void addObserver(INetworkObserver networkObserver) {
         this.observers.add(networkObserver);
+    }
+
+    @Override
+    public void removeObserver(INetworkObserver observer) {
+        this.observers.remove(observer);
     }
 }

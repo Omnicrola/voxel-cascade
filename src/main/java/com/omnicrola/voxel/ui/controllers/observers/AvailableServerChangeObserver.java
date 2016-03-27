@@ -1,7 +1,8 @@
-package com.omnicrola.voxel.ui.controllers;
+package com.omnicrola.voxel.ui.controllers.observers;
 
 import com.omnicrola.voxel.network.INetworkObserver;
 import com.omnicrola.voxel.network.VoxelGameServer;
+import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
 
 import java.util.List;
 

@@ -6,9 +6,7 @@ package com.omnicrola.voxel.network;
 public interface INetworkManager {
     void disconnect();
 
-    boolean connectTo(String serverAddress);
-
-    void startMultiplayerServer();
+    void startLocalMultiplayerServer();
 
     void shutdownMultiplayer();
 
@@ -19,4 +17,8 @@ public interface INetworkManager {
     void startListeningForServers();
 
     void joinLobby(VoxelGameServer multiplayerServer);
+
+    VoxelGameServer getCurrentServer();
+
+    void removeObserver(INetworkObserver observer);
 }
