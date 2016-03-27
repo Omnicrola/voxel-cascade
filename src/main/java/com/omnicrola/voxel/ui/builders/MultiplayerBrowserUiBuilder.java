@@ -7,7 +7,7 @@ import com.omnicrola.voxel.ui.controllers.AvailableServerChangeObserver;
 import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
 import de.lessvoid.nifty.builder.*;
 import de.lessvoid.nifty.controls.button.builder.ButtonBuilder;
-import de.lessvoid.nifty.controls.scrollpanel.builder.ScrollPanelBuilder;
+import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
 import de.lessvoid.nifty.tools.Color;
 
 /**
@@ -19,7 +19,6 @@ public class MultiplayerBrowserUiBuilder implements IGuiBuilder {
         String screenName = UiScreen.MULTIPLAYER_BROWSE.toString();
         MultiplayerBrowserController multiplayerController = new MultiplayerBrowserController(uiAdapter);
         uiAdapter.addNetworkObserver(new AvailableServerChangeObserver(multiplayerController));
-
 
         uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(multiplayerController);
@@ -43,7 +42,7 @@ public class MultiplayerBrowserUiBuilder implements IGuiBuilder {
                             height(percentage(80));
                             childLayoutVertical();
 
-                            control(serverBrowserScrollpane());
+                            control(serverCombobox());
                             panel(serverInformationPanel());
                             panel(buttonPanel());
                         }
@@ -98,18 +97,10 @@ public class MultiplayerBrowserUiBuilder implements IGuiBuilder {
         }};
     }
 
-    private ControlBuilder serverBrowserScrollpane() {
-        return new ScrollPanelBuilder("multiplayer-server-list") {{
-            parameter("horizontal", "false");
-            childLayoutVertical();
-            height("*");
+    private ControlBuilder serverCombobox() {
+        return new DropDownBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()){{
             width("*");
-            style("autoscroll");
-            panel(new PanelBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()) {{
-                childLayoutVertical();
-                x(pixels(0));
-                y(pixels(0));
-            }});
+            height(pixels(30));
         }};
     }
 }
