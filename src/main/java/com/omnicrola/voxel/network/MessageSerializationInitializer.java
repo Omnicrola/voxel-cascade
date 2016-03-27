@@ -5,7 +5,6 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.commands.*;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
-import com.omnicrola.voxel.network.messages.LoadLevelCommand;
 import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
 import com.omnicrola.voxel.network.messages.SpawnUnitCommand;
 
@@ -16,7 +15,6 @@ public class MessageSerializationInitializer {
 
     public static void init() {
         Serializer.registerClass(HandshakeMessage.class);
-        Serializer.registerClass(LoadLevelCommand.class);
         Serializer.registerClass(SpawnUnitCommand.class);
         Serializer.registerClass(SpawnStructureMessage.class);
         Serializer.registerClass(StartMultiplayerGameCommand.class);

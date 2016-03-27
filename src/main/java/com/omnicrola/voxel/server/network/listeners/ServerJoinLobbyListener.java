@@ -1,8 +1,10 @@
-package com.omnicrola.voxel.server.network;
+package com.omnicrola.voxel.server.network.listeners;
 
 import com.jme3.network.HostedConnection;
 import com.omnicrola.voxel.network.AbstractMessageListener;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
+import com.omnicrola.voxel.server.network.NetworkPlayer;
+import com.omnicrola.voxel.server.network.ServerLobbyManager;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;

@@ -6,11 +6,15 @@ import com.omnicrola.voxel.ui.data.TeamStatistics;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Eric on 2/6/2016.
  */
 public class LevelManager implements ILevelManager {
+    private static final Logger LOGGER = Logger.getLogger(LevelManager.class.getName());
+
     private final LevelDefinitionRepository levelDefinitions;
     private LevelLoadingAdapter levelLoadingAdapter;
     private LevelState currentLevelState;
@@ -25,11 +29,13 @@ public class LevelManager implements ILevelManager {
 
     @Override
     public void loadLevel(UUID levelId) {
+        LOGGER.log(Level.INFO, "Loading level : " + levelId);
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
         loadLevel(levelDefinition);
     }
 
     public void loadLevel(LevelDefinition newLevelDefinition) {
+        LOGGER.log(Level.INFO, "Loading level : " + newLevelDefinition.getName());
         if (this.currentLevelState != null) {
             this.currentLevelState.dispose();
         }

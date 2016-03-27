@@ -1,9 +1,9 @@
-package com.omnicrola.voxel.server.network;
+package com.omnicrola.voxel.server.network.listeners;
 
 import com.jme3.network.HostedConnection;
+import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.network.AbstractMessageListener;
-import com.omnicrola.voxel.network.messages.StartGameMessage;
 import com.omnicrola.voxel.server.main.ServerLobbyState;
 
 import java.text.MessageFormat;
@@ -13,7 +13,7 @@ import java.util.logging.Logger;
 /**
  * Created by omnic on 3/25/2016.
  */
-public class ServerStartGameListener extends AbstractMessageListener<StartGameMessage, HostedConnection> {
+public class ServerStartGameListener extends AbstractMessageListener<StartMultiplayerGameCommand, HostedConnection> {
 
     private static final Logger LOGGER = Logger.getLogger(ServerStartGameListener.class.getName());
 
@@ -26,11 +26,13 @@ public class ServerStartGameListener extends AbstractMessageListener<StartGameMe
     }
 
     @Override
-    protected void processMessage(HostedConnection connection, StartGameMessage message) {
+    protected void processMessage(HostedConnection connection, StartMultiplayerGameCommand message) {
         this.actionQueue.enqueue(() -> {
             serverLobbyState.startGame();
             String msg = "Player from {0} has started the game!";
             LOGGER.log(Level.INFO, MessageFormat.format(msg, connection.getAddress()));
+            message.setIsLocal(true);
+            connection.getServer().broadcast(message);
             return null;
         });
     }

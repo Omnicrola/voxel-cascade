@@ -4,7 +4,6 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.network.BroadcastPacketParser;
-import com.omnicrola.voxel.network.messages.StartGameMessage;
 import com.omnicrola.voxel.server.network.*;
 
 import java.util.logging.Level;
@@ -66,8 +65,6 @@ public class ServerLobbyState extends AbstractAppState {
 
         activePlayState.setEnabled(true);
         this.setEnabled(false);
-
-        activeGame.broadcast(new StartGameMessage());
     }
 
     @Override

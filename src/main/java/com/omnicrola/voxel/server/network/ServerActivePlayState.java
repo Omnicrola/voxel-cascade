@@ -58,5 +58,6 @@ public class ServerActivePlayState extends AbstractAppState {
 
     public void setCurrentGame(ActiveMultiplayerGame currentGame) {
         this.currentGame = currentGame;
+
     }
 }

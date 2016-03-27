@@ -1,10 +1,11 @@
-package com.omnicrola.voxel.server.network;
+package com.omnicrola.voxel.server.network.listeners;
 
 import com.jme3.network.HostedConnection;
 import com.jme3.network.Message;
 import com.jme3.network.MessageListener;
 import com.omnicrola.voxel.commands.IEntityCreator;
 import com.omnicrola.voxel.commands.IWorldCommand;
+import com.omnicrola.voxel.server.network.ServerInstanceIdProvider;
 
 /**
  * Created by Eric on 2/28/2016.

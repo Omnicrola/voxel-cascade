@@ -1,13 +1,15 @@
 package com.omnicrola.voxel.server.network;
 
 import com.jme3.network.MessageListener;
+import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
-import com.omnicrola.voxel.network.messages.StartGameMessage;
 import com.omnicrola.voxel.server.main.ActiveMultiplayerGame;
 import com.omnicrola.voxel.server.main.ServerLobbyState;
 import com.omnicrola.voxel.server.network.listeners.ServerHandshakeListener;
+import com.omnicrola.voxel.server.network.listeners.ServerJoinLobbyListener;
+import com.omnicrola.voxel.server.network.listeners.ServerStartGameListener;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -49,7 +51,7 @@ public class ServerLobbyManager {
 
         server.addMessageListener(handshakeListener, HandshakeMessage.class);
         server.addMessageListener(joinLobbyListener, JoinLobbyMessage.class);
-        server.addMessageListener(startGameListener, StartGameMessage.class);
+        server.addMessageListener(startGameListener, StartMultiplayerGameCommand.class);
 
         this.lobbyListeners = Arrays.asList(handshakeListener, joinLobbyListener, startGameListener);
     }
