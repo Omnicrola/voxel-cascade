@@ -8,6 +8,9 @@ import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -23,14 +26,16 @@ public class NetworkManager implements INetworkManager {
 
     private ClientListenerBuilder clientListenerBuilder;
     private NetworkCommandQueue networkCommandQueue;
-    private ServerBroadcastReceiver serverBroadcastReceiver;
+    private MultiplayerDiscovery multiplayerDiscovery;
     private WorldCommandProcessor commandProcessor;
+    private List<INetworkObserver> observers;
 
     public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue,
-                          ServerBroadcastReceiver serverBroadcastReceiver) {
+                          MultiplayerDiscovery multiplayerDiscovery) {
         this.clientListenerBuilder = clientListenerBuilder;
         this.networkCommandQueue = networkCommandQueue;
-        this.serverBroadcastReceiver = serverBroadcastReceiver;
+        this.multiplayerDiscovery = multiplayerDiscovery;
+        this.observers = new ArrayList<>();
     }
 
     @Override
@@ -79,6 +84,7 @@ public class NetworkManager implements INetworkManager {
             this.voxelServerEngine.stop();
             this.voxelServerEngine = null;
         }
+        this.multiplayerDiscovery.cleanup();
     }
 
     public void cleanup() {
@@ -90,6 +96,10 @@ public class NetworkManager implements INetworkManager {
         if (this.networkClient != null) {
             this.networkCommandQueue.sendMessages(this.networkClient);
         }
+        if (this.multiplayerDiscovery.hasNewServers()) {
+            List<VoxelGameServer> multiplayerGames = Collections.unmodifiableList(multiplayerDiscovery.getServers());
+            this.observers.forEach(o -> o.availableServersChanged(multiplayerGames));
+        }
     }
 
     public void setCommandProcessor(WorldCommandProcessor commandProcessor) {
@@ -98,11 +108,16 @@ public class NetworkManager implements INetworkManager {
 
     @Override
     public void startListeningForServers() {
-        this.serverBroadcastReceiver.start();
+        this.multiplayerDiscovery.startSearching();
+    }
+
+    @Override
+    public void stopListeningForServers() {
+        this.multiplayerDiscovery.stopSearching();
     }
 
     @Override
     public void addObserver(INetworkObserver networkObserver) {
-        this.serverBroadcastReceiver.addObserver(networkObserver);
+        this.observers.add(networkObserver);
     }
 }

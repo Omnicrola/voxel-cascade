@@ -11,6 +11,7 @@ import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.DropDownSelectionChangedEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,12 +24,13 @@ public class MultiplayerBrowserController extends AbstractScreenController {
 
     public MultiplayerBrowserController(UiAdapter uiAdapter) {
         this.uiAdapter = uiAdapter;
+        this.servers = new ArrayList<>();
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_BROWSE_JOIN")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN)
     public void triggerJoin(String id, ButtonClickedEvent buttonClickedEvent) {
-        System.out.println("Joining! " + this.currentlySelectedServer.getIp() + " " + this.currentlySelectedServer.getServerName());
+        System.out.println("Joining! " + this.currentlySelectedServer);
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_BROWSE_CANCEL")
@@ -43,12 +45,10 @@ public class MultiplayerBrowserController extends AbstractScreenController {
         this.currentlySelectedServer = (VoxelGameServer) event.getSelection();
     }
 
-
     public void updateServerList(List<VoxelGameServer> newServers) {
         DropDown<VoxelGameServer> serverDropdown = ui().getDropdown(UiToken.MULTIPLAYER_SERVER_LIST);
         serverDropdown.removeAllItems(this.servers);
         serverDropdown.addAllItems(newServers);
         this.servers = newServers;
     }
-
 }

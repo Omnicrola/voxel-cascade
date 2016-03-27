@@ -1,22 +1,19 @@
 package com.omnicrola.voxel.network;
 
+import java.net.InetAddress;
+
 /**
  * Created by Eric on 3/27/2016.
  */
 public class VoxelGameServer {
-    private String ip;
-    private String serverName;
+    private InetAddress address;
 
-    public VoxelGameServer(String ip, String serverName) {
-        this.ip = ip;
-        this.serverName = serverName;
+    public VoxelGameServer(InetAddress address) {
+        this.address = address;
     }
 
-    public String getIp() {
-        return ip;
-    }
-
-    public String getServerName() {
-        return serverName;
+    @Override
+    public String toString() {
+        return address.getHostAddress() + " " + address.getHostName();
     }
 }
