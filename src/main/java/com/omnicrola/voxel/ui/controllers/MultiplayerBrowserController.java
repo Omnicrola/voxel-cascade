@@ -1,9 +1,11 @@
 package com.omnicrola.voxel.ui.controllers;
 
-import com.omnicrola.voxel.engine.GlobalGameState;
+import com.omnicrola.voxel.commands.ChangeScreenCommand;
+import com.omnicrola.voxel.commands.JoinLobbyCommand;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -31,14 +33,13 @@ public class MultiplayerBrowserController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_BROWSE_JOIN")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN)
     public void triggerJoin(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.joinServerLobby(this.currentlySelectedServer);
-        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_LOBBY);
+        this.uiAdapter.sendCommand(new JoinLobbyCommand(this.currentlySelectedServer));
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_BROWSE_CANCEL")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_BROWSE_CANCEL)
     public void triggerCancel(String id, ButtonClickedEvent buttonClickedEvent) {
-        uiAdapter.transitionTo(GlobalGameState.MAIN_MENU);
+        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MAIN_MENU));
     }
 
     @SubscriberLink(UiToken.MULTIPLAYER_SERVER_LIST)

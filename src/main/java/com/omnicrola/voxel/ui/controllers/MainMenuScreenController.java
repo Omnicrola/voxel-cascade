@@ -1,9 +1,10 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.omnicrola.voxel.commands.ChangeScreenCommand;
 import com.omnicrola.voxel.commands.ShutdownAndExitCommand;
-import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -22,14 +23,14 @@ public class MainMenuScreenController extends AbstractScreenController {
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_START")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_START)
-    public void start(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_CREATE);
+    public void createMultiplayerGame(String id, ButtonClickedEvent buttonClickedEvent) {
+        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MULTIPLAYER_CREATE));
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_JOIN")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_JOIN)
-    public void launchMultiplayer(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.MULTIPLAYER_BROWSE);
+    public void findMultiplayerGame(String id, ButtonClickedEvent buttonClickedEvent) {
+        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MULTIPLAYER_BROWSE));
     }
 
     @NiftyEventSubscriber(id = "BUTTON_QUIT_GAME")

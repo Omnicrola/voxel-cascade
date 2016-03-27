@@ -78,6 +78,7 @@ public class UiAdapter implements ILevelChangeObserver {
         return this.currentLevel;
     }
 
+    @Deprecated
     public void transitionTo(GlobalGameState globalGameState) {
         if (this.currentTransition != null) {
             this.currentTransition.exit(this.niftyGui, this.stateManager);
@@ -107,16 +108,11 @@ public class UiAdapter implements ILevelChangeObserver {
         this.networkManager.addObserver(networkObserver);
     }
 
-    public void joinServerLobby(VoxelGameServer multiplayerServer) {
-        this.networkManager.stopListeningForServers();
-        this.networkManager.joinLobby(multiplayerServer);
+    public void removeNetworkObserver(INetworkObserver observer) {
+        this.networkManager.removeObserver(observer);
     }
 
     public VoxelGameServer getCurrentServer() {
         return this.networkManager.getCurrentServer();
-    }
-
-    public void removeNetworkObserver(INetworkObserver observer) {
-        this.networkManager.removeObserver(observer);
     }
 }
