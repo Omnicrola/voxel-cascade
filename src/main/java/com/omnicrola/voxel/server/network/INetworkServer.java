@@ -15,4 +15,6 @@ public interface INetworkServer {
     void broadcast(Message message);
 
     void stop();
+
+    void start();
 }

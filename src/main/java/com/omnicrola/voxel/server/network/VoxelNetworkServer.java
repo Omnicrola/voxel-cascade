@@ -34,4 +34,9 @@ public class VoxelNetworkServer implements INetworkServer {
     public void stop() {
         this.networkServer.close();
     }
+
+    @Override
+    public void start() {
+//        this.networkServer.start();
+    }
 }

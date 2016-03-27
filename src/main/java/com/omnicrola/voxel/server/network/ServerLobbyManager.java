@@ -31,6 +31,7 @@ public class ServerLobbyManager {
     }
 
     public void startAcceptingPlayers(ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
+        this.server.start();
         addMessageListeners(serverLobbyState, actionQueue);
     }
 

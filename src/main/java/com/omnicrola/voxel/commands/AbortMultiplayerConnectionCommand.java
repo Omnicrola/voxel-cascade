@@ -9,7 +9,7 @@ import com.omnicrola.voxel.world.CommandPackage;
 public class AbortMultiplayerConnectionCommand extends AbstractWorldCommand {
     @Override
     public void execute(CommandPackage commandPackage) {
-        commandPackage.getNetworkManager().shutdownMultiplayer();
+        commandPackage.getNetworkManager().closeLocalMultiplayerServer();
         commandPackage.getUiManager().changeScreen(UiScreen.MAIN_MENU);
     }
 

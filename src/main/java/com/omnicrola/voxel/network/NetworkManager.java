@@ -51,11 +51,13 @@ public class NetworkManager implements INetworkManager {
     }
 
     @Override
-    public void joinLobby(VoxelGameServer multiplayerServer) {
+    public boolean joinLobby(VoxelGameServer multiplayerServer) {
         if (connectTo(multiplayerServer.getAddress())) {
             this.currentGame = multiplayerServer;
             this.observers.forEach(o -> o.multiplayerGameChanged(multiplayerServer));
+            return true;
         }
+        return false;
     }
 
     @Override
@@ -88,17 +90,30 @@ public class NetworkManager implements INetworkManager {
             LOGGER.log(Level.INFO, "Multiplayer server is running.");
             return null;
         });
+        attemptToJoinLocalhost();
         this.voxelServerEngine.start();
-        try {
-            VoxelGameServer localhost = new VoxelGameServer(InetAddress.getByName("localhost"), 1);
-            joinLobby(localhost);
-        } catch (UnknownHostException e) {
-            LOGGER.log(Level.SEVERE, null, e);
+    }
+
+    private void attemptToJoinLocalhost() {
+        if (voxelServerEngine != null) {
+            this.voxelServerEngine.enqueue(() -> {
+                try {
+                    VoxelGameServer localhost = new VoxelGameServer(InetAddress.getByName("127.0.0.1"), 1);
+                    if (joinLobby(localhost)) {
+                        LOGGER.log(Level.INFO, "Joined local server");
+                    } else {
+                        attemptToJoinLocalhost();
+                    }
+                } catch (UnknownHostException e) {
+                    LOGGER.log(Level.SEVERE, null, e);
+                }
+                return null;
+            });
         }
     }
 
     @Override
-    public void shutdownMultiplayer() {
+    public void closeLocalMultiplayerServer() {
         if (this.voxelServerEngine != null) {
             LOGGER.log(Level.INFO, "Closing multiplayer server");
             this.voxelServerEngine.stop();
@@ -109,7 +124,7 @@ public class NetworkManager implements INetworkManager {
 
     public void cleanup() {
         disconnect();
-        shutdownMultiplayer();
+        closeLocalMultiplayerServer();
     }
 
     public void update(float tpf) {

@@ -8,7 +8,7 @@ public interface INetworkManager {
 
     void startLocalMultiplayerServer();
 
-    void shutdownMultiplayer();
+    void closeLocalMultiplayerServer();
 
     void stopListeningForServers();
 
@@ -16,7 +16,7 @@ public interface INetworkManager {
 
     void startListeningForServers();
 
-    void joinLobby(VoxelGameServer multiplayerServer);
+    boolean joinLobby(VoxelGameServer multiplayerServer);
 
     VoxelGameServer getCurrentServer();
 

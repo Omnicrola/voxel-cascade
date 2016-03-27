@@ -15,6 +15,11 @@ public class ServerLobbyState extends AbstractAppState {
     private ServerMulticastEmitter serverMulticastEmitter;
     private ServerLobbyManager serverLobbyManager;
     private VoxelServerEngine serverEngine;
+    private VoxelNetworkServerFactory voxelNetworkServerFactory;
+
+    public ServerLobbyState(VoxelNetworkServerFactory voxelNetworkServerFactory) {
+        this.voxelNetworkServerFactory = voxelNetworkServerFactory;
+    }
 
     @Override
     public void initialize(AppStateManager stateManager, Application app) {
@@ -41,8 +46,7 @@ public class ServerLobbyState extends AbstractAppState {
 
     private void enable() {
         this.serverMulticastEmitter = new ServerMulticastEmitter(new BroadcastPacketParser());
-        VoxelNetworkServerFactory voxelNetworkServerFactory = new VoxelNetworkServerFactory();
-        INetworkServer server = voxelNetworkServerFactory.build();
+        INetworkServer server = this.voxelNetworkServerFactory.build();
         this.serverLobbyManager = new ServerLobbyManager(server);
         this.serverLobbyManager.startAcceptingPlayers(this, serverEngine);
         this.serverMulticastEmitter.start();

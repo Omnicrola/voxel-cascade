@@ -22,7 +22,8 @@ public class TransitionMultiplayerCreate implements IStateTransition {
 
     @Override
     public void exit(Nifty niftyGui, AppStateManager stateManager) {
-
+        NetworkManager networkManager = stateManager.getState(ClientNetworkState.class).getNetworkManager();
+        networkManager.closeLocalMultiplayerServer();
     }
 
     @Override
