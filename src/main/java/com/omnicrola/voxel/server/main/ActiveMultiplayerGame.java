@@ -3,7 +3,6 @@ package com.omnicrola.voxel.server.main;
 import com.jme3.network.Message;
 import com.omnicrola.voxel.server.network.INetworkServer;
 import com.omnicrola.voxel.server.network.NetworkPlayer;
-import com.omnicrola.voxel.server.network.listeners.ServerCommandListener;
 
 import java.util.List;
 
@@ -17,7 +16,6 @@ public class ActiveMultiplayerGame {
     public ActiveMultiplayerGame(INetworkServer server, List<NetworkPlayer> players) {
         this.server = server;
         this.players = players;
-        this.server.addMessageListener(new ServerCommandListener());
     }
 
     public void broadcast(Message message) {
@@ -25,7 +23,7 @@ public class ActiveMultiplayerGame {
     }
 
     public void cleanup() {
-        this.players.forEach(p->p.disconnect("Server closing"));
+        this.players.forEach(p -> p.disconnect("Server closing"));
         server.stop();
     }
 }

@@ -43,7 +43,6 @@ public class ServerLobbyManager {
         return activeMultiplayerGame;
     }
 
-
     private void addMessageListeners(ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
         ServerHandshakeListener handshakeListener = new ServerHandshakeListener();
         ServerJoinLobbyListener joinLobbyListener = new ServerJoinLobbyListener(this);

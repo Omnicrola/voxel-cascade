@@ -27,6 +27,8 @@ public class ServerStartGameListener extends AbstractMessageListener<StartMultip
 
     @Override
     protected void processMessage(HostedConnection connection, StartMultiplayerGameCommand message) {
+        connection.getServer().addMessageListener(new ServerCommandListener());
+
         this.actionQueue.enqueue(() -> {
             serverLobbyState.startGame();
             String msg = "Player from {0} has started the game!";
