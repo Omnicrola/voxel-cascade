@@ -26,17 +26,20 @@ public class LinearProjectileStrategy extends ProjectileStrategy {
     }
 
     @Override
-    public Projectile spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
+    public Projectile spawnProjectile(Spatial emittingEntity, Vector3f projectileOffset, Vector3f targetLocation) {
         ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
         Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
         addCollisionControl(this.entityControlAdapter.getWorldManager(), entityControlAdapter.getParticleBuilder(), projectile);
         addRangeControl(projectile);
-        addProjectileControl(emittingEntity, targetLocation, projectile);
+        addProjectileControl(emittingEntity, projectileOffset, targetLocation, projectile);
         return projectile;
     }
 
-    private void addProjectileControl(Spatial emittingEntity, Vector3f targetLocation, Projectile projectile) {
-        Vector3f emittingPosition = emittingEntity.getWorldTranslation();
+    private void addProjectileControl(Spatial emittingEntity,
+                                      Vector3f projectileOffset,
+                                      Vector3f targetLocation,
+                                      Projectile projectile) {
+        Vector3f emittingPosition = emittingEntity.getWorldTranslation().add(projectileOffset);
         Vector3f attackVector = targetLocation.subtract(emittingPosition);
         Vector3f velocity = attackVector.normalize().mult(projectileDefinition.getMuzzleVelocity());
         LinearProjectileControl linearProjectileControl = new LinearProjectileControl(projectileDefinition.getSize(), velocity);

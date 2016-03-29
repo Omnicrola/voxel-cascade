@@ -8,5 +8,5 @@ import com.omnicrola.voxel.entities.Projectile;
  * Created by Eric on 2/8/2016.
  */
 public interface IProjectileStrategy {
-    Projectile spawnProjectile(Spatial emittingEntity, Vector3f targetLocation);
+    Projectile spawnProjectile(Spatial emittingEntity, Vector3f projectileOffset, Vector3f targetLocation);
 }

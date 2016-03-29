@@ -28,7 +28,7 @@ public class ParabolicProjectileStrategy extends ProjectileStrategy {
     }
 
     @Override
-    public Projectile spawnProjectile(Spatial emittingEntity, Vector3f targetLocation) {
+    public Projectile spawnProjectile(Spatial emittingEntity, Vector3f projectileOffset, Vector3f targetLocation) {
         ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
         Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
 

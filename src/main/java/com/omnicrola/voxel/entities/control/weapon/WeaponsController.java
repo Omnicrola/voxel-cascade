@@ -72,7 +72,7 @@ public class WeaponsController extends AbstractControl {
         this.timeSinceLastShot = 0;
 
         Vector3f targetLocation = this.currentTarget.getWorldTranslation();
-        Projectile projectile = this.projectileFactory.spawnProjectile(this.spatial, targetLocation);
+        Projectile projectile = this.projectileFactory.spawnProjectile(this.spatial, this.projectileOffset, targetLocation);
         this.worldManager.addProjectile(projectile);
         Vector3f initialPosition = this.spatial
                 .getWorldTranslation()

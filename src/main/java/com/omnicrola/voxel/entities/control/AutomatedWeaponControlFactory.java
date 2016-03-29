@@ -31,15 +31,20 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
     protected Vector3f weaponOffset;
 
     @Override
-    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository, EntityControlAdapter entityControlAdapter) {
+    public void build(Spatial spatial, UnitDefinitionRepository unitDefinitionRepository,
+                      EntityControlAdapter entityControlAdapter) {
         WeaponDefinition weaponDefinition = unitDefinitionRepository.getWeaponDefinition(this.weaponId);
-        ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(weaponDefinition.getProjectileId());
+        ProjectileDefinition projectileDefinition = unitDefinitionRepository.getProjectileDefinition(
+                weaponDefinition.getProjectileId());
 
-        IProjectileStrategy projectileFactory = buildProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
-        WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(), weaponDefinition, weaponOffset, projectileFactory);
+        IProjectileStrategy projectileFactory = buildProjectileFactory(entityControlAdapter, weaponDefinition,
+                projectileDefinition);
+        WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(),
+                weaponDefinition, weaponOffset, projectileFactory);
         TargetingController targetingController = new TargetingController(entityControlAdapter.getWorldManager());
 
-        AiHoldPositionState holdPositionState = new AiHoldPositionState(targetingController, weaponsController, NullEntityMotionController.NO_OP);
+        AiHoldPositionState holdPositionState = new AiHoldPositionState(targetingController, weaponsController,
+                NullEntityMotionController.NO_OP);
 
         AiStateMap stateMap = new AiStateMap();
         stateMap.add(holdPositionState);
@@ -51,7 +56,9 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
         spatial.addControl(targetingController);
     }
 
-    private IProjectileStrategy buildProjectileFactory(EntityControlAdapter entityControlAdapter, WeaponDefinition weaponDefinition, ProjectileDefinition projectileDefinition) {
+    private IProjectileStrategy buildProjectileFactory(EntityControlAdapter entityControlAdapter,
+                                                       WeaponDefinition weaponDefinition,
+                                                       ProjectileDefinition projectileDefinition) {
         if (weaponDefinition.type().equals(WeaponType.PARABOLIC)) {
             return new ParabolicProjectileStrategy(entityControlAdapter, weaponDefinition, projectileDefinition);
         } else {
