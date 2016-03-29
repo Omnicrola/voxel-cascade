@@ -34,6 +34,9 @@ public class WeaponDefinition {
     @XmlElement(name = "rounds-per-minute", required = true)
     protected float rateOfFire;
 
+    @XmlElement(name="weapon-fire-sound")
+    public AudioDefinition audio;
+
     public int getId() {
         return globalId;
     }
@@ -60,5 +63,9 @@ public class WeaponDefinition {
 
     public WeaponType type() {
         return weaponType;
+    }
+
+    public AudioDefinition getAudio() {
+        return audio;
     }
 }

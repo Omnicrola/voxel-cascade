@@ -31,8 +31,14 @@ public class ProjectileDefinition {
     @XmlAttribute(name = "obeys-gravity")
     protected boolean obeysGravity = false;
 
-    @XmlElement(name="physical-size", required = true)
+    @XmlElement(name = "physical-size", required = true)
     protected float size;
+
+    @XmlElement(name = "in-flight-sound")
+    public AudioDefinition flightSound;
+
+    @XmlElement(name = "on-death-sound")
+    public AudioDefinition deathSound;
 
     public ProjectileDefinition() {
     }
@@ -63,5 +69,13 @@ public class ProjectileDefinition {
 
     public float getSize() {
         return size;
+    }
+
+    public AudioDefinition getFlightSound() {
+        return flightSound;
+    }
+
+    public AudioDefinition getDeathSound() {
+        return deathSound;
     }
 }

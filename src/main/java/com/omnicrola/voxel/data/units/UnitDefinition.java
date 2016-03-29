@@ -57,6 +57,9 @@ public class UnitDefinition {
     @XmlElement(name = "movement", required = true)
     protected MovementDefinition movementDefinition;
 
+    @XmlElement(name="audio", required = true)
+    protected EntityAudioDefinition entityAudioDefinition;
+
     @XmlElementWrapper(name = "controls")
     @XmlAnyElement(lax = true)
     protected List<IControlFactory> controlFactories = new ArrayList<>();
@@ -110,6 +113,10 @@ public class UnitDefinition {
 
     public float getBuildCost() {
         return buildCost;
+    }
+
+    public EntityAudioDefinition getAudioDefinition() {
+        return entityAudioDefinition;
     }
 
     public List<IControlFactory> getControlFactories() {

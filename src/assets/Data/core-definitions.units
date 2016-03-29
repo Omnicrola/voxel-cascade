@@ -20,6 +20,16 @@
                 <turnspeed>99.0</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
+            <audio>
+                <death volume="1.0">
+                    <filename>sfx_shieldDown.ogg</filename>
+                    <type>Buffer</type>
+                </death>
+                <spawn volume="1.0">
+                    <filename>sfx_shieldUp.ogg</filename>
+                    <type>Buffer</type>
+                </spawn>
+            </audio>
             <controls/>
             <commands>
                 <command>MOVE</command>
@@ -49,6 +59,16 @@
                 <turnspeed>99.0</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
+            <audio>
+                <death volume="1.0">
+                    <filename>sfx_shieldDown.ogg</filename>
+                    <type>Buffer</type>
+                </death>
+                <spawn volume="1.0">
+                    <filename>sfx_shieldUp.ogg</filename>
+                    <type>Buffer</type>
+                </spawn>
+            </audio>
             <controls/>
             <commands>
                 <command>MOVE</command>
@@ -78,6 +98,16 @@
                 <turnspeed>99.0</turnspeed>
                 <personal-radius>1.0</personal-radius>
             </movement>
+            <audio>
+                <death volume="1.0">
+                    <filename>sfx_shieldDown.ogg</filename>
+                    <type>Buffer</type>
+                </death>
+                <spawn volume="1.0">
+                    <filename>sfx_shieldUp.ogg</filename>
+                    <type>Buffer</type>
+                </spawn>
+            </audio>
             <controls/>
             <commands>
                 <command>MOVE</command>
@@ -124,6 +154,10 @@
             <type>LINEAR</type>
             <range>10.0</range>
             <rounds-per-minute>60.0</rounds-per-minute>
+            <weapon-fire-sound volume="1.0">
+                <filename>sfx_laser1.ogg</filename>
+                <type>Buffer</type>
+            </weapon-fire-sound>
         </weapon>
         <weapon global-id="1001" projectile-id="2001">
             <name>BB Shooter</name>
@@ -140,6 +174,10 @@
             <damage>10.0</damage>
             <speed>20.0</speed>
             <physical-size>0.125</physical-size>
+            <on-death-sound volume="1.0">
+                <filename>cannon-boom4.wav</filename>
+                <type>Buffer</type>
+            </on-death-sound>
         </projectile>
         <projectile global-id="2001" obeys-gravity="false">
             <model>sphere12.obj</model>

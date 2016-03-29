@@ -16,6 +16,8 @@ public class ProjectileGenerator {
         projectileDefinition.muzzleVelocity = 20f;
         projectileDefinition.model = "sphere12.obj";
         projectileDefinition.texture = "test.bmp";
+        projectileDefinition.flightSound = null;
+        projectileDefinition.deathSound = new AudioDefinition("cannon-boom4.wav");
         return projectileDefinition;
     }
     public static ProjectileDefinition createSmallBulletProjectile() {

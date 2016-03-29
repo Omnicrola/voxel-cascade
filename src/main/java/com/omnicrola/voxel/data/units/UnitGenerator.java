@@ -51,11 +51,19 @@ public class UnitGenerator {
         unitDefinition.weaponEmissionOffset = new Vector3f(0, 0.5f, 0);
         unitDefinition.mass = 1f;
         unitDefinition.movementDefinition = movementDef(5f, 99);
+        unitDefinition.entityAudioDefinition = createTankAudio();
         unitDefinition.commands.add(EntityCommand.MOVE);
         unitDefinition.commands.add(EntityCommand.ATTACK);
         unitDefinition.commands.add(EntityCommand.STOP);
         unitDefinition.commands.add(EntityCommand.HARVEST);
         return unitDefinition;
+    }
+
+    private static EntityAudioDefinition createTankAudio() {
+        EntityAudioDefinition entityAudioDefinition = new EntityAudioDefinition();
+        entityAudioDefinition.deathSound = new AudioDefinition("sfx_shieldDown.ogg");
+        entityAudioDefinition.spawnSound = new AudioDefinition("sfx_shieldUp.ogg");
+        return entityAudioDefinition;
     }
 
     public static UnitDefinition createBuilder() {

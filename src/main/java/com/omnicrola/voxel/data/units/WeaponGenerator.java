@@ -18,6 +18,7 @@ public class WeaponGenerator {
         weaponDefinition.range = 10;
         weaponDefinition.rateOfFire = 60;
         weaponDefinition.weaponType = WeaponType.LINEAR;
+        weaponDefinition.audio = new AudioDefinition("sfx_laser1.ogg");
         return weaponDefinition;
     }
 
