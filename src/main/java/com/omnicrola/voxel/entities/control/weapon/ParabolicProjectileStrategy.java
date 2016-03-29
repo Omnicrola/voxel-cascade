@@ -15,16 +15,13 @@ import com.omnicrola.voxel.entities.control.SelfDestructControl;
  */
 public class ParabolicProjectileStrategy extends ProjectileStrategy {
 
-    private EntityControlAdapter entityControlAdapter;
     private WeaponDefinition weaponDefinition;
-    private ProjectileDefinition projectileDefinition;
 
     public ParabolicProjectileStrategy(EntityControlAdapter entityControlAdapter,
                                        WeaponDefinition weaponDefinition,
                                        ProjectileDefinition projectileDefinition) {
-        this.entityControlAdapter = entityControlAdapter;
+        super(entityControlAdapter, projectileDefinition);
         this.weaponDefinition = weaponDefinition;
-        this.projectileDefinition = projectileDefinition;
     }
 
     @Override
@@ -32,7 +29,7 @@ public class ParabolicProjectileStrategy extends ProjectileStrategy {
         ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
         Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
 
-        addCollisionControl(entityControlAdapter.getWorldManager(), entityControlAdapter.getParticleBuilder(), projectile);
+        addCollisionControl(projectile);
         projectile.getSpatial().addControl(createProjectileControl(emittingEntity, targetLocation));
         projectile.getSpatial().addControl(createSelfDestruct());
         return projectile;

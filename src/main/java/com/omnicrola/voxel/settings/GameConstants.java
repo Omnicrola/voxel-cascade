@@ -24,6 +24,7 @@ public class GameConstants {
 
     public static final String DIR_TEXTURES = "Textures/";
     public static final String DIR_MODELS = "Models/";
+    public static final String DIR_AUDIO = "Sound/";
 
     public static final int SERVER_PORT = 5150;
     public static final int GAME_VERSION = 12;

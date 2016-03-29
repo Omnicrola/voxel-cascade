@@ -25,7 +25,7 @@ public class CollisionControlFactory implements IControlFactory {
         ParticleBuilder effectsBuilder = entityControlAdapter.getParticleBuilder();
 
         EntityCollisionHandler entityCollisionHandler = new EntityCollisionHandler(spatial, worldManager);
-        entityCollisionHandler.setDeathAction(new VoxelFireSpawnAction(effectsBuilder, 30));
+        entityCollisionHandler.addDeathAction(new VoxelFireSpawnAction(effectsBuilder, 30));
 
         CollisionController collisionController = new CollisionController(entityCollisionHandler);
         spatial.addControl(collisionController);

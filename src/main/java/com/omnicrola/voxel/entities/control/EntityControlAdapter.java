@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.entities.control;
 
 import com.jme3.input.InputManager;
+import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.build.ProjectileBuilder;
@@ -18,19 +19,22 @@ public class EntityControlAdapter {
     private ITerrainManager terrainManager;
     private LevelManager levelManager;
     private InputManager inputManager;
+    private AudioRepository audioRepository;
 
     public EntityControlAdapter(ParticleBuilder particleBuilder,
                                 WorldManager worldManager,
                                 ProjectileBuilder projectileBuilder,
                                 ITerrainManager terrainManager,
                                 LevelManager levelManager,
-                                InputManager inputManager) {
+                                InputManager inputManager,
+                                AudioRepository audioRepository) {
         this.particleBuilder = particleBuilder;
         this.worldManager = worldManager;
         this.projectileBuilder = projectileBuilder;
         this.terrainManager = terrainManager;
         this.levelManager = levelManager;
         this.inputManager = inputManager;
+        this.audioRepository = audioRepository;
     }
 
     public InputManager getInputManager() {
@@ -55,5 +59,9 @@ public class EntityControlAdapter {
 
     public ITerrainManager getTerrainManager() {
         return terrainManager;
+    }
+
+    public AudioRepository getAudioRepository() {
+        return audioRepository;
     }
 }

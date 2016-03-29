@@ -2,6 +2,8 @@ package com.omnicrola.voxel.entities.behavior.ai;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.audio.AudioRepository;
+import com.omnicrola.voxel.audio.IAudioPlayer;
 import com.omnicrola.voxel.data.WeaponType;
 import com.omnicrola.voxel.data.units.MovementDefinition;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
@@ -12,8 +14,9 @@ import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.entities.control.IControlFactory;
 import com.omnicrola.voxel.entities.control.construction.BuildController;
 import com.omnicrola.voxel.entities.control.move.EntityMotionControl;
-import com.omnicrola.voxel.entities.control.weapon.*;
 import com.omnicrola.voxel.entities.control.resources.ResourceHarvestController;
+import com.omnicrola.voxel.entities.control.weapon.*;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -41,7 +44,7 @@ public class EntityAiControlFactory implements IControlFactory {
 
         EntityMotionControl motionGovernor = new EntityMotionControl(this.movementDefinition, entityControlAdapter);
         IProjectileStrategy projectileFactory = createProjectileFactory(entityControlAdapter, weaponDefinition, projectileDefinition);
-        WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(), weaponDefinition, this.projectileOffset, projectileFactory);
+        WeaponsController weaponsController = createWeaponsController(entityControlAdapter, weaponDefinition, projectileFactory);
         TargetingController targetingController = new TargetingController(entityControlAdapter.getWorldManager());
         ResourceHarvestController resourceHarvester = new ResourceHarvestController(entityControlAdapter);
         BuildController buildController = new BuildController(entityControlAdapter);
@@ -60,6 +63,13 @@ public class EntityAiControlFactory implements IControlFactory {
         spatial.addControl(resourceHarvester);
         spatial.addControl(buildController);
         spatial.addControl(entityAi);
+    }
+
+    private WeaponsController createWeaponsController(EntityControlAdapter entityControlAdapter, WeaponDefinition weaponDefinition, IProjectileStrategy projectileFactory) {
+        WorldManager worldManager = entityControlAdapter.getWorldManager();
+        AudioRepository audioRepository = entityControlAdapter.getAudioRepository();
+        IAudioPlayer weaponFireSound = audioRepository.getSoundPlayer(weaponDefinition.audio);
+        return new WeaponsController(worldManager, weaponDefinition, this.projectileOffset, projectileFactory, weaponFireSound);
     }
 
     protected EntityAiController buildAiController(EntityMotionControl motionGovernor,

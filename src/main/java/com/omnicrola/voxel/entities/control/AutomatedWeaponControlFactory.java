@@ -2,6 +2,8 @@ package com.omnicrola.voxel.entities.control;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
+import com.omnicrola.voxel.audio.AudioRepository;
+import com.omnicrola.voxel.audio.IAudioPlayer;
 import com.omnicrola.voxel.data.VectorXmlTypeAdapter;
 import com.omnicrola.voxel.data.WeaponType;
 import com.omnicrola.voxel.data.units.ProjectileDefinition;
@@ -39,8 +41,12 @@ public class AutomatedWeaponControlFactory implements IControlFactory {
 
         IProjectileStrategy projectileFactory = buildProjectileFactory(entityControlAdapter, weaponDefinition,
                 projectileDefinition);
+
+        AudioRepository audioRepository = entityControlAdapter.getAudioRepository();
+        IAudioPlayer weaponFireSound = audioRepository.getSoundPlayer(weaponDefinition.audio);
+
         WeaponsController weaponsController = new WeaponsController(entityControlAdapter.getWorldManager(),
-                weaponDefinition, weaponOffset, projectileFactory);
+                weaponDefinition, weaponOffset, projectileFactory, weaponFireSound);
         TargetingController targetingController = new TargetingController(entityControlAdapter.getWorldManager());
 
         AiHoldPositionState holdPositionState = new AiHoldPositionState(targetingController, weaponsController,

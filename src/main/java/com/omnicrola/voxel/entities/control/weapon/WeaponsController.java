@@ -5,6 +5,7 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.audio.IAudioPlayer;
 import com.omnicrola.voxel.data.units.WeaponDefinition;
 import com.omnicrola.voxel.entities.Projectile;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -22,16 +23,19 @@ public class WeaponsController extends AbstractControl {
     private WeaponDefinition weaponDefinition;
     private Vector3f projectileOffset;
     private IProjectileStrategy projectileFactory;
+    private IAudioPlayer weaponFireSound;
     private WorldManager worldManager;
 
     public WeaponsController(WorldManager worldManager,
                              WeaponDefinition weaponDefinition,
                              Vector3f projectileOffset,
-                             IProjectileStrategy projectileFactory) {
+                             IProjectileStrategy projectileFactory,
+                             IAudioPlayer weaponFireSound) {
         this.worldManager = worldManager;
         this.weaponDefinition = weaponDefinition;
         this.projectileOffset = projectileOffset;
         this.projectileFactory = projectileFactory;
+        this.weaponFireSound = weaponFireSound;
     }
 
     public boolean isInRangeOfTarget(Spatial target) {
@@ -79,7 +83,7 @@ public class WeaponsController extends AbstractControl {
                 .clone()
                 .add(this.projectileOffset);
         projectile.setLocation(initialPosition);
-
+        this.weaponFireSound.playNewInstance();
     }
 
     @Override

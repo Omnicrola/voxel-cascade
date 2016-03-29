@@ -3,9 +3,11 @@ package com.omnicrola.voxel.entities.control.collision;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
-import com.omnicrola.voxel.entities.commands.NullDeathAction;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.world.WorldManager;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by omnic on 1/17/2016.
@@ -14,12 +16,12 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
 
     private final WorldManager worldManager;
     protected Spatial parentSpatial;
-    private IDeathAction deathAction;
+    private List<IDeathAction> deathActions;
 
     public AbstractCollisionHandler(Spatial parentSpatial, WorldManager worldManager) {
         this.parentSpatial = parentSpatial;
         this.worldManager = worldManager;
-        this.deathAction = NullDeathAction.NULL;
+        this.deathActions = new ArrayList<>();
     }
 
     protected boolean isProjectile(Spatial otherObject) {
@@ -40,15 +42,15 @@ public abstract class AbstractCollisionHandler implements ISpatialCollisionHandl
     protected void selfTerminate() {
         Node parent = this.parentSpatial.getParent();
         if (parent != null) {
-            this.deathAction.destruct(this.parentSpatial);
+            this.deathActions.forEach(d -> d.destruct(this.parentSpatial));
             parent.detachChild(this.parentSpatial);
         }
         this.parentSpatial.setUserData(EntityDataKeys.IS_COLLIDABLE, false);
         this.worldManager.removeSpatial(this.parentSpatial);
     }
 
-    public void setDeathAction(IDeathAction deathAction){
-        this.deathAction = deathAction;
+    public void addDeathAction(IDeathAction deathAction) {
+        this.deathActions.add(deathAction);
     }
 
     protected boolean getBoolean(Spatial spatial, String dataKey) {

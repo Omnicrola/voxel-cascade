@@ -7,6 +7,7 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.renderer.Camera;
 import com.jme3.scene.Geometry;
+import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
@@ -26,9 +27,9 @@ import com.omnicrola.voxel.jme.wrappers.impl.ParticleBuilder;
 import com.omnicrola.voxel.main.init.states.IStateInitializer;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
 import com.omnicrola.voxel.network.ClientListenerBuilder;
+import com.omnicrola.voxel.network.MultiplayerDiscovery;
 import com.omnicrola.voxel.network.NetworkCommandQueue;
 import com.omnicrola.voxel.network.NetworkManager;
-import com.omnicrola.voxel.network.MultiplayerDiscovery;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.*;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
@@ -101,10 +102,20 @@ public class VoxelGameEngineInitializer {
         MultiplayerDiscovery multiplayerDiscovery = new MultiplayerDiscovery(voxelGameEngine);
         NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue, multiplayerDiscovery);
 
-        TerrainManager terrainManager = createTerrainManager(voxelGameEngine, worldManager, voxelTypeLibrary, materialRepository);
+        TerrainManager terrainManager = createTerrainManager(worldManager, voxelTypeLibrary, materialRepository);
 
         InputManager inputManager = voxelGameEngine.getInputManager();
-        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(assetManager, unitDefinitions, levelManager, terrainManager, worldManager, materialRepository, inputManager);
+        AudioRepository audioRepository = new AudioRepository(voxelGameEngine.getWorldNode(), assetManager);
+        WorldEntityBuilder worldEntityBuilder = createWorldEntityBuilder(
+                assetManager,
+                unitDefinitions,
+                levelManager,
+                terrainManager,
+                worldManager,
+                materialRepository,
+                inputManager,
+                audioRepository);
+
         UiSelectionRectangle selectionRectangle = buildSelectionRectangle(assetManager);
         UiManager uiManager = new UiManager(voxelGameEngine.getNiftyGui(), inputManager, selectionRectangle);
 
@@ -165,11 +176,9 @@ public class VoxelGameEngineInitializer {
         return worldCursor;
     }
 
-    private TerrainManager createTerrainManager(VoxelGameEngine voxelGameEngine,
-                                                WorldManager worldManager,
+    private TerrainManager createTerrainManager(WorldManager worldManager,
                                                 VoxelTypeLibrary voxelTypeLibrary,
                                                 MaterialRepository materialRepository) {
-
         TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary);
         VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
         VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
@@ -178,12 +187,14 @@ public class VoxelGameEngineInitializer {
     }
 
     private WorldEntityBuilder createWorldEntityBuilder(AssetManager assetManager,
-                                                        UnitDefinitionRepository unitDefintions,
+                                                        UnitDefinitionRepository unitDefinitions,
                                                         LevelManager levelManager,
                                                         ITerrainManager terrainManager,
                                                         WorldManager worldManager,
-                                                        MaterialRepository materialRepository, InputManager inputManager) {
-        WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefintions);
+                                                        MaterialRepository materialRepository,
+                                                        InputManager inputManager,
+                                                        AudioRepository audioRepository) {
+        WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefinitions);
         ProjectileBuilder projectileBuilder = new ProjectileBuilder(toolbox, materialRepository);
         ParticleBuilder particleBuilder = new ParticleBuilder(assetManager);
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter(
@@ -192,10 +203,11 @@ public class VoxelGameEngineInitializer {
                 projectileBuilder,
                 terrainManager,
                 levelManager,
-                inputManager);
+                inputManager,
+                audioRepository);
         UnitBuilder unitBuilder = new UnitBuilder(toolbox, entityControlAdapter, materialRepository);
         StructureBuilder structureBuilder = new StructureBuilder(toolbox, entityControlAdapter, materialRepository);
-        return new WorldEntityBuilder(unitDefintions, assetManager, unitBuilder, structureBuilder);
+        return new WorldEntityBuilder(unitDefinitions, assetManager, unitBuilder, structureBuilder);
     }
 
     private VoxelTypeLibrary buildVoxelTypeLibrary() {

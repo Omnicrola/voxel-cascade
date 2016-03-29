@@ -13,23 +13,20 @@ import com.omnicrola.voxel.entities.control.SelfDestructControl;
  * Created by Eric on 2/8/2016.
  */
 public class LinearProjectileStrategy extends ProjectileStrategy {
-    private EntityControlAdapter entityControlAdapter;
     private WeaponDefinition weaponDefinition;
-    private ProjectileDefinition projectileDefinition;
 
     public LinearProjectileStrategy(EntityControlAdapter entityControlAdapter,
                                     WeaponDefinition weaponDefinition,
                                     ProjectileDefinition projectileDefinition) {
-        this.entityControlAdapter = entityControlAdapter;
+        super(entityControlAdapter, projectileDefinition);
         this.weaponDefinition = weaponDefinition;
-        this.projectileDefinition = projectileDefinition;
     }
 
     @Override
     public Projectile spawnProjectile(Spatial emittingEntity, Vector3f projectileOffset, Vector3f targetLocation) {
         ProjectileBuilder projectileBuilder = this.entityControlAdapter.getProjectileBuilder();
         Projectile projectile = projectileBuilder.build(emittingEntity, this.projectileDefinition);
-        addCollisionControl(this.entityControlAdapter.getWorldManager(), entityControlAdapter.getParticleBuilder(), projectile);
+        addCollisionControl(projectile);
         addRangeControl(projectile);
         addProjectileControl(emittingEntity, projectileOffset, targetLocation, projectile);
         return projectile;
