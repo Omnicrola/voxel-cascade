@@ -14,11 +14,13 @@ public class VoxelParticleEmitter extends Node {
 
     private final CubeParticle[] particleCubes;
 
-    private float lifetime = 1000;
-    private float minimumVelocity = 0.1f;
-    private float maximumVelocity = 1.0f;
+    private float timeSinceLastSpawn;
+    private float lifetime = 10000;
+    private float minimumVelocity = 10f;
+    private float maximumVelocity = 20.0f;
     private float emissionRate = 5f;
     private float velocitySpread = 0.1f;
+    private float gravity = -9.98f;
     private float lifetimeVariation = 100f;
     private Vector3f emissionVector = Vector3f.UNIT_Y;
 
@@ -26,6 +28,45 @@ public class VoxelParticleEmitter extends Node {
         super(name);
         this.particleCubes = new CubeParticle[count];
         generateParticles(assetManager);
+        this.timeSinceLastSpawn = 0f;
+    }
+
+    public int getActiveParticleCount() {
+        int count = 0;
+        for (int i = 0; i < this.particleCubes.length; i++) {
+            if (this.particleCubes[i].isActive()) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    public void setEmissionRate(float emissionRate) {
+        this.emissionRate = emissionRate;
+    }
+
+    public void setMaximumVelocity(float maximumVelocity) {
+        this.maximumVelocity = maximumVelocity;
+    }
+
+    public void setMinimumVelocity(float minimumVelocity) {
+        this.minimumVelocity = minimumVelocity;
+    }
+
+    public void setLifetime(float lifetime) {
+        this.lifetime = lifetime;
+    }
+
+    public void setLifetimeVariation(float lifetimeVariation) {
+        this.lifetimeVariation = lifetimeVariation;
+    }
+
+    public void setVelocitySpread(float velocitySpread) {
+        this.velocitySpread = velocitySpread;
+    }
+
+    public void setEmissionVector(Vector3f emissionVector) {
+        this.emissionVector = emissionVector;
     }
 
     private void generateParticles(AssetManager assetManager) {
@@ -37,8 +78,10 @@ public class VoxelParticleEmitter extends Node {
     @Override
     public void updateLogicalState(float tpf) {
         super.updateLogicalState(tpf);
-        int particlesToSpawn = (int) Math.floor(tpf * emissionRate);
+        this.timeSinceLastSpawn += tpf;
+        int particlesToSpawn = (int) Math.floor(timeSinceLastSpawn * emissionRate);
         if (particlesToSpawn > 0) {
+            this.timeSinceLastSpawn = 0f;
             emitParticles(particlesToSpawn);
         }
     }
@@ -64,6 +107,7 @@ public class VoxelParticleEmitter extends Node {
         cubeParticle.setVelocity(velocity);
         float life = this.lifetime + randRange(this.lifetimeVariation);
         cubeParticle.setLifeRemaining(life);
+        cubeParticle.setGravity(this.gravity);
     }
 
     private float randRange(float bound) {
@@ -71,7 +115,7 @@ public class VoxelParticleEmitter extends Node {
     }
 
     private float randRange(float min, float max) {
-        return (FastMath.rand.nextFloat() * (min - max)) + min;
+        return (FastMath.rand.nextFloat() * (max - min)) + min;
     }
 
     private Optional<CubeParticle> getNextInactiveParticle() {

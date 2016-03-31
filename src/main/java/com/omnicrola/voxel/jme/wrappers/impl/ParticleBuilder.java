@@ -8,7 +8,8 @@ import com.jme3.material.Material;
 import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.entities.Effect;
-import com.omnicrola.voxel.fx.ParticleDurationControl;
+import com.omnicrola.voxel.fx.particles.ParticleDurationControl;
+import com.omnicrola.voxel.fx.particles.VoxelParticleDurationControl;
 import com.omnicrola.voxel.fx.particles.VoxelParticleEmitter;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -107,6 +108,11 @@ public class ParticleBuilder implements IParticleBuilder {
     @Override
     public Effect cubicShower(int count) {
         VoxelParticleEmitter emitter = new VoxelParticleEmitter(assetManager, "voxels", count);
+        emitter.setEmissionRate(500);
+        emitter.setVelocitySpread(2f);
+        emitter.setMaximumVelocity(8f);
+        emitter.setMinimumVelocity(5f);
+        emitter.addControl(new VoxelParticleDurationControl(0.1f, emitter));
         Effect effect = new Effect(emitter);
         this.worldManager.addEffect(effect);
         return effect;

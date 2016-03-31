@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.fx.ParticleDurationControl;
+import com.omnicrola.voxel.fx.particles.ParticleDurationControl;
 
 /**
  * Created by Eric on 2/26/2016.

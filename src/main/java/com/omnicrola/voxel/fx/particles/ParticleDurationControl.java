@@ -1,4 +1,4 @@
-package com.omnicrola.voxel.fx;
+package com.omnicrola.voxel.fx.particles;
 
 import com.jme3.effect.ParticleEmitter;
 import com.jme3.renderer.RenderManager;
