@@ -31,7 +31,7 @@ public class AudioRepository {
         }
         String filename = GameConstants.DIR_AUDIO + audioDefinition.getFilename();
         AudioNode audioNode = new AudioNode(this.assetManager, filename);
-        worldNode.getFxNode().attachChild(audioNode);
+        audioNode.setPositional(false);
         NodeAudioPlayer audioPlayer = new NodeAudioPlayer(audioNode);
         this.audioNodes.put(audioDefinition, audioPlayer);
         return audioPlayer;
