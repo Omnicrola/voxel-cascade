@@ -9,8 +9,10 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.fx.ParticleDurationControl;
+import com.omnicrola.voxel.fx.particles.VoxelParticleEmitter;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 1/22/2016.
@@ -18,9 +20,11 @@ import com.omnicrola.voxel.settings.GameConstants;
 public class ParticleBuilder implements IParticleBuilder {
 
     private AssetManager assetManager;
+    private WorldManager worldManager;
 
-    public ParticleBuilder(AssetManager assetManager) {
+    public ParticleBuilder(AssetManager assetManager, WorldManager worldManager) {
         this.assetManager = assetManager;
+        this.worldManager = worldManager;
     }
 
     @Override
@@ -42,8 +46,11 @@ public class ParticleBuilder implements IParticleBuilder {
         fire.getParticleInfluencer().setVelocityVariation(0.3f);
         fire.addControl(new ParticleDurationControl(duration));
 
-        return new Effect(fire);
+        Effect effect = new Effect(fire);
+        this.worldManager.addEffect(effect);
+        return effect;
     }
+
 
     @Override
     public Effect voxelSpray(int count) {
@@ -66,7 +73,9 @@ public class ParticleBuilder implements IParticleBuilder {
         spray.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 5f, 0));
         spray.getParticleInfluencer().setVelocityVariation(1f);
 
-        return new Effect(spray);
+        Effect effect = new Effect(spray);
+        this.worldManager.addEffect(effect);
+        return effect;
     }
 
     @Override
@@ -90,6 +99,16 @@ public class ParticleBuilder implements IParticleBuilder {
         cubicEmitter.getParticleInfluencer().setInitialVelocity(new Vector3f(0, 2f, 0));
         cubicEmitter.getParticleInfluencer().setVelocityVariation(0.1f);
 
-        return new Effect(cubicEmitter);
+        Effect effect = new Effect(cubicEmitter);
+        this.worldManager.addEffect(effect);
+        return effect;
+    }
+
+    @Override
+    public Effect cubicShower(int count) {
+        VoxelParticleEmitter emitter = new VoxelParticleEmitter(assetManager, "voxels", count);
+        Effect effect = new Effect(emitter);
+        this.worldManager.addEffect(effect);
+        return effect;
     }
 }

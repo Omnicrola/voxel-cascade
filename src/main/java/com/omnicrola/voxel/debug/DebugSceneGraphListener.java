@@ -25,7 +25,7 @@ public class DebugSceneGraphListener implements ActionListener {
         }
     }
 
-    private void recursiveTreePrint(Spatial spatial, String prefix) {
+    public static void recursiveTreePrint(Spatial spatial, String prefix) {
         System.out.println(prefix + spatial.getName() + " : " + spatial.getWorldTranslation());
         if (spatial instanceof Node) {
             List<Spatial> children = ((Node) spatial).getChildren();

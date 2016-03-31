@@ -196,7 +196,7 @@ public class VoxelGameEngineInitializer {
                                                         AudioRepository audioRepository) {
         WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefinitions);
         ProjectileBuilder projectileBuilder = new ProjectileBuilder(toolbox, materialRepository);
-        ParticleBuilder particleBuilder = new ParticleBuilder(assetManager);
+        ParticleBuilder particleBuilder = new ParticleBuilder(assetManager, worldManager);
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter(
                 particleBuilder,
                 worldManager,

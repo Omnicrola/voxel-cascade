@@ -12,4 +12,6 @@ public interface IParticleBuilder {
     Effect voxelSpray(int count);
 
     Effect cubicHarvest();
+
+    Effect cubicShower(int count);
 }

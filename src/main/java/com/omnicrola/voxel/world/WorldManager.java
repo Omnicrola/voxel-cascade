@@ -145,4 +145,8 @@ public class WorldManager {
             return null;
         }
     }
+
+    public IWorldNode getWorldNode() {
+        return worldNode;
+    }
 }

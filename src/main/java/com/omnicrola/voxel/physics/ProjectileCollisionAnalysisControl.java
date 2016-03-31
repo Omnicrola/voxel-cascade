@@ -1,11 +1,13 @@
 package com.omnicrola.voxel.physics;
 
 import com.jme3.collision.CollisionResults;
+import com.jme3.collision.UnsupportedCollisionException;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
+import com.omnicrola.voxel.debug.DebugSceneGraphListener;
 import com.omnicrola.voxel.entities.control.collision.CollisionController;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -30,7 +32,11 @@ public class ProjectileCollisionAnalysisControl extends AbstractControl {
 
     @Override
     protected void controlUpdate(float tpf) {
-        this.parentNode.getChildren().forEach(s -> collide(s));
+        try {
+            this.parentNode.getChildren().forEach(s -> collide(s));
+        } catch (UnsupportedCollisionException e) {
+            DebugSceneGraphListener.recursiveTreePrint(this.parentNode, "");
+        }
     }
 
 

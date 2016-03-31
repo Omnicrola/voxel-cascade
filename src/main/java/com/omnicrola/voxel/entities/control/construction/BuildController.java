@@ -11,7 +11,6 @@ import com.omnicrola.voxel.entities.commands.IConstructionPackage;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.jme.wrappers.impl.ParticleBuilder;
 import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 2/11/2016.
@@ -51,8 +50,6 @@ public class BuildController extends AbstractControl {
     private void startFx() {
         ParticleBuilder effectsBuilder= this.entityControlAdapter.getParticleBuilder();
         this.buildFx = effectsBuilder.cubicHarvest();
-        WorldManager worldManager=this.entityControlAdapter.getWorldManager();
-        worldManager.addEffect(this.buildFx);
         this.buildFx.setLocation(getTargetLocation());
         this.startedFx = true;
     }

@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.fx;
 
-import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
@@ -21,8 +20,6 @@ public class VoxelFireSpawnAction implements IDeathAction {
     @Override
     public void destruct(Spatial parentSpatial) {
         Effect particles = this.effectsBuilder.voxelFire(1f, this.count);
-        Node parent = parentSpatial.getParent();
         particles.setLocation(parentSpatial.getLocalTranslation());
-        parent.attachChild(particles.getSpatial());
     }
 }
