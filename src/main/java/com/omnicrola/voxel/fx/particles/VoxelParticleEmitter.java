@@ -15,14 +15,19 @@ public class VoxelParticleEmitter extends Node {
     private final CubeParticle[] particleCubes;
 
     private float timeSinceLastSpawn;
-    private float lifetime = 10000;
+    private float lifetime = 1f;
+    private float lifetimeVariation = 1f;
+
     private float minimumVelocity = 10f;
     private float maximumVelocity = 20.0f;
-    private float emissionRate = 5f;
     private float velocitySpread = 0.1f;
-    private float gravity = -9.98f;
-    private float lifetimeVariation = 100f;
+
+    private float emissionRate = 5f;
     private Vector3f emissionVector = Vector3f.UNIT_Y;
+    private float gravity = -9.98f;
+    private boolean useFloor = false;
+    private float floor = 1.0f;
+    private float bounciness = 0.1f;
 
     public VoxelParticleEmitter(AssetManager assetManager, String name, int count) {
         super(name);
@@ -69,6 +74,14 @@ public class VoxelParticleEmitter extends Node {
         this.emissionVector = emissionVector;
     }
 
+    public void setFloor(float newFloor) {
+        this.floor = newFloor;
+    }
+
+    public void setUseFloor(boolean useFloor) {
+        this.useFloor = useFloor;
+    }
+
     private void generateParticles(AssetManager assetManager) {
         for (int i = 0; i < this.particleCubes.length; i++) {
             this.particleCubes[i] = new CubeParticle(assetManager);
@@ -108,6 +121,9 @@ public class VoxelParticleEmitter extends Node {
         float life = this.lifetime + randRange(this.lifetimeVariation);
         cubeParticle.setLifeRemaining(life);
         cubeParticle.setGravity(this.gravity);
+        cubeParticle.setFloor(this.floor);
+        cubeParticle.setBounciness(this.bounciness);
+        cubeParticle.useFloor(this.useFloor);
     }
 
     private float randRange(float bound) {
@@ -127,4 +143,7 @@ public class VoxelParticleEmitter extends Node {
         return Optional.empty();
     }
 
+    public void setBounciness(float bounciness) {
+        this.bounciness = bounciness;
+    }
 }

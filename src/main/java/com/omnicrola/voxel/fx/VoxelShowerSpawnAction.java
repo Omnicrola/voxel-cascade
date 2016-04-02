@@ -20,7 +20,7 @@ public class VoxelShowerSpawnAction implements IDeathAction {
     @Override
     public void destruct(Spatial parentSpatial) {
 //        Effect particles = this.effectsBuilder.voxelSpray(this.count);
-        Effect particles = this.effectsBuilder.cubicShower(20);
-        particles.setLocation(parentSpatial.getWorldTranslation());
+        Effect particles = this.effectsBuilder.cubicShower(20, 0f);
+        particles.setLocation(parentSpatial.getLocalTranslation());
     }
 }

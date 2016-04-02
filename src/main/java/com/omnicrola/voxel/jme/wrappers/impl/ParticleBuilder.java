@@ -106,12 +106,15 @@ public class ParticleBuilder implements IParticleBuilder {
     }
 
     @Override
-    public Effect cubicShower(int count) {
+    public Effect cubicShower(int count, float floor) {
         VoxelParticleEmitter emitter = new VoxelParticleEmitter(assetManager, "voxels", count);
         emitter.setEmissionRate(500);
-        emitter.setVelocitySpread(2f);
-        emitter.setMaximumVelocity(8f);
-        emitter.setMinimumVelocity(5f);
+        emitter.setVelocitySpread(4f);
+        emitter.setMaximumVelocity(4f);
+        emitter.setMinimumVelocity(2f);
+        emitter.setUseFloor(true);
+        emitter.setFloor(floor);
+        emitter.setBounciness(0.5f);
         emitter.addControl(new VoxelParticleDurationControl(0.1f, emitter));
         Effect effect = new Effect(emitter);
         this.worldManager.addEffect(effect);

@@ -41,6 +41,9 @@ public class VoxelUtil {
     }
 
     public static boolean isAlive(Spatial spatial) {
+        if (spatial == null) {
+            return false;
+        }
         return floatData(spatial, EntityDataKeys.HITPOINTS) > 0f;
     }
 
