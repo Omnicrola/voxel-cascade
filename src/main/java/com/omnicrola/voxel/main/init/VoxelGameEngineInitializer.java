@@ -128,7 +128,8 @@ public class VoxelGameEngineInitializer {
                 uiManager,
                 worldManager,
                 terrainManager,
-                voxelGameEngine.getStateManager());
+                voxelGameEngine.getStateManager(),
+                new ParticleBuilder(assetManager, worldManager));
         networkManager.setCommandProcessor(worldCommandProcessor);
 
         LevelStateLoader levelStateLoader = new LevelStateLoader(

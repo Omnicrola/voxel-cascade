@@ -4,6 +4,7 @@ import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.IShutdown;
 import com.omnicrola.voxel.entities.behavior.ai.NavigationGridDistributor;
+import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
@@ -35,6 +36,7 @@ public class WorldCommandProcessor implements ICommandProcessor {
     private WorldManager worldManager;
     private ITerrainManager terrainManager;
     private AppStateManager stateManager;
+    private IParticleBuilder particleBuilder;
 
     public WorldCommandProcessor(INetworkCommandQueue networkCommandQueue,
                                  IShutdown shutdown,
@@ -44,7 +46,8 @@ public class WorldCommandProcessor implements ICommandProcessor {
                                  IUiManager uiManager,
                                  WorldManager worldManager,
                                  ITerrainManager terrainManager,
-                                 AppStateManager stateManager) {
+                                 AppStateManager stateManager,
+                                 IParticleBuilder particleBuilder) {
         this.networkCommandQueue = networkCommandQueue;
         this.shutdown = shutdown;
         this.levelManager = levelManager;
@@ -54,6 +57,7 @@ public class WorldCommandProcessor implements ICommandProcessor {
         this.worldManager = worldManager;
         this.terrainManager = terrainManager;
         this.stateManager = stateManager;
+        this.particleBuilder = particleBuilder;
         this.commands = new ArrayList<>();
         this.commandCopy = new ArrayList<>();
     }
@@ -91,7 +95,8 @@ public class WorldCommandProcessor implements ICommandProcessor {
                     this,
                     this.terrainManager,
                     entityCommandAdapter,
-                    this.stateManager);
+                    this.stateManager,
+                    this.particleBuilder);
         }
         return this.commandPackage;
     }

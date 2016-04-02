@@ -1,7 +1,10 @@
 package com.omnicrola.voxel.entities.control.resources;
 
 import com.jme3.math.Vector3f;
+import com.omnicrola.voxel.entities.Effect;
+import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.terrain.data.VoxelData;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by Eric on 2/11/2016.
@@ -12,9 +15,13 @@ public class VoxelHarvestTarget implements IHarvestTarget {
     private VoxelData currentTargetVoxel;
     private Vector3f currentTargetLocation;
     private VoxelQueue voxelQueue;
+    private IParticleBuilder particleBuilder;
+    private WorldManager worldManager;
 
-    public VoxelHarvestTarget(VoxelQueue voxelQueue) {
+    public VoxelHarvestTarget(VoxelQueue voxelQueue, IParticleBuilder particleBuilder, WorldManager worldManager) {
         this.voxelQueue = voxelQueue;
+        this.particleBuilder = particleBuilder;
+        this.worldManager = worldManager;
         removeResources(0f);
     }
 
@@ -53,6 +60,9 @@ public class VoxelHarvestTarget implements IHarvestTarget {
 
     private void makeCurrentTargetEmpty() {
         this.currentTargetVoxel.removeVoxel();
+        Effect effect = this.particleBuilder.shatterVoxel();
+        effect.setLocation(this.currentTargetLocation);
+        this.worldManager.addEffect(effect);
     }
 
     private float getAmountRemoved(float tpf) {

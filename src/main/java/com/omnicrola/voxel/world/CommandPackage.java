@@ -7,6 +7,7 @@ import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.IShutdown;
+import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
@@ -26,6 +27,7 @@ public class CommandPackage {
     private ITerrainManager terrainManager;
     private EntityCommandAdapter entityCommandAdapter;
     private AppStateManager stateManager;
+    private IParticleBuilder particleBuilder;
 
     public CommandPackage(
             IShutdown shutdown,
@@ -37,7 +39,8 @@ public class CommandPackage {
             ICommandProcessor commandProcessor,
             ITerrainManager terrainManager,
             EntityCommandAdapter entityCommandAdapter,
-            AppStateManager stateManager) {
+            AppStateManager stateManager,
+            IParticleBuilder particleBuilder) {
         this.shutdown = shutdown;
         this.levelManager = levelManager;
         this.networkManager = networkManager;
@@ -48,6 +51,7 @@ public class CommandPackage {
         this.terrainManager = terrainManager;
         this.entityCommandAdapter = entityCommandAdapter;
         this.stateManager = stateManager;
+        this.particleBuilder = particleBuilder;
     }
 
     public ILevelManager getLevelManager() {
@@ -82,6 +86,10 @@ public class CommandPackage {
 
     public ITerrainManager getTerrainManager() {
         return terrainManager;
+    }
+
+    public IParticleBuilder getParticleBuilder() {
+        return particleBuilder;
     }
 
     public EntityCommandAdapter getEntityCommandAdapter() {

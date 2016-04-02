@@ -12,7 +12,7 @@ import java.util.Optional;
  */
 public class VoxelParticleEmitter extends Node {
 
-    private final CubeParticle[] particleCubes;
+    public final CubeParticle[] particleCubes;
 
     private float timeSinceLastSpawn;
     private float lifetime = 1f;
@@ -91,6 +91,10 @@ public class VoxelParticleEmitter extends Node {
     @Override
     public void updateLogicalState(float tpf) {
         super.updateLogicalState(tpf);
+        particleUpdate(tpf);
+    }
+
+    protected void particleUpdate(float tpf) {
         this.timeSinceLastSpawn += tpf;
         int particlesToSpawn = (int) Math.floor(timeSinceLastSpawn * emissionRate);
         if (particlesToSpawn > 0) {
@@ -108,7 +112,7 @@ public class VoxelParticleEmitter extends Node {
         }
     }
 
-    private void spawnParticle(CubeParticle cubeParticle) {
+    protected void spawnParticle(CubeParticle cubeParticle) {
         this.attachChild(cubeParticle);
         cubeParticle.setLocalTranslation(Vector3f.ZERO);
         float velocityScale = randRange(this.minimumVelocity, this.maximumVelocity);

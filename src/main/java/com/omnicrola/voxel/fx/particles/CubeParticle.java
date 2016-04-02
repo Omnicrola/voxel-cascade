@@ -13,6 +13,7 @@ import com.omnicrola.voxel.settings.GameConstants;
  */
 public class CubeParticle extends Geometry {
     public static final float SIZE = 0.05f;
+
     private final Vector3f velocity;
     private float lifeRemaining;
     private float gravity;

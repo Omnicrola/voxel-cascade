@@ -9,6 +9,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.fx.particles.ParticleDurationControl;
+import com.omnicrola.voxel.fx.particles.ShatterVoxelEmitter;
 import com.omnicrola.voxel.fx.particles.VoxelParticleDurationControl;
 import com.omnicrola.voxel.fx.particles.VoxelParticleEmitter;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
@@ -120,6 +121,16 @@ public class ParticleBuilder implements IParticleBuilder {
 
         Effect effect = new Effect(emitter);
         this.worldManager.addEffect(effect);
+        return effect;
+    }
+
+    @Override
+    public Effect shatterVoxel() {
+        ShatterVoxelEmitter emitter = new ShatterVoxelEmitter(this.assetManager);
+        emitter.setUseFloor(true);
+        emitter.setFloor(0f);
+        emitter.setBounceDampening(0.4f);
+        Effect effect = new Effect(emitter);
         return effect;
     }
 }

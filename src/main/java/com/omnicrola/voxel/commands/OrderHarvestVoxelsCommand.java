@@ -41,7 +41,8 @@ public class OrderHarvestVoxelsCommand extends AbstractWorldCommand {
                 .map(vec -> terrainManager.getVoxelAt(vec))
                 .collect(Collectors.toList());
         VoxelQueue voxelQueue = new VoxelQueue(voxels, new VoxelDataHarvestComparator(new Vector3f()));
-        VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelQueue);
+
+        VoxelHarvestTarget voxelHarvestTarget = new VoxelHarvestTarget(voxelQueue, commandPackage.getParticleBuilder(), worldManager);
 
         EntityCommandAdapter entityCommandAdapter = commandPackage.getEntityCommandAdapter();
         entityCommandAdapter.orderHarvest(units, voxelHarvestTarget);

@@ -14,4 +14,6 @@ public interface IParticleBuilder {
     Effect cubicHarvest();
 
     Effect cubicShower(int count, float floor);
+
+    Effect shatterVoxel();
 }
