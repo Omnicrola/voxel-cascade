@@ -27,7 +27,7 @@ public class VoxelParticleEmitter extends Node {
     private float gravity = -9.98f;
     private boolean useFloor = false;
     private float floor = 1.0f;
-    private float bounciness = 0.1f;
+    private float bounceDampening = 0.1f;
 
     public VoxelParticleEmitter(AssetManager assetManager, String name, int count) {
         super(name);
@@ -119,10 +119,10 @@ public class VoxelParticleEmitter extends Node {
         Vector3f velocity = this.emissionVector.mult(velocityScale).add(rX, rY, rZ);
         cubeParticle.setVelocity(velocity);
         float life = this.lifetime + randRange(this.lifetimeVariation);
-        cubeParticle.setLifeRemaining(life);
+        cubeParticle.setLife(life);
         cubeParticle.setGravity(this.gravity);
         cubeParticle.setFloor(this.floor);
-        cubeParticle.setBounciness(this.bounciness);
+        cubeParticle.setBounceDampening(this.bounceDampening);
         cubeParticle.useFloor(this.useFloor);
     }
 
@@ -143,7 +143,7 @@ public class VoxelParticleEmitter extends Node {
         return Optional.empty();
     }
 
-    public void setBounciness(float bounciness) {
-        this.bounciness = bounciness;
+    public void setBounceDampening(float bounceDampening) {
+        this.bounceDampening = bounceDampening;
     }
 }

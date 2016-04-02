@@ -13,25 +13,27 @@ import com.omnicrola.voxel.settings.GameConstants;
  */
 public class CubeParticle extends Geometry {
     public static final float SIZE = 0.05f;
-    public static final float MILLISECONDS_IN_ONE_SECOND = 1000f;
     private final Vector3f velocity;
     private float lifeRemaining;
     private float gravity;
     private float floor;
     private boolean useFloor;
-    private float bounciness;
+    private float bounceDampening;
+    private float maximumLife;
+    private ColorRGBA color;
 
     public CubeParticle(AssetManager assetManager) {
         this.velocity = new Vector3f();
         this.floor = 0;
         this.lifeRemaining = 0f;
         this.mesh = new Box(SIZE, SIZE, SIZE);
-        this.material = new Material(assetManager, GameConstants.MATERIAL_UNSHADED);
+        this.material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         setColor(ColorRGBA.White);
     }
 
     public void setColor(ColorRGBA color) {
-        this.material.setColor("Color", color);
+        this.color = color;
+        this.material.setColor("Diffuse", color);
     }
 
 
@@ -39,7 +41,8 @@ public class CubeParticle extends Geometry {
         this.velocity.set(newVelocity);
     }
 
-    public void setLifeRemaining(float lifeRemaining) {
+    public void setLife(float lifeRemaining) {
+        this.maximumLife = lifeRemaining;
         this.lifeRemaining = lifeRemaining;
     }
 
@@ -56,7 +59,7 @@ public class CubeParticle extends Geometry {
         if (this.useFloor &&
                 newPosition.y <= this.floor) {
             newPosition.y = this.floor;
-            this.velocity.multLocal(this.bounciness);
+            this.velocity.multLocal(this.bounceDampening);
             this.velocity.y = this.velocity.y * -1;
         }
         this.setLocalTranslation(newPosition);
@@ -64,7 +67,7 @@ public class CubeParticle extends Geometry {
 
 
     private void checkIfParticleHasExpired(float tpf) {
-        this.lifeRemaining -= tpf ;
+        this.lifeRemaining -= tpf;
         if (this.lifeRemaining <= 0) {
             this.removeFromParent();
         }
@@ -90,7 +93,15 @@ public class CubeParticle extends Geometry {
         this.useFloor = useFloor;
     }
 
-    public void setBounciness(float bounciness) {
-        this.bounciness = bounciness;
+    public void setBounceDampening(float bounceDampening) {
+        this.bounceDampening = bounceDampening;
+    }
+
+    public float getCurrentLife() {
+        return this.lifeRemaining / this.maximumLife;
+    }
+
+    public ColorRGBA getColor() {
+        return this.color;
     }
 }

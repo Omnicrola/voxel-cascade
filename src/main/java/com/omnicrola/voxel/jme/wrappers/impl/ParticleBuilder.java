@@ -114,8 +114,10 @@ public class ParticleBuilder implements IParticleBuilder {
         emitter.setMinimumVelocity(2f);
         emitter.setUseFloor(true);
         emitter.setFloor(floor);
-        emitter.setBounciness(0.5f);
+        emitter.setBounceDampening(0.5f);
+
         emitter.addControl(new VoxelParticleDurationControl(0.1f, emitter));
+
         Effect effect = new Effect(emitter);
         this.worldManager.addEffect(effect);
         return effect;
