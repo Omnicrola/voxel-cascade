@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.fx.particles;
 
 import com.jme3.asset.AssetManager;
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.FastMath;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Node;
@@ -32,6 +33,7 @@ public class VoxelParticleEmitter extends Node {
     private float particleSize = 0.05f;
 
     private AssetManager assetManager;
+    private ColorRGBA color = ColorRGBA.White;
 
     public VoxelParticleEmitter(AssetManager assetManager, String name, int count) {
         super(name);
@@ -65,6 +67,10 @@ public class VoxelParticleEmitter extends Node {
 
     public void setMinimumVelocity(float minimumVelocity) {
         this.minimumVelocity = minimumVelocity;
+    }
+
+    public void setColor(ColorRGBA color) {
+        this.color = color;
     }
 
     public void setLifetime(float lifetime) {
@@ -137,6 +143,7 @@ public class VoxelParticleEmitter extends Node {
         cubeParticle.setVelocity(velocity);
         float life = this.lifetime + randRange(this.lifetimeVariation);
         cubeParticle.setLife(life);
+        cubeParticle.setColor(this.color);
         cubeParticle.setGravity(this.gravity);
         cubeParticle.setFloor(this.floor);
         cubeParticle.setBounceDampening(this.bounceDampening);

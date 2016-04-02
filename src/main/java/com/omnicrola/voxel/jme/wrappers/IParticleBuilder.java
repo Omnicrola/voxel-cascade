@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.jme.wrappers;
 
+import com.jme3.math.ColorRGBA;
 import com.omnicrola.voxel.entities.Effect;
 
 /**
@@ -15,5 +16,5 @@ public interface IParticleBuilder {
 
     Effect cubicShower(int count, float floor);
 
-    Effect shatterVoxel();
+    Effect shatterVoxel(ColorRGBA color);
 }

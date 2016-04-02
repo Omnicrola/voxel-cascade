@@ -125,9 +125,10 @@ public class ParticleBuilder implements IParticleBuilder {
     }
 
     @Override
-    public Effect shatterVoxel() {
+    public Effect shatterVoxel(ColorRGBA color) {
         ShatterVoxelEmitter emitter = new ShatterVoxelEmitter(this.assetManager);
         emitter.setUseFloor(true);
+        emitter.setColor(color);
         emitter.setFloor(0f);
         emitter.setBounceDampening(0.4f);
         Effect effect = new Effect(emitter);

@@ -20,7 +20,6 @@ public class CubeParticle extends Geometry {
     private boolean useFloor;
     private float bounceDampening;
     private float maximumLife;
-    private ColorRGBA color;
 
     public CubeParticle(AssetManager assetManager) {
         this(assetManager, 0.05f);
@@ -32,11 +31,12 @@ public class CubeParticle extends Geometry {
         this.lifeRemaining = 0f;
         this.mesh = new Box(size, size, size);
         this.material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
+        this.material.setBoolean("UseMaterialColors", true);
         setColor(ColorRGBA.White);
     }
 
     public void setColor(ColorRGBA color) {
-        this.color = color;
+        this.material.setColor("Ambient", color);
         this.material.setColor("Diffuse", color);
     }
 
@@ -105,7 +105,4 @@ public class CubeParticle extends Geometry {
         return this.lifeRemaining / this.maximumLife;
     }
 
-    public ColorRGBA getColor() {
-        return this.color;
-    }
 }

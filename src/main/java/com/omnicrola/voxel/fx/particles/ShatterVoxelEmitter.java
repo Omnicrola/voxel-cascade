@@ -32,7 +32,7 @@ public class ShatterVoxelEmitter extends VoxelParticleEmitter {
             for (float y = 0; y < 1f; y += size) {
                 for (float z = 0; z < 1f; z += size) {
                     CubeParticle particle = this.particleCubes[index];
-                    spawnParticle(particle);
+                    super.spawnParticle(particle);
                     Vector3f velocity = createVelocity(center, x, y, z);
                     particle.setLocalTranslation(x, y, z);
                     particle.setVelocity(velocity);

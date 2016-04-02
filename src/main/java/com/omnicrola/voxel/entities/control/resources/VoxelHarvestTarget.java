@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.entities.control.resources;
 
+import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.jme.wrappers.IParticleBuilder;
@@ -60,7 +61,8 @@ public class VoxelHarvestTarget implements IHarvestTarget {
 
     private void makeCurrentTargetEmpty() {
         this.currentTargetVoxel.removeVoxel();
-        Effect effect = this.particleBuilder.shatterVoxel();
+        ColorRGBA color = this.currentTargetVoxel.getType().color();
+        Effect effect = this.particleBuilder.shatterVoxel(color);
         effect.setLocation(this.currentTargetLocation);
         this.worldManager.addEffect(effect);
     }
