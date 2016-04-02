@@ -12,7 +12,6 @@ import com.omnicrola.voxel.settings.GameConstants;
  * Created by Eric on 3/30/2016.
  */
 public class CubeParticle extends Geometry {
-    public static final float SIZE = 0.05f;
 
     private final Vector3f velocity;
     private float lifeRemaining;
@@ -24,10 +23,14 @@ public class CubeParticle extends Geometry {
     private ColorRGBA color;
 
     public CubeParticle(AssetManager assetManager) {
+        this(assetManager, 0.05f);
+    }
+
+    public CubeParticle(AssetManager assetManager, float size) {
         this.velocity = new Vector3f();
         this.floor = 0;
         this.lifeRemaining = 0f;
-        this.mesh = new Box(SIZE, SIZE, SIZE);
+        this.mesh = new Box(size, size, size);
         this.material = new Material(assetManager, GameConstants.MATERIAL_SHADED);
         setColor(ColorRGBA.White);
     }

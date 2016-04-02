@@ -14,6 +14,7 @@ public class VoxelParticleEmitter extends Node {
 
     public final CubeParticle[] particleCubes;
 
+    private boolean isInitialized;
     private float timeSinceLastSpawn;
     private float lifetime = 1f;
     private float lifetimeVariation = 1f;
@@ -28,11 +29,15 @@ public class VoxelParticleEmitter extends Node {
     private boolean useFloor = false;
     private float floor = 1.0f;
     private float bounceDampening = 0.1f;
+    private float particleSize = 0.05f;
+
+    private AssetManager assetManager;
 
     public VoxelParticleEmitter(AssetManager assetManager, String name, int count) {
         super(name);
+        this.assetManager = assetManager;
         this.particleCubes = new CubeParticle[count];
-        generateParticles(assetManager);
+        this.isInitialized = false;
         this.timeSinceLastSpawn = 0f;
     }
 
@@ -44,6 +49,10 @@ public class VoxelParticleEmitter extends Node {
             }
         }
         return count;
+    }
+
+    public void setParticleSize(float particleSize) {
+        this.particleSize = particleSize;
     }
 
     public void setEmissionRate(float emissionRate) {
@@ -82,15 +91,19 @@ public class VoxelParticleEmitter extends Node {
         this.useFloor = useFloor;
     }
 
-    private void generateParticles(AssetManager assetManager) {
+    private void generateParticles() {
         for (int i = 0; i < this.particleCubes.length; i++) {
-            this.particleCubes[i] = new CubeParticle(assetManager);
+            this.particleCubes[i] = new CubeParticle(assetManager, this.particleSize);
         }
     }
 
     @Override
     public void updateLogicalState(float tpf) {
         super.updateLogicalState(tpf);
+        if (!isInitialized) {
+            this.isInitialized = true;
+            generateParticles();
+        }
         particleUpdate(tpf);
     }
 
