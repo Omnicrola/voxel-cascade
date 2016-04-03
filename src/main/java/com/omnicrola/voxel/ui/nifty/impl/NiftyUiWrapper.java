@@ -5,6 +5,7 @@ import com.omnicrola.voxel.ui.nifty.IUi;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
 import de.lessvoid.nifty.Nifty;
+import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.button.ButtonControl;
@@ -46,5 +47,10 @@ public class NiftyUiWrapper implements IUi {
     @Override
     public <T> ListBox<T> getListBox(String token) {
         return this.screen.findNiftyControl(token, ListBox.class);
+    }
+
+    @Override
+    public CheckBox getCheckbox(String token) {
+        return this.screen.findNiftyControl(token, CheckBox.class);
     }
 }

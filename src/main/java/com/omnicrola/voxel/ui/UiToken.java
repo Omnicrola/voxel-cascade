@@ -54,7 +54,7 @@ public class UiToken {
         public static final String CANCEL = "button-cancel";
         public static final String PANEL_AUDIO = "panel-audio";
         public static final String PANEL_GRAPHICS = "panel-graphics";
-        public static final String RESOLUTION_DROPDOWN = "dropdown-resolution";
+        public static final String DROPDOWN_RESOLUTIONS = "dropdown-resolution";
         public static final String CHECKBOX_SHADOWS = "checkbox-shadows";
         public static final String CHECKBOX_FULLSCREEN = "checkbox-fullscreen";
         public static final String DROPDOWN_ANTI_ALIAS = "dropdown-anti-alias";

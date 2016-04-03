@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.ui.builders;
 
+import com.omnicrola.voxel.settings.DisplaySettingsHandler;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -18,7 +19,7 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
     @Override
     public void build(UiAdapter uiAdapter) {
 
-        GameSettingsScreenController controller = new GameSettingsScreenController(uiAdapter);
+        GameSettingsScreenController controller = new GameSettingsScreenController(uiAdapter, new DisplaySettingsHandler());
         String screenId = UiScreen.SETTINGS.toString();
 
         uiAdapter.addScreen(screenId, new ScreenBuilder(screenId, controller) {{
@@ -134,7 +135,8 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
     }
 
     private ControlBuilder createResolutionDropdown() {
-        return new DropDownBuilder(UiToken.Settings.RESOLUTION_DROPDOWN) {{
+        return new DropDownBuilder(UiToken.Settings.DROPDOWN_RESOLUTIONS) {{
+            set("displayItems", "10");
         }};
     }
 }
