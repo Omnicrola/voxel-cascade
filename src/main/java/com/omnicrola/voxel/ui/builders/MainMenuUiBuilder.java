@@ -50,55 +50,50 @@ public class MainMenuUiBuilder implements IGuiBuilder {
                 panel(new PanelBuilder("panel_mid") {{
                     childLayoutCenter();
                     alignCenter();
-                    height("50%");
-                    width("75%");
+                    height(percentage(50));
+                    width(percentage(75));
 
                     // add text
                     text(new TextBuilder() {{
                         text("A strategy game involving small colored cubes.");
                         font(UiConstants.DEFAULT_FONT);
                         wrap(true);
-                        height("100%");
-                        width("100%");
+                        height("*");
+                        width("*");
                     }});
                 }});
 
                 panel(new PanelBuilder("panel_bottom") {{
                     childLayoutHorizontal();
                     alignCenter();
-                    height("25%");
-                    width("75%");
+                    height(percentage(25));
+                    width(percentage(75));
 
                     panel(new PanelBuilder("panel_bottom_left") {{
                         childLayoutVertical();
-                        valignCenter();
-                        height("50%");
-                        width("50%");
+                        height(percentage(50));
+                        width(percentage(50));
 
                         // add control
                         control(new ButtonBuilder(UiToken.MainMenu.NEW_GAME, "New Game") {{
-                            height(percentage(40));
                             width(percentage(50));
                         }});
                         // add control
                         control(new ButtonBuilder(UiToken.MainMenu.BROWSE_GAMES, "Join Game") {{
-                            height(percentage(40));
                             width(percentage(50));
                         }});
                     }});
 
                     panel(new PanelBuilder("panel_bottom_right") {{
-                        childLayoutCenter();
-                        valignCenter();
-                        height("50%");
-                        width("50%");
+                        childLayoutVertical();
+                        height(percentage(50));
+                        width(percentage(50));
 
-                        // add control
+                        control(new ButtonBuilder(UiToken.MainMenu.BUTTON_SETTINGS, "Settings") {{
+                            width(percentage(50));
+                        }});
                         control(new ButtonBuilder(UiToken.MainMenu.BUTTON_QUIT_GAME, "Quit") {{
-                            alignCenter();
-                            valignCenter();
-                            height("50%");
-                            width("50%");
+                            width(percentage(50));
                         }});
                     }});
                 }}); // panel added

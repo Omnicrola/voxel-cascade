@@ -1,9 +1,11 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.commands.BrowseForMultiplayerGameCommand;
+import com.omnicrola.voxel.commands.ChangeScreenCommand;
 import com.omnicrola.voxel.commands.CreateMultiplayerGameCommand;
 import com.omnicrola.voxel.commands.ShutdownAndExitCommand;
 import com.omnicrola.voxel.ui.UiAdapter;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
@@ -32,6 +34,11 @@ public class MainMenuScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "button-quit-game")
     public void quitGame(String id, ButtonClickedEvent buttonClickedEvent) {
         this.uiAdapter.sendCommand(new ShutdownAndExitCommand());
+    }
+
+    @NiftyEventSubscriber(id = "button-settings")
+    public void gotoSettings(String id, ButtonClickedEvent buttonClickedEvent) {
+        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.SETTINGS));
     }
 
     @Override

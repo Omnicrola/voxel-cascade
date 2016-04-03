@@ -11,6 +11,7 @@ public class UiToken {
         public static final String BUTTON_QUIT_GAME = "button-quit-game";
         public static final String NEW_GAME = "button-new-game";
         public static final String BROWSE_GAMES = "button-browse-games";
+        public static final String BUTTON_SETTINGS = "button-settings";
     }
 
     public static class Play {
