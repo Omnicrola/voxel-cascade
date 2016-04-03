@@ -5,6 +5,9 @@ import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.GameSettingsScreenController;
 import de.lessvoid.nifty.builder.*;
+import de.lessvoid.nifty.controls.checkbox.builder.CheckboxBuilder;
+import de.lessvoid.nifty.controls.dropdown.builder.DropDownBuilder;
+import de.lessvoid.nifty.controls.slider.builder.SliderBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabBuilder;
 import de.lessvoid.nifty.controls.tabs.builder.TabGroupBuilder;
 
@@ -85,6 +88,16 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
         return new PanelBuilder(UiToken.Settings.PANEL_AUDIO) {{
             childLayoutVertical();
             text(createText("Audio", 200));
+            panel(optionPair("Master Volume:", createSlider(UiToken.Settings.SLIDER_MASTER_VOLUME)));
+        }};
+    }
+
+    private ControlBuilder createSlider(String id) {
+        return new SliderBuilder(id, false) {{
+            min(0);
+            max(100);
+            stepSize(1);
+            buttonStepSize(10);
         }};
     }
 
@@ -92,6 +105,36 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
         return new PanelBuilder(UiToken.Settings.PANEL_GRAPHICS) {{
             childLayoutVertical();
             text(createText("Graphics", 200));
+            panel(optionPair("Resolution:", createResolutionDropdown()));
+            panel(optionPair("Fullscreen:", new CheckboxBuilder(UiToken.Settings.CHECKBOX_FULLSCREEN)));
+            panel(optionPair("Anti-alias:", createAntiAliasDropdown()));
+            panel(optionPair("Display Shadows:", new CheckboxBuilder(UiToken.Settings.CHECKBOX_SHADOWS)));
+        }};
+    }
+
+    private ControlBuilder createAntiAliasDropdown() {
+        return new DropDownBuilder(UiToken.Settings.DROPDOWN_ANTI_ALIAS);
+    }
+
+    private PanelBuilder optionPair(String labelText, ControlBuilder optionControl) {
+        return new PanelBuilder() {{
+            childLayoutHorizontal();
+            text(new TextBuilder() {{
+                text(labelText);
+                font(UiConstants.DEFAULT_FONT);
+                width(percentage(50));
+                height(pixels(30));
+            }});
+            panel(new PanelBuilder() {{
+                childLayoutHorizontal();
+                width(percentage(50));
+                control(optionControl);
+            }});
+        }};
+    }
+
+    private ControlBuilder createResolutionDropdown() {
+        return new DropDownBuilder(UiToken.Settings.RESOLUTION_DROPDOWN) {{
         }};
     }
 }
