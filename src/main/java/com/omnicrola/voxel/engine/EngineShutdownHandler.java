@@ -13,6 +13,6 @@ public class EngineShutdownHandler {
         ClientNetworkState clientNetworkState = stateManager.getState(ClientNetworkState.class);
         INetworkManager networkManager = clientNetworkState.getNetworkManager();
         networkManager.disconnect();
-        networkManager.closeLocalMultiplayerServer();
+        networkManager.stopLocalMultiplayerServer();
     }
 }

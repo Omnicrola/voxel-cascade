@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.commands;
 
+import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.world.CommandPackage;
@@ -16,7 +17,9 @@ public class JoinLobbyCommand extends AbstractWorldCommand {
 
     @Override
     public void execute(CommandPackage commandPackage) {
-        commandPackage.getNetworkManager().joinLobby(this.serverToJoin);
+        INetworkManager networkManager = commandPackage.getNetworkManager();
+        networkManager.stopListeningForServers();
+        networkManager.joinLobby(this.serverToJoin);
         commandPackage.getUiManager().changeScreen(UiScreen.MULTIPLAYER_LOBBY);
     }
 

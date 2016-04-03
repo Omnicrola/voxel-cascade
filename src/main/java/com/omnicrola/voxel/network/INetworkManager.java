@@ -8,7 +8,7 @@ public interface INetworkManager {
 
     void startLocalMultiplayerServer();
 
-    void closeLocalMultiplayerServer();
+    void stopLocalMultiplayerServer();
 
     void stopListeningForServers();
 

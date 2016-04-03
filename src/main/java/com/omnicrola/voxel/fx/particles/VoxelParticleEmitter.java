@@ -46,7 +46,8 @@ public class VoxelParticleEmitter extends Node {
     public int getActiveParticleCount() {
         int count = 0;
         for (int i = 0; i < this.particleCubes.length; i++) {
-            if (this.particleCubes[i].isActive()) {
+            CubeParticle particle = this.particleCubes[i];
+            if (particle != null && particle.isActive()) {
                 count++;
             }
         }

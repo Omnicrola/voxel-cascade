@@ -1,12 +1,11 @@
 package com.omnicrola.voxel.ui.controllers;
 
-import com.omnicrola.voxel.commands.ChangeScreenCommand;
+import com.omnicrola.voxel.commands.CancelMultiplayerCreationCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
-import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -26,7 +25,7 @@ public class MultiplayerCreationController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_LOBBY_CANCEL")
     @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_LOBBY_CANCEL)
     public void quitLobby(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MAIN_MENU));
+        this.uiAdapter.sendCommand(new CancelMultiplayerCreationCommand());
     }
 
     @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_LOBBY_JOIN")

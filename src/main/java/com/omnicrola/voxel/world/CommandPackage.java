@@ -76,7 +76,7 @@ public class CommandPackage {
 
     public void shutdownAndExit() {
         this.networkManager.disconnect();
-        this.networkManager.closeLocalMultiplayerServer();
+        this.networkManager.stopLocalMultiplayerServer();
         this.shutdown.shutdownAndExit();
     }
 

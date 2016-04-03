@@ -33,8 +33,10 @@ public class NetworkManager implements INetworkManager {
     private List<INetworkObserver> observers;
     private VoxelGameServer currentGame;
 
-    public NetworkManager(ClientListenerBuilder clientListenerBuilder, NetworkCommandQueue networkCommandQueue,
+    public NetworkManager(ClientListenerBuilder clientListenerBuilder,
+                          NetworkCommandQueue networkCommandQueue,
                           MultiplayerDiscovery multiplayerDiscovery) {
+        MessageSerializationInitializer.init();
         this.clientListenerBuilder = clientListenerBuilder;
         this.networkCommandQueue = networkCommandQueue;
         this.multiplayerDiscovery = multiplayerDiscovery;
@@ -108,7 +110,7 @@ public class NetworkManager implements INetworkManager {
     }
 
     @Override
-    public void closeLocalMultiplayerServer() {
+    public void stopLocalMultiplayerServer() {
         if (this.voxelServerEngine != null) {
             LOGGER.log(Level.INFO, "Closing multiplayer server");
             this.voxelServerEngine.stop();
@@ -119,7 +121,7 @@ public class NetworkManager implements INetworkManager {
 
     public void cleanup() {
         disconnect();
-        closeLocalMultiplayerServer();
+        stopLocalMultiplayerServer();
     }
 
     public void update(float tpf) {
