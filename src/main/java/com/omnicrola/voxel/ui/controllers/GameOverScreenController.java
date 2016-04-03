@@ -1,9 +1,10 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.omnicrola.voxel.commands.ChangeScreenCommand;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.GlobalGameState;
 import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
@@ -30,9 +31,8 @@ public class GameOverScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "BUTTON_MAIN_MENU")
     @SubscriberLink(UiToken.BUTTON_MAIN_MENU)
     public void triggerMainMenuButton(String id, ButtonClickedEvent buttonClickedEvent) {
-        this.uiAdapter.transitionTo(GlobalGameState.MAIN_MENU);
+        this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MAIN_MENU));
     }
-
 
     @Override
     protected void screenOpen() {

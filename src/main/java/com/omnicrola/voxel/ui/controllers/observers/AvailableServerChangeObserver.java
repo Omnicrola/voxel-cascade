@@ -18,7 +18,9 @@ public class AvailableServerChangeObserver implements INetworkObserver {
 
     @Override
     public void availableServersChanged(List<VoxelGameServer> servers) {
-        this.multiplayerController.updateServerList(servers);
+        if (this.multiplayerController.isBound()) {
+            this.multiplayerController.updateServerList(servers);
+        }
     }
 
     @Override

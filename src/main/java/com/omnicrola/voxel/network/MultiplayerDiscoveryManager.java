@@ -82,7 +82,6 @@ public class MultiplayerDiscoveryManager extends Thread {
                 if (serverIsNotAlreadyListed(receivePacket.getAddress())) {
                     this.activeServers.add(parseData(receivePacket));
                     LOGGER.log(Level.FINE, "Added server : " + receivePacket.getAddress().getHostAddress());
-                    System.out.println("Added server: " + receivePacket.getAddress().getHostAddress());
                 }
             }
         } else {

@@ -1,12 +1,8 @@
 package com.omnicrola.voxel.main.init;
 
-import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
-import com.omnicrola.voxel.engine.GlobalGameState;
-import com.omnicrola.voxel.engine.states.IStateTransition;
-import com.omnicrola.voxel.engine.states.transitions.*;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
 import com.omnicrola.voxel.network.NetworkManager;
@@ -18,9 +14,7 @@ import com.omnicrola.voxel.ui.decorations.selected.SelectionRingFactory;
 import com.omnicrola.voxel.world.WorldManager;
 import de.lessvoid.nifty.Nifty;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by omnic on 2/28/2016.
@@ -42,18 +36,10 @@ public class GuiInitializer {
         AssetManager assetManager = initializationContainer.getAssetManager();
         Nifty niftyGui = initializationContainer.getNiftyGui();
         LevelManager levelManager = initializationContainer.getLevelManager();
-        AppStateManager stateManager = initializationContainer.getStateManager();
         WorldCommandProcessor worldCommandProcessor = initializationContainer.getWorldCommandProcessor();
         WorldManager worldManager = initializationContainer.getWorldManager();
         IWorldCursor worldCursor = worldManager.getWorldCursor();
         NetworkManager networkManager = initializationContainer.getNetworkManager();
-
-        Map<GlobalGameState, IStateTransition> transitions = new HashMap<>();
-        transitions.put(GlobalGameState.MULTIPLAYER_LOBBY, new TransitionToMultiplayerLobby());
-        transitions.put(GlobalGameState.MULTIPLAYER_BROWSE, new TransitionMultiplayerBrowse());
-        transitions.put(GlobalGameState.MULTIPLAYER_CREATE, new TransitionMultiplayerCreate());
-        transitions.put(GlobalGameState.ACTIVE_PLAY, new TransitionActivePlay());
-        transitions.put(GlobalGameState.MAIN_MENU, new TransitionMainMenu());
 
         HealthBarFactory healthBarFactory = new HealthBarFactory(assetManager);
         SelectionRingFactory selectionRingFactory = new SelectionRingFactory(assetManager);
@@ -63,8 +49,6 @@ public class GuiInitializer {
                 levelManager,
                 worldCursor,
                 worldCommandProcessor,
-                transitions,
-                stateManager,
                 spatialDecorator,
                 networkManager);
         return uiAdapter;

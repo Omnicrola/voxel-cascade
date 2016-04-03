@@ -20,11 +20,13 @@ import java.util.stream.Collectors;
  */
 public abstract class AbstractScreenController implements ScreenController {
     private NiftyUiWrapper niftyUiWrapper;
+    private boolean isBound = false;
 
     @Override
     public void bind(Nifty nifty, Screen screen) {
         this.niftyUiWrapper = new NiftyUiWrapper(nifty, screen);
         assertEventSubscribers(this, UiToken.BUTTON_MULTIPLAYER_START);
+        this.isBound = true;
     }
 
     protected IUi ui() {
@@ -71,4 +73,8 @@ public abstract class AbstractScreenController implements ScreenController {
     }
 
     protected abstract void screenClose();
+
+    public boolean isBound() {
+        return this.isBound;
+    }
 }

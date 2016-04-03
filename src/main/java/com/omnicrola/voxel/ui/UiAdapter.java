@@ -1,14 +1,11 @@
 package com.omnicrola.voxel.ui;
 
-import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.IWorldCommand;
 import com.omnicrola.voxel.data.ILevelChangeObserver;
 import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.engine.GlobalGameState;
-import com.omnicrola.voxel.engine.states.IStateTransition;
 import com.omnicrola.voxel.input.IUserSelectionObserver;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.network.INetworkManager;
@@ -20,7 +17,6 @@ import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 
 import java.util.ArrayList;
-import java.util.Map;
 
 /**
  * Created by Eric on 2/26/2016.
@@ -32,26 +28,19 @@ public class UiAdapter implements ILevelChangeObserver {
     private final Nifty niftyGui;
     private final IWorldCursor worldCursor;
     private final ICommandProcessor commandProcessor;
-    private final Map<GlobalGameState, IStateTransition> transitions;
-    private AppStateManager stateManager;
     private LevelState currentLevel;
     private SpatialDecorator spatialDecorator;
     private INetworkManager networkManager;
-    private IStateTransition currentTransition;
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
                      IWorldCursor worldCursor,
                      ICommandProcessor commandProcessor,
-                     Map<GlobalGameState, IStateTransition> transitions,
-                     AppStateManager stateManager,
                      SpatialDecorator spatialDecorator,
                      INetworkManager networkManager) {
         this.niftyGui = niftyGui;
         this.worldCursor = worldCursor;
         this.commandProcessor = commandProcessor;
-        this.transitions = transitions;
-        this.stateManager = stateManager;
         this.spatialDecorator = spatialDecorator;
         this.networkManager = networkManager;
 
@@ -76,15 +65,6 @@ public class UiAdapter implements ILevelChangeObserver {
 
     public LevelState getCurrentLevel() {
         return this.currentLevel;
-    }
-
-    @Deprecated
-    public void transitionTo(GlobalGameState globalGameState) {
-        if (this.currentTransition != null) {
-            this.currentTransition.exit(this.niftyGui, this.stateManager);
-        }
-        this.currentTransition = this.transitions.get(globalGameState);
-        this.currentTransition.enter(this.niftyGui, this.stateManager);
     }
 
     public void sendCommand(IWorldCommand command) {

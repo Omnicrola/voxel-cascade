@@ -95,8 +95,6 @@ public class NetworkManager implements INetworkManager {
     }
 
     private void attemptToJoinLocalhost() {
-//        if (voxelServerEngine != null) {
-//            this.voxelServerEngine.enqueue(() -> {
         try {
             VoxelGameServer localhost = new VoxelGameServer(InetAddress.getByName("localhost"), 1);
             if (joinLobby(localhost)) {
@@ -107,9 +105,6 @@ public class NetworkManager implements INetworkManager {
         } catch (UnknownHostException e) {
             LOGGER.log(Level.SEVERE, null, e);
         }
-//                return null;
-//            });
-//        }
     }
 
     @Override
