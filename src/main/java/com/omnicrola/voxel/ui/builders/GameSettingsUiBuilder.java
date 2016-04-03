@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.ui.builders;
 
-import com.omnicrola.voxel.settings.DisplaySettingsHandler;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -19,7 +18,7 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
     @Override
     public void build(UiAdapter uiAdapter) {
 
-        GameSettingsScreenController controller = new GameSettingsScreenController(uiAdapter, new DisplaySettingsHandler());
+        GameSettingsScreenController controller = new GameSettingsScreenController(uiAdapter);
         String screenId = UiScreen.SETTINGS.toString();
 
         uiAdapter.addScreen(screenId, new ScreenBuilder(screenId, controller) {{

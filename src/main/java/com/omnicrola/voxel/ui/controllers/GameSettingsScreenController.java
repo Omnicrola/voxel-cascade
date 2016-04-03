@@ -1,15 +1,17 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.omnicrola.voxel.commands.ChangeDisplaySettingsCommand;
 import com.omnicrola.voxel.commands.ChangeScreenCommand;
-import com.omnicrola.voxel.settings.DisplaySettingsHandler;
+import com.omnicrola.voxel.settings.DisplayModePackage;
+import com.omnicrola.voxel.settings.DisplayResolution;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
+import de.lessvoid.nifty.controls.CheckBox;
 import de.lessvoid.nifty.controls.DropDown;
-import org.lwjgl.opengl.DisplayMode;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -22,24 +24,35 @@ public class GameSettingsScreenController extends AbstractScreenController {
     private static final Logger LOGGER = Logger.getLogger(GameSettingsScreenController.class.getName());
 
     private UiAdapter uiAdapter;
-    private DisplaySettingsHandler displaySettingsHandler;
 
-    public GameSettingsScreenController(UiAdapter uiAdapter, DisplaySettingsHandler displaySettingsHandler) {
+    public GameSettingsScreenController(UiAdapter uiAdapter) {
         this.uiAdapter = uiAdapter;
-        this.displaySettingsHandler = displaySettingsHandler;
-    }
-
-    @NiftyEventSubscriber(id = "panel-graphics")
-    public void showDisplaySettings(String id, ButtonClickedEvent buttonClickedEvent) {
-    }
-
-    @NiftyEventSubscriber(id = "panel-audio")
-    public void showAudioSettings(String id, ButtonClickedEvent buttonClickedEvent) {
     }
 
     @NiftyEventSubscriber(id = "button-save")
     public void saveSettings(String id, ButtonClickedEvent buttonClickedEvent) {
-        System.out.println("Save!");
+        DisplayResolution displayResolution = getSelectedDisplayMode();
+        boolean isFullscreen = getFullScreen();
+        int antiAliasing = getSelectedAntiAliasing();
+
+        DisplayModePackage displayModePackage = new DisplayModePackage(displayResolution, antiAliasing, isFullscreen);
+        this.uiAdapter.sendCommand(new ChangeDisplaySettingsCommand(this.uiAdapter.getDisplaySettingsHandler(), displayModePackage));
+    }
+
+    private boolean getFullScreen() {
+        CheckBox fullscreenCheckbox = ui().getCheckbox(UiToken.Settings.CHECKBOX_FULLSCREEN);
+        return fullscreenCheckbox.isChecked();
+    }
+
+    private int getSelectedAntiAliasing() {
+        DropDown<String> aliasingDropdown = ui().getDropdown(UiToken.Settings.DROPDOWN_ANTI_ALIAS);
+        String selected = aliasingDropdown.getSelection();
+        return this.uiAdapter.getDisplaySettingsHandler().getAliasingForIndex(selected);
+    }
+
+    private DisplayResolution getSelectedDisplayMode() {
+        DropDown<DisplayResolution> displayModes = ui().getDropdown(UiToken.Settings.DROPDOWN_RESOLUTIONS);
+        return displayModes.getSelection();
     }
 
     @NiftyEventSubscriber(id = "button-cancel")
@@ -51,24 +64,37 @@ public class GameSettingsScreenController extends AbstractScreenController {
     protected void screenOpen() {
         populateDisplayResolutions();
         populateSamplingModes();
+        setFullscreenCheckbox();
+    }
+
+    private void setFullscreenCheckbox() {
+        CheckBox fullscreenCheckbox = ui().getCheckbox(UiToken.Settings.CHECKBOX_FULLSCREEN);
+        boolean isFullscreen = this.uiAdapter.getDisplaySettingsHandler().isCurrentlyFullscreen();
+        fullscreenCheckbox.setChecked(isFullscreen);
     }
 
     private void populateSamplingModes() {
         DropDown<String> dropdown = ui().getDropdown(UiToken.Settings.DROPDOWN_ANTI_ALIAS);
         dropdown.removeAllItems(dropdown.getItems());
-        dropdown.addItem("None");
-        dropdown.addItem("4x");
-        dropdown.addItem("8x");
+        this.uiAdapter.getDisplaySettingsHandler()
+                .getAliasingOptions()
+                .keySet()
+                .stream()
+                .forEach(key -> dropdown.addItem(key));
     }
 
     private void populateDisplayResolutions() {
-        DropDown<DisplayMode> resolutions = ui().getDropdown(UiToken.Settings.DROPDOWN_RESOLUTIONS);
+        DropDown<DisplayResolution> resolutions = ui().getDropdown(UiToken.Settings.DROPDOWN_RESOLUTIONS);
 
         resolutions.removeAllItems(resolutions.getItems());
-        List<DisplayMode> availableDisplayModes = this.displaySettingsHandler.getAvailableDisplayModes();
-        availableDisplayModes.forEach(dm -> resolutions.addItem(dm));
-        DisplayMode currentMode = this.displaySettingsHandler.getCurrentDisplayMode();
-        resolutions.selectItem(currentMode);
+        List<DisplayResolution> availableResolutions = this.uiAdapter.getDisplaySettingsHandler().getAvailableResolutions();
+        availableResolutions.forEach(dm -> {
+            resolutions.addItem(dm);
+            System.out.println(dm);
+        });
+        DisplayResolution displayResolution = this.uiAdapter.getDisplaySettingsHandler().getCurrentResolution();
+        System.out.println("current: " + displayResolution);
+        resolutions.selectItem(displayResolution);
     }
 
 
@@ -76,5 +102,6 @@ public class GameSettingsScreenController extends AbstractScreenController {
     protected void screenClose() {
 
     }
+
 
 }

@@ -11,6 +11,7 @@ import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.network.INetworkObserver;
 import com.omnicrola.voxel.network.VoxelGameServer;
+import com.omnicrola.voxel.settings.DisplaySettingsHandler;
 import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
 import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
 import de.lessvoid.nifty.Nifty;
@@ -31,18 +32,21 @@ public class UiAdapter implements ILevelChangeObserver {
     private LevelState currentLevel;
     private SpatialDecorator spatialDecorator;
     private INetworkManager networkManager;
+    private DisplaySettingsHandler displaySettingsHandler;
 
     public UiAdapter(Nifty niftyGui,
                      LevelManager levelManager,
                      IWorldCursor worldCursor,
                      ICommandProcessor commandProcessor,
                      SpatialDecorator spatialDecorator,
-                     INetworkManager networkManager) {
+                     INetworkManager networkManager,
+                     DisplaySettingsHandler displaySettingsHandler) {
         this.niftyGui = niftyGui;
         this.worldCursor = worldCursor;
         this.commandProcessor = commandProcessor;
         this.spatialDecorator = spatialDecorator;
         this.networkManager = networkManager;
+        this.displaySettingsHandler = displaySettingsHandler;
 
         levelManager.addObserver(this);
         this.levelObservers = new ArrayList<>();
@@ -94,5 +98,9 @@ public class UiAdapter implements ILevelChangeObserver {
 
     public VoxelGameServer getCurrentServer() {
         return this.networkManager.getCurrentServer();
+    }
+
+    public DisplaySettingsHandler getDisplaySettingsHandler() {
+        return this.displaySettingsHandler;
     }
 }

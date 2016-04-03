@@ -10,6 +10,8 @@ import com.omnicrola.voxel.engine.ITickProvider;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.network.NetworkManager;
+import com.omnicrola.voxel.settings.IDisplayContext;
+import com.omnicrola.voxel.settings.JmeDisplayContext;
 import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.ui.IUiManager;
@@ -112,5 +114,9 @@ public class InitializationContainer {
 
     public IUiManager getUiManager() {
         return uiManager;
+    }
+
+    public IDisplayContext getAppSettings() {
+        return new JmeDisplayContext(this.voxelGameEngine.getContext());
     }
 }

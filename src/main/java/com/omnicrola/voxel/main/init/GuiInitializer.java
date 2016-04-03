@@ -6,6 +6,8 @@ import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
 import com.omnicrola.voxel.network.NetworkManager;
+import com.omnicrola.voxel.settings.DisplaySettingsHandler;
+import com.omnicrola.voxel.settings.IDisplayContext;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.builders.IGuiBuilder;
 import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
@@ -44,13 +46,17 @@ public class GuiInitializer {
         HealthBarFactory healthBarFactory = new HealthBarFactory(assetManager);
         SelectionRingFactory selectionRingFactory = new SelectionRingFactory(assetManager);
         SpatialDecorator spatialDecorator = new SpatialDecorator(worldManager, healthBarFactory, selectionRingFactory);
+
+        IDisplayContext appSettings = initializationContainer.getAppSettings();
+        DisplaySettingsHandler displaySettingsHandler = new DisplaySettingsHandler(appSettings);
         UiAdapter uiAdapter = new UiAdapter(
                 niftyGui,
                 levelManager,
                 worldCursor,
                 worldCommandProcessor,
                 spatialDecorator,
-                networkManager);
+                networkManager,
+                displaySettingsHandler);
         return uiAdapter;
     }
 
