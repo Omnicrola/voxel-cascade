@@ -43,6 +43,8 @@ public class GameSettingsScreenController extends AbstractScreenController {
 
     @Override
     protected void screenOpen() {
+        hidePanel(UiToken.Settings.PANEL_AUDIO);
+        showPanel(UiToken.Settings.PANEL_GRAPHICS);
     }
 
     @Override
@@ -51,10 +53,10 @@ public class GameSettingsScreenController extends AbstractScreenController {
     }
 
     private void hidePanel(String token) {
-        ui().getElement(token).setVisible(false);
+//        ui().getElement(token).setVisible(false);
     }
 
     private void showPanel(String token) {
-        ui().getElement(token).setVisible(true);
+//        ui().getElement(token).setVisible(true);
     }
 }

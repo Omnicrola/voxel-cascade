@@ -4,10 +4,9 @@ import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.GameSettingsScreenController;
-import de.lessvoid.nifty.builder.ImageBuilder;
-import de.lessvoid.nifty.builder.LayerBuilder;
-import de.lessvoid.nifty.builder.PanelBuilder;
-import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.builder.*;
+import de.lessvoid.nifty.controls.tabs.builder.TabBuilder;
+import de.lessvoid.nifty.controls.tabs.builder.TabGroupBuilder;
 
 /**
  * Created by omnic on 4/2/2016.
@@ -31,27 +30,55 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
             });
             layer(new LayerBuilder("foreground") {{
                 childLayoutHorizontal();
-                panel(new PanelBuilder("left-panel") {{
-                    childLayoutVertical();
-                    width(pixels(200));
-                    height("*");
-                    
-                    control(createButton(UiToken.Settings.BUTTON_DISPLAY, "Graphics", 200, 40));
-                    control(createButton(UiToken.Settings.BUTTON_DISPLAY, "Audio", 200, 40));
-                    panel(spacerV(50));
-                    control(createButton(UiToken.Settings.SAVE, "Save", 200, 40));
-                    panel(spacerV(5));
-                    control(createButton(UiToken.Settings.CANCEL, "Cancel", 200, 40));
-                }});
-                panel(new PanelBuilder("right-panel") {{
-                    childLayoutVertical();
-                    width("*");
-                    height("*");
-                    panel(createGraphicsPanel());
-                    panel(createAudioPanel());
-                }});
+                panel(spacerH(10));
+                panel(new PanelBuilder("center-panel") {
+                    {
+                        childLayoutVertical();
+                        panel(spacerV(10));
+                        panel(buildSettingsPanel());
+                        panel(buildBottomButtonPanel());
+                        panel(spacerV(10));
+                    }
+                });
+                panel(spacerH(10));
             }});
         }});
+    }
+
+    private PanelBuilder buildBottomButtonPanel() {
+        return new PanelBuilder("bottom-panel") {{
+            childLayoutHorizontal();
+            height(percentage(10));
+            panel(new PanelBuilder() {{
+                childLayoutHorizontal();
+                width(percentage(50));
+                alignLeft();
+                control(createButton(UiToken.Settings.CANCEL, "Cancel", 200, 40));
+            }});
+            panel(new PanelBuilder() {{
+                childLayoutHorizontal();
+                width(percentage(50));
+                alignRight();
+                control(createButton(UiToken.Settings.SAVE, "Save", 200, 40));
+            }});
+        }};
+    }
+
+    private PanelBuilder buildSettingsPanel() {
+        return new PanelBuilder("top-panel") {{
+            childLayoutVertical();
+            height(percentage(70));
+            control(new ControlBuilder("tabs-panel") {{
+                control(new TabGroupBuilder("tabs-control") {{
+                    control(new TabBuilder("tab_1", "Display") {{
+                        panel(createGraphicsPanel());
+                    }});
+                    control(new TabBuilder("tab_2", "Audio") {{
+                        panel(createAudioPanel());
+                    }});
+                }});
+            }});
+        }};
     }
 
     private PanelBuilder createAudioPanel() {
