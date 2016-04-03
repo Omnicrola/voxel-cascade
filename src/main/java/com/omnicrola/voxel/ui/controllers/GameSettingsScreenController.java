@@ -88,15 +88,10 @@ public class GameSettingsScreenController extends AbstractScreenController {
 
         resolutions.removeAllItems(resolutions.getItems());
         List<DisplayResolution> availableResolutions = this.uiAdapter.getDisplaySettingsHandler().getAvailableResolutions();
-        availableResolutions.forEach(dm -> {
-            resolutions.addItem(dm);
-            System.out.println(dm);
-        });
+        availableResolutions.forEach(dm -> resolutions.addItem(dm));
         DisplayResolution displayResolution = this.uiAdapter.getDisplaySettingsHandler().getCurrentResolution();
-        System.out.println("current: " + displayResolution);
         resolutions.selectItem(displayResolution);
     }
-
 
     @Override
     protected void screenClose() {
