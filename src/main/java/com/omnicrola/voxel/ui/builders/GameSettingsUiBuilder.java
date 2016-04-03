@@ -56,13 +56,13 @@ public class GameSettingsUiBuilder extends AbstractGuiBuilder {
                 childLayoutHorizontal();
                 width(percentage(50));
                 alignLeft();
-                control(createButton(UiToken.Settings.CANCEL, "Cancel", 200, 40));
+                control(createButton(UiToken.Settings.CANCEL, "Back", 200, 40));
             }});
             panel(new PanelBuilder() {{
                 childLayoutHorizontal();
                 width(percentage(50));
                 alignRight();
-                control(createButton(UiToken.Settings.SAVE, "Save", 200, 40));
+                control(createButton(UiToken.Settings.SAVE, "Apply", 200, 40));
             }});
         }};
     }

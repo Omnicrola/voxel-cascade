@@ -37,4 +37,12 @@ public class DisplayModePackage {
         appSettings.setFullscreen(this.fullscreen);
         return appSettings;
     }
+
+    public int getMaxFps() {
+        return 120;
+    }
+
+    public boolean isFullscreen() {
+        return fullscreen;
+    }
 }

@@ -42,8 +42,6 @@ public class Bootstrapper {
         AppSettings appSettings = new AppSettings(true);
         appSettings.setSettingsDialogImage("Textures/splash.jpg");
         appSettings.setResolution(displaySettings.width, displaySettings.height);
-        appSettings.setBitsPerPixel(displaySettings.bpp);
-        appSettings.setFrequency(displaySettings.hz);
         appSettings.setFrameRate(displaySettings.maxFps);
         appSettings.put("Samples", displaySettings.antiAliasing);
 

@@ -13,16 +13,12 @@ public class DisplaySettings {
     @XmlElement(name = "height")
     public int height = 600;
 
-    @XmlElement(name = "bits")
-    public int bpp = 32;
-
-    @XmlElement(name = "frequency")
-    public int hz = 60;
-
     @XmlElement(name = "max-fps")
     public int maxFps = 120;
 
     @XmlElement(name = "samples")
     public int antiAliasing = 4;
 
+    @XmlElement(name="fullscreen")
+    public boolean fullscreen;
 }

@@ -1,5 +1,7 @@
 package com.omnicrola.voxel.settings;
 
+import com.omnicrola.voxel.main.settings.GameSettings;
+import com.omnicrola.voxel.main.settings.GameSettingsRepository;
 import org.lwjgl.LWJGLException;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -15,24 +17,6 @@ import java.util.stream.Collectors;
 public class DisplaySettingsHandler {
 
     private static final Logger LOGGER = Logger.getLogger(DisplaySettingsHandler.class.getName());
-    private static final Comparator<DisplayMode> DISPLAY_MODE_COMPARATOR = new DisplayModeComparator();
-
-    private static class DisplayModeComparator implements Comparator<DisplayMode> {
-        @Override
-        public int compare(DisplayMode dm1, DisplayMode dm2) {
-            int area1 = dm1.getWidth() * dm1.getHeight();
-            int area2 = dm2.getWidth() * dm2.getHeight();
-            int areaCompare = Integer.compare(area1, area2);
-            if (areaCompare != 0) {
-                return areaCompare;
-            }
-            int bppCompare = Integer.compare(dm1.getBitsPerPixel(), dm2.getBitsPerPixel());
-            if (bppCompare != 0) {
-                return bppCompare;
-            }
-            return Integer.compare(dm1.getFrequency(), dm2.getFrequency());
-        }
-    }
 
     private final Map<String, Integer> aliasingMap;
     private IDisplayContext displaySettings;
@@ -71,14 +55,25 @@ public class DisplaySettingsHandler {
 
     public void setDisplayMode(DisplayModePackage selectedMode) {
         this.displaySettings.setSettings(selectedMode);
+        saveSettingsToFile(selectedMode);
+    }
+
+    private void saveSettingsToFile(DisplayModePackage selectedMode) {
+        GameSettings settings = GameSettingsRepository.load();
+        settings.displaySettings.antiAliasing = selectedMode.getAntiAliasing();
+        settings.displaySettings.width = selectedMode.getResolution().getWidth();
+        settings.displaySettings.height = selectedMode.getResolution().getHeight();
+        settings.displaySettings.maxFps = selectedMode.getMaxFps();
+        settings.displaySettings.fullscreen = selectedMode.isFullscreen();
+        GameSettingsRepository.save(settings);
     }
 
     public List<DisplayResolution> getAvailableResolutions() {
         try {
             DisplayMode[] availableDisplayModes = Display.getAvailableDisplayModes();
             return Arrays.stream(availableDisplayModes)
-                    .filter(dm -> dm.getHeight() > 600)
-                    .filter(dm -> dm.getWidth() > 800)
+                    .filter(dm -> dm.getHeight() >= 600)
+                    .filter(dm -> dm.getWidth() >= 800)
                     .map(dm -> new DisplayResolution(dm.getWidth(), dm.getHeight()))
                     .sorted()
                     .collect(Collectors.toList());
@@ -86,6 +81,6 @@ public class DisplaySettingsHandler {
             LOGGER.log(Level.SEVERE, null, e);
         }
 
-        return null;
+        return new ArrayList<>();
     }
 }
