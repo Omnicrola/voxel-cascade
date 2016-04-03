@@ -39,7 +39,7 @@ public class ActivePlayUiBuilder implements IGuiBuilder {
                             text("Resources: ");
                             font(UiConstants.DEFAULT_FONT);
                         }});
-                        text(new TextBuilder(UiToken.RESOURCE_AMOUNT.toString()) {{
+                        text(new TextBuilder(UiToken.Play.LABEL_RESOURCE_AMOUNT) {{
                             text("000000000");
                             font(UiConstants.DEFAULT_FONT);
                         }});
@@ -112,9 +112,9 @@ public class ActivePlayUiBuilder implements IGuiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiToken.ACTION_1, "Move"));
-                            control(actionButton(UiToken.ACTION_2, "Attack"));
-                            control(actionButton(UiToken.ACTION_3, "Stop"));
+                            control(actionButton(UiToken.Play.ACTION_1, "Move"));
+                            control(actionButton(UiToken.Play.ACTION_2, "Attack"));
+                            control(actionButton(UiToken.Play.ACTION_3, "Stop"));
                         }});
 
                         panel(new PanelBuilder("action-row-2") {{
@@ -122,9 +122,9 @@ public class ActivePlayUiBuilder implements IGuiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiToken.ACTION_4, "4"));
-                            control(actionButton(UiToken.ACTION_5, "5"));
-                            control(actionButton(UiToken.ACTION_6, "6"));
+                            control(actionButton(UiToken.Play.ACTION_4, "4"));
+                            control(actionButton(UiToken.Play.ACTION_5, "5"));
+                            control(actionButton(UiToken.Play.ACTION_6, "6"));
                         }});
 
                         panel(new PanelBuilder("action-row-3") {{
@@ -132,9 +132,9 @@ public class ActivePlayUiBuilder implements IGuiBuilder {
                             width(UiConstants.Size.ONE_HUNDRED);
                             height(UiConstants.Size.ONE_THIRD);
 
-                            control(actionButton(UiToken.ACTION_7, "7"));
-                            control(actionButton(UiToken.ACTION_8, "8"));
-                            control(actionButton(UiToken.ACTION_9, "9"));
+                            control(actionButton(UiToken.Play.ACTION_7, "7"));
+                            control(actionButton(UiToken.Play.ACTION_8, "8"));
+                            control(actionButton(UiToken.Play.ACTION_9, "9"));
                         }});
                     }});
                 }});
@@ -142,8 +142,8 @@ public class ActivePlayUiBuilder implements IGuiBuilder {
         }});
     }
 
-    private static ButtonBuilder actionButton(UiToken token, String name) {
-        return new ButtonBuilder(token.toString(), name) {{
+    private static ButtonBuilder actionButton(String token, String name) {
+        return new ButtonBuilder(token, name) {{
             width(percentage(33));
             height(percentage(100));
         }};

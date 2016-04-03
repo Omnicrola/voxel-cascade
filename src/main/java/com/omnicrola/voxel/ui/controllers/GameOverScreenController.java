@@ -2,7 +2,6 @@ package com.omnicrola.voxel.ui.controllers;
 
 import com.omnicrola.voxel.commands.ChangeScreenCommand;
 import com.omnicrola.voxel.data.level.LevelState;
-import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -28,17 +27,16 @@ public class GameOverScreenController extends AbstractScreenController {
         this.uiAdapter = uiAdapter;
     }
 
-    @NiftyEventSubscriber(id = "BUTTON_MAIN_MENU")
-    @SubscriberLink(UiToken.BUTTON_MAIN_MENU)
+    @NiftyEventSubscriber(id = "button-main-menu")
     public void triggerMainMenuButton(String id, ButtonClickedEvent buttonClickedEvent) {
         this.uiAdapter.sendCommand(new ChangeScreenCommand(UiScreen.MAIN_MENU));
     }
 
     @Override
     protected void screenOpen() {
-        IUiElement resultsPanel = ui().getElement(UiToken.TEAM_RESULTS_PANEL);
-        IUiElement resultsContainer = ui().getElement(UiToken.TEAM_RESULTS_CONTAINER);
-        IUiElement elapsedTimeLabel = ui().getElement(UiToken.ELAPSED_TIME);
+        IUiElement resultsPanel = ui().getElement(UiToken.GameOver.TEAM_RESULTS_PANEL);
+        IUiElement resultsContainer = ui().getElement(UiToken.GameOver.TEAM_RESULTS_CONTAINER);
+        IUiElement elapsedTimeLabel = ui().getElement(UiToken.GameOver.ELAPSED_TIME);
         resultsPanel.removeAllChildren();
         resultsPanel.setWidth(resultsContainer.getWidth());
 

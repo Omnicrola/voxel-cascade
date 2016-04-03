@@ -51,20 +51,20 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
     protected PanelBuilder serverInformationPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
-            text(createText(UiToken.LABEL_SERVER_IP, 100));
-            text(createText(UiToken.LABEL_SERVER_NAME, 100));
-            text(createText(UiToken.LABEL_SERVER_PLAYERS, 100));
+            text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_IP, ":", 100));
+            text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_NAME, ":", 100));
+            text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_PLAYERS, ":", 100));
         }};
     }
 
     protected PanelBuilder buttonPanel() {
         return new PanelBuilder() {{
             childLayoutHorizontal();
-            control(createButton(UiToken.BUTTON_MULTIPLAYER_LOBBY_CANCEL, "Cancel", 200, 50));
+            control(createButton(UiToken.Multiplayer.BUTTON_CANCEL, "Cancel", 200, 50));
             panel(new PanelBuilder() {{
                 width("*");
             }});
-            control(createButton(UiToken.BUTTON_MULTIPLAYER_LOBBY_JOIN, "JOIN", 200, 50));
+            control(createButton(UiToken.Multiplayer.BUTTON_START, "Start", 200, 50));
         }};
     }
 }

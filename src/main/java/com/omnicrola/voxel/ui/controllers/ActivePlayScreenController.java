@@ -4,7 +4,6 @@ import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
-import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
@@ -54,34 +53,34 @@ public class ActivePlayScreenController extends AbstractScreenController {
 
     }
 
-    @NiftyEventSubscriber(id = "ACTION_1")
-    @SubscriberLink(UiToken.ACTION_1)
+    @NiftyEventSubscriber(id = "unit-action-1")
     public void triggerActionButton_1(String id, ButtonClickedEvent buttonClickedEvent) {
         triggerCommandGroup(1);
     }
 
-    @NiftyEventSubscriber(id = "ACTION_2")
-    @SubscriberLink(UiToken.ACTION_2)
+    @NiftyEventSubscriber(id = "unit-action-2")
     public void triggerActionButton_2(String id, ButtonClickedEvent buttonClickedEvent) {
         triggerCommandGroup(2);
     }
 
-    @NiftyEventSubscriber(id = "ACTION_3")
-    @SubscriberLink(UiToken.ACTION_3)
+    @NiftyEventSubscriber(id = "unit-action-3")
     public void triggerActionButton_3(String id, ButtonClickedEvent buttonClickedEvent) {
         triggerCommandGroup(3);
     }
 
-    @NiftyEventSubscriber(id = "ACTION_4")
-    @SubscriberLink(UiToken.ACTION_4)
+    @NiftyEventSubscriber(id = "unit-action-4")
     public void triggerActionButton_4(String id, ButtonClickedEvent buttonClickedEvent) {
         triggerCommandGroup(4);
     }
 
-    @NiftyEventSubscriber(id = "ACTION_5")
-    @SubscriberLink(UiToken.ACTION_5)
+    @NiftyEventSubscriber(id = "unit-action-5")
     public void triggerActionButton_5(String id, ButtonClickedEvent buttonClickedEvent) {
         triggerCommandGroup(5);
+    }
+
+    @NiftyEventSubscriber(id = "unit-action-6")
+    public void triggerActionButton_6(String id, ButtonClickedEvent buttonClickedEvent) {
+        triggerCommandGroup(6);
     }
 
     public void setCurrentSelection(SelectionGroup currentSelection) {
@@ -91,7 +90,6 @@ public class ActivePlayScreenController extends AbstractScreenController {
         addHealthbarsToSelection();
         setCommandLabels(this.currentSelection.getAvailableCommands());
     }
-
 
     private void removeHealthBarsFromSelection() {
         if (this.currentSelection != null) {
@@ -108,7 +106,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
     public void updateStats(LevelState currentLevel) {
         TeamData playerTeam = currentLevel.getPlayerTeam();
         float resources = currentLevel.getResources(playerTeam);
-        IUiElement resourceLabel = ui().getElement(UiToken.RESOURCE_AMOUNT);
+        IUiElement resourceLabel = ui().getElement(UiToken.Play.LABEL_RESOURCE_AMOUNT);
         resourceLabel.setText(String.valueOf((int) resources));
     }
 
@@ -123,15 +121,15 @@ public class ActivePlayScreenController extends AbstractScreenController {
 
     private ArrayList<IUiButton> getCommandButtons() {
         ArrayList<IUiButton> buttons = new ArrayList<>();
-        buttons.add(ui().getButton(UiToken.ACTION_1));
-        buttons.add(ui().getButton(UiToken.ACTION_2));
-        buttons.add(ui().getButton(UiToken.ACTION_3));
-        buttons.add(ui().getButton(UiToken.ACTION_4));
-        buttons.add(ui().getButton(UiToken.ACTION_5));
-        buttons.add(ui().getButton(UiToken.ACTION_6));
-        buttons.add(ui().getButton(UiToken.ACTION_7));
-        buttons.add(ui().getButton(UiToken.ACTION_8));
-        buttons.add(ui().getButton(UiToken.ACTION_9));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_1));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_2));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_3));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_4));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_5));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_6));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_7));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_8));
+        buttons.add(ui().getButton(UiToken.Play.ACTION_9));
         return buttons;
     }
 

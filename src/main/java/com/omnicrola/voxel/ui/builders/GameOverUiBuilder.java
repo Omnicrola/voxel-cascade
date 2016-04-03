@@ -59,18 +59,18 @@ public class GameOverUiBuilder implements IGuiBuilder {
                             text("Elapsed: ");
                             font(UiConstants.DEFAULT_FONT);
                         }});
-                        text(new TextBuilder(UiToken.ELAPSED_TIME.toString()) {{
+                        text(new TextBuilder(UiToken.GameOver.ELAPSED_TIME) {{
                             text("--:--:--");
                             font(UiConstants.DEFAULT_FONT);
                         }});
                     }});
-                    control(new ScrollPanelBuilder(UiToken.TEAM_RESULTS_CONTAINER.toString()) {{
+                    control(new ScrollPanelBuilder(UiToken.GameOver.TEAM_RESULTS_CONTAINER) {{
                         parameter("horizontal", "false");
                         childLayoutVertical();
                         height("*");
                         width("*");
                         style("autoscroll");
-                        panel(new PanelBuilder(UiToken.TEAM_RESULTS_PANEL.toString()) {{
+                        panel(new PanelBuilder(UiToken.GameOver.TEAM_RESULTS_PANEL) {{
                             childLayoutVertical();
                             x(pixels(0));
                             y(pixels(0));
@@ -79,16 +79,14 @@ public class GameOverUiBuilder implements IGuiBuilder {
                     panel(new PanelBuilder("button-panel") {{
                         width(percentage(100));
                         childLayoutVertical();
-                        control(new ButtonBuilder(UiToken.BUTTON_MAIN_MENU.toString()) {{
+                        control(new ButtonBuilder(UiToken.GameOver.BUTTON_MAIN_MENU) {{
                             label("Main Menu");
                             alignRight();
                             width(pixels(100));
                             height(pixels(40));
                         }});
                     }});
-
                 }});
-
             }});
         }});
     }

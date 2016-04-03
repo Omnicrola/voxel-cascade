@@ -4,7 +4,6 @@ import com.omnicrola.voxel.commands.CancelMultiplayerCreationCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.network.VoxelGameServer;
-import com.omnicrola.voxel.ui.SubscriberLink;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
@@ -22,14 +21,12 @@ public class MultiplayerCreationController extends AbstractScreenController {
         this.uiAdapter = uiAdapter;
     }
 
-    @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_LOBBY_CANCEL")
-    @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_LOBBY_CANCEL)
+    @NiftyEventSubscriber(id = "button-cancel")
     public void quitLobby(String id, ButtonClickedEvent buttonClickedEvent) {
         this.uiAdapter.sendCommand(new CancelMultiplayerCreationCommand());
     }
 
-    @NiftyEventSubscriber(id = "BUTTON_MULTIPLAYER_LOBBY_JOIN")
-    @SubscriberLink(UiToken.BUTTON_MULTIPLAYER_LOBBY_JOIN)
+    @NiftyEventSubscriber(id = "button-start")
     public void startGame(String id, ButtonClickedEvent buttonClickedEvent) {
         this.uiAdapter.sendCommand(new StartMultiplayerGameCommand(LevelGeneratorTool.BASIC_LEVEL_UUID));
     }
@@ -43,9 +40,9 @@ public class MultiplayerCreationController extends AbstractScreenController {
     }
 
     private void updateLabels(VoxelGameServer server) {
-        ui().getElement(UiToken.LABEL_SERVER_IP).setText("IP: " + server.getAddress());
-        ui().getElement(UiToken.LABEL_SERVER_NAME).setText("Name: " + server.getName());
-        ui().getElement(UiToken.LABEL_SERVER_PLAYERS).setText("Players: " + server.getPlayers());
+        ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_IP).setText("IP: " + server.getAddress());
+        ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_NAME).setText("Name: " + server.getName());
+        ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_PLAYERS).setText("Players: " + server.getPlayers());
     }
 
     @Override

@@ -1,7 +1,6 @@
 package com.omnicrola.voxel.ui.nifty.impl;
 
 import com.omnicrola.voxel.main.VoxelException;
-import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.nifty.IUi;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
@@ -25,27 +24,27 @@ public class NiftyUiWrapper implements IUi {
     }
 
     @Override
-    public IUiElement getElement(UiToken token) {
-        Element selectionPanel = this.screen.findElementByName(token.toString());
+    public IUiElement getElement(String token) {
+        Element selectionPanel = this.screen.findElementByName(token);
         if (selectionPanel == null) {
-            throw new VoxelException("UI element not found: " + token.toString());
+            throw new VoxelException("UI element not found: " + token);
         }
         return new NiftyElementWrapper(this.nifty, this.screen, selectionPanel);
     }
 
     @Override
-    public IUiButton getButton(UiToken token) {
-        ButtonControl button = this.screen.findControl(token.toString(), ButtonControl.class);
+    public IUiButton getButton(String token) {
+        ButtonControl button = this.screen.findControl(token, ButtonControl.class);
         return new NiftyButtonWrapper(this.nifty, this.screen, button);
     }
 
     @Override
-    public <T> DropDown<T> getDropdown(UiToken token) {
-        return this.screen.findNiftyControl(token.toString(), DropDown.class);
+    public <T> DropDown<T> getDropdown(String token) {
+        return this.screen.findNiftyControl(token, DropDown.class);
     }
 
     @Override
-    public <T> ListBox<T> getListBox(UiToken token) {
-        return this.screen.findNiftyControl(token.toString(), ListBox.class);
+    public <T> ListBox<T> getListBox(String token) {
+        return this.screen.findNiftyControl(token, ListBox.class);
     }
 }

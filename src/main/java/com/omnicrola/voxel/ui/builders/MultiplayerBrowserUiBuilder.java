@@ -3,8 +3,8 @@ package com.omnicrola.voxel.ui.builders;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
-import com.omnicrola.voxel.ui.controllers.observers.AvailableServerChangeObserver;
 import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
+import com.omnicrola.voxel.ui.controllers.observers.AvailableServerChangeObserver;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
@@ -63,9 +63,9 @@ public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
     private PanelBuilder serverInformationPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
-            text(createText(UiToken.LABEL_SERVER_NAME, 100));
-            text(createText(UiToken.LABEL_SERVER_IP, 100));
-            text(createText(UiToken.LABEL_SERVER_PLAYERS, 100));
+            text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_NAME, "Server:", 100));
+            text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_IP, "IP:", 100));
+            text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_PLAYERS, "Players:", 100));
         }};
     }
 
@@ -73,17 +73,17 @@ public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
         return new PanelBuilder() {
             {
                 childLayoutHorizontal();
-                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_CANCEL, "Cancel", 200, 50));
+                control(createButton(UiToken.Multiplayer.BUTTON_CANCEL, "Cancel", 200, 50));
                 panel(new PanelBuilder() {{
                     width("*");
                 }});
-                control(createButton(UiToken.BUTTON_MULTIPLAYER_BROWSE_JOIN, "Join", 200, 50));
+                control(createButton(UiToken.Multiplayer.BUTTON_JOIN, "Join", 200, 50));
             }
         };
     }
 
     private ControlBuilder serverList() {
-        return new ListBoxBuilder(UiToken.MULTIPLAYER_SERVER_LIST.toString()) {{
+        return new ListBoxBuilder(UiToken.Multiplayer.Browse.MULTIPLAYER_SERVER_LIST) {{
             width("*");
             displayItems(10);
             selectionModeSingle();

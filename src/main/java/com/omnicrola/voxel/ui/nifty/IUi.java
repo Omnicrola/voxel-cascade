@@ -1,6 +1,5 @@
 package com.omnicrola.voxel.ui.nifty;
 
-import com.omnicrola.voxel.ui.UiToken;
 import de.lessvoid.nifty.controls.DropDown;
 import de.lessvoid.nifty.controls.ListBox;
 
@@ -8,11 +7,11 @@ import de.lessvoid.nifty.controls.ListBox;
  * Created by Eric on 1/30/2016.
  */
 public interface IUi {
-    IUiElement getElement(UiToken token);
+    IUiElement getElement(String token);
 
-    IUiButton getButton(UiToken token);
+    IUiButton getButton(String token);
 
-    <T> DropDown<T> getDropdown(UiToken token);
+    <T> DropDown<T> getDropdown(String token);
 
-    <T> ListBox<T> getListBox(UiToken token);
+    <T> ListBox<T> getListBox(String token);
 }
