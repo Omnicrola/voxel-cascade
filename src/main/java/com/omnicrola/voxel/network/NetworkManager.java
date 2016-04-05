@@ -98,6 +98,7 @@ public class NetworkManager implements INetworkManager {
             LOGGER.log(Level.INFO, "Multiplayer server is running.");
             ServerLobbyState lobbyState = voxelServerEngine.getStateManager().getState(ServerLobbyState.class);
             lobbyState.setLobbyKey(CLIENT_ID);
+            lobbyState.setEnabled(true);
             return null;
         });
         this.voxelServerEngine.start();

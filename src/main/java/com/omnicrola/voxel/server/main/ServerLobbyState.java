@@ -20,6 +20,7 @@ public class ServerLobbyState extends AbstractAppState {
     private ServerLobbyManager serverLobbyManager;
     private VoxelServerEngine serverEngine;
     private VoxelNetworkServerFactory voxelNetworkServerFactory;
+    private UUID lobbyKey;
 
     public ServerLobbyState(VoxelNetworkServerFactory voxelNetworkServerFactory) {
         this.voxelNetworkServerFactory = voxelNetworkServerFactory;
@@ -29,7 +30,7 @@ public class ServerLobbyState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.serverEngine = (VoxelServerEngine) app;
-        this.setEnabled(true);
+        setEnabled(false);
     }
 
     @Override
@@ -52,7 +53,7 @@ public class ServerLobbyState extends AbstractAppState {
         LOGGER.log(Level.INFO, "Starting server lobby");
         this.serverMulticastEmitter = new ServerMulticastEmitter(new BroadcastPacketParser());
         INetworkServer server = this.voxelNetworkServerFactory.build();
-        this.serverLobbyManager = new ServerLobbyManager(server);
+        this.serverLobbyManager = new ServerLobbyManager(server, this.lobbyKey);
         this.serverLobbyManager.startAcceptingPlayers(this, serverEngine);
         this.serverMulticastEmitter.start();
     }
@@ -80,6 +81,6 @@ public class ServerLobbyState extends AbstractAppState {
     }
 
     public void setLobbyKey(UUID lobbyKey) {
-        this.serverLobbyManager.setLobbyKey(lobbyKey);
+        this.lobbyKey = lobbyKey;
     }
 }

@@ -1,9 +1,13 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.google.common.eventbus.Subscribe;
 import com.omnicrola.voxel.commands.JoinLobbyCommand;
 import com.omnicrola.voxel.commands.StopBrowsingForMultiplayerGameCommand;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.JoinLobbyEvent;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.ui.UiAdapter;
+import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import de.lessvoid.nifty.NiftyEventSubscriber;
@@ -47,16 +51,30 @@ public class MultiplayerBrowserController extends AbstractScreenController {
         }
     }
 
+    @Subscribe
+    public void handleLobbyJoinedResult(JoinLobbyEvent event) {
+        if (event.succeeded()) {
+            this.uiAdapter.gotoScreen(UiScreen.MULTIPLAYER_LOBBY);
+        } else {
+            showFailDialog();
+        }
+    }
+
+    private void showFailDialog() {
+        System.out.println("FAILED TO JOIN LOBBY");
+    }
+
     @Override
     protected void screenOpen() {
         ListBox<VoxelGameServer> serverDropdown = ui().getListBox(UiToken.Multiplayer.Browse.MULTIPLAYER_SERVER_LIST);
         serverDropdown.removeAllItems(serverDropdown.getItems());
         serverDropdown.addItem(VoxelGameServer.EMPTY);
+        VoxelEventBus.INSTANCE().register(this);
     }
 
     @Override
     protected void screenClose() {
-
+        VoxelEventBus.INSTANCE().unregister(this);
     }
 
     private void updateServerInformation() {

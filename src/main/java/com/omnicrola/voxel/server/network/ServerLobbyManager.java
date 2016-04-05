@@ -24,11 +24,12 @@ public class ServerLobbyManager {
     private List<MessageListener> lobbyListeners;
     private final List<NetworkPlayer> players;
     private INetworkServer server;
-    private UUID lobbyKey = UUID.randomUUID();
+    private UUID lobbyKey;
     private int maxPlayers = 4;
 
-    public ServerLobbyManager(INetworkServer server) {
+    public ServerLobbyManager(INetworkServer server, UUID lobbyKey) {
         this.server = server;
+        this.lobbyKey = lobbyKey;
         this.players = new ArrayList<>();
     }
 
@@ -61,10 +62,6 @@ public class ServerLobbyManager {
 
     private void removeMessageListeners() {
         this.lobbyListeners.forEach(l -> this.server.removeMessageListener(l));
-    }
-
-    public void setLobbyKey(UUID lobbyKey) {
-        this.lobbyKey = lobbyKey;
     }
 
     public UUID getLobbyKey() {

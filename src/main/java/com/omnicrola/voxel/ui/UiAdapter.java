@@ -103,4 +103,8 @@ public class UiAdapter implements ILevelChangeObserver {
     public DisplaySettingsHandler getDisplaySettingsHandler() {
         return this.displaySettingsHandler;
     }
+
+    public void gotoScreen(UiScreen uiScreen) {
+        this.niftyGui.gotoScreen(uiScreen.toString());
+    }
 }
