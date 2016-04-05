@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.server.network;
 
+import com.jme3.network.HostedConnection;
 import com.jme3.network.MessageListener;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
@@ -14,6 +15,7 @@ import com.omnicrola.voxel.server.network.listeners.ServerStartGameListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by omnic on 3/25/2016.
@@ -22,6 +24,7 @@ public class ServerLobbyManager {
     private List<MessageListener> lobbyListeners;
     private final List<NetworkPlayer> players;
     private INetworkServer server;
+    private UUID lobbyKey = UUID.randomUUID();
 
     public ServerLobbyManager(INetworkServer server) {
         this.server = server;
@@ -46,7 +49,7 @@ public class ServerLobbyManager {
     private void addMessageListeners(ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
         ServerHandshakeListener handshakeListener = new ServerHandshakeListener();
         ServerJoinLobbyListener joinLobbyListener = new ServerJoinLobbyListener(this);
-        ServerStartGameListener startGameListener = new ServerStartGameListener(serverLobbyState, actionQueue);
+        ServerStartGameListener startGameListener = new ServerStartGameListener(this, serverLobbyState, actionQueue);
 
         server.addMessageListener(handshakeListener, HandshakeMessage.class);
         server.addMessageListener(joinLobbyListener, JoinLobbyMessage.class);
@@ -57,5 +60,22 @@ public class ServerLobbyManager {
 
     private void removeMessageListeners() {
         this.lobbyListeners.forEach(l -> this.server.removeMessageListener(l));
+    }
+
+    public void setLobbyKey(UUID lobbyKey) {
+        this.lobbyKey = lobbyKey;
+    }
+
+    public UUID getLobbyKey() {
+        return this.lobbyKey;
+    }
+
+    public boolean isHost(HostedConnection connection) {
+        return this.players
+                .stream()
+                .filter(p -> p.getConnection().equals(connection))
+                .filter(p -> p.isHost())
+                .findFirst()
+                .isPresent();
     }
 }

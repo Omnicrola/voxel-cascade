@@ -5,6 +5,7 @@ import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.network.AbstractMessageListener;
 import com.omnicrola.voxel.server.main.ServerLobbyState;
+import com.omnicrola.voxel.server.network.ServerLobbyManager;
 
 import java.text.MessageFormat;
 import java.util.logging.Level;
@@ -17,16 +18,24 @@ public class ServerStartGameListener extends AbstractMessageListener<StartMultip
 
     private static final Logger LOGGER = Logger.getLogger(ServerStartGameListener.class.getName());
 
+    private ServerLobbyManager serverLobbyManager;
     private ServerLobbyState serverLobbyState;
     private IActionQueue actionQueue;
 
-    public ServerStartGameListener(ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
+    public ServerStartGameListener(ServerLobbyManager serverLobbyManager, ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
+        this.serverLobbyManager = serverLobbyManager;
         this.serverLobbyState = serverLobbyState;
         this.actionQueue = actionQueue;
     }
 
     @Override
     protected void processMessage(HostedConnection connection, StartMultiplayerGameCommand message) {
+        if (this.serverLobbyManager.isHost(connection)) {
+            startGame(connection, message);
+        }
+    }
+
+    private void startGame(HostedConnection connection, StartMultiplayerGameCommand message) {
         connection.getServer().addMessageListener(new ServerCommandListener());
 
         this.actionQueue.enqueue(() -> {

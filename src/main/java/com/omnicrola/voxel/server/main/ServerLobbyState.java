@@ -6,6 +6,7 @@ import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.network.BroadcastPacketParser;
 import com.omnicrola.voxel.server.network.*;
 
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -76,5 +77,9 @@ public class ServerLobbyState extends AbstractAppState {
     public void cleanup() {
         super.cleanup();
         Logger.getLogger(ServerLobbyState.class.getName()).log(Level.INFO, "Closing server lobby");
+    }
+
+    public void setLobbyKey(UUID lobbyKey) {
+        this.serverLobbyManager.setLobbyKey(lobbyKey);
     }
 }

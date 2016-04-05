@@ -24,6 +24,16 @@ public class ServerJoinLobbyListener extends AbstractMessageListener<JoinLobbyMe
     @Override
     protected void processMessage(HostedConnection connection, JoinLobbyMessage message) {
         LOGGER.log(Level.INFO, "Adding player from " + connection.getAddress());
-        this.serverLobbyManager.addPlayer(new NetworkPlayer(connection));
+        NetworkPlayer networkPlayer = new NetworkPlayer(connection);
+
+        if (messageHasCorrectLobbyKey(message)) {
+            LOGGER.log(Level.INFO, "Player at " + connection.getAddress() + " is host");
+            networkPlayer.setIsHost(true);
+        }
+        this.serverLobbyManager.addPlayer(networkPlayer);
+    }
+
+    private boolean messageHasCorrectLobbyKey(JoinLobbyMessage message) {
+        return this.serverLobbyManager.getLobbyKey().equals(message.getLobbyKey());
     }
 }

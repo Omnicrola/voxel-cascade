@@ -4,6 +4,8 @@ import com.jme3.network.Client;
 import com.jme3.network.Network;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
+import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
+import com.omnicrola.voxel.server.main.ServerLobbyState;
 import com.omnicrola.voxel.server.main.VoxelServerEngine;
 import com.omnicrola.voxel.settings.GameConstants;
 
@@ -13,6 +15,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -22,6 +25,7 @@ import java.util.logging.Logger;
 public class NetworkManager implements INetworkManager {
 
     private static final Logger LOGGER = Logger.getLogger(NetworkManager.class.getName());
+    private static final UUID CLIENT_ID = UUID.randomUUID();
 
     private Client networkClient;
     private VoxelServerEngine voxelServerEngine;
@@ -77,6 +81,8 @@ public class NetworkManager implements INetworkManager {
             this.networkClient.start();
             LOGGER.log(Level.FINE, "Sending handshake message...");
             this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
+            LOGGER.log(Level.FINE, "Sending handshake message...");
+            this.networkClient.send(new JoinLobbyMessage(CLIENT_ID));
             return true;
         } catch (IOException e) {
             LOGGER.log(Level.SEVERE, "Could not connect to server : " + e.getMessage());
@@ -90,6 +96,8 @@ public class NetworkManager implements INetworkManager {
         this.voxelServerEngine = new VoxelServerEngine();
         this.voxelServerEngine.enqueue(() -> {
             LOGGER.log(Level.INFO, "Multiplayer server is running.");
+            ServerLobbyState lobbyState = voxelServerEngine.getStateManager().getState(ServerLobbyState.class);
+            lobbyState.setLobbyKey(CLIENT_ID);
             return null;
         });
         this.voxelServerEngine.start();

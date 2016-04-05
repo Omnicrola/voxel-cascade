@@ -3,6 +3,7 @@ package com.omnicrola.voxel.network.listeners;
 import com.jme3.network.Client;
 import com.omnicrola.voxel.network.AbstractMessageListener;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
+import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
 
 import java.text.MessageFormat;
 import java.util.logging.Level;
@@ -19,6 +20,5 @@ public class ClientHandshakeListener extends AbstractMessageListener<HandshakeMe
     protected void processMessage(Client connection, HandshakeMessage message) {
         String msg = "Connected to server: \'{0}\' connectionId:{1} version:{2}";
         LOGGER.log(Level.INFO, MessageFormat.format(msg, connection.getGameName(), connection.getId(), connection.getVersion()));
-        System.out.println();
     }
 }
