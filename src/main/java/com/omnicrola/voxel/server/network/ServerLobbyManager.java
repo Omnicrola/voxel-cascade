@@ -25,6 +25,7 @@ public class ServerLobbyManager {
     private final List<NetworkPlayer> players;
     private INetworkServer server;
     private UUID lobbyKey = UUID.randomUUID();
+    private int maxPlayers = 4;
 
     public ServerLobbyManager(INetworkServer server) {
         this.server = server;
@@ -77,5 +78,13 @@ public class ServerLobbyManager {
                 .filter(p -> p.isHost())
                 .findFirst()
                 .isPresent();
+    }
+
+    public int getMaxPlayers() {
+        return this.maxPlayers;
+    }
+
+    public int getPlayerCount() {
+        return this.players.size();
     }
 }

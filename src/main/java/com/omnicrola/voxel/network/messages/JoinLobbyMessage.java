@@ -12,6 +12,7 @@ import java.util.UUID;
 public class JoinLobbyMessage extends AbstractMessage {
 
     private String lobbyKey;
+    public boolean joinWasSuccessful;
 
     public JoinLobbyMessage() {
     }

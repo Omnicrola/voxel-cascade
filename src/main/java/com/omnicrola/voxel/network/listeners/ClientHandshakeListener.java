@@ -3,7 +3,6 @@ package com.omnicrola.voxel.network.listeners;
 import com.jme3.network.Client;
 import com.omnicrola.voxel.network.AbstractMessageListener;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
-import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
 
 import java.text.MessageFormat;
 import java.util.logging.Level;

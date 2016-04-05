@@ -32,6 +32,8 @@ public class ServerStartGameListener extends AbstractMessageListener<StartMultip
     protected void processMessage(HostedConnection connection, StartMultiplayerGameCommand message) {
         if (this.serverLobbyManager.isHost(connection)) {
             startGame(connection, message);
+        } else {
+            LOGGER.log(Level.FINE, "Player from " + connection.getAddress() + " tried to start game, but is not the host.");
         }
     }
 

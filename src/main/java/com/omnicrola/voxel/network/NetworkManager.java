@@ -81,7 +81,7 @@ public class NetworkManager implements INetworkManager {
             this.networkClient.start();
             LOGGER.log(Level.FINE, "Sending handshake message...");
             this.networkClient.send(new HandshakeMessage(GameConstants.GAME_VERSION));
-            LOGGER.log(Level.FINE, "Sending handshake message...");
+            LOGGER.log(Level.FINE, "Sending join lobby message...");
             this.networkClient.send(new JoinLobbyMessage(CLIENT_ID));
             return true;
         } catch (IOException e) {

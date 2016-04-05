@@ -23,14 +23,28 @@ public class ServerJoinLobbyListener extends AbstractMessageListener<JoinLobbyMe
 
     @Override
     protected void processMessage(HostedConnection connection, JoinLobbyMessage message) {
-        LOGGER.log(Level.INFO, "Adding player from " + connection.getAddress());
-        NetworkPlayer networkPlayer = new NetworkPlayer(connection);
+        if (lobbyIsNotFull()) {
+            LOGGER.log(Level.INFO, "Adding player from " + connection.getAddress());
+            NetworkPlayer networkPlayer = new NetworkPlayer(connection);
 
-        if (messageHasCorrectLobbyKey(message)) {
-            LOGGER.log(Level.INFO, "Player at " + connection.getAddress() + " is host");
-            networkPlayer.setIsHost(true);
+            if (messageHasCorrectLobbyKey(message)) {
+                LOGGER.log(Level.INFO, "Player at " + connection.getAddress() + " is host");
+                networkPlayer.setIsHost(true);
+            }
+            this.serverLobbyManager.addPlayer(networkPlayer);
+            message.joinWasSuccessful = true;
+            connection.send(message);
+        } else {
+            LOGGER.log(Level.INFO, "Player from " + connection.getAddress() + " could not join, server is full.");
+            message.joinWasSuccessful = false;
+            connection.send(message);
         }
-        this.serverLobbyManager.addPlayer(networkPlayer);
+    }
+
+    private boolean lobbyIsNotFull() {
+        int playerCount = this.serverLobbyManager.getPlayerCount();
+        int maxPlayers = this.serverLobbyManager.getMaxPlayers();
+        return playerCount < maxPlayers;
     }
 
     private boolean messageHasCorrectLobbyKey(JoinLobbyMessage message) {
