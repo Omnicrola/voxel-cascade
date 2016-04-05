@@ -2,6 +2,8 @@ package com.omnicrola.voxel.network.listeners;
 
 import com.jme3.network.Client;
 import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.JoinLobbyEvent;
 import com.omnicrola.voxel.network.AbstractMessageListener;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
 
@@ -21,9 +23,10 @@ public class ClientLobbyJoinMessageListener extends AbstractMessageListener<Join
 
     @Override
     protected void processMessage(Client connection, JoinLobbyMessage message) {
-        if(message.joinWasSuccessful){
+        if (message.joinWasSuccessful) {
+            VoxelEventBus.INSTANCE().post(JoinLobbyEvent.fail());
         } else {
-            
+            VoxelEventBus.INSTANCE().post(JoinLobbyEvent.success());
         }
     }
 }
