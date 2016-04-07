@@ -30,7 +30,7 @@ public class ServerLobbyState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.serverEngine = (VoxelServerEngine) app;
-        setEnabled(false);
+        setEnabled(true);
     }
 
     @Override

@@ -22,7 +22,9 @@ public class ServerStartGameListener extends AbstractMessageListener<StartMultip
     private ServerLobbyState serverLobbyState;
     private IActionQueue actionQueue;
 
-    public ServerStartGameListener(ServerLobbyManager serverLobbyManager, ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
+    public ServerStartGameListener(ServerLobbyManager serverLobbyManager,
+                                   ServerLobbyState serverLobbyState,
+                                   IActionQueue actionQueue) {
         this.serverLobbyManager = serverLobbyManager;
         this.serverLobbyState = serverLobbyState;
         this.actionQueue = actionQueue;

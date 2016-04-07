@@ -11,6 +11,7 @@ import com.omnicrola.voxel.server.main.ServerLobbyState;
 import com.omnicrola.voxel.server.network.listeners.ServerHandshakeListener;
 import com.omnicrola.voxel.server.network.listeners.ServerJoinLobbyListener;
 import com.omnicrola.voxel.server.network.listeners.ServerStartGameListener;
+import com.sun.istack.internal.NotNull;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,7 +38,7 @@ public class ServerLobbyManager {
         this.players.add(networkPlayer);
     }
 
-    public void startAcceptingPlayers(ServerLobbyState serverLobbyState, IActionQueue actionQueue) {
+    public void startAcceptingPlayers(@NotNull ServerLobbyState serverLobbyState, @NotNull IActionQueue actionQueue) {
         this.server.start();
         addMessageListeners(serverLobbyState, actionQueue);
     }
@@ -68,10 +69,10 @@ public class ServerLobbyManager {
         return this.lobbyKey;
     }
 
-    public boolean isHost(HostedConnection connection) {
+    public boolean isHost(@NotNull HostedConnection connection) {
         return this.players
                 .stream()
-                .filter(p -> p.getConnection().equals(connection))
+                .filter(p -> p.getConnection().getId() == connection.getId())
                 .filter(p -> p.isHost())
                 .findFirst()
                 .isPresent();
