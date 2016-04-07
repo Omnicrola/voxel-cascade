@@ -12,13 +12,10 @@ public interface INetworkManager {
 
     void stopListeningForServers();
 
-    void addObserver(INetworkObserver networkObserver);
-
     void startListeningForServers();
 
     boolean joinLobby(VoxelGameServer multiplayerServer);
 
     VoxelGameServer getCurrentServer();
 
-    void removeObserver(INetworkObserver observer);
 }

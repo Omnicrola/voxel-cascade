@@ -4,7 +4,6 @@ import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.MultiplayerBrowserController;
-import com.omnicrola.voxel.ui.controllers.observers.AvailableServerChangeObserver;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
@@ -20,7 +19,6 @@ public class MultiplayerBrowserUiBuilder extends AbstractGuiBuilder {
     public void build(UiAdapter uiAdapter) {
         String screenName = UiScreen.MULTIPLAYER_BROWSE.toString();
         MultiplayerBrowserController multiplayerController = new MultiplayerBrowserController(uiAdapter);
-        uiAdapter.addNetworkObserver(new AvailableServerChangeObserver(multiplayerController));
 
         uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(multiplayerController);

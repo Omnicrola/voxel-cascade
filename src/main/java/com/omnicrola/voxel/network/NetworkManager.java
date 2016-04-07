@@ -3,6 +3,9 @@ package com.omnicrola.voxel.network;
 import com.jme3.network.Client;
 import com.jme3.network.Network;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.network.events.MultiplayerLobbyJoinEvent;
+import com.omnicrola.voxel.network.events.MultiplayerServerListChangeEvent;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
 import com.omnicrola.voxel.server.main.ServerLobbyState;
@@ -12,7 +15,6 @@ import com.omnicrola.voxel.settings.GameConstants;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
@@ -34,7 +36,6 @@ public class NetworkManager implements INetworkManager {
     private NetworkCommandQueue networkCommandQueue;
     private MultiplayerDiscovery multiplayerDiscovery;
     private WorldCommandProcessor commandProcessor;
-    private List<INetworkObserver> observers;
     private VoxelGameServer currentGame;
 
     public NetworkManager(ClientListenerBuilder clientListenerBuilder,
@@ -44,7 +45,6 @@ public class NetworkManager implements INetworkManager {
         this.clientListenerBuilder = clientListenerBuilder;
         this.networkCommandQueue = networkCommandQueue;
         this.multiplayerDiscovery = multiplayerDiscovery;
-        this.observers = new ArrayList<>();
     }
 
     @Override
@@ -60,11 +60,12 @@ public class NetworkManager implements INetworkManager {
     public boolean joinLobby(VoxelGameServer multiplayerServer) {
         if (connectTo(multiplayerServer.getAddress())) {
             this.currentGame = multiplayerServer;
-            this.observers.forEach(o -> o.multiplayerGameChanged(multiplayerServer));
+            emitLobbyJoinEvent(multiplayerServer);
             return true;
         }
         return false;
     }
+
 
     @Override
     public VoxelGameServer getCurrentServer() {
@@ -137,9 +138,17 @@ public class NetworkManager implements INetworkManager {
             this.networkCommandQueue.sendMessages(this.networkClient);
         }
         if (this.multiplayerDiscovery.hasNewServers()) {
-            List<VoxelGameServer> multiplayerGames = Collections.unmodifiableList(multiplayerDiscovery.getServers());
-            this.observers.forEach(o -> o.availableServersChanged(multiplayerGames));
+            emitServerUpdateEvent();
         }
+    }
+
+    private void emitServerUpdateEvent() {
+        List<VoxelGameServer> multiplayerGames = Collections.unmodifiableList(multiplayerDiscovery.getServers());
+        VoxelEventBus.INSTANCE().post(new MultiplayerServerListChangeEvent(multiplayerGames));
+    }
+
+    private void emitLobbyJoinEvent(VoxelGameServer multiplayerServer) {
+        VoxelEventBus.INSTANCE().post(new MultiplayerLobbyJoinEvent(multiplayerServer));
     }
 
     public void setCommandProcessor(WorldCommandProcessor commandProcessor) {
@@ -156,13 +165,4 @@ public class NetworkManager implements INetworkManager {
         this.multiplayerDiscovery.stopSearching();
     }
 
-    @Override
-    public void addObserver(INetworkObserver networkObserver) {
-        this.observers.add(networkObserver);
-    }
-
-    @Override
-    public void removeObserver(INetworkObserver observer) {
-        this.observers.remove(observer);
-    }
 }

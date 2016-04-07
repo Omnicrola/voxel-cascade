@@ -6,7 +6,6 @@ import com.omnicrola.voxel.commands.IWorldCommand;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.eventBus.events.CurrentLevelChangeEvent;
 import com.omnicrola.voxel.network.INetworkManager;
-import com.omnicrola.voxel.network.INetworkObserver;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.settings.DisplaySettingsHandler;
 import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
@@ -57,14 +56,6 @@ public class UiAdapter {
 
     public ISpatialDecorator getSpatialDecorator() {
         return this.spatialDecorator;
-    }
-
-    public void addNetworkObserver(INetworkObserver networkObserver) {
-        this.networkManager.addObserver(networkObserver);
-    }
-
-    public void removeNetworkObserver(INetworkObserver observer) {
-        this.networkManager.removeObserver(observer);
     }
 
     public VoxelGameServer getCurrentServer() {

@@ -6,6 +6,7 @@ import com.omnicrola.voxel.commands.StopBrowsingForMultiplayerGameCommand;
 import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.eventBus.events.JoinLobbyEvent;
 import com.omnicrola.voxel.network.VoxelGameServer;
+import com.omnicrola.voxel.network.events.MultiplayerServerListChangeEvent;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
@@ -68,7 +69,6 @@ public class MultiplayerBrowserController extends AbstractScreenController {
     protected void screenOpen() {
         ListBox<VoxelGameServer> serverDropdown = ui().getListBox(UiToken.Multiplayer.Browse.MULTIPLAYER_SERVER_LIST);
         serverDropdown.removeAllItems(serverDropdown.getItems());
-        serverDropdown.addItem(VoxelGameServer.EMPTY);
         VoxelEventBus.INSTANCE().register(this);
     }
 
@@ -83,10 +83,12 @@ public class MultiplayerBrowserController extends AbstractScreenController {
         ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_PLAYERS).setText("Players: " + this.currentlySelectedServer.getPlayers());
     }
 
-    public void updateServerList(List<VoxelGameServer> newServers) {
+    @Subscribe
+    public void updateServerList(MultiplayerServerListChangeEvent event) {
+        List<VoxelGameServer> multiplayerServers = event.getMultiplayerGames();
         ListBox<VoxelGameServer> serverDropdown = ui().getListBox(UiToken.Multiplayer.Browse.MULTIPLAYER_SERVER_LIST);
         serverDropdown.removeAllItems(this.servers);
-        serverDropdown.addAllItems(newServers);
-        this.servers = newServers;
+        serverDropdown.addAllItems(multiplayerServers);
+        this.servers = multiplayerServers;
     }
 }
