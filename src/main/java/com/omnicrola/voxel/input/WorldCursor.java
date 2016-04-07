@@ -10,6 +10,9 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.IDisposable;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.SelectionChangeEvent;
+import com.omnicrola.voxel.eventBus.events.SelectionUpdateEvent;
 import com.omnicrola.voxel.jme.wrappers.IGameInput;
 import com.omnicrola.voxel.physics.CollisionDistanceComparator;
 import com.omnicrola.voxel.settings.EntityDataKeys;
@@ -17,7 +20,6 @@ import com.omnicrola.voxel.ui.select.ISelectedUnit;
 import com.omnicrola.voxel.util.VoxelUtil;
 import com.omnicrola.voxel.world.IWorldNode;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -32,7 +34,6 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     private ICursorStrategy cursorStrategy;
     private ICursorStrategy defaultCursorStrategy;
     private SelectionGroup currentSelection;
-    private List<IUserSelectionObserver> observers;
     private SelectionFrustrumFactory selectionFrustrumFactory;
     private IWorldNode worldRootNode;
 
@@ -42,21 +43,12 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
                        IWorldNode worldRootNode) {
         this.selectionFrustrumFactory = selectionFrustrumFactory;
         this.worldRootNode = worldRootNode;
-        this.observers = new ArrayList<>();
         this.inputManager = inputManager;
         this.camera = camera;
         this.currentSelection = new SelectionGroup();
         this.collisionDistanceComparator = new CollisionDistanceComparator();
         this.defaultCursorStrategy = NullCursorStrategy.INSTANCE;
         clearCursorStrategy();
-    }
-
-    public void addSelectionObserver(IUserSelectionObserver selectionObserver) {
-        this.observers.add(selectionObserver);
-    }
-
-    public void removeSelectionObserver(IUserSelectionObserver userInteractionObserver) {
-        this.observers.remove(userInteractionObserver);
     }
 
     @Override
@@ -119,11 +111,11 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     }
 
     private void notifySelectionChanged() {
-        this.observers.forEach(o -> o.notifyNewSelection(this.currentSelection));
+        VoxelEventBus.INSTANCE().post(new SelectionChangeEvent(this.currentSelection));
     }
 
     private void notifySelectionUpdated(List<ISelectedUnit> removedUnits) {
-        this.observers.forEach(o -> o.notifySelectionUpdated(this.currentSelection, removedUnits));
+        VoxelEventBus.INSTANCE().post(new SelectionUpdateEvent(removedUnits));
     }
 
     public Optional<CollisionResult> getUnitUnderCursor() {
@@ -170,7 +162,7 @@ public class WorldCursor extends Node implements IWorldCursor, IDisposable {
     }
 
     public void dispose() {
-        this.observers.clear();
+        VoxelEventBus.INSTANCE().unregister(this);
     }
 
     public Vec3i getSnappedLocation() {

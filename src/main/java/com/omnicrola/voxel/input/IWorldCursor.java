@@ -36,8 +36,6 @@ public interface IWorldCursor {
 
     void setVisible(boolean isVisible);
 
-    void addSelectionObserver(IUserSelectionObserver observer);
-
     void attachTo(Node node);
 
     SelectionGroup getCurrentSelection();

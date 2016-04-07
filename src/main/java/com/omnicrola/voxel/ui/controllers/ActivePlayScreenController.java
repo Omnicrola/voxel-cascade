@@ -1,15 +1,18 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.google.common.eventbus.Subscribe;
 import com.omnicrola.voxel.data.TeamData;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.LevelStatisticChangeEvent;
+import com.omnicrola.voxel.eventBus.events.SelectionChangeEvent;
+import com.omnicrola.voxel.eventBus.events.SelectionUpdateEvent;
 import com.omnicrola.voxel.input.CommandGroup;
 import com.omnicrola.voxel.input.SelectionGroup;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.builders.UiConstants;
-import com.omnicrola.voxel.ui.controllers.observers.UiCurrentSelectionObserver;
-import com.omnicrola.voxel.ui.controllers.observers.UiLevelObserver;
 import com.omnicrola.voxel.ui.decorations.ISpatialDecorator;
 import com.omnicrola.voxel.ui.nifty.IUiButton;
 import com.omnicrola.voxel.ui.nifty.IUiElement;
@@ -39,18 +42,16 @@ public class ActivePlayScreenController extends AbstractScreenController {
     @Override
     public void bind(Nifty nifty, Screen screen) {
         super.bind(nifty, screen);
-        this.uiAdapter.addUnitSelectionObserver(new UiCurrentSelectionObserver(this));
-        this.uiAdapter.addCurrentLevelObserver(new UiLevelObserver(this));
     }
 
     @Override
     protected void screenOpen() {
-
+        VoxelEventBus.INSTANCE().register(this);
     }
 
     @Override
     protected void screenClose() {
-
+        VoxelEventBus.INSTANCE().unregister(this);
     }
 
     @NiftyEventSubscriber(id = "unit-action-1")
@@ -83,6 +84,42 @@ public class ActivePlayScreenController extends AbstractScreenController {
         triggerCommandGroup(6);
     }
 
+
+    @Subscribe
+    public void playerSelectionChanged(SelectionChangeEvent event) {
+        SelectionGroup currentSelection = event.getSelection();
+        removeHealthBarsFromSelection();
+        this.currentSelection = currentSelection;
+        updateSelectionList();
+        addHealthbarsToSelection();
+        setCommandLabels(this.currentSelection.getAvailableCommands());
+    }
+
+    @Subscribe
+    public void updateStatistics(LevelStatisticChangeEvent event) {
+        TeamData playerTeam = event.getPlayerTeam();
+        float resources = event.getResources(playerTeam);
+        IUiElement resourceLabel = ui().getElement(UiToken.Play.LABEL_RESOURCE_AMOUNT);
+        resourceLabel.setText(String.valueOf((int) resources));
+    }
+
+    @Subscribe
+    public void currentSelectionUpdated(SelectionUpdateEvent event) {
+        updateSelectionList();
+        ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
+        event.getRemovedUnits().forEach(decorator::removeSelectionDecorations);
+        setCommandLabels(this.currentSelection.getAvailableCommands());
+    }
+
+    @Deprecated
+    public void selectionHasUpdated(List<ISelectedUnit> removedUnits) {
+        updateSelectionList();
+        ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
+        removedUnits.forEach(decorator::removeSelectionDecorations);
+        setCommandLabels(this.currentSelection.getAvailableCommands());
+    }
+
+    @Deprecated
     public void setCurrentSelection(SelectionGroup currentSelection) {
         removeHealthBarsFromSelection();
         this.currentSelection = currentSelection;
@@ -90,6 +127,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
         addHealthbarsToSelection();
         setCommandLabels(this.currentSelection.getAvailableCommands());
     }
+
 
     private void removeHealthBarsFromSelection() {
         if (this.currentSelection != null) {
@@ -103,6 +141,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
         this.currentSelection.getSelections().forEach(u -> decorator.addSelectionDecorations(u));
     }
 
+    @Deprecated
     public void updateStats(LevelState currentLevel) {
         TeamData playerTeam = currentLevel.getPlayerTeam();
         float resources = currentLevel.getResources(playerTeam);
@@ -160,10 +199,4 @@ public class ActivePlayScreenController extends AbstractScreenController {
         }
     }
 
-    public void selectionHasUpdated(List<ISelectedUnit> removedUnits) {
-        updateSelectionList();
-        ISpatialDecorator decorator = this.uiAdapter.getSpatialDecorator();
-        removedUnits.forEach(decorator::removeSelectionDecorations);
-        setCommandLabels(this.currentSelection.getAvailableCommands());
-    }
 }

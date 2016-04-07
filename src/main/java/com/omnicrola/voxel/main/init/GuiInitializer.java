@@ -51,8 +51,6 @@ public class GuiInitializer {
         DisplaySettingsHandler displaySettingsHandler = new DisplaySettingsHandler(appSettings);
         UiAdapter uiAdapter = new UiAdapter(
                 niftyGui,
-                levelManager,
-                worldCursor,
                 worldCommandProcessor,
                 spatialDecorator,
                 networkManager,
