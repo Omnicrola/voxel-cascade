@@ -1,8 +1,9 @@
 package com.omnicrola.voxel.data.level;
 
 import com.omnicrola.voxel.IDisposable;
-import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.LevelStatisticChangeEvent;
 import com.omnicrola.voxel.main.VoxelException;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
@@ -18,13 +19,11 @@ public class LevelState implements IDisposable {
     private final ArrayList<TeamData> teams;
     private final LevelStatistics statistics;
     private final HashMap<TeamData, Float> resources;
-    private final ArrayList<ILevelObserver> observers;
     private String levelName;
     private boolean hasStarted;
 
     public LevelState(String levelName) {
         this.teams = new ArrayList<>();
-        this.observers = new ArrayList<>();
         this.levelName = levelName;
         this.statistics = new LevelStatistics();
         this.resources = new HashMap<>();
@@ -61,7 +60,7 @@ public class LevelState implements IDisposable {
 
     @Override
     public void dispose() {
-        this.observers.clear();
+
     }
 
     public List<TeamStatistics> getTeamStatistics() {
@@ -83,7 +82,7 @@ public class LevelState implements IDisposable {
     public void addResouces(TeamData teamData, float additionalResources) {
         this.statistics.addResources(teamData, additionalResources);
         modifyResources(teamData, additionalResources);
-        notifyObservers();
+        emitStatisticsChangeEvent();
     }
 
     private void modifyResources(TeamData teamData, float amount) {
@@ -94,23 +93,15 @@ public class LevelState implements IDisposable {
     public void removeResources(TeamData teamData, float resourcesUsed) {
         this.statistics.useResources(teamData, resourcesUsed);
         modifyResources(teamData, -resourcesUsed);
-        notifyObservers();
+        emitStatisticsChangeEvent();
     }
 
     public float getResources(TeamData playerTeam) {
         return this.resources.get(playerTeam);
     }
 
-    private void notifyObservers() {
-        this.observers.forEach(o -> o.levelUpdated(this));
-    }
-
-    public void addObserver(ILevelObserver levelObserver) {
-        this.observers.add(levelObserver);
-    }
-
-    public void removeObserver(ILevelObserver observer) {
-        this.observers.remove(observer);
+    private void emitStatisticsChangeEvent() {
+        VoxelEventBus.INSTANCE().post(new LevelStatisticChangeEvent(this));
     }
 
     public List<TeamData> getAllTeams() {

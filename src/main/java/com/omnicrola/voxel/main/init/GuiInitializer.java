@@ -3,6 +3,7 @@ package com.omnicrola.voxel.main.init;
 import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.main.init.states.InitializationContainer;
 import com.omnicrola.voxel.network.NetworkManager;
@@ -55,6 +56,7 @@ public class GuiInitializer {
                 spatialDecorator,
                 networkManager,
                 displaySettingsHandler);
+        VoxelEventBus.INSTANCE().register(uiAdapter);
         return uiAdapter;
     }
 

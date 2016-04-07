@@ -1,9 +1,11 @@
 package com.omnicrola.voxel.data;
 
 import com.omnicrola.voxel.data.level.*;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.CurrentLevelChangeEvent;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
+import com.sun.istack.internal.NotNull;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.logging.Level;
@@ -18,45 +20,38 @@ public class LevelManager implements ILevelManager {
     private final LevelDefinitionRepository levelDefinitions;
     private LevelLoadingAdapter levelLoadingAdapter;
     private LevelState currentLevelState;
-    private ArrayList<ILevelChangeObserver> observers;
 
-    public LevelManager(LevelDefinitionRepository levelDefinitions, LevelLoadingAdapter levelLoadingAdapter) {
+    public LevelManager(@NotNull LevelDefinitionRepository levelDefinitions,
+                        @NotNull LevelLoadingAdapter levelLoadingAdapter) {
         this.levelDefinitions = levelDefinitions;
         this.levelLoadingAdapter = levelLoadingAdapter;
-        this.observers = new ArrayList<>();
-
     }
 
     @Override
-    public void loadLevel(UUID levelId) {
+    public void loadLevel(@NotNull UUID levelId) {
         LOGGER.log(Level.INFO, "Loading level : " + levelId);
         LevelDefinition levelDefinition = levelDefinitions.getLevel(levelId);
         loadLevel(levelDefinition);
     }
 
-    public void loadLevel(LevelDefinition newLevelDefinition) {
+    public void loadLevel(@NotNull LevelDefinition newLevelDefinition) {
         LOGGER.log(Level.INFO, "Loading level : " + newLevelDefinition.getName());
         if (this.currentLevelState != null) {
             this.currentLevelState.dispose();
         }
         LevelStateLoader levelStateLoader = this.levelLoadingAdapter.getLoader();
         this.currentLevelState = levelStateLoader.create(newLevelDefinition);
-        notifyObserversOfLevelChange();
+        emitLevelChangeEvent();
     }
 
 
-    private void notifyObserversOfLevelChange() {
-        this.observers.forEach(o -> o.levelChanged(this.currentLevelState));
+    private void emitLevelChangeEvent() {
+        VoxelEventBus.INSTANCE().post(new CurrentLevelChangeEvent(this.currentLevelState));
     }
 
     @Override
     public LevelState getCurrentLevel() {
         return this.currentLevelState;
-    }
-
-    @Override
-    public void addObserver(ILevelChangeObserver levelChangeObserver) {
-        this.observers.add(levelChangeObserver);
     }
 
     public List<TeamStatistics> getTeamStatistics() {

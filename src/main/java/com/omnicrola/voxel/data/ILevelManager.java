@@ -12,8 +12,6 @@ import java.util.UUID;
 public interface ILevelManager {
     LevelState getCurrentLevel();
 
-    void addObserver(ILevelChangeObserver levelChangeObserver);
-
     void loadLevel(UUID levelUuid);
 
     List<TeamStatistics> getTeamStatistics();

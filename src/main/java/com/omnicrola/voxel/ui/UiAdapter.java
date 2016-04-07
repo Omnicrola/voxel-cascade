@@ -1,9 +1,10 @@
 package com.omnicrola.voxel.ui;
 
+import com.google.common.eventbus.Subscribe;
 import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.commands.IWorldCommand;
-import com.omnicrola.voxel.data.ILevelObserver;
 import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.eventBus.events.CurrentLevelChangeEvent;
 import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.network.INetworkObserver;
 import com.omnicrola.voxel.network.VoxelGameServer;
@@ -13,14 +14,10 @@ import com.omnicrola.voxel.ui.decorations.SpatialDecorator;
 import de.lessvoid.nifty.Nifty;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 
-import java.util.ArrayList;
-
 /**
  * Created by Eric on 2/26/2016.
  */
 public class UiAdapter {
-
-    private final ArrayList<ILevelObserver> levelObservers;
 
     private final Nifty niftyGui;
     private final ICommandProcessor commandProcessor;
@@ -39,12 +36,15 @@ public class UiAdapter {
         this.spatialDecorator = spatialDecorator;
         this.networkManager = networkManager;
         this.displaySettingsHandler = displaySettingsHandler;
-
-        this.levelObservers = new ArrayList<>();
     }
 
     public void addScreen(String screenName, ScreenBuilder screenBuilder) {
         niftyGui.addScreen(screenName, screenBuilder.build(niftyGui));
+    }
+
+    @Subscribe
+    public void updateCurrentLevel(CurrentLevelChangeEvent event){
+        this.currentLevel = event.getCurrentLevelState();
     }
 
     public LevelState getCurrentLevel() {
