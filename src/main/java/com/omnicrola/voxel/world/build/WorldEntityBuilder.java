@@ -89,4 +89,8 @@ public class WorldEntityBuilder {
     public StructureBuilder getStructureBuilder() {
         return structureBuilder;
     }
+
+    public UnitBuilder getUnitBuilder() {
+        return unitBuilder;
+    }
 }

@@ -2,6 +2,7 @@ package com.omnicrola.voxel.data.level;
 
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.entities.Structure;
+import com.omnicrola.voxel.entities.Unit;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +14,7 @@ public class LevelData {
     public final LevelDefinition levelDefinition;
     public final UnitDefinitionRepository unitDefinitionRepository;
     public List<Structure> structures = new ArrayList<>();
+    public List<Unit> units = new ArrayList<>();
 
     public LevelData(LevelDefinition levelDefinition, UnitDefinitionRepository unitDefinitionRepository) {
         this.levelDefinition = levelDefinition;
