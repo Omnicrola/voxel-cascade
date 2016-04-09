@@ -49,15 +49,15 @@ public class AsyncLevelLoader {
 
     public void startLoading() {
         this.threadPool = Executors.newFixedThreadPool(4);
-        this.levelData = new LevelData(unitDefinitionRepository);
         LevelDefinition levelDefinition = levelDefinitionRepository.getLevel(this.levelToLoad);
+        this.levelData = new LevelData(levelDefinition, unitDefinitionRepository);
         createLoadingTasks(levelDefinition);
         createFinalTasks(levelDefinition);
     }
 
     private void createLoadingTasks(LevelDefinition levelDefinition) {
         this.taskFutures = this.parallelTaskFactories.stream()
-                .map(f -> f.build(levelDefinition, levelData))
+                .map(f -> f.build(levelData))
                 .map(t -> threadPool.submit(t))
                 .collect(Collectors.toList());
     }
@@ -65,7 +65,7 @@ public class AsyncLevelLoader {
     private void createFinalTasks(LevelDefinition levelDefinition) {
         this.finalTasks = this.finalTaskFactories
                 .stream()
-                .map(f -> f.build(levelDefinition, levelData))
+                .map(f -> f.build(levelData))
                 .collect(Collectors.toList());
     }
 

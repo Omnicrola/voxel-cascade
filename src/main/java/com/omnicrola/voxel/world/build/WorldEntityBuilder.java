@@ -85,4 +85,8 @@ public class WorldEntityBuilder {
     public float getStructureCost(int globalId) {
         return getStructureDefinition(globalId).getBuildCost();
     }
+
+    public StructureBuilder getStructureBuilder() {
+        return structureBuilder;
+    }
 }

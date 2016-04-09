@@ -9,5 +9,5 @@ import java.util.concurrent.Callable;
  * Created by Eric on 4/8/2016.
  */
 public interface ILoadingTaskFactory {
-    Callable<LevelData> build(LevelDefinition levelDefinition, LevelData levelData);
+    Callable<LevelData> build(LevelData levelData);
 }

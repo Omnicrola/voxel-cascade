@@ -2,7 +2,6 @@ package com.omnicrola.voxel.data.level.load;
 
 import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.data.level.LevelData;
-import com.omnicrola.voxel.data.level.LevelDefinition;
 
 import java.util.concurrent.Callable;
 
@@ -17,7 +16,7 @@ public class PreloadAudioTaskFactory implements ILoadingTaskFactory {
     }
 
     @Override
-    public Callable<LevelData> build(LevelDefinition levelDefinition, LevelData levelData) {
-        return new PreloadAudioTask(audioRepository, levelDefinition, levelData);
+    public Callable<LevelData> build(LevelData levelData) {
+        return new PreloadAudioTask(audioRepository, levelData);
     }
 }

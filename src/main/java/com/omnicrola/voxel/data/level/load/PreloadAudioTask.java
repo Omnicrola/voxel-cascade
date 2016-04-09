@@ -2,7 +2,6 @@ package com.omnicrola.voxel.data.level.load;
 
 import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.data.level.LevelData;
-import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.data.units.AudioDefinition;
 import com.omnicrola.voxel.data.units.EntityAudioDefinition;
@@ -15,20 +14,18 @@ import java.util.stream.Stream;
  * Created by Eric on 4/8/2016.
  */
 public class PreloadAudioTask extends AbstractLoadTask {
+
     private final AudioRepository audioRepository;
-    private final LevelDefinition levelDefinition;
 
     public PreloadAudioTask(AudioRepository audioRepository,
-                            LevelDefinition levelDefinition,
                             LevelData levelData) {
         super(levelData);
         this.audioRepository = audioRepository;
-        this.levelDefinition = levelDefinition;
     }
 
     @Override
     protected void performLoading() {
-        this.levelDefinition.getUnitPlacements().stream()
+        this.levelData.levelDefinition.getUnitPlacements().stream()
                 .map(placement -> getUnit(placement))
                 .map(unit -> unit.getAudioDefinition())
                 .flatMap(audioDefinition -> getSounds(audioDefinition))
