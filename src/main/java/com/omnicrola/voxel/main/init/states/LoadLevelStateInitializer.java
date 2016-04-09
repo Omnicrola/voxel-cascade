@@ -9,7 +9,6 @@ import com.omnicrola.voxel.data.level.load.*;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.states.LoadLevelState;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.world.build.StructureBuilder;
 import com.omnicrola.voxel.world.build.UnitBuilder;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
@@ -57,6 +56,7 @@ public class LoadLevelStateInitializer implements IStateInitializer {
 
     private ArrayList<ILoadingTaskFactory> createFinalTaskFactories() {
         ArrayList<ILoadingTaskFactory> taskFactories = new ArrayList<>();
+        taskFactories.add(new AdjustUnitPlacementTaskFactory());
         return taskFactories;
     }
 }
