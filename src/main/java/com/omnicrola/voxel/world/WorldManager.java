@@ -11,7 +11,7 @@ import com.omnicrola.voxel.entities.Structure;
 import com.omnicrola.voxel.entities.Unit;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.settings.EntityDataKeys;
-import com.omnicrola.voxel.terrain.data.VoxelChunk;
+import com.omnicrola.voxel.terrain.VoxelChunkHandler;
 import com.omnicrola.voxel.util.VoxelUtil;
 
 import java.util.ArrayList;
@@ -69,10 +69,6 @@ public class WorldManager {
         CollisionResults collisionResults = new CollisionResults();
         this.worldNode.getUnitsNode().collideWith(new BoundingSphere(scanRadius, position), collisionResults);
         return VoxelUtil.convertToStream(collisionResults);
-    }
-
-    public void addTerrainChunk(VoxelChunk chunk) {
-        this.worldNode.getTerrainNode().attachChild(chunk);
     }
 
     public void removeSpatial(Spatial spatial) {
@@ -148,5 +144,9 @@ public class WorldManager {
 
     public IWorldNode getWorldNode() {
         return worldNode;
+    }
+
+    public void addTerrain(VoxelChunkHandler terrain) {
+        this.worldNode.getTerrainNode().attachChild(terrain);
     }
 }

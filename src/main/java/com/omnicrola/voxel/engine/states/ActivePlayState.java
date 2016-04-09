@@ -135,6 +135,8 @@ public class ActivePlayState extends AbstractAppState {
 
     public void setLevelData(LevelData levelData) {
         this.terrainManager.setCurrentHandler(levelData.terrain);
+        this.worldManager.addTerrain(levelData.terrain);
+
         levelData.structures.forEach(s -> this.worldManager.addStructure(s));
         levelData.units.forEach(u -> this.worldManager.addUnit(u));
         LevelState levelState = new LevelState(levelData.levelDefinition.getName());
