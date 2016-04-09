@@ -1,10 +1,7 @@
 package com.omnicrola.voxel.commands;
 
 import com.jme3.network.serializing.Serializable;
-import com.omnicrola.voxel.engine.states.ActivePlayState;
-import com.omnicrola.voxel.engine.states.GameOverState;
-import com.omnicrola.voxel.engine.states.ShadowState;
-import com.omnicrola.voxel.ui.UiScreen;
+import com.omnicrola.voxel.engine.states.LoadLevelState;
 import com.omnicrola.voxel.world.CommandPackage;
 
 import java.util.UUID;
@@ -26,13 +23,16 @@ public class StartMultiplayerGameCommand extends AbstractWorldCommand {
 
     @Override
     public void execute(CommandPackage commandPackage) {
+        LoadLevelState loadLevelState = commandPackage.getState(LoadLevelState.class);
+        loadLevelState.setLevelToLoad(UUID.fromString(this.levelUuid));
+        loadLevelState.setEnabled(true);
 
-        commandPackage.enableState(ActivePlayState.class);
-        commandPackage.enableState(ShadowState.class);
-        commandPackage.disableState(GameOverState.class);
+//        commandPackage.enableState(ActivePlayState.class);
+//        commandPackage.enableState(ShadowState.class);
+//        commandPackage.disableState(GameOverState.class);
 
-        commandPackage.getLevelManager().loadLevel(UUID.fromString(this.levelUuid));
-        commandPackage.getUiManager().changeScreen(UiScreen.ACTIVE_PLAY);
+//        commandPackage.getLevelManager().loadLevel(UUID.fromString(this.levelUuid));
+//        commandPackage.getUiManager().changeScreen(UiScreen.ACTIVE_PLAY);
     }
 
 }

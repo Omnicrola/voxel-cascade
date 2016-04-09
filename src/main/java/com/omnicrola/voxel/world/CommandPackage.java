@@ -99,7 +99,12 @@ public class CommandPackage {
     public void enableState(Class<? extends AppState> stateClass) {
         this.stateManager.getState(stateClass).setEnabled(true);
     }
+
     public void disableState(Class<? extends AppState> stateClass) {
         this.stateManager.getState(stateClass).setEnabled(false);
+    }
+
+    public <T extends AppState> T getState(Class<T> stateClass) {
+        return this.stateManager.getState(stateClass);
     }
 }

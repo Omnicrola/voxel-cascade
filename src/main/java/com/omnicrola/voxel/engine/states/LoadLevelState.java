@@ -1,6 +1,8 @@
 package com.omnicrola.voxel.engine.states;
 
+import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
+import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.data.level.load.AsyncLevelLoader;
 
@@ -15,6 +17,7 @@ public class LoadLevelState extends AbstractAppState {
     private boolean loadNeedsStarted;
     private UUID levelToLoad;
     private AsyncLevelLoader asyncLevelLoader;
+    private AppStateManager stateManager;
 
     public LoadLevelState(AsyncLevelLoader asyncLevelLoader) {
         this.asyncLevelLoader = asyncLevelLoader;
@@ -43,8 +46,17 @@ public class LoadLevelState extends AbstractAppState {
         float percentComplete = this.asyncLevelLoader.updateLoadStatus();
         System.out.println("Loading ... " + percentComplete);
         if (this.asyncLevelLoader.isFinished()) {
-            LevelData levelData = this.asyncLevelLoader.getLevelData();
+            transitionToActivePlay();
         }
+    }
+
+    private void transitionToActivePlay() {
+        LevelData levelData = this.asyncLevelLoader.getLevelData();
+        this.setEnabled(false);
+        ActivePlayState activePlayState = this.stateManager.getState(ActivePlayState.class);
+        activePlayState.setEnabled(true);
+        this.stateManager.getState(ShadowState.class).setEnabled(true);
+        this.stateManager.getState(GameOverState.class).setEnabled(false);
     }
 
     public void setLevelToLoad(UUID levelToLoad) {
@@ -69,5 +81,11 @@ public class LoadLevelState extends AbstractAppState {
         } else {
             disable();
         }
+    }
+
+    @Override
+    public void initialize(AppStateManager stateManager, Application app) {
+        super.initialize(stateManager, app);
+        this.stateManager = stateManager;
     }
 }

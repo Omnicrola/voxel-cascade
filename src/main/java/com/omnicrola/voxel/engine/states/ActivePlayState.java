@@ -17,6 +17,7 @@ import com.omnicrola.voxel.input.listeners.*;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
+import com.omnicrola.voxel.ui.UiScreen;
 
 import java.util.ArrayList;
 
@@ -80,6 +81,7 @@ public class ActivePlayState extends AbstractAppState {
         if (enabled) {
             this.inputs.forEach(t -> addListener(t));
             this.uiManager.bindInput();
+            this.uiManager.changeScreen(UiScreen.ACTIVE_PLAY);
         } else {
             this.inputs.forEach(t -> removeListener(t));
             this.uiManager.unbindInput();

@@ -70,7 +70,9 @@ public class AsyncLevelLoader {
     }
 
     public void stop() {
-        this.threadPool.shutdown();
+        if (this.threadPool != null) {
+            this.threadPool.shutdown();
+        }
     }
 
     public boolean isFinished() {
