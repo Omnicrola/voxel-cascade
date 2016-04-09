@@ -44,7 +44,6 @@ public class LoadLevelState extends AbstractAppState {
 
     private void updateLoadStatus() {
         float percentComplete = this.asyncLevelLoader.updateLoadStatus();
-        System.out.println("Loading ... " + percentComplete);
         if (this.asyncLevelLoader.isFinished()) {
             transitionToActivePlay();
         }
@@ -56,6 +55,7 @@ public class LoadLevelState extends AbstractAppState {
         ActivePlayState activePlayState = this.stateManager.getState(ActivePlayState.class);
         activePlayState.setLevelData(levelData);
         activePlayState.setEnabled(true);
+
         this.stateManager.getState(ShadowState.class).setEnabled(true);
         this.stateManager.getState(GameOverState.class).setEnabled(false);
     }

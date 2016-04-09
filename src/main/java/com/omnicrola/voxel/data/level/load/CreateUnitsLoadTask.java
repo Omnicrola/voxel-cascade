@@ -12,10 +12,10 @@ import java.util.stream.Collectors;
 /**
  * Created by omnic on 4/9/2016.
  */
-public class CreateUnitsTask extends AbstractLoadTask {
+public class CreateUnitsLoadTask extends AbstractLoadTask {
     private final UnitBuilder unitBuilder;
 
-    public CreateUnitsTask(LevelData levelData, UnitBuilder unitBuilder) {
+    public CreateUnitsLoadTask(LevelData levelData, UnitBuilder unitBuilder) {
         super(levelData);
         this.unitBuilder = unitBuilder;
     }
@@ -23,7 +23,7 @@ public class CreateUnitsTask extends AbstractLoadTask {
     @Override
     protected void performLoading() {
         List<Unit> structures = levelData.levelDefinition
-                .getStructures()
+                .getUnitPlacements()
                 .stream()
                 .map(p -> build(p))
                 .collect(Collectors.toList());
@@ -36,6 +36,7 @@ public class CreateUnitsTask extends AbstractLoadTask {
     }
 
     private UnitDefinition getUnit(UnitPlacement structurePlacement) {
-        return this.levelData.unitDefinitionRepository.getUnitDefinition(structurePlacement.getUnitId());
+        UnitDefinition unitDefinition = this.levelData.unitDefinitionRepository.getUnitDefinition(structurePlacement.getUnitId());
+        return unitDefinition;
     }
 }

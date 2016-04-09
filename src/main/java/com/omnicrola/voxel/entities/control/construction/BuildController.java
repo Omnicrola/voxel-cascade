@@ -4,7 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.commands.IConstructionPackage;
@@ -69,8 +69,8 @@ public class BuildController extends AbstractControl {
         this.buildFx.setLocation(this.constructionPackage.getLocation());
         LevelState currentLevel = this.entityControlAdapter.getCurrentLevel();
         float resourcesUsed = this.constructionPackage.applyResourceTic(tpf);
-        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        currentLevel.removeResources(teamData, resourcesUsed);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        currentLevel.removeResources(teamId, resourcesUsed);
     }
 
     @Override

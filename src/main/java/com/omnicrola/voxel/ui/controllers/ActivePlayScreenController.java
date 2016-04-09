@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.ui.controllers;
 
 import com.google.common.eventbus.Subscribe;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.eventBus.events.LevelStatisticChangeEvent;
@@ -97,7 +97,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
 
     @Subscribe
     public void updateStatistics(LevelStatisticChangeEvent event) {
-        TeamData playerTeam = event.getPlayerTeam();
+        TeamId playerTeam = event.getPlayerTeam();
         float resources = event.getResources(playerTeam);
         IUiElement resourceLabel = ui().getElement(UiToken.Play.LABEL_RESOURCE_AMOUNT);
         resourceLabel.setText(String.valueOf((int) resources));
@@ -143,7 +143,7 @@ public class ActivePlayScreenController extends AbstractScreenController {
 
     @Deprecated
     public void updateStats(LevelState currentLevel) {
-        TeamData playerTeam = currentLevel.getPlayerTeam();
+        TeamId playerTeam = currentLevel.getPlayerTeam();
         float resources = currentLevel.getResources(playerTeam);
         IUiElement resourceLabel = ui().getElement(UiToken.Play.LABEL_RESOURCE_AMOUNT);
         resourceLabel.setText(String.valueOf((int) resources));

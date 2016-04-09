@@ -4,7 +4,7 @@ import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.data.ILevelManager;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.world.IGameEntity;
 import com.omnicrola.voxel.world.WorldManager;
@@ -38,8 +38,8 @@ public class AnnihilationWinConditionState extends AbstractAppState {
         LevelState currentLevel = this.levelManager.getCurrentLevel();
         if (currentLevel.hasStarted()) {
             List<IGameEntity> entities = worldManager.getAllUnits();
-            List<TeamData> teams = currentLevel.getAllTeams();
-            Optional<TeamData> firstTeamEliminated = teams.stream()
+            List<TeamId> teams = currentLevel.getAllTeams();
+            Optional<TeamId> firstTeamEliminated = teams.stream()
                     .filter(t -> isEliminated(entities, t))
                     .findFirst();
             if (firstTeamEliminated.isPresent()) {
@@ -48,10 +48,10 @@ public class AnnihilationWinConditionState extends AbstractAppState {
         }
     }
 
-    private boolean isEliminated(List<IGameEntity> allUnits, TeamData teamData) {
+    private boolean isEliminated(List<IGameEntity> allUnits, TeamId teamId) {
         Long livingUnits = allUnits.stream()
                 .filter(e -> e.isAlive())
-                .filter(e -> isOnTeam(e, teamData))
+                .filter(e -> isOnTeam(e, teamId))
                 .collect(Collectors.counting());
         return livingUnits <= 0;
     }
@@ -61,8 +61,8 @@ public class AnnihilationWinConditionState extends AbstractAppState {
         this.stateManager.getState(GameOverState.class).setEnabled(true);
     }
 
-    private boolean isOnTeam(IGameEntity unit, TeamData teamData) {
-        return unit.getTeam().equals(teamData);
+    private boolean isOnTeam(IGameEntity unit, TeamId teamId) {
+        return unit.getTeam().equals(teamId);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.world;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 
 /**
  * Created by Eric on 2/22/2016.
@@ -9,7 +9,7 @@ import com.omnicrola.voxel.data.TeamData;
 public interface IGameEntity {
     Spatial getSpatial();
 
-    TeamData getTeam();
+    TeamId getTeam();
 
     boolean isAlive();
 

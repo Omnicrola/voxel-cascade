@@ -2,7 +2,7 @@ package com.omnicrola.voxel.world.build;
 
 import com.jme3.material.Material;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.data.units.StructureDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
@@ -40,7 +40,7 @@ public class StructureBuilder {
         controlFactories.forEach(f -> f.build(spatial, definitionRepository, this.entityControlAdapter));
 
         spatial.setLocalTranslation(unitPlacement.getLocation());
-        TeamData teamData = toolbox.getTeamData(unitPlacement.getTeamId());
+        TeamId teamId = TeamId.create(unitPlacement.getTeamId());
 
         spatial.setUserData(EntityDataKeys.IS_SELECTABLE, true);
         spatial.setUserData(EntityDataKeys.IS_STRUCTURE, true);
@@ -50,7 +50,7 @@ public class StructureBuilder {
         spatial.setUserData(EntityDataKeys.MAX_HITPOINTS, structureDefinition.getHitpoints());
 
         spatial.setUserData(EntityDataKeys.WORLD_ID, unitPlacement.getInstanceId());
-        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
+        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamId);
 
 
         return new Structure(spatial);

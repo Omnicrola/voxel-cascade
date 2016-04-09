@@ -164,7 +164,7 @@ public class VoxelGameEngineInitializer {
                                                         MaterialRepository materialRepository,
                                                         InputManager inputManager,
                                                         AudioRepository audioRepository) {
-        WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, levelManager, unitDefinitions);
+        WorldBuilderToolbox toolbox = new WorldBuilderToolbox(assetManager, unitDefinitions);
         ProjectileBuilder projectileBuilder = new ProjectileBuilder(toolbox, materialRepository);
         ParticleBuilder particleBuilder = new ParticleBuilder(assetManager, worldManager);
         EntityControlAdapter entityControlAdapter = new EntityControlAdapter(
@@ -179,5 +179,4 @@ public class VoxelGameEngineInitializer {
         StructureBuilder structureBuilder = new StructureBuilder(toolbox, entityControlAdapter, materialRepository);
         return new WorldEntityBuilder(unitDefinitions, assetManager, unitBuilder, structureBuilder);
     }
-
 }

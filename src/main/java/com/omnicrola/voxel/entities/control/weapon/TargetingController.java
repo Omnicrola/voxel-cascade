@@ -7,7 +7,7 @@ import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 import com.omnicrola.voxel.world.WorldManager;
@@ -59,8 +59,8 @@ public class TargetingController extends AbstractControl {
     }
 
     private boolean isEnemy(CollisionResult collisionResult) {
-        TeamData ourTeam = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        TeamData otherTeam = collisionResult.getGeometry().getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId ourTeam = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId otherTeam = collisionResult.getGeometry().getUserData(EntityDataKeys.TEAM_DATA);
         return !ourTeam.equals(otherTeam);
     }
 

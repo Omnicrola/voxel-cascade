@@ -4,7 +4,7 @@ import com.jme3.math.Vector3f;
 import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.terrain.ITerrainManager;
@@ -42,7 +42,7 @@ public class PassiveHarvestControl extends AbstractControl {
     }
 
     private void harvest(VoxelData voxelData, float tpf) {
-        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
         float resourceTic = tpf * this.speed;
         float resourcesAvailable = voxelData.getResources();
         if (resourcesAvailable > resourceTic) {
@@ -52,7 +52,7 @@ public class PassiveHarvestControl extends AbstractControl {
             voxelData.setType(VoxelType.EMPTY);
             resourceTic = resourcesAvailable;
         }
-        this.entityControlAdapter.getCurrentLevel().addResouces(teamData, resourceTic);
+        this.entityControlAdapter.getCurrentLevel().addResouces(teamId, resourceTic);
     }
 
     @Override

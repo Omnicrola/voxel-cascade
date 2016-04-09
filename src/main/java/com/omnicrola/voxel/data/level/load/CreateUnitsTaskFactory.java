@@ -18,6 +18,6 @@ public class CreateUnitsTaskFactory implements ILoadingTaskFactory {
 
     @Override
     public Callable<LevelData> build(LevelData levelData) {
-        return new CreateUnitsTask(levelData, unitBuilder);
+        return new CreateUnitsLoadTask(levelData, unitBuilder);
     }
 }

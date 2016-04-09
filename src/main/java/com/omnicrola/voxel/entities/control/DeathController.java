@@ -4,11 +4,10 @@ import com.jme3.renderer.RenderManager;
 import com.jme3.renderer.ViewPort;
 import com.jme3.scene.Node;
 import com.jme3.scene.control.AbstractControl;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.entities.commands.IDeathAction;
 import com.omnicrola.voxel.entities.commands.NullDeathAction;
-import com.omnicrola.voxel.entities.control.EntityControlAdapter;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -39,9 +38,9 @@ public class DeathController extends AbstractControl {
     }
 
     private void recordDeathStats() {
-        TeamData teamData = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
         LevelState currentLevel = this.entityControlAdapter.getCurrentLevel();
-        TeamStatistics teamStatistics = currentLevel.getTeamStatistics(teamData);
+        TeamStatistics teamStatistics = currentLevel.getTeamStatistics(teamId);
         teamStatistics.increaseUnitsLost();
     }
 

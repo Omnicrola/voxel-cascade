@@ -3,11 +3,16 @@ package com.omnicrola.voxel.data.units;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  * Created by Eric on 1/18/2016.
  */
 public class UnitDefinitionRepository {
+
+    private static final Logger LOGGER = Logger.getLogger(UnitDefinitionRepository.class.getName());
+
     private XmlGameDefinitions gameDefinitions;
 
     public UnitDefinitionRepository(XmlGameDefinitions gameDefinitions) {
@@ -35,6 +40,7 @@ public class UnitDefinitionRepository {
         if (firstItem.isPresent()) {
             return firstItem.get();
         } else {
+            LOGGER.log(Level.WARNING, "Could not find unit definition for ID: " + pitchfork);
             return defaultValue;
         }
     }

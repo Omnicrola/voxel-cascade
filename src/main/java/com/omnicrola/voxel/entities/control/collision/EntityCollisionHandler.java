@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.entities.control.collision;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.world.WorldManager;
 
@@ -27,8 +27,8 @@ public class EntityCollisionHandler extends AbstractCollisionHandler {
     }
 
     private boolean isEnemyProjectile(Spatial otherObject) {
-        TeamData ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
-        TeamData theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);
         return !ourTeam.equals(theirTeam);
     }
 

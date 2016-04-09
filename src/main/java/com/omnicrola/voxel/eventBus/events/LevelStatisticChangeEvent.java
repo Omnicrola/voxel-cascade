@@ -1,6 +1,6 @@
 package com.omnicrola.voxel.eventBus.events;
 
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.LevelState;
 
 /**
@@ -13,11 +13,11 @@ public class LevelStatisticChangeEvent {
         this.levelState = levelState;
     }
 
-    public TeamData getPlayerTeam() {
+    public TeamId getPlayerTeam() {
         return levelState.getPlayerTeam();
     }
 
-    public float getResources(TeamData team) {
+    public float getResources(TeamId team) {
         return levelState.getResources(team);
     }
 }

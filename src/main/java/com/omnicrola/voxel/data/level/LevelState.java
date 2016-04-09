@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 import com.omnicrola.voxel.IDisposable;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.eventBus.events.LevelStatisticChangeEvent;
 import com.omnicrola.voxel.main.VoxelException;
@@ -16,9 +16,9 @@ import java.util.Optional;
  * Created by omnic on 1/16/2016.
  */
 public class LevelState implements IDisposable {
-    private final ArrayList<TeamData> teams;
+    private final ArrayList<TeamId> teams;
     private final LevelStatistics statistics;
-    private final HashMap<TeamData, Float> resources;
+    private final HashMap<TeamId, Float> resources;
     private String levelName;
     private boolean hasStarted;
 
@@ -29,7 +29,7 @@ public class LevelState implements IDisposable {
         this.resources = new HashMap<>();
     }
 
-    public void addTeam(TeamData team) {
+    public void addTeam(TeamId team) {
         this.teams.add(team);
         this.resources.put(team, 0f);
     }
@@ -38,12 +38,12 @@ public class LevelState implements IDisposable {
         return levelName;
     }
 
-    public TeamData getPlayerTeam() {
+    public TeamId getPlayerTeam() {
         return this.teams.get(0);
     }
 
-    public TeamData getTeamById(int teamId) {
-        Optional<TeamData> first = this.teams
+    public TeamId getTeamById(int teamId) {
+        Optional<TeamId> first = this.teams
                 .stream()
                 .filter(t -> hasId(t, teamId))
                 .findFirst();
@@ -54,7 +54,7 @@ public class LevelState implements IDisposable {
         }
     }
 
-    private boolean hasId(TeamData teamData, int teamId) {
+    private boolean hasId(TeamId teamData, int teamId) {
         return teamData.getId() == teamId;
     }
 
@@ -67,8 +67,8 @@ public class LevelState implements IDisposable {
         return this.statistics.getTeamStatistics();
     }
 
-    public TeamStatistics getTeamStatistics(TeamData teamData) {
-        return this.statistics.getTeamStatistics(teamData);
+    public TeamStatistics getTeamStatistics(TeamId teamId) {
+        return this.statistics.getTeamStatistics(teamId);
     }
 
     public void addTime(float seconds) {
@@ -79,24 +79,24 @@ public class LevelState implements IDisposable {
         return this.statistics.getTimeElapsed();
     }
 
-    public void addResouces(TeamData teamData, float additionalResources) {
-        this.statistics.addResources(teamData, additionalResources);
-        modifyResources(teamData, additionalResources);
+    public void addResouces(TeamId teamId, float additionalResources) {
+        this.statistics.addResources(teamId, additionalResources);
+        modifyResources(teamId, additionalResources);
         emitStatisticsChangeEvent();
     }
 
-    private void modifyResources(TeamData teamData, float amount) {
-        float currentResources = this.resources.get(teamData);
-        this.resources.put(teamData, currentResources + amount);
+    private void modifyResources(TeamId teamId, float amount) {
+        float currentResources = this.resources.get(teamId);
+        this.resources.put(teamId, currentResources + amount);
     }
 
-    public void removeResources(TeamData teamData, float resourcesUsed) {
-        this.statistics.useResources(teamData, resourcesUsed);
-        modifyResources(teamData, -resourcesUsed);
+    public void removeResources(TeamId teamId, float resourcesUsed) {
+        this.statistics.useResources(teamId, resourcesUsed);
+        modifyResources(teamId, -resourcesUsed);
         emitStatisticsChangeEvent();
     }
 
-    public float getResources(TeamData playerTeam) {
+    public float getResources(TeamId playerTeam) {
         return this.resources.get(playerTeam);
     }
 
@@ -104,7 +104,7 @@ public class LevelState implements IDisposable {
         VoxelEventBus.INSTANCE().post(new LevelStatisticChangeEvent(this));
     }
 
-    public List<TeamData> getAllTeams() {
+    public List<TeamId> getAllTeams() {
         return new ArrayList<>(this.teams);
     }
 

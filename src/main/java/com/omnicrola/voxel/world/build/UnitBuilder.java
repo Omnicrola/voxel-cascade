@@ -2,7 +2,7 @@ package com.omnicrola.voxel.world.build;
 
 import com.jme3.material.Material;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.data.units.UnitDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
@@ -35,7 +35,7 @@ public class UnitBuilder {
     }
 
     public Unit build(UnitPlacement unitPlacement, UnitDefinition unitDefinition) {
-        TeamData teamData = toolbox.getTeamData(unitPlacement.getTeamId());
+        TeamId teamId = TeamId.create(unitPlacement.getTeamId());
         Spatial spatial = buildSpatial(unitDefinition);
 
         List<IControlFactory> controlFactories = unitDefinition.getControlFactories();
@@ -53,7 +53,7 @@ public class UnitBuilder {
         spatial.setUserData(EntityDataKeys.MAX_HITPOINTS, unitDefinition.getHitpoints());
 
         spatial.setUserData(EntityDataKeys.WORLD_ID, unitPlacement.getInstanceId());
-        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamData);
+        spatial.setUserData(EntityDataKeys.TEAM_DATA, teamId);
         return new Unit(spatial);
 
     }

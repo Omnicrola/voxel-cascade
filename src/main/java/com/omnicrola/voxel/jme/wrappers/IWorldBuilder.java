@@ -5,7 +5,7 @@ import com.jme3.math.ColorRGBA;
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.fx.MaterialToken;
 
 /**
@@ -16,11 +16,11 @@ public interface IWorldBuilder {
 
     Spatial projectile(Spatial emittingEntity, int projectileId);
 
-    Spatial unit(int definitionId, TeamData teamData);
+    Spatial unit(int definitionId, TeamId teamId);
 
     IParticleBuilder particles();
 
-    Spatial structure(int unitId, TeamData teamData);
+    Spatial structure(int unitId, TeamId teamId);
 
     Material material(MaterialToken materialToken);
 

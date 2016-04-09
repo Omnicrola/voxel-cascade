@@ -2,7 +2,7 @@ package com.omnicrola.voxel.entities;
 
 import com.jme3.math.Vector3f;
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 import com.omnicrola.voxel.world.IGameEntity;
@@ -23,7 +23,7 @@ public abstract class AbstractGameEntity implements IGameEntity {
     }
 
     @Override
-    public TeamData getTeam() {
+    public TeamId getTeam() {
         return this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
     }
 

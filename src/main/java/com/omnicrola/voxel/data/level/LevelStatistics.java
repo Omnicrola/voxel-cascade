@@ -1,7 +1,7 @@
 package com.omnicrola.voxel.data.level;
 
 import com.jme3.scene.Spatial;
-import com.omnicrola.voxel.data.TeamData;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -13,7 +13,7 @@ import java.util.*;
  */
 public class LevelStatistics {
 
-    private final Map<TeamData, TeamStatistics> teamStatistics;
+    private final Map<TeamId, TeamStatistics> teamStatistics;
     private float timeElapsed;
 
     public LevelStatistics() {
@@ -42,11 +42,11 @@ public class LevelStatistics {
     }
 
     private Optional<TeamStatistics> getStatsForUnit(Spatial entity) {
-        TeamData teamData = entity.getUserData(EntityDataKeys.TEAM_DATA);
-        if (teamData == null) {
+        TeamId teamId = entity.getUserData(EntityDataKeys.TEAM_DATA);
+        if (teamId == null) {
             return Optional.empty();
         }
-        return Optional.of(getTeamStatistics(teamData));
+        return Optional.of(getTeamStatistics(teamId));
     }
 
     private boolean isUnit(Spatial entity) {
@@ -57,11 +57,11 @@ public class LevelStatistics {
         return VoxelUtil.booleanData(unit, EntityDataKeys.IS_STRUCTURE);
     }
 
-    public TeamStatistics getTeamStatistics(TeamData teamData) {
-        TeamStatistics stats = this.teamStatistics.get(teamData);
+    public TeamStatistics getTeamStatistics(TeamId teamId) {
+        TeamStatistics stats = this.teamStatistics.get(teamId);
         if (stats == null) {
-            stats = new TeamStatistics("Team " + teamData.getId());
-            this.teamStatistics.put(teamData, stats);
+            stats = new TeamStatistics("Team " + teamId.getId());
+            this.teamStatistics.put(teamId, stats);
         }
         return stats;
     }
@@ -82,13 +82,13 @@ public class LevelStatistics {
         this.timeElapsed += seconds;
     }
 
-    public void addResources(TeamData teamData, float additionalResources) {
-        TeamStatistics teamStatistics = getTeamStatistics(teamData);
+    public void addResources(TeamId teamId, float additionalResources) {
+        TeamStatistics teamStatistics = getTeamStatistics(teamId);
         teamStatistics.addResourcesAcquired(additionalResources);
     }
 
-    public void useResources(TeamData teamData, float resourcesUsed) {
-        TeamStatistics teamStatistics = getTeamStatistics(teamData);
+    public void useResources(TeamId teamId, float resourcesUsed) {
+        TeamStatistics teamStatistics = getTeamStatistics(teamId);
         teamStatistics.useResources(resourcesUsed);
     }
 }
