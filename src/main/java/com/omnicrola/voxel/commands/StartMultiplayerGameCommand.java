@@ -26,6 +26,7 @@ public class StartMultiplayerGameCommand extends AbstractWorldCommand {
 
     @Override
     public void execute(CommandPackage commandPackage) {
+
         commandPackage.enableState(ActivePlayState.class);
         commandPackage.enableState(ShadowState.class);
         commandPackage.disableState(GameOverState.class);
