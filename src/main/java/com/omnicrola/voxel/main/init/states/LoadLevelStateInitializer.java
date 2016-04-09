@@ -9,6 +9,7 @@ import com.omnicrola.voxel.data.level.load.*;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.states.LoadLevelState;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.world.build.StructureBuilder;
 import com.omnicrola.voxel.world.build.UnitBuilder;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
@@ -41,12 +42,13 @@ public class LoadLevelStateInitializer implements IStateInitializer {
     private ArrayList<ILoadingTaskFactory> createParallelTaskFactories(InitializationContainer initializationContainer) {
 
         AudioRepository audioRepository = initializationContainer.getAudioRepository();
+        TerrainManager terrainManager = initializationContainer.getTerrainManager();
         WorldEntityBuilder worldEntityBuilder = initializationContainer.getWorldEntityBuilder();
         StructureBuilder structureBuilder = worldEntityBuilder.getStructureBuilder();
         UnitBuilder unitBuilder = worldEntityBuilder.getUnitBuilder();
 
         ArrayList<ILoadingTaskFactory> taskFactories = new ArrayList<>();
-        taskFactories.add(new TerrainGeneratorTaskFactory());
+        taskFactories.add(new TerrainGeneratorTaskFactory(terrainManager));
         taskFactories.add(new CreateUnitsTaskFactory(unitBuilder));
         taskFactories.add(new CreateStructuresTaskFactory(structureBuilder));
         taskFactories.add(new PreloadAudioTaskFactory(audioRepository));
