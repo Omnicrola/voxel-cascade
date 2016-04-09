@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  */
 public class CreateUnitsLoadTask extends AbstractLoadTask {
     private final UnitBuilder unitBuilder;
+    private int unitInstanceId = 1;
 
     public CreateUnitsLoadTask(LevelData levelData, UnitBuilder unitBuilder) {
         super(levelData);
@@ -31,6 +32,7 @@ public class CreateUnitsLoadTask extends AbstractLoadTask {
     }
 
     private Unit build(UnitPlacement unitPlacement) {
+        unitPlacement.setInstanceId(unitInstanceId++);
         UnitDefinition unitDefinition = getUnit(unitPlacement);
         return this.unitBuilder.build(unitPlacement, unitDefinition);
     }

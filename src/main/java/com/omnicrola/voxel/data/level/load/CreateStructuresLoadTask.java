@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
  */
 public class CreateStructuresLoadTask extends AbstractLoadTask {
     private final StructureBuilder structureBuilder;
+    private int instanceId = 1;
 
     public CreateStructuresLoadTask(LevelData levelData, StructureBuilder structureBuilder) {
         super(levelData);
@@ -28,10 +29,10 @@ public class CreateStructuresLoadTask extends AbstractLoadTask {
                 .map(p -> build(p))
                 .collect(Collectors.toList());
         levelData.structures = structures;
-
     }
 
     private Structure build(UnitPlacement structurePlacement) {
+        structurePlacement.setInstanceId(instanceId++);
         StructureDefinition structureDefinition = getStructure(structurePlacement);
         return this.structureBuilder.build(structurePlacement, structureDefinition);
     }
