@@ -1,9 +1,7 @@
 package com.omnicrola.voxel.engine.states;
 
 import com.jme3.app.state.AbstractAppState;
-import com.jme3.app.state.AppStateManager;
 import com.omnicrola.voxel.data.level.LevelData;
-import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.load.AsyncLevelLoader;
 
 import java.util.UUID;
@@ -16,16 +14,10 @@ public class LoadLevelState extends AbstractAppState {
     private boolean loadIsPending;
     private boolean loadNeedsStarted;
     private UUID levelToLoad;
-    private LevelDefinitionRepository levelDefinitionRepository;
     private AsyncLevelLoader asyncLevelLoader;
-    private AppStateManager stateManager;
 
-    public LoadLevelState(LevelDefinitionRepository levelDefinitionRepository,
-                          AsyncLevelLoader asyncLevelLoader,
-                          AppStateManager stateManager) {
-        this.levelDefinitionRepository = levelDefinitionRepository;
+    public LoadLevelState(AsyncLevelLoader asyncLevelLoader) {
         this.asyncLevelLoader = asyncLevelLoader;
-        this.stateManager = stateManager;
         this.setEnabled(false);
     }
 
@@ -48,10 +40,11 @@ public class LoadLevelState extends AbstractAppState {
     }
 
     private void updateLoadStatus() {
+        float percentComplete = this.asyncLevelLoader.updateLoadStatus();
+        System.out.println("Loading ... " + percentComplete);
         if (this.asyncLevelLoader.isFinished()) {
-            LevelData levelData= this.asyncLevelLoader.getLevelData();
+            LevelData levelData = this.asyncLevelLoader.getLevelData();
         }
-        System.out.println("loading....");
     }
 
     public void setLevelToLoad(UUID levelToLoad) {

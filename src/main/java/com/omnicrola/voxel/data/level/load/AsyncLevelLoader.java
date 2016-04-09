@@ -3,12 +3,16 @@ package com.omnicrola.voxel.data.level.load;
 import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
+import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 /**
@@ -16,17 +20,27 @@ import java.util.stream.Collectors;
  */
 public class AsyncLevelLoader {
 
+    private static final Logger LOGGER = Logger.getLogger(AsyncLevelLoader.class.getName());
+
     private UUID levelToLoad;
     private ExecutorService threadPool;
-    private List<ILoadingTaskFactory> taskFactories;
-    private LevelDefinitionRepository levelDefinitionRepository;
-    private LevelData leveData;
-    private List<Future<LevelData>> taskFutures;
+    private List<ILoadingTaskFactory> parallelTaskFactories;
+    private List<ILoadingTaskFactory> finalTaskFactories;
 
-    public AsyncLevelLoader(List<ILoadingTaskFactory> taskFactories,
-                            LevelDefinitionRepository levelDefinitionRepository) {
-        this.taskFactories = taskFactories;
+    private LevelDefinitionRepository levelDefinitionRepository;
+    private UnitDefinitionRepository unitDefinitionRepository;
+    private LevelData levelData;
+    private List<Future<LevelData>> taskFutures;
+    private List<Callable<LevelData>> finalTasks;
+
+    public AsyncLevelLoader(List<ILoadingTaskFactory> parallelTaskFactories,
+                            List<ILoadingTaskFactory> finalTaskFactories,
+                            LevelDefinitionRepository levelDefinitionRepository,
+                            UnitDefinitionRepository unitDefinitionRepository) {
+        this.parallelTaskFactories = parallelTaskFactories;
+        this.finalTaskFactories = finalTaskFactories;
         this.levelDefinitionRepository = levelDefinitionRepository;
+        this.unitDefinitionRepository = unitDefinitionRepository;
     }
 
     public void setLevel(UUID levelToLoad) {
@@ -35,15 +49,23 @@ public class AsyncLevelLoader {
 
     public void startLoading() {
         this.threadPool = Executors.newFixedThreadPool(4);
+        this.levelData = new LevelData(unitDefinitionRepository);
         LevelDefinition levelDefinition = levelDefinitionRepository.getLevel(this.levelToLoad);
         createLoadingTasks(levelDefinition);
+        createFinalTasks(levelDefinition);
     }
 
     private void createLoadingTasks(LevelDefinition levelDefinition) {
-        this.leveData = new LevelData();
-        this.taskFutures = this.taskFactories.stream()
-                .map(f -> f.build(levelDefinition))
+        this.taskFutures = this.parallelTaskFactories.stream()
+                .map(f -> f.build(levelDefinition, levelData))
                 .map(t -> threadPool.submit(t))
+                .collect(Collectors.toList());
+    }
+
+    private void createFinalTasks(LevelDefinition levelDefinition) {
+        this.finalTasks = this.finalTaskFactories
+                .stream()
+                .map(f -> f.build(levelDefinition, levelData))
                 .collect(Collectors.toList());
     }
 
@@ -56,6 +78,25 @@ public class AsyncLevelLoader {
     }
 
     public LevelData getLevelData() {
-        return this.leveData;
+        return this.levelData;
+    }
+
+    public float updateLoadStatus() {
+        float total = this.taskFutures.size();
+        float finished = this.taskFutures.stream().filter(f -> f.isDone()).count();
+        if (finished == total) {
+            runFinalTasks();
+        }
+        return finished / total;
+    }
+
+    private void runFinalTasks() {
+        for (Callable callable : this.finalTasks) {
+            try {
+                callable.call();
+            } catch (Exception e) {
+                LOGGER.log(Level.SEVERE, null, e);
+            }
+        }
     }
 }

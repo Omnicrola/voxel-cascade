@@ -4,6 +4,7 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
 import com.jme3.scene.Node;
+import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.ITickProvider;
@@ -33,6 +34,7 @@ public class InitializationContainer {
     private TerrainManager terrainManager;
     private WorldEntityBuilder worldEntityBuilder;
     private IUiManager uiManager;
+    private AudioRepository audioRepository;
 
     public InitializationContainer(WorldManager worldManager,
                                    VoxelTypeLibrary voxelTypeLibrary,
@@ -43,7 +45,7 @@ public class InitializationContainer {
                                    NetworkManager networkManager,
                                    TerrainManager terrainManager,
                                    WorldEntityBuilder worldEntityBuilder,
-                                   IUiManager uiManager) {
+                                   IUiManager uiManager, AudioRepository audioRepository) {
         this.worldManager = worldManager;
         this.voxelTypeLibrary = voxelTypeLibrary;
         this.materialRepository = materialRepository;
@@ -54,6 +56,7 @@ public class InitializationContainer {
         this.terrainManager = terrainManager;
         this.worldEntityBuilder = worldEntityBuilder;
         this.uiManager = uiManager;
+        this.audioRepository = audioRepository;
     }
 
     public WorldManager getWorldManager() {
@@ -118,5 +121,10 @@ public class InitializationContainer {
 
     public IDisplayContext getAppSettings() {
         return new JmeDisplayContext(this.voxelGameEngine.getContext());
+    }
+
+
+    public AudioRepository getAudioRepository() {
+        return audioRepository;
     }
 }

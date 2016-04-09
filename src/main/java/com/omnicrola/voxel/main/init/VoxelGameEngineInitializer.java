@@ -148,7 +148,7 @@ public class VoxelGameEngineInitializer {
                 levelManager,
                 worldCommandProcessor,
                 networkManager,
-                terrainManager, worldEntityBuilder, uiManager);
+                terrainManager, worldEntityBuilder, uiManager, audioRepository);
         return initializationContainer;
     }
 

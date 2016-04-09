@@ -23,9 +23,11 @@ public class Bootstrapper {
     public static VoxelGameLauncher bootstrap() {
 
         ArrayList<IGuiBuilder> guiBuilders = getiGuiBuilders();
-        ArrayList<IStateInitializer> stateInitializers = getStateInitializers();
         IFileReaderStrategy fileReaderStrategy = FileReaderStrategyFactory.build();
         GameXmlDataParser gameXmlDataParser = new GameXmlDataParser(fileReaderStrategy);
+
+        ArrayList<IStateInitializer> stateInitializers = getStateInitializers(gameXmlDataParser);
+
         VoxelGameEngineInitializer initializer = new VoxelGameEngineInitializer(
                 new InputMappingLoader(),
                 new GuiInitializer(guiBuilders),
@@ -63,8 +65,9 @@ public class Bootstrapper {
         return guiBuilders;
     }
 
-    private static ArrayList<IStateInitializer> getStateInitializers() {
+    private static ArrayList<IStateInitializer> getStateInitializers(GameXmlDataParser gameXmlParser) {
         ArrayList<IStateInitializer> stateInitializers = new ArrayList<>();
+        stateInitializers.add(new LoadLevelStateInitializer(gameXmlParser));
         stateInitializers.add(new CommandStateInitializer(new CursorProviderBuilder()));
         stateInitializers.add(new ActivePlayInputStateInitializer());
         stateInitializers.add(new ClientNetworkStateInitializer());
