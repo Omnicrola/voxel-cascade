@@ -5,10 +5,12 @@ import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
+import com.jme3.renderer.Camera;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelData;
+import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
@@ -37,6 +39,7 @@ public class ActivePlayState extends AbstractAppState {
     private IWorldCursor worldCursor;
     private IUiManager uiManager;
     private WorldManager worldManager;
+    private Camera camera;
 
     public ActivePlayState(LevelManager levelManager,
                            TerrainManager terrainManager,
@@ -57,6 +60,7 @@ public class ActivePlayState extends AbstractAppState {
         this.inputManager = voxelGameEngine.getInputManager();
 
         voxelGameEngine.getFlyByCamera().setMoveSpeed(10f);
+        this.camera = voxelGameEngine.getCamera();
         attachWorldCursor(voxelGameEngine);
         initializeKeybindings(voxelGameEngine);
         setEnabled(false);
@@ -139,9 +143,13 @@ public class ActivePlayState extends AbstractAppState {
 
         levelData.structures.forEach(s -> this.worldManager.addStructure(s));
         levelData.units.forEach(u -> this.worldManager.addUnit(u));
-        LevelState levelState = new LevelState(levelData.levelDefinition.getName());
+
+        LevelDefinition levelDefinition = levelData.levelDefinition;
+        LevelState levelState = new LevelState(levelDefinition.getName());
         this.levelManager.setCurrentLevel(levelState);
 
+        this.camera.setRotation(levelDefinition.getCameraOrientation());
+        this.camera.setLocation(levelDefinition.getCameraPosition());
 
     }
 }
