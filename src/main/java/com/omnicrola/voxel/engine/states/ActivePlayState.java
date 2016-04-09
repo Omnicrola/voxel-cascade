@@ -8,16 +8,21 @@ import com.jme3.input.controls.ActionListener;
 import com.jme3.scene.Node;
 import com.omnicrola.util.Tuple;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
 import com.omnicrola.voxel.input.IWorldCursor;
-import com.omnicrola.voxel.input.listeners.*;
+import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
+import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
+import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
+import com.omnicrola.voxel.input.listeners.PanCameraListener;
 import com.omnicrola.voxel.terrain.ITerrainManager;
 import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.ui.UiScreen;
+import com.omnicrola.voxel.world.WorldManager;
 
 import java.util.ArrayList;
 
@@ -31,15 +36,17 @@ public class ActivePlayState extends AbstractAppState {
     private TerrainManager terrainManager;
     private IWorldCursor worldCursor;
     private IUiManager uiManager;
+    private WorldManager worldManager;
 
     public ActivePlayState(LevelManager levelManager,
                            TerrainManager terrainManager,
                            IWorldCursor worldCursor,
-                           IUiManager uiManager) {
+                           IUiManager uiManager, WorldManager worldManager) {
         this.levelManager = levelManager;
         this.terrainManager = terrainManager;
         this.worldCursor = worldCursor;
         this.uiManager = uiManager;
+        this.worldManager = worldManager;
         this.inputs = new ArrayList<>();
     }
 
@@ -124,5 +131,13 @@ public class ActivePlayState extends AbstractAppState {
 
     public IWorldCursor getWorldCursor() {
         return worldCursor;
+    }
+
+    public void setLevelData(LevelData levelData) {
+        this.terrainManager.setCurrentHandler(levelData.terrain);
+        levelData.structures.forEach(s -> this.worldManager.addStructure(s));
+        levelData.units.forEach(u -> this.worldManager.addUnit(u));
+        LevelState levelState = new LevelState(levelData.levelDefinition.getName());
+        this.levelManager.setCurrentLevel(levelState);
     }
 }

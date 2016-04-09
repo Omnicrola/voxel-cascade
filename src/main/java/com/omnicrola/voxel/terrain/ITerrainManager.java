@@ -2,7 +2,6 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.Optional;
@@ -11,8 +10,6 @@ import java.util.Optional;
  * Created by Eric on 2/24/2016.
  */
 public interface ITerrainManager {
-
-    void load(TerrainDefinition terrain);
 
     void setVoxel(Vec3i location, byte voxelType);
 
@@ -28,4 +25,5 @@ public interface ITerrainManager {
 
     IVoxelType getVoxelType(byte voxelType);
 
+    void setCurrentHandler(VoxelChunkHandler voxelChunkHandler);
 }

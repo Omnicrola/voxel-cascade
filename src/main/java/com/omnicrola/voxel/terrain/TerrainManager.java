@@ -2,7 +2,6 @@ package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
 import com.omnicrola.util.Vec3i;
-import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.data.VoxelData;
 
 import java.util.Optional;
@@ -13,20 +12,10 @@ import java.util.Optional;
 public class TerrainManager implements ITerrainManager {
 
     private VoxelChunkHandler voxelChunkHandler;
-    private VoxelTerrainGenerator voxelTerrainGenerator;
     private VoxelTypeLibrary voxelTypeLibrary;
 
-    public TerrainManager(VoxelChunkHandler voxelChunkHandler,
-                          VoxelTerrainGenerator voxelTerrainGenerator,
-                          VoxelTypeLibrary voxelTypeLibrary) {
-        this.voxelChunkHandler = voxelChunkHandler;
-        this.voxelTerrainGenerator = voxelTerrainGenerator;
-        this.voxelTypeLibrary = voxelTypeLibrary;
-    }
-
-    @Override
-    public void load(TerrainDefinition terrain) {
-        this.voxelTerrainGenerator.generate(terrain, this.voxelChunkHandler);
+    public TerrainManager() {
+        voxelTypeLibrary = new VoxelTypeLibrary();
     }
 
     @Override
@@ -65,5 +54,17 @@ public class TerrainManager implements ITerrainManager {
 
     public void update(float tpf) {
         this.voxelChunkHandler.update();
+    }
+
+    public VoxelTypeLibrary getTypeLibrary() {
+        return this.voxelTypeLibrary;
+    }
+
+    public void setCurrentHandler(VoxelChunkHandler currentHandler) {
+        this.voxelChunkHandler = currentHandler;
+    }
+
+    public void setVoxelTypeLibrary(VoxelTypeLibrary voxelTypeLibrary) {
+        this.voxelTypeLibrary = voxelTypeLibrary;
     }
 }

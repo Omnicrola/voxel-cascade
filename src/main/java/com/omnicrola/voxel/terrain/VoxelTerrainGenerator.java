@@ -11,11 +11,9 @@ import com.omnicrola.voxel.terrain.data.VoxelType;
 public class VoxelTerrainGenerator {
 
     PerlinNoiseGenerator perlinNoiseGenerator;
-    VoxelTypeLibrary voxelTypeLibrary;
 
-    public VoxelTerrainGenerator(PerlinNoiseGenerator perlinNoiseGenerator, VoxelTypeLibrary voxelTypeLibrary) {
+    public VoxelTerrainGenerator(PerlinNoiseGenerator perlinNoiseGenerator) {
         this.perlinNoiseGenerator = perlinNoiseGenerator;
-        this.voxelTypeLibrary = voxelTypeLibrary;
     }
 
     public void generate(TerrainDefinition terrainDefinition, VoxelChunkHandler voxelChunkHandler) {

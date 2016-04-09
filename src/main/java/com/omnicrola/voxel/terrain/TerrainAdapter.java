@@ -1,8 +1,6 @@
 package com.omnicrola.voxel.terrain;
 
-import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.engine.MaterialRepository;
-import com.omnicrola.voxel.terrain.data.VoxelChunk;
 import com.omnicrola.voxel.world.WorldManager;
 
 /**
@@ -33,15 +31,5 @@ public class TerrainAdapter {
         return this.voxelTypeLibrary.lookup(voxel);
     }
 
-    public void addChunk(VoxelChunk chunk) {
-        this.worldManager.addTerrainChunk(chunk);
-    }
 
-    public void attachQuad(Spatial terrainQuad) {
-//        this.physicsSpace.add(terrainQuad);
-    }
-
-    public void removeQuad(Spatial terrainQuad) {
-//        this.physicsSpace.remove(terrainQuad);
-    }
 }

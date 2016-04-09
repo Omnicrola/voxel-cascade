@@ -3,18 +3,15 @@ package com.omnicrola.voxel.main.init.states;
 import com.jme3.app.state.AppStateManager;
 import com.jme3.asset.AssetManager;
 import com.jme3.input.InputManager;
-import com.jme3.scene.Node;
 import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.engine.ITickProvider;
-import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.settings.IDisplayContext;
 import com.omnicrola.voxel.settings.JmeDisplayContext;
 import com.omnicrola.voxel.terrain.TerrainManager;
-import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.world.WorldManager;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
@@ -25,8 +22,6 @@ import de.lessvoid.nifty.Nifty;
  */
 public class InitializationContainer {
     private WorldManager worldManager;
-    private VoxelTypeLibrary voxelTypeLibrary;
-    private MaterialRepository materialRepository;
     private VoxelGameEngine voxelGameEngine;
     private LevelManager levelManager;
     private WorldCommandProcessor worldCommandProcessor;
@@ -37,8 +32,6 @@ public class InitializationContainer {
     private AudioRepository audioRepository;
 
     public InitializationContainer(WorldManager worldManager,
-                                   VoxelTypeLibrary voxelTypeLibrary,
-                                   MaterialRepository materialRepository,
                                    VoxelGameEngine voxelGameEngine,
                                    LevelManager levelManager,
                                    WorldCommandProcessor worldCommandProcessor,
@@ -47,8 +40,6 @@ public class InitializationContainer {
                                    WorldEntityBuilder worldEntityBuilder,
                                    IUiManager uiManager, AudioRepository audioRepository) {
         this.worldManager = worldManager;
-        this.voxelTypeLibrary = voxelTypeLibrary;
-        this.materialRepository = materialRepository;
         this.voxelGameEngine = voxelGameEngine;
         this.levelManager = levelManager;
         this.worldCommandProcessor = worldCommandProcessor;
@@ -61,14 +52,6 @@ public class InitializationContainer {
 
     public WorldManager getWorldManager() {
         return worldManager;
-    }
-
-    public VoxelTypeLibrary getVoxelTypeLibrary() {
-        return voxelTypeLibrary;
-    }
-
-    public MaterialRepository getMaterialRepository() {
-        return materialRepository;
     }
 
     public AssetManager getAssetManager() {
@@ -109,10 +92,6 @@ public class InitializationContainer {
 
     public WorldEntityBuilder getWorldEntityBuilder() {
         return worldEntityBuilder;
-    }
-
-    public Node getGuiNode() {
-        return this.voxelGameEngine.getGuiNode();
     }
 
     public IUiManager getUiManager() {

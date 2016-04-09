@@ -54,6 +54,7 @@ public class LoadLevelState extends AbstractAppState {
         LevelData levelData = this.asyncLevelLoader.getLevelData();
         this.setEnabled(false);
         ActivePlayState activePlayState = this.stateManager.getState(ActivePlayState.class);
+        activePlayState.setLevelData(levelData);
         activePlayState.setEnabled(true);
         this.stateManager.getState(ShadowState.class).setEnabled(true);
         this.stateManager.getState(GameOverState.class).setEnabled(false);

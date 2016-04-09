@@ -10,7 +10,7 @@ public class EmptyVoxelChunk extends VoxelChunk {
     public static final EmptyVoxelChunk NO_OP = new EmptyVoxelChunk();
 
     private EmptyVoxelChunk() {
-        super(new ChunkId(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE), null, null);
+        super(new ChunkId(Integer.MAX_VALUE, Integer.MAX_VALUE, Integer.MAX_VALUE), null);
     }
 
     @Override

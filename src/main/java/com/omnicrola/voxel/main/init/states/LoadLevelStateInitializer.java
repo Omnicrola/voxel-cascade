@@ -42,13 +42,13 @@ public class LoadLevelStateInitializer implements IStateInitializer {
     private ArrayList<ILoadingTaskFactory> createParallelTaskFactories(InitializationContainer initializationContainer) {
 
         AudioRepository audioRepository = initializationContainer.getAudioRepository();
-        TerrainManager terrainManager = initializationContainer.getTerrainManager();
         WorldEntityBuilder worldEntityBuilder = initializationContainer.getWorldEntityBuilder();
         StructureBuilder structureBuilder = worldEntityBuilder.getStructureBuilder();
+        AssetManager assetManager = initializationContainer.getAssetManager();
         UnitBuilder unitBuilder = worldEntityBuilder.getUnitBuilder();
 
         ArrayList<ILoadingTaskFactory> taskFactories = new ArrayList<>();
-        taskFactories.add(new TerrainGeneratorTaskFactory(terrainManager));
+        taskFactories.add(new TerrainGeneratorTaskFactory(assetManager));
         taskFactories.add(new CreateUnitsTaskFactory(unitBuilder));
         taskFactories.add(new CreateStructuresTaskFactory(structureBuilder));
         taskFactories.add(new PreloadAudioTaskFactory(audioRepository));

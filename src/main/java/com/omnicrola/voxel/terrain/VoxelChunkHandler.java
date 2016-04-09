@@ -1,6 +1,7 @@
 package com.omnicrola.voxel.terrain;
 
 import com.jme3.math.Vector3f;
+import com.jme3.scene.Node;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.debug.DebugTimer;
 import com.omnicrola.voxel.settings.GameConstants;
@@ -20,18 +21,18 @@ import java.util.logging.Logger;
 /**
  * Created by omnic on 1/31/2016.
  */
-public class VoxelChunkHandler {
+public class VoxelChunkHandler extends Node {
 
     private static final Logger LOGGER = Logger.getLogger(VoxelChunkHandler.class.getName());
 
     private final Map<ChunkId, VoxelChunk> chunks;
-    private TerrainAdapter terrainAdapter;
     private VoxelChunkRebuilder voxelChunkRebuilder;
     private FaceBuilder faceBuilder;
     private final DebugTimer debugTimer;
+    private VoxelTypeLibrary voxelTypeLibrary;
 
-    public VoxelChunkHandler(TerrainAdapter terrainAdapter, VoxelChunkRebuilder voxelChunkRebuilder) {
-        this.terrainAdapter = terrainAdapter;
+    public VoxelChunkHandler(VoxelTypeLibrary voxelTypeLibrary, VoxelChunkRebuilder voxelChunkRebuilder) {
+        this.voxelTypeLibrary = voxelTypeLibrary;
         this.voxelChunkRebuilder = voxelChunkRebuilder;
         this.faceBuilder = new FaceBuilder(this, OcclusionCalculatorBuilder.build(this));
         this.chunks = new HashMap<>();
@@ -65,10 +66,10 @@ public class VoxelChunkHandler {
 
     private VoxelChunk findChunk(ChunkId chunkId) {
         if (!this.chunks.containsKey(chunkId)) {
-            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder, this.terrainAdapter);
+            VoxelChunk chunk = new VoxelChunk(chunkId, this.faceBuilder);
             Vector3f translate = new Vector3f(chunkId.getX(), chunkId.getY(), chunkId.getZ()).multLocal(GameConstants.CHUNK_SIZE);
             chunk.setLocalTranslation(translate);
-            this.terrainAdapter.addChunk(chunk);
+            this.attachChild(chunk);
             this.chunks.put(chunkId, chunk);
         }
         return this.chunks.get(chunkId);
@@ -137,7 +138,7 @@ public class VoxelChunkHandler {
         VoxelChunk chunk = getChunkContaining(location);
         byte voxel = chunk.getVoxelGlobal(location);
         boolean isHalf = chunk.isHalfGlobal(location);
-        IVoxelType voxelType = this.terrainAdapter.lookupVoxelType(voxel);
+        IVoxelType voxelType = this.voxelTypeLibrary.lookup(voxel);
         return new VoxelData(chunk, location, voxelType, isHalf);
     }
 

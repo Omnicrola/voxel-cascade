@@ -1,10 +1,8 @@
 package com.omnicrola.voxel.terrain.data;
 
 import com.jme3.scene.Node;
-import com.jme3.scene.Spatial;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.TerrainAdapter;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
 
 import java.util.BitSet;
@@ -25,12 +23,10 @@ public class VoxelChunk extends Node {
     private ChunkId chunkId;
     private boolean isDirty;
     private FaceBuilder faceBuilder;
-    private TerrainAdapter terrainAdapter;
     private BitSet halfFlags;
 
-    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder, TerrainAdapter terrainAdapter) {
+    public VoxelChunk(ChunkId chunkId, FaceBuilder faceBuilder) {
         this.faceBuilder = faceBuilder;
-        this.terrainAdapter = terrainAdapter;
         setName("Chunk ID:" + chunkId);
         this.chunkId = chunkId;
         int size = GameConstants.CHUNK_SIZE;
@@ -74,18 +70,6 @@ public class VoxelChunk extends Node {
     public VoxelFace getVoxelFace(int x, int y, int z, int side) {
         Vec3i global = this.chunkId.globalize(x, y, z);
         return this.faceBuilder.build(global, side);
-    }
-
-    @Override
-    public void detachAllChildren() {
-        this.getChildren().forEach(spatial -> terrainAdapter.removeQuad(spatial));
-        super.detachAllChildren();
-    }
-
-    @Override
-    public int attachChild(Spatial child) {
-        this.terrainAdapter.attachQuad(child);
-        return super.attachChild(child);
     }
 
     public float getResourceGlobal(Vec3i globalLocation) {

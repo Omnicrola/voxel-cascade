@@ -23,7 +23,7 @@ public class VoxelChunkTest {
 
     @Test
     public void testHalfFlags() throws Exception {
-        VoxelChunk voxelChunk = new VoxelChunk(new ChunkId(0, 0, 0), mockFaceBuilder, mockTerrainAdapter);
+        VoxelChunk voxelChunk = new VoxelChunk(new ChunkId(0, 0, 0), mockFaceBuilder);
         for (int x = 0; x < 16; x++) {
             for (int y = 0; y < 16; y++) {
                 for (int z = 0; z < 16; z++) {

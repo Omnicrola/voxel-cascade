@@ -6,6 +6,7 @@ import com.omnicrola.voxel.engine.states.ActivePlayState;
 import com.omnicrola.voxel.input.IWorldCursor;
 import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
+import com.omnicrola.voxel.world.WorldManager;
 
 /**
  * Created by omnic on 2/28/2016.
@@ -17,6 +18,8 @@ public class ActivePlayInputStateInitializer implements IStateInitializer {
         TerrainManager terrainManager = initializationContainer.getTerrainManager();
         IWorldCursor worldCursor = initializationContainer.getWorldManager().getWorldCursor();
         IUiManager uiManager = initializationContainer.getUiManager();
-        return new ActivePlayState(levelManager, terrainManager, worldCursor, uiManager);
+        WorldManager worldManager = initializationContainer.getWorldManager();
+
+        return new ActivePlayState(levelManager, terrainManager, worldCursor, uiManager, worldManager);
     }
 }

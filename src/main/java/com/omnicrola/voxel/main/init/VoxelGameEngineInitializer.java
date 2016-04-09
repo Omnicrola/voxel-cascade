@@ -11,9 +11,6 @@ import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
-import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
-import com.omnicrola.voxel.data.level.LevelLoadingAdapter;
-import com.omnicrola.voxel.data.level.LevelStateLoader;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.ShutdownHandler;
@@ -31,12 +28,8 @@ import com.omnicrola.voxel.network.MultiplayerDiscovery;
 import com.omnicrola.voxel.network.NetworkCommandQueue;
 import com.omnicrola.voxel.network.NetworkManager;
 import com.omnicrola.voxel.settings.GameConstants;
-import com.omnicrola.voxel.terrain.*;
-import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
-import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
-import com.omnicrola.voxel.terrain.build.mesh.*;
-import com.omnicrola.voxel.terrain.data.VoxelChunk;
-import com.omnicrola.voxel.terrain.data.VoxelType;
+import com.omnicrola.voxel.terrain.ITerrainManager;
+import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.ui.UiManager;
 import com.omnicrola.voxel.ui.select.RingMesh;
 import com.omnicrola.voxel.ui.select.UiSelectionRectangle;
@@ -47,7 +40,6 @@ import com.omnicrola.voxel.world.build.UnitBuilder;
 import com.omnicrola.voxel.world.build.WorldBuilderToolbox;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -87,14 +79,11 @@ public class VoxelGameEngineInitializer {
         WorldManager worldManager = new WorldManager(voxelGameEngine.getWorldNode(), worldCursor);
         AssetManager assetManager = voxelGameEngine.getAssetManager();
 
-        VoxelTypeLibrary voxelTypeLibrary = buildVoxelTypeLibrary();
         MaterialRepository materialRepository = new MaterialRepository(voxelGameEngine.getAssetManager());
 
-        LevelDefinitionRepository levelDefinitions = this.gameXmlDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
         UnitDefinitionRepository unitDefinitions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
 
-        LevelLoadingAdapter levelLoadingAdapter = new LevelLoadingAdapter();
-        LevelManager levelManager = new LevelManager(levelDefinitions, levelLoadingAdapter);
+        LevelManager levelManager = new LevelManager();
         NetworkCommandQueue networkCommandQueue = new NetworkCommandQueue();
         ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
 
@@ -102,7 +91,7 @@ public class VoxelGameEngineInitializer {
         MultiplayerDiscovery multiplayerDiscovery = new MultiplayerDiscovery(voxelGameEngine);
         NetworkManager networkManager = new NetworkManager(clientListenerBuilder, networkCommandQueue, multiplayerDiscovery);
 
-        TerrainManager terrainManager = createTerrainManager(worldManager, voxelTypeLibrary, materialRepository);
+        TerrainManager terrainManager = new TerrainManager();
 
         InputManager inputManager = voxelGameEngine.getInputManager();
         AudioRepository audioRepository = new AudioRepository(voxelGameEngine.getWorldNode(), assetManager);
@@ -132,18 +121,8 @@ public class VoxelGameEngineInitializer {
                 new ParticleBuilder(assetManager, worldManager));
         networkManager.setCommandProcessor(worldCommandProcessor);
 
-        LevelStateLoader levelStateLoader = new LevelStateLoader(
-                voxelGameEngine,
-                terrainManager,
-                worldManager,
-                worldCommandProcessor,
-                levelManager);
-        levelLoadingAdapter.setStateLoader(levelStateLoader);
-
         InitializationContainer initializationContainer = new InitializationContainer(
                 worldManager,
-                voxelTypeLibrary,
-                materialRepository,
                 voxelGameEngine,
                 levelManager,
                 worldCommandProcessor,
@@ -177,16 +156,6 @@ public class VoxelGameEngineInitializer {
         return worldCursor;
     }
 
-    private TerrainManager createTerrainManager(WorldManager worldManager,
-                                                VoxelTypeLibrary voxelTypeLibrary,
-                                                MaterialRepository materialRepository) {
-        TerrainAdapter terrainAdapter = new TerrainAdapter(worldManager, materialRepository, voxelTypeLibrary);
-        VoxelChunkHandler voxelChunkHandler = buildVoxelChunkHandler(worldManager, materialRepository, terrainAdapter);
-        VoxelTerrainGenerator voxelTerrainGenerator = buildTerrainGenerator(voxelTypeLibrary);
-        TerrainManager terrainManager = new TerrainManager(voxelChunkHandler, voxelTerrainGenerator, voxelTypeLibrary);
-        return terrainManager;
-    }
-
     private WorldEntityBuilder createWorldEntityBuilder(AssetManager assetManager,
                                                         UnitDefinitionRepository unitDefinitions,
                                                         LevelManager levelManager,
@@ -211,29 +180,4 @@ public class VoxelGameEngineInitializer {
         return new WorldEntityBuilder(unitDefinitions, assetManager, unitBuilder, structureBuilder);
     }
 
-    private VoxelTypeLibrary buildVoxelTypeLibrary() {
-        VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
-        Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));
-        return voxelTypeLibrary;
-    }
-
-    private VoxelTerrainGenerator buildTerrainGenerator(VoxelTypeLibrary voxelTypeLibrary) {
-        PerlinNoiseGenerator perlinNoiseGenerator = new PerlinNoiseGenerator();
-        return new VoxelTerrainGenerator(perlinNoiseGenerator, voxelTypeLibrary);
-    }
-
-    private VoxelChunkHandler buildVoxelChunkHandler(WorldManager worldManager, MaterialRepository materialRepository, TerrainAdapter terrainAdapter) {
-        ITerrainQuadMeshStrategy[] meshStrategies = new ITerrainQuadMeshStrategy[6];
-        meshStrategies[VoxelChunk.SIDE_Z_NEG] = new QuadMeshStrategyZAxis();
-        meshStrategies[VoxelChunk.SIDE_Z_POS] = new QuadMeshStrategyZAxis();
-        meshStrategies[VoxelChunk.SIDE_X_POS] = new QuadMeshStrategyXAxis();
-        meshStrategies[VoxelChunk.SIDE_X_NEG] = new QuadMeshStrategyXAxis();
-        meshStrategies[VoxelChunk.SIDE_Y_POS] = new QuadMeshStrategyYPos();
-        meshStrategies[VoxelChunk.SIDE_Y_NEG] = new StandardQuadMeshStrategy();
-
-        TerrainQuadFactory quadFactory = new TerrainQuadFactory(materialRepository, meshStrategies);
-        VoxelChunkRebuilder voxelChunkRebuilder = new VoxelChunkRebuilder(quadFactory, worldManager);
-
-        return new VoxelChunkHandler(terrainAdapter, voxelChunkRebuilder);
-    }
 }

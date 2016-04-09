@@ -82,7 +82,6 @@ public class DebugState extends AbstractAppState {
         game.getInputManager().addListener(new ToggleDebugListener(), GameInputAction.TOGGLE_DEBUG_MODE.toString());
         this.listeners.add(new Tuple<>(new DebugSceneGraphListener(this.game), GameInputAction.DEBUG_SCENE_GRAPH));
         this.listeners.add(new Tuple<>(new DebugTargetListener(worldCursor), GameInputAction.DEBUG_TARGET_OBJECT));
-        this.listeners.add(new Tuple<>(new DebugReloadLevelListener(this.game), GameInputAction.DEBUG_RELOAD_LEVEL));
         this.listeners.add(new Tuple<>(new DebugRebuildTerrainListener(this.game), GameInputAction.DEBUG_REBUILD_TERRAIN));
         this.listeners.add(new Tuple<>(new DebugMouseLookListener(worldCursor, this.game), GameInputAction.DEBUG_TOGGLE_MOUSE_LOOK));
         this.listeners.add(new Tuple<>(new DebugPhysicsListener(this.game), GameInputAction.DEBUG_TOGGLE_PHYSICS));
