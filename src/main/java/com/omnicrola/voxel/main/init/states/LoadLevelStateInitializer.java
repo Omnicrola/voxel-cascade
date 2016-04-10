@@ -10,6 +10,7 @@ import com.omnicrola.voxel.data.level.load.*;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.states.LoadLevelState;
 import com.omnicrola.voxel.settings.GameConstants;
+import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.world.build.StructureBuilder;
 import com.omnicrola.voxel.world.build.UnitBuilder;
 import com.omnicrola.voxel.world.build.WorldEntityBuilder;
@@ -38,7 +39,9 @@ public class LoadLevelStateInitializer implements IStateInitializer {
         AsyncLevelLoader asyncLevelLoader = new AsyncLevelLoader(parallelTaskFactories, finalTaskFactories, levelDefinitions, unitDefinitions);
 
         LevelManager levelManager = initializationContainer.getLevelManager();
-        return new LoadLevelState(levelManager, asyncLevelLoader);
+        IUiManager uiManager = initializationContainer.getUiManager();
+
+        return new LoadLevelState(levelManager, uiManager,asyncLevelLoader);
     }
 
     private ArrayList<ILoadingTaskFactory> createParallelTaskFactories(InitializationContainer initializationContainer) {

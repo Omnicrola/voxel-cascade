@@ -60,4 +60,10 @@ public class UiToken {
         public static final String DROPDOWN_ANTI_ALIAS = "dropdown-anti-alias";
         public static final String SLIDER_MASTER_VOLUME = "slider-master-volume";
     }
+
+    public class Loading {
+
+        public static final String STATUS_LABEL = "loading-status-label";
+        public static final String PERCENTAGE = "loading-percent-label";
+    }
 }

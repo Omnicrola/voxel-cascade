@@ -7,6 +7,10 @@ import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.data.level.LevelSettings;
 import com.omnicrola.voxel.data.level.load.AsyncLevelLoader;
+import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.LoadingStatusChangeEvent;
+import com.omnicrola.voxel.ui.IUiManager;
+import com.omnicrola.voxel.ui.UiScreen;
 
 /**
  * Created by Eric on 4/8/2016.
@@ -17,11 +21,14 @@ public class LoadLevelState extends AbstractAppState {
     private boolean loadNeedsStarted;
     private LevelSettings levelToLoad;
     private ILevelManager levelManager;
+    private IUiManager uiManager;
     private AsyncLevelLoader asyncLevelLoader;
     private AppStateManager stateManager;
+    private float percentComplete;
 
-    public LoadLevelState(ILevelManager levelManager, AsyncLevelLoader asyncLevelLoader) {
+    public LoadLevelState(ILevelManager levelManager, IUiManager uiManager, AsyncLevelLoader asyncLevelLoader) {
         this.levelManager = levelManager;
+        this.uiManager = uiManager;
         this.asyncLevelLoader = asyncLevelLoader;
         this.setEnabled(false);
     }
@@ -45,7 +52,12 @@ public class LoadLevelState extends AbstractAppState {
     }
 
     private void updateLoadStatus() {
-        float percentComplete = this.asyncLevelLoader.updateLoadStatus();
+        float complete = this.asyncLevelLoader.updateLoadStatus();
+        if (complete != this.percentComplete) {
+            this.percentComplete = complete;
+            VoxelEventBus.INSTANCE().post(new LoadingStatusChangeEvent("Loading...", percentComplete));
+        }
+
         if (this.asyncLevelLoader.isFinished()) {
             transitionToActivePlay();
         }
@@ -69,7 +81,7 @@ public class LoadLevelState extends AbstractAppState {
     }
 
     private void enable() {
-
+        this.uiManager.changeScreen(UiScreen.LOAD_LEVEL);
     }
 
     private void disable() {
@@ -90,9 +102,7 @@ public class LoadLevelState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.stateManager = stateManager;
+
     }
 
-    public ILevelManager getLevelManager() {
-        return levelManager;
-    }
 }
