@@ -5,6 +5,7 @@ import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by omnic on 1/24/2016.
@@ -17,4 +18,6 @@ public interface ILevelManager {
     List<TeamStatistics> getTeamStatistics();
 
     List<LevelDefinition> getAllLevels();
+
+    LevelDefinition getLevel(UUID uuid);
 }

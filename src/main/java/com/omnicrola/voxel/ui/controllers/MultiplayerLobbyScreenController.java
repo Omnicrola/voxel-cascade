@@ -2,6 +2,7 @@ package com.omnicrola.voxel.ui.controllers;
 
 import com.google.common.eventbus.Subscribe;
 import com.omnicrola.voxel.commands.ChangeScreenCommand;
+import com.omnicrola.voxel.commands.SelectMultiplayerLevelCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
@@ -57,7 +58,10 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
     @NiftyEventSubscriber(id = "level-chooser-box")
     public void selectedServerChanged(String id, ListBoxSelectionChangedEvent event) {
         List<LevelWrapper> selection = event.getSelection();
-        System.out.println("Selected: " + selection.get(0).getLevelDefinition().getName());
+        if (selection.size() >= 1) {
+            LevelDefinition levelDefinition = selection.get(0).getLevelDefinition();
+            this.uiAdapter.sendCommand(new SelectMultiplayerLevelCommand(levelDefinition.getUuid()));
+        }
     }
 
     @Subscribe
@@ -99,14 +103,12 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
 
     @Override
     protected void screenOpen() {
-        System.out.println("REGISTER");
         VoxelEventBus.INSTANCE().register(this);
         ui().getElement(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX).setVisible(false);
     }
 
     @Override
     protected void screenClose() {
-        System.out.println("UNREGISTER");
         VoxelEventBus.INSTANCE().unregister(this);
     }
 

@@ -39,7 +39,6 @@ public class MultiplayerCreationScreenController extends MultiplayerLobbyScreenC
 
     @Subscribe
     public void setListOfLevels(UpdateAvailableLevelsEvent event) {
-        System.out.println("GOT EVENT");
         levels = event.getLevels();
         updateListOfLevels();
     }

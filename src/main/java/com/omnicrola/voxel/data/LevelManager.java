@@ -7,8 +7,8 @@ import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.eventBus.events.CurrentLevelChangeEvent;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
-import java.util.Collections;
 import java.util.List;
+import java.util.UUID;
 
 /**
  * Created by Eric on 2/6/2016.
@@ -40,6 +40,11 @@ public class LevelManager implements ILevelManager {
     @Override
     public List<LevelDefinition> getAllLevels() {
         return this.levelDefinitionRepository.getAllLevels();
+    }
+
+    @Override
+    public LevelDefinition getLevel(UUID levelGlobalId) {
+        return this.levelDefinitionRepository.getLevel(levelGlobalId);
     }
 
     private void emitLevelChangeEvent() {
