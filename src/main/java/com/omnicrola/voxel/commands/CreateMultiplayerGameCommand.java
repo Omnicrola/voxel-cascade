@@ -21,9 +21,9 @@ public class CreateMultiplayerGameCommand extends AbstractWorldCommand {
         INetworkManager networkManager = commandPackage.getNetworkManager();
         networkManager.startLocalMultiplayerServer();
         commandPackage.getUiManager().changeScreen(UiScreen.MULTIPLAYER_CREATE);
-        
+
         List<LevelDefinition> levels = commandPackage.getLevelManager().getAllLevels();
-        VoxelEventBus.INSTANCE().post(new UpdateAvailableLevelsEvent(levels));
+        commandPackage.getCommandProcessor().addCommand(new EmitEventCommand(new UpdateAvailableLevelsEvent(levels)));
     }
 
     @Override

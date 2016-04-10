@@ -19,11 +19,11 @@ import java.util.List;
 /**
  * Created by Eric on 2/21/2016.
  */
-public class MultiplayerCreationController extends MultiplayerLobbyScreenController {
+public class MultiplayerCreationScreenController extends MultiplayerLobbyScreenController {
 
     private List<LevelDefinition> levels = new ArrayList<>();
 
-    public MultiplayerCreationController(UiAdapter uiAdapter) {
+    public MultiplayerCreationScreenController(UiAdapter uiAdapter) {
         super(uiAdapter);
     }
 
@@ -39,6 +39,7 @@ public class MultiplayerCreationController extends MultiplayerLobbyScreenControl
 
     @Subscribe
     public void setListOfLevels(UpdateAvailableLevelsEvent event) {
+        System.out.println("GOT EVENT");
         levels = event.getLevels();
         updateListOfLevels();
     }

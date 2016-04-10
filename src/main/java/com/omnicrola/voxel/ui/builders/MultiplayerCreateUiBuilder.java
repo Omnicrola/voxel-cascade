@@ -2,7 +2,7 @@ package com.omnicrola.voxel.ui.builders;
 
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
-import com.omnicrola.voxel.ui.controllers.MultiplayerCreationController;
+import com.omnicrola.voxel.ui.controllers.MultiplayerCreationScreenController;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.tools.Color;
@@ -14,7 +14,7 @@ public class MultiplayerCreateUiBuilder extends MultiplayerLobbyUiBuilder {
     public void build(UiAdapter uiAdapter) {
 
         String screenName = UiScreen.MULTIPLAYER_CREATE.toString();
-        MultiplayerCreationController multiplayerController = new MultiplayerCreationController(uiAdapter);
+        MultiplayerCreationScreenController multiplayerController = new MultiplayerCreationScreenController(uiAdapter);
 
         uiAdapter.addScreen(screenName, new ScreenBuilder(screenName) {{
             controller(multiplayerController);

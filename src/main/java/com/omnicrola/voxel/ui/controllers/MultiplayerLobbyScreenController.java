@@ -14,14 +14,18 @@ import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
+import com.omnicrola.voxel.ui.data.LevelWrapper;
 import com.omnicrola.voxel.ui.nifty.IUiPanel;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.builder.ControlBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
+import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
 import de.lessvoid.nifty.controls.RadioButtonGroupStateChangedEvent;
 import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
 import de.lessvoid.nifty.controls.radiobutton.builder.RadioButtonBuilder;
+
+import java.util.List;
 
 /**
  * Created by Eric on 3/27/2016.
@@ -32,7 +36,6 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
 
     public MultiplayerLobbyScreenController(UiAdapter uiAdapter) {
         this.uiAdapter = uiAdapter;
-        VoxelEventBus.INSTANCE().register(this);
     }
 
     @NiftyEventSubscriber(id = "button-cancel")
@@ -51,6 +54,11 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
         System.out.println("RadioButton [" + event.getSelectedId() + "] is now selected. The old selection was [" + event.getPreviousSelectedId() + "]");
     }
 
+    @NiftyEventSubscriber(id = "level-chooser-box")
+    public void selectedServerChanged(String id, ListBoxSelectionChangedEvent event) {
+        List<LevelWrapper> selection = event.getSelection();
+        System.out.println("Selected: " + selection.get(0).getLevelDefinition().getName());
+    }
 
     @Subscribe
     public void setCurrentLobbyServer(MultiplayerLobbyJoinEvent event) {
@@ -91,10 +99,15 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
 
     @Override
     protected void screenOpen() {
+        System.out.println("REGISTER");
+        VoxelEventBus.INSTANCE().register(this);
         ui().getElement(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX).setVisible(false);
     }
 
     @Override
     protected void screenClose() {
+        System.out.println("UNREGISTER");
+        VoxelEventBus.INSTANCE().unregister(this);
     }
+
 }
