@@ -68,8 +68,8 @@ public class Bootstrapper {
     private static ArrayList<IStateInitializer> getStateInitializers(GameXmlDataParser gameXmlParser) {
         ArrayList<IStateInitializer> stateInitializers = new ArrayList<>();
         stateInitializers.add(new LoadLevelStateInitializer(gameXmlParser));
-        stateInitializers.add(new CommandStateInitializer(new CursorProviderBuilder()));
-        stateInitializers.add(new ActivePlayInputStateInitializer());
+        stateInitializers.add(new CommandStateInitializer());
+        stateInitializers.add(new ActivePlayInputStateInitializer(new CursorProviderBuilder()));
         stateInitializers.add(new ClientNetworkStateInitializer());
         stateInitializers.add(new GameOverStateInitializer());
         stateInitializers.add(new LoadingStateInitializer());

@@ -24,7 +24,7 @@ public abstract class AbstractGameEntity implements IGameEntity {
 
     @Override
     public TeamId getTeam() {
-        return this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        return this.spatial.getUserData(EntityDataKeys.TEAM_ID);
     }
 
     @Override

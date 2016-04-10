@@ -7,6 +7,7 @@ import com.jme3.math.Vector2f;
 import com.jme3.scene.Geometry;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.commands.ICommandProcessor;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.input.*;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
@@ -25,16 +26,19 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     private boolean wasPressed;
     private Vector2f lastCursorPosition;
     private InputManager inputManager;
+    private TeamId playerTeam;
 
     public SelectUnitsCursorStrategy(CursorCommandAdaptor cursorCommandAdaptor,
                                      IWorldCursor worldCursor,
                                      InputManager inputManager,
                                      JmeCursor defaultCursor,
-                                     ICommandProcessor worldCommandProcessor) {
+                                     ICommandProcessor worldCommandProcessor,
+                                     TeamId playerTeam) {
         super(worldCursor, defaultCursor, worldCommandProcessor);
         this.cursorCommandAdaptor = cursorCommandAdaptor;
         this.worldCursor = worldCursor;
         this.inputManager = inputManager;
+        this.playerTeam = playerTeam;
         this.lastCursorPosition = new Vector2f();
     }
 
@@ -47,21 +51,31 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
             boolean mouseWasJustReleased = !gameMouseEvent.isPressed();
             if (mouseWasJustReleased) {
                 if (mouseHasBeenDragged()) {
-                    ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.inputManager.getCursorPosition());
-                    List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
-                    SelectionGroup selectionGroup = selectUnits(spatials);
-                    this.worldCursor.setCurrentSelection(selectionGroup);
+                    selectEntitiesInRectangle();
                 } else {
-                    Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor();
-                    if (unitUnderCursor.isPresent()) {
-                        Geometry unit = unitUnderCursor.get().getGeometry();
-                        SelectionGroup selectionGroup = selectUnits(Arrays.asList(unit));
-                        this.worldCursor.setCurrentSelection(selectionGroup);
-                    }
+                    selectSingleEntity();
                 }
             }
         }
         this.wasPressed = gameMouseEvent.isPressed();
+    }
+
+    private void selectEntitiesInRectangle() {
+        ScreenRectangle screenRectangle = new ScreenRectangle(this.lastCursorPosition, this.inputManager.getCursorPosition());
+        List<Spatial> spatials = selectUnitsOrBuilding(screenRectangle);
+        SelectionGroup selectionGroup = selectUnits(spatials);
+        this.worldCursor.setCurrentSelection(selectionGroup);
+    }
+
+    private void selectSingleEntity() {
+        Optional<CollisionResult> unitUnderCursor = this.worldCursor.getUnitUnderCursor();
+        if (unitUnderCursor.isPresent()) {
+            Geometry unit = unitUnderCursor.get().getGeometry();
+            if (VoxelUtil.belongsToTeam(unit, playerTeam)) {
+                SelectionGroup selectionGroup = selectUnits(Arrays.asList(unit));
+                this.worldCursor.setCurrentSelection(selectionGroup);
+            }
+        }
     }
 
     private SelectionGroup selectUnits(List<Spatial> spatials) {
@@ -89,12 +103,14 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     private List<Spatial> findUnits(List<Spatial> spatials) {
         return spatials.stream()
                 .filter(s -> VoxelUtil.booleanData(s, EntityDataKeys.IS_UNIT))
+                .filter(s -> VoxelUtil.belongsToTeam(s, playerTeam))
                 .collect(Collectors.toList());
     }
 
     private List<Spatial> findStructures(List<Spatial> spatials) {
         return spatials.stream()
                 .filter(s -> VoxelUtil.booleanData(s, EntityDataKeys.IS_STRUCTURE))
+                .filter(s -> VoxelUtil.belongsToTeam(s, playerTeam))
                 .collect(Collectors.toList());
     }
 

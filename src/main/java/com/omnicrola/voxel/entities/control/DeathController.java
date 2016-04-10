@@ -38,7 +38,7 @@ public class DeathController extends AbstractControl {
     }
 
     private void recordDeathStats() {
-        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_ID);
         LevelState currentLevel = this.entityControlAdapter.getCurrentLevel();
         TeamStatistics teamStatistics = currentLevel.getTeamStatistics(teamId);
         teamStatistics.increaseUnitsLost();

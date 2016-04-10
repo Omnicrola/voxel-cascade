@@ -29,7 +29,7 @@ public class ProjectileBuilder {
         spatial.setUserData(EntityDataKeys.IS_PROJECTILE, true);
         spatial.setUserData(EntityDataKeys.IS_COLLIDABLE, true);
         spatial.setUserData(EntityDataKeys.PROJECTILE_DAMAGE, projectileDefinition.getDamage());
-        spatial.setUserData(EntityDataKeys.TEAM_DATA, emittingEntity.getUserData(EntityDataKeys.TEAM_DATA));
+        spatial.setUserData(EntityDataKeys.TEAM_ID, emittingEntity.getUserData(EntityDataKeys.TEAM_ID));
         spatial.setUserData(EntityDataKeys.PROJECTILE_EMITTING_ENTITY, emittingEntity);
 
         return new Projectile(spatial);

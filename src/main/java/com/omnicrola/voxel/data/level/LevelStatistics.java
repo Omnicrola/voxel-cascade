@@ -42,7 +42,7 @@ public class LevelStatistics {
     }
 
     private Optional<TeamStatistics> getStatsForUnit(Spatial entity) {
-        TeamId teamId = entity.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = entity.getUserData(EntityDataKeys.TEAM_ID);
         if (teamId == null) {
             return Optional.empty();
         }

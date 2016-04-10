@@ -69,7 +69,7 @@ public class BuildController extends AbstractControl {
         this.buildFx.setLocation(this.constructionPackage.getLocation());
         LevelState currentLevel = this.entityControlAdapter.getCurrentLevel();
         float resourcesUsed = this.constructionPackage.applyResourceTic(tpf);
-        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_ID);
         currentLevel.removeResources(teamId, resourcesUsed);
     }
 

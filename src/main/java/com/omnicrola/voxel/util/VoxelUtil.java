@@ -4,6 +4,7 @@ import com.jme3.collision.CollisionResult;
 import com.jme3.collision.CollisionResults;
 import com.jme3.scene.Spatial;
 import com.jme3.scene.control.Control;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 
 import java.util.stream.Stream;
@@ -57,5 +58,13 @@ public class VoxelUtil {
             return 0;
         }
         return userData;
+    }
+
+    public static boolean belongsToTeam(Spatial spatial, TeamId teamToMatch) {
+        TeamId spatialTeam = spatial.getUserData(EntityDataKeys.TEAM_ID);
+        if (spatialTeam == null) {
+            return false;
+        }
+        return teamToMatch.equals(spatialTeam);
     }
 }

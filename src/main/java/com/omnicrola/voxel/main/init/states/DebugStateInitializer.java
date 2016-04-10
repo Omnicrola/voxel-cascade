@@ -12,8 +12,6 @@ public class DebugStateInitializer implements IStateInitializer {
 
     @Override
     public AppState buildState(InitializationContainer initializationContainer) {
-        WorldManager worldManager = initializationContainer.getWorldManager();
-        WorldEntityBuilder worldEntityBuilder = initializationContainer.getWorldEntityBuilder();
-        return new DebugState(worldManager, worldEntityBuilder);
+        return new DebugState(initializationContainer);
     }
 }

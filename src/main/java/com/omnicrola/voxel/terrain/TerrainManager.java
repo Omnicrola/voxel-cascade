@@ -52,10 +52,6 @@ public class TerrainManager implements ITerrainManager {
         this.voxelChunkHandler.flagAllChunksForRebuild();
     }
 
-    public void update(float tpf) {
-        this.voxelChunkHandler.update();
-    }
-
     public VoxelTypeLibrary getTypeLibrary() {
         return this.voxelTypeLibrary;
     }

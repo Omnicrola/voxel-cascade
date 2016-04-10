@@ -6,12 +6,9 @@ import com.jme3.app.state.AppStateManager;
 import com.jme3.input.InputManager;
 import com.jme3.input.controls.ActionListener;
 import com.jme3.renderer.Camera;
-import com.jme3.scene.Node;
 import com.omnicrola.util.Tuple;
-import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelData;
-import com.omnicrola.voxel.data.level.LevelDefinition;
-import com.omnicrola.voxel.data.level.LevelState;
+import com.omnicrola.voxel.data.level.LevelPlayInitializer;
 import com.omnicrola.voxel.engine.CameraDolly;
 import com.omnicrola.voxel.engine.VoxelGameEngine;
 import com.omnicrola.voxel.input.GameInputAction;
@@ -20,11 +17,9 @@ import com.omnicrola.voxel.input.listeners.ClearSelectionListener;
 import com.omnicrola.voxel.input.listeners.ExecutePrimaryCursorListener;
 import com.omnicrola.voxel.input.listeners.ExecuteSecondaryCursorListener;
 import com.omnicrola.voxel.input.listeners.PanCameraListener;
-import com.omnicrola.voxel.terrain.ITerrainManager;
-import com.omnicrola.voxel.terrain.TerrainManager;
 import com.omnicrola.voxel.ui.IUiManager;
 import com.omnicrola.voxel.ui.UiScreen;
-import com.omnicrola.voxel.world.WorldManager;
+import com.omnicrola.voxel.world.IWorldNode;
 
 import java.util.ArrayList;
 
@@ -33,23 +28,19 @@ import java.util.ArrayList;
  */
 public class ActivePlayState extends AbstractAppState {
     private final ArrayList<Tuple<GameInputAction, ActionListener>> inputs;
-    private LevelManager levelManager;
     private InputManager inputManager;
-    private TerrainManager terrainManager;
     private IWorldCursor worldCursor;
     private IUiManager uiManager;
-    private WorldManager worldManager;
+    private LevelPlayInitializer levelPlayInitializer;
     private Camera camera;
+    private IWorldNode worldNode;
 
-    public ActivePlayState(LevelManager levelManager,
-                           TerrainManager terrainManager,
-                           IWorldCursor worldCursor,
-                           IUiManager uiManager, WorldManager worldManager) {
-        this.levelManager = levelManager;
-        this.terrainManager = terrainManager;
+    public ActivePlayState(IWorldCursor worldCursor,
+                           IUiManager uiManager,
+                           LevelPlayInitializer levelPlayInitializer) {
         this.worldCursor = worldCursor;
         this.uiManager = uiManager;
-        this.worldManager = worldManager;
+        this.levelPlayInitializer = levelPlayInitializer;
         this.inputs = new ArrayList<>();
     }
 
@@ -61,15 +52,17 @@ public class ActivePlayState extends AbstractAppState {
 
         voxelGameEngine.getFlyByCamera().setMoveSpeed(10f);
         this.camera = voxelGameEngine.getCamera();
+
         attachWorldCursor(voxelGameEngine);
+        this.uiManager.attach(voxelGameEngine.getGuiNode());
+
         initializeKeybindings(voxelGameEngine);
+        this.worldNode = voxelGameEngine.getWorldNode();
         setEnabled(false);
     }
 
     private void attachWorldCursor(VoxelGameEngine voxelGameEngine) {
-        Node fxNode = voxelGameEngine.getWorldNode().getFxNode();
-        this.worldCursor.attachTo(fxNode);
-        this.uiManager.attach(voxelGameEngine.getGuiNode());
+        this.worldCursor.attachTo(voxelGameEngine.getWorldNode().getFxNode());
     }
 
     private void initializeKeybindings(VoxelGameEngine voxelGameEngine) {
@@ -114,23 +107,6 @@ public class ActivePlayState extends AbstractAppState {
     @Override
     public void update(float tpf) {
         super.update(tpf);
-        updateCurrentLevel(tpf);
-        this.terrainManager.update(tpf);
-    }
-
-    private void updateCurrentLevel(float tpf) {
-        LevelState currentLevel = this.levelManager.getCurrentLevel();
-        if (currentLevel != null) {
-            currentLevel.addTime(tpf);
-        }
-    }
-
-    public LevelManager getLevelManager() {
-        return levelManager;
-    }
-
-    public ITerrainManager getTerrainManager() {
-        return terrainManager;
     }
 
     public IWorldCursor getWorldCursor() {
@@ -138,18 +114,6 @@ public class ActivePlayState extends AbstractAppState {
     }
 
     public void setLevelData(LevelData levelData) {
-        this.terrainManager.setCurrentHandler(levelData.terrain);
-        this.worldManager.addTerrain(levelData.terrain);
-
-        levelData.structures.forEach(s -> this.worldManager.addStructure(s));
-        levelData.units.forEach(u -> this.worldManager.addUnit(u));
-
-        LevelDefinition levelDefinition = levelData.levelDefinition;
-        LevelState levelState = new LevelState(levelDefinition.getName());
-        this.levelManager.setCurrentLevel(levelState);
-
-        this.camera.setRotation(levelDefinition.getCameraOrientation());
-        this.camera.setLocation(levelDefinition.getCameraPosition());
-
+        this.levelPlayInitializer.activate(levelData, this.worldCursor, this.camera);
     }
 }

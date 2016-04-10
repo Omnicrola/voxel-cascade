@@ -83,7 +83,7 @@ public class ResourceHarvestController extends AbstractControl {
 
     private void harvest(float tpf) {
         float resources = harvestTarget.removeResources(tpf);
-        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_ID);
         LevelState currentLevel = this.controlAdapter.getCurrentLevel();
         currentLevel.addResouces(teamId, resources);
     }

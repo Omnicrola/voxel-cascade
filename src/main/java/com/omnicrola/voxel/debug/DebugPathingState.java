@@ -27,10 +27,12 @@ public class DebugPathingState extends AbstractAppState {
     private VoxelGameEngine game;
     private Node rootNode;
     private VoxelAstarPathFinder pathfinder;
+    private ITerrainManager terrainManager;
     private HighlighterCubeCache pathCubeCache;
     private HighlighterCubeCache secondaryCubeCache;
 
-    public DebugPathingState(HighlighterCubeCache pathCubeCache, HighlighterCubeCache secondaryCubeCache) {
+    public DebugPathingState(ITerrainManager terrainManager, HighlighterCubeCache pathCubeCache, HighlighterCubeCache secondaryCubeCache) {
+        this.terrainManager = terrainManager;
         this.pathCubeCache = pathCubeCache;
         this.secondaryCubeCache = secondaryCubeCache;
     }
@@ -102,8 +104,6 @@ public class DebugPathingState extends AbstractAppState {
 
     private VoxelAstarPathFinder getPathfinder() {
         if (pathfinder == null) {
-            ActivePlayState activePlayState = this.game.getStateManager().getState(ActivePlayState.class);
-            ITerrainManager terrainManager = activePlayState.getTerrainManager();
             this.pathfinder = new VoxelAstarPathFinder(terrainManager);
 
         }

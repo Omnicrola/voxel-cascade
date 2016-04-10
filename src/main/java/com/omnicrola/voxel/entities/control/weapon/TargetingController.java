@@ -59,8 +59,8 @@ public class TargetingController extends AbstractControl {
     }
 
     private boolean isEnemy(CollisionResult collisionResult) {
-        TeamId ourTeam = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
-        TeamId otherTeam = collisionResult.getGeometry().getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId ourTeam = this.spatial.getUserData(EntityDataKeys.TEAM_ID);
+        TeamId otherTeam = collisionResult.getGeometry().getUserData(EntityDataKeys.TEAM_ID);
         return !ourTeam.equals(otherTeam);
     }
 

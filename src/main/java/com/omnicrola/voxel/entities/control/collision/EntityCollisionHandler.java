@@ -27,8 +27,8 @@ public class EntityCollisionHandler extends AbstractCollisionHandler {
     }
 
     private boolean isEnemyProjectile(Spatial otherObject) {
-        TeamId ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_DATA);
-        TeamId theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId ourTeam = this.parentSpatial.getUserData(EntityDataKeys.TEAM_ID);
+        TeamId theirTeam = otherObject.getUserData(EntityDataKeys.TEAM_ID);
         return !ourTeam.equals(theirTeam);
     }
 

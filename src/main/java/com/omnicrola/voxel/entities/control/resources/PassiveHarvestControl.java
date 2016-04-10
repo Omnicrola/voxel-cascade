@@ -42,7 +42,7 @@ public class PassiveHarvestControl extends AbstractControl {
     }
 
     private void harvest(VoxelData voxelData, float tpf) {
-        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_DATA);
+        TeamId teamId = this.spatial.getUserData(EntityDataKeys.TEAM_ID);
         float resourceTic = tpf * this.speed;
         float resourcesAvailable = voxelData.getResources();
         if (resourcesAvailable > resourceTic) {

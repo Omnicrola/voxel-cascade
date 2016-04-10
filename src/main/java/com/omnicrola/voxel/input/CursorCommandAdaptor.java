@@ -9,6 +9,7 @@ import com.jme3.scene.Node;
 import com.jme3.scene.Spatial;
 import com.omnicrola.voxel.commands.OrderStopWorldCommand;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.entities.Effect;
 import com.omnicrola.voxel.entities.control.construction.HarvestTerrainHighlightStrategy;
 import com.omnicrola.voxel.input.actions.*;
@@ -34,19 +35,22 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
     private WorldManager worldManager;
     private ITerrainManager terrainManager;
     private WorldCommandProcessor worldCommandProcessor;
+    private TeamId playerTeam;
 
     public CursorCommandAdaptor(InputManager inputManager,
                                 Cursor2dProvider cursor2dProvider,
                                 WorldEntityBuilder worldEntityBuilder,
                                 WorldManager worldManager,
                                 ITerrainManager terrainManager,
-                                WorldCommandProcessor worldCommandProcessor) {
+                                WorldCommandProcessor worldCommandProcessor,
+                                TeamId playerTeam) {
         this.inputManager = inputManager;
         this.cursor2dProvider = cursor2dProvider;
         this.worldEntityBuilder = worldEntityBuilder;
         this.worldManager = worldManager;
         this.terrainManager = terrainManager;
         this.worldCommandProcessor = worldCommandProcessor;
+        this.playerTeam = playerTeam;
     }
 
     @Override
@@ -54,7 +58,7 @@ public class CursorCommandAdaptor implements ICursorCommandAdapter {
         JmeCursor defaultCursor = getCursor(CursorToken.DEFAULT);
         IWorldCursor worldCursor = this.worldManager.getWorldCursor();
         SelectUnitsCursorStrategy selectUnitsCursorStrategy = new SelectUnitsCursorStrategy(
-                this, worldCursor, this.inputManager, defaultCursor, worldCommandProcessor);
+                this, worldCursor, this.inputManager, defaultCursor, worldCommandProcessor, playerTeam);
         worldCursor.setCursorStrategy(selectUnitsCursorStrategy);
         return selectUnitsCursorStrategy;
     }
