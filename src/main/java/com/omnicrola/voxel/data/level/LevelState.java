@@ -1,26 +1,24 @@
 package com.omnicrola.voxel.data.level;
 
-import com.omnicrola.voxel.IDisposable;
 import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.eventBus.events.LevelStatisticChangeEvent;
-import com.omnicrola.voxel.main.VoxelException;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * Created by omnic on 1/16/2016.
  */
-public class LevelState implements IDisposable {
+public class LevelState {
     private final ArrayList<TeamId> teams;
     private final LevelStatistics statistics;
     private final HashMap<TeamId, Float> resources;
     private String levelName;
     private boolean hasStarted;
+    private TeamId playerTeam;
 
     public LevelState(String levelName) {
         this.teams = new ArrayList<>();
@@ -39,28 +37,11 @@ public class LevelState implements IDisposable {
     }
 
     public TeamId getPlayerTeam() {
-        return this.teams.get(0);
-    }
-
-    public TeamId getTeamById(int teamId) {
-        Optional<TeamId> first = this.teams
-                .stream()
-                .filter(t -> hasId(t, teamId))
-                .findFirst();
-        if (first.isPresent()) {
-            return first.get();
-        } else {
-            throw new VoxelException("Requested teamID was not found for this level : " + teamId);
-        }
+        return this.playerTeam;
     }
 
     private boolean hasId(TeamId teamData, int teamId) {
         return teamData.getId() == teamId;
-    }
-
-    @Override
-    public void dispose() {
-
     }
 
     public List<TeamStatistics> getTeamStatistics() {
@@ -71,6 +52,7 @@ public class LevelState implements IDisposable {
         return this.statistics.getTeamStatistics(teamId);
     }
 
+    // TODO : LevelState needs to be updated by something
     public void addTime(float seconds) {
         this.statistics.addTime(seconds);
     }
@@ -114,5 +96,9 @@ public class LevelState implements IDisposable {
 
     public void setHasStarted(boolean hasStarted) {
         this.hasStarted = hasStarted;
+    }
+
+    public void setPlayerTeam(TeamId playerTeam) {
+        this.playerTeam = playerTeam;
     }
 }

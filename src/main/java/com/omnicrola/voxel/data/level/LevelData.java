@@ -13,13 +13,16 @@ import java.util.List;
  */
 public class LevelData {
     public final LevelDefinition levelDefinition;
+    public final LevelSettings levelSettings;
     public final UnitDefinitionRepository unitDefinitionRepository;
+
     public List<Structure> structures = new ArrayList<>();
     public List<Unit> units = new ArrayList<>();
     public VoxelChunkHandler terrain;
 
-    public LevelData(LevelDefinition levelDefinition, UnitDefinitionRepository unitDefinitionRepository) {
+    public LevelData(LevelDefinition levelDefinition, LevelSettings levelSettings, UnitDefinitionRepository unitDefinitionRepository) {
         this.levelDefinition = levelDefinition;
+        this.levelSettings = levelSettings;
         this.unitDefinitionRepository = unitDefinitionRepository;
     }
 }

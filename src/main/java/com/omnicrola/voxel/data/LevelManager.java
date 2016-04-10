@@ -24,9 +24,6 @@ public class LevelManager implements ILevelManager {
 
     @Override
     public void setCurrentLevel(LevelState levelState) {
-        if (this.currentLevelState != null) {
-            this.currentLevelState.dispose();
-        }
         this.currentLevelState = levelState;
         emitLevelChangeEvent();
     }

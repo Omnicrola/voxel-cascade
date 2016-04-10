@@ -3,6 +3,7 @@ package com.omnicrola.voxel.network;
 import com.jme3.network.serializing.Serializer;
 import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.commands.*;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.UnitPlacement;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
@@ -33,5 +34,6 @@ public class MessageSerializationInitializer {
 
         Serializer.registerClass(UnitPlacement.class);
         Serializer.registerClass(Vec3i.class);
+        Serializer.registerClass(TeamId.class);
     }
 }

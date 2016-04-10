@@ -4,6 +4,7 @@ import com.jme3.app.state.AppState;
 import com.jme3.asset.AssetManager;
 import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.data.GameXmlDataParser;
+import com.omnicrola.voxel.data.LevelManager;
 import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.level.load.*;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
@@ -35,7 +36,9 @@ public class LoadLevelStateInitializer implements IStateInitializer {
         ArrayList<ILoadingTaskFactory> parallelTaskFactories = createParallelTaskFactories(initializationContainer);
         ArrayList<ILoadingTaskFactory> finalTaskFactories = createFinalTaskFactories();
         AsyncLevelLoader asyncLevelLoader = new AsyncLevelLoader(parallelTaskFactories, finalTaskFactories, levelDefinitions, unitDefinitions);
-        return new LoadLevelState(asyncLevelLoader);
+
+        LevelManager levelManager = initializationContainer.getLevelManager();
+        return new LoadLevelState(levelManager, asyncLevelLoader);
     }
 
     private ArrayList<ILoadingTaskFactory> createParallelTaskFactories(InitializationContainer initializationContainer) {

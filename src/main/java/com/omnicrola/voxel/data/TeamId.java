@@ -3,6 +3,7 @@ package com.omnicrola.voxel.data;
 import com.jme3.export.JmeExporter;
 import com.jme3.export.JmeImporter;
 import com.jme3.export.Savable;
+import com.jme3.network.serializing.Serializable;
 import com.omnicrola.voxel.data.level.TeamDefinition;
 
 import java.io.IOException;
@@ -10,6 +11,7 @@ import java.io.IOException;
 /**
  * Created by Eric on 1/21/2016.
  */
+@Serializable
 public class TeamId implements Savable {
 
     public static final TeamId NEUTRAL = create(999);
@@ -22,6 +24,9 @@ public class TeamId implements Savable {
     }
 
     private int teamId;
+
+    public TeamId() {
+    }
 
     public TeamId(TeamDefinition teamDefinition) {
         this.teamId = teamDefinition.getId();
@@ -44,6 +49,13 @@ public class TeamId implements Savable {
 
     @Override
     public void write(JmeExporter ex) throws IOException {
+    }
+
+    @Override
+    public String toString() {
+        return "TeamId{" +
+                "teamId=" + teamId +
+                '}';
     }
 
     @Override

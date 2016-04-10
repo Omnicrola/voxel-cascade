@@ -34,7 +34,6 @@ public class LevelPlayInitializer {
         WorldManager worldManager = initializationContainer.getWorldManager();
         LevelManager levelManager = initializationContainer.getLevelManager();
 
-
         terrainManager.setCurrentHandler(levelData.terrain);
         worldManager.addTerrain(levelData.terrain);
 
@@ -45,7 +44,10 @@ public class LevelPlayInitializer {
         LevelState levelState = new LevelState(levelDefinition.getName());
         levelManager.setCurrentLevel(levelState);
 
-        TeamId playerTeam = levelManager.getCurrentLevel().getPlayerTeam();
+        TeamId playerTeam = levelData.levelSettings.getPlayerTeamId();
+        levelData.levelSettings.getAllPlayers().forEach(p->levelState.addTeam(p));
+        levelState.setPlayerTeam(playerTeam);
+
         buildCursorInteractionStrategies(worldCursor, playerTeam);
 
         camera.setRotation(levelDefinition.getCameraOrientation());

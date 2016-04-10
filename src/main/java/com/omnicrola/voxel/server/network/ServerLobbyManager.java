@@ -85,4 +85,8 @@ public class ServerLobbyManager {
     public int getPlayerCount() {
         return this.players.size();
     }
+
+    public List<NetworkPlayer> getPlayers() {
+        return this.players;
+    }
 }

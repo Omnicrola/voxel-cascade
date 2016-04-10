@@ -3,10 +3,10 @@ package com.omnicrola.voxel.engine.states;
 import com.jme3.app.Application;
 import com.jme3.app.state.AbstractAppState;
 import com.jme3.app.state.AppStateManager;
+import com.omnicrola.voxel.data.ILevelManager;
 import com.omnicrola.voxel.data.level.LevelData;
+import com.omnicrola.voxel.data.level.LevelSettings;
 import com.omnicrola.voxel.data.level.load.AsyncLevelLoader;
-
-import java.util.UUID;
 
 /**
  * Created by Eric on 4/8/2016.
@@ -15,11 +15,13 @@ public class LoadLevelState extends AbstractAppState {
 
     private boolean loadIsPending;
     private boolean loadNeedsStarted;
-    private UUID levelToLoad;
+    private LevelSettings levelToLoad;
+    private ILevelManager levelManager;
     private AsyncLevelLoader asyncLevelLoader;
     private AppStateManager stateManager;
 
-    public LoadLevelState(AsyncLevelLoader asyncLevelLoader) {
+    public LoadLevelState(ILevelManager levelManager, AsyncLevelLoader asyncLevelLoader) {
+        this.levelManager = levelManager;
         this.asyncLevelLoader = asyncLevelLoader;
         this.setEnabled(false);
     }
@@ -60,7 +62,7 @@ public class LoadLevelState extends AbstractAppState {
         this.stateManager.getState(GameOverState.class).setEnabled(false);
     }
 
-    public void setLevelToLoad(UUID levelToLoad) {
+    public void setLevelToLoad(LevelSettings levelToLoad) {
         this.levelToLoad = levelToLoad;
         this.loadIsPending = true;
         this.loadNeedsStarted = true;
@@ -88,5 +90,9 @@ public class LoadLevelState extends AbstractAppState {
     public void initialize(AppStateManager stateManager, Application app) {
         super.initialize(stateManager, app);
         this.stateManager = stateManager;
+    }
+
+    public ILevelManager getLevelManager() {
+        return levelManager;
     }
 }
