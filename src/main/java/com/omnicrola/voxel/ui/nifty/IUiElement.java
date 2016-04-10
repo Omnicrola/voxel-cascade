@@ -1,14 +1,9 @@
 package com.omnicrola.voxel.ui.nifty;
 
-import de.lessvoid.nifty.builder.ElementBuilder;
-
 /**
  * Created by Eric on 1/30/2016.
  */
-public interface IUiElement {
-    void removeAllChildren();
-
-    void addElement(ElementBuilder elementBuilder);
+public interface IUiElement extends IUiPanel {
 
     void setText(String name);
 
@@ -16,5 +11,5 @@ public interface IUiElement {
 
     int getWidth();
 
-    void setVisible(boolean isVisible);
+
 }

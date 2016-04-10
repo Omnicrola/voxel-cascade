@@ -13,10 +13,17 @@ public class TeamDefinition {
     @XmlAttribute(name = "team-id", required = true)
     protected int id;
 
+    @XmlAttribute(name = "team-name", required = true)
+    private String name;
+
     public TeamDefinition() {
     }
 
     public int getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
     }
 }

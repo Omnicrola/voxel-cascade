@@ -58,10 +58,6 @@ public class UiAdapter {
         return this.spatialDecorator;
     }
 
-    public VoxelGameServer getCurrentServer() {
-        return this.networkManager.getCurrentServer();
-    }
-
     public DisplaySettingsHandler getDisplaySettingsHandler() {
         return this.displaySettingsHandler;
     }

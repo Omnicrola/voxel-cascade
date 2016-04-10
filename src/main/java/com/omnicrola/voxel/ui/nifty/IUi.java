@@ -17,4 +17,6 @@ public interface IUi {
     <T> ListBox<T> getListBox(String token);
 
     CheckBox getCheckbox(String checkboxFullscreen);
+
+    IUiPanel getPanel(String token);
 }

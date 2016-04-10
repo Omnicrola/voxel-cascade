@@ -11,6 +11,7 @@ import com.omnicrola.voxel.audio.AudioRepository;
 import com.omnicrola.voxel.commands.WorldCommandProcessor;
 import com.omnicrola.voxel.data.GameXmlDataParser;
 import com.omnicrola.voxel.data.LevelManager;
+import com.omnicrola.voxel.data.level.LevelDefinitionRepository;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 import com.omnicrola.voxel.engine.MaterialRepository;
 import com.omnicrola.voxel.engine.ShutdownHandler;
@@ -83,7 +84,8 @@ public class VoxelGameEngineInitializer {
 
         UnitDefinitionRepository unitDefinitions = (UnitDefinitionRepository) assetManager.loadAsset(GameConstants.UNIT_DEFINITION_FILE);
 
-        LevelManager levelManager = new LevelManager();
+        LevelDefinitionRepository levelDefinitionRepository = this.gameXmlDataParser.loadLevels(GameConstants.LEVEL_DEFINITIONS_DIRECTORY);
+        LevelManager levelManager = new LevelManager(levelDefinitionRepository);
         NetworkCommandQueue networkCommandQueue = new NetworkCommandQueue();
         ShutdownHandler shutdownHandler = new ShutdownHandler(voxelGameEngine);
 

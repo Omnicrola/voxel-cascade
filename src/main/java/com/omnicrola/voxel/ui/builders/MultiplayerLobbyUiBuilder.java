@@ -7,6 +7,8 @@ import com.omnicrola.voxel.ui.controllers.MultiplayerLobbyScreenController;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
+import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import de.lessvoid.nifty.tools.Color;
 
 /**
@@ -41,16 +43,46 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
             panel(spacerV(10));
             panel(new PanelBuilder() {{
                 childLayoutVertical();
-                panel(serverInformationPanel());
+                panel(new PanelBuilder() {{
+                    childLayoutHorizontal();
+                    panel(serverInformationPanel());
+                    panel(chooseLevelPanel());
+                }});
+                panel(chooseTeamPanel());
                 panel(buttonPanel());
             }});
             panel(spacerV(10));
         }};
     }
 
+    private PanelBuilder chooseLevelPanel() {
+        return new PanelBuilder() {{
+            childLayoutVertical();
+            text(createText("Levels", 100));
+            control(new ListBoxBuilder(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX) {{
+                width("*");
+                displayItems(5);
+                selectionModeSingle();
+                optionalVerticalScrollbar();
+                hideHorizontalScrollbar();
+            }});
+        }};
+    }
+
+    private PanelBuilder chooseTeamPanel() {
+        return new PanelBuilder() {{
+            childLayoutVertical();
+            width(percentage(66));
+            text(createText("Teams", 100));
+            control(new RadioGroupBuilder(UiToken.Multiplayer.Lobby.CHOOSE_TEAM_RADIO_GROUP));
+            panel(new PanelBuilder(UiToken.Multiplayer.Lobby.TEAM_LIST_PANEL));
+        }};
+    }
+
     protected PanelBuilder serverInformationPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
+            width(percentage(33));
             text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_IP, ":", 100));
             text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_NAME, ":", 100));
             text(createText(UiToken.Multiplayer.Browse.LABEL_SERVER_PLAYERS, ":", 100));

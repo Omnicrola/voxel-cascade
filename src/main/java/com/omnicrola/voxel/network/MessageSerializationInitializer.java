@@ -21,7 +21,6 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(SpawnUnitCommand.class);
         Serializer.registerClass(SpawnStructureMessage.class);
         Serializer.registerClass(StartMultiplayerGameCommand.class);
-        Serializer.registerClass(StartLevelCommand.class);
 
         Serializer.registerClass(OrderMoveToLocationCommand.class);
         Serializer.registerClass(OrderAttackTargetCommand.class);

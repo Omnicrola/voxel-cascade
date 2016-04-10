@@ -4,10 +4,7 @@ import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.controllers.LoadLevelScreenController;
-import de.lessvoid.nifty.builder.ImageBuilder;
-import de.lessvoid.nifty.builder.LayerBuilder;
-import de.lessvoid.nifty.builder.PanelBuilder;
-import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.builder.*;
 import de.lessvoid.nifty.tools.Color;
 
 /**
@@ -38,6 +35,10 @@ public class LoadLevelUiBuilder extends AbstractGuiBuilder {
                     panel(new PanelBuilder() {{
                         childLayoutVertical();
                         backgroundColor(Color.BLACK);
+                        onActiveEffect(new EffectBuilder("border") {{
+                            effectParameter("color", "#0008");
+                        }});
+
                         panel(spacerV(33));
                         panel(addLoadingStatusPanel());
                         panel(spacerV(33));

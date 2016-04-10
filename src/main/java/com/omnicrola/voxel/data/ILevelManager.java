@@ -1,5 +1,6 @@
 package com.omnicrola.voxel.data;
 
+import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelState;
 import com.omnicrola.voxel.ui.data.TeamStatistics;
 
@@ -14,4 +15,6 @@ public interface ILevelManager {
     void setCurrentLevel(LevelState levelState);
 
     List<TeamStatistics> getTeamStatistics();
+
+    List<LevelDefinition> getAllLevels();
 }

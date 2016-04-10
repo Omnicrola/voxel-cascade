@@ -1,24 +1,30 @@
 package com.omnicrola.voxel.ui.controllers;
 
+import com.google.common.eventbus.Subscribe;
 import com.omnicrola.voxel.commands.CancelMultiplayerCreationCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
+import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
-import com.omnicrola.voxel.network.VoxelGameServer;
+import com.omnicrola.voxel.eventBus.events.UpdateAvailableLevelsEvent;
 import com.omnicrola.voxel.ui.UiAdapter;
 import com.omnicrola.voxel.ui.UiToken;
-import com.omnicrola.voxel.ui.builders.AbstractScreenController;
+import com.omnicrola.voxel.ui.data.LevelWrapper;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
+import de.lessvoid.nifty.controls.ListBox;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by Eric on 2/21/2016.
  */
-public class MultiplayerCreationController extends AbstractScreenController {
+public class MultiplayerCreationController extends MultiplayerLobbyScreenController {
 
-    private UiAdapter uiAdapter;
+    private List<LevelDefinition> levels = new ArrayList<>();
 
     public MultiplayerCreationController(UiAdapter uiAdapter) {
-        this.uiAdapter = uiAdapter;
+        super(uiAdapter);
     }
 
     @NiftyEventSubscriber(id = "button-cancel")
@@ -31,22 +37,24 @@ public class MultiplayerCreationController extends AbstractScreenController {
         this.uiAdapter.sendCommand(new StartMultiplayerGameCommand(LevelGeneratorTool.BASIC_LEVEL_UUID));
     }
 
-    @Override
-    protected void screenOpen() {
-        VoxelGameServer server = this.uiAdapter.getCurrentServer();
-        if (server != null) {
-            updateLabels(server);
+    @Subscribe
+    public void setListOfLevels(UpdateAvailableLevelsEvent event) {
+        levels = event.getLevels();
+        updateListOfLevels();
+    }
+
+    private void updateListOfLevels() {
+        ListBox<LevelWrapper> levelList = ui().getListBox(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX);
+        if (levelList != null) {
+            levelList.removeAllItems(levelList.getItems());
+            levels.forEach(l -> levelList.addItem(new LevelWrapper(l)));
         }
     }
 
-    private void updateLabels(VoxelGameServer server) {
-        ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_IP).setText("IP: " + server.getAddress());
-        ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_NAME).setText("Name: " + server.getName());
-        ui().getElement(UiToken.Multiplayer.Browse.LABEL_SERVER_PLAYERS).setText("Players: " + server.getPlayers());
-    }
-
     @Override
-    protected void screenClose() {
-
+    protected void screenOpen() {
+        super.screenOpen();
+        ui().getElement(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX).setVisible(true);
+        updateListOfLevels();
     }
 }
