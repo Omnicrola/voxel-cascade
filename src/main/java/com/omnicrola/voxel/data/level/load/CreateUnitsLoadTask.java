@@ -22,6 +22,11 @@ public class CreateUnitsLoadTask extends AbstractLoadTask {
     }
 
     @Override
+    protected String getTaskName() {
+        return "Create Units";
+    }
+
+    @Override
     protected void performLoading() {
         List<Unit> structures = levelData.levelDefinition
                 .getUnitPlacements()

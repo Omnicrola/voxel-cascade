@@ -20,15 +20,16 @@ public abstract class AbstractLoadTask implements Callable<LevelData> {
     public final LevelData call() {
         Logger logger = Logger.getLogger(this.getClass().getName());
         try {
-            System.out.println("Starting task : " + this.getClass().getName());
-            logger.log(Level.FINE, "Started task");
+            logger.log(Level.FINE, "Started task "+getTaskName());
             performLoading();
-            logger.log(Level.FINE, "Finished task");
+            logger.log(Level.FINE, "Finished task "+ getTaskName());
         } catch (Exception e) {
             logger.log(Level.SEVERE, null, e);
         }
         return this.levelData;
     }
+
+    protected abstract String getTaskName();
 
     protected abstract void performLoading();
 }

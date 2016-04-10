@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
+import java.net.SocketTimeoutException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -31,10 +32,11 @@ public class ServerMulticastEmitter extends Thread {
 
     @Override
     public void run() {
-        DatagramSocket socket;
+        DatagramSocket socket = null;
         try {
-            LOGGER.log(Level.INFO, "Server starting on " + BROADCAST_IP + ":" + GameConstants.SERVER_BROADCAST_PORT);
+            LOGGER.log(Level.INFO, "Broadcast packet emitter starting on " + BROADCAST_IP + ":" + GameConstants.SERVER_BROADCAST_PORT);
             socket = new DatagramSocket(GameConstants.SERVER_BROADCAST_PORT, InetAddress.getByName(BROADCAST_IP));
+            socket.setSoTimeout(100);
             socket.setBroadcast(true);
 
             while (this.isRunning) {
@@ -49,23 +51,32 @@ public class ServerMulticastEmitter extends Thread {
             }
         } catch (IOException ex) {
             LOGGER.log(Level.SEVERE, null, ex);
+        } finally {
+            if (socket != null) {
+                socket.close();
+            }
+            LOGGER.log(Level.INFO, "Broadcast emitter has shut down.");
         }
     }
 
     private boolean isDiscoveryRequest(DatagramPacket packet) {
+        if (packet == null) {
+            return false;
+        }
         return new String(packet.getData()).trim().equals(GameConstants.SERVER_DISCOVERY_REQUEST);
     }
 
     private DatagramPacket getDatagramPacket(DatagramSocket socket) throws IOException {
         byte[] recvBuf = new byte[1024];
         DatagramPacket packet = new DatagramPacket(recvBuf, recvBuf.length);
-        socket.receive(packet);
-
-        LOGGER.log(Level.FINE, "Server received discovery packet from " + packet.getAddress().getHostAddress());
-        LOGGER.log(Level.FINE, "Packet data: " + new String(packet.getData()));
-
-        return packet;
+        try {
+            socket.receive(packet);
+            LOGGER.log(Level.FINE, "Server received discovery packet from " + packet.getAddress().getHostAddress());
+            LOGGER.log(Level.FINE, "Packet data: " + new String(packet.getData()));
+            return packet;
+        } catch (SocketTimeoutException e) {
+            LOGGER.log(Level.FINER, null, e);
+        }
+        return null;
     }
-
-
 }

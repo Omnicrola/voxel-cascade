@@ -16,6 +16,11 @@ public class AdjustUnitPlacementLoadTask extends AbstractLoadTask {
     }
 
     @Override
+    protected String getTaskName() {
+        return "Adjust Unit Placement";
+    }
+
+    @Override
     protected void performLoading() {
         levelData.structures.forEach(s -> adjust(s.getSpatial()));
         levelData.units.forEach(u -> adjust(u.getSpatial()));

@@ -26,6 +26,11 @@ public class TerrainGeneratorTask extends AbstractLoadTask {
     }
 
     @Override
+    protected String getTaskName() {
+        return "Generate Terrain";
+    }
+
+    @Override
     protected void performLoading() {
         VoxelTypeLibrary voxelTypeLibrary = new VoxelTypeLibrary();
         Arrays.asList(VoxelType.values()).forEach(t -> voxelTypeLibrary.addType(t));

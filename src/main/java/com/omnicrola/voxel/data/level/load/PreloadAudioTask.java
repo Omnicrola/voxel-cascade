@@ -24,6 +24,11 @@ public class PreloadAudioTask extends AbstractLoadTask {
     }
 
     @Override
+    protected String getTaskName() {
+        return "Pre-load Audio";
+    }
+
+    @Override
     protected void performLoading() {
         this.levelData.levelDefinition.getUnitPlacements().stream()
                 .map(placement -> getUnit(placement))

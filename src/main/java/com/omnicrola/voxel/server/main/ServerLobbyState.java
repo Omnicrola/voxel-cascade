@@ -77,6 +77,7 @@ public class ServerLobbyState extends AbstractAppState {
     @Override
     public void cleanup() {
         super.cleanup();
+        disable();
         Logger.getLogger(ServerLobbyState.class.getName()).log(Level.INFO, "Closing server lobby");
     }
 

@@ -25,6 +25,6 @@ public class VoxelServerEngine extends SimpleApplication implements IActionQueue
     @Override
     public void start() {
         super.start(JmeContext.Type.Headless);
-        LOGGER.log(Level.INFO, " *** Starting server engine");
+        LOGGER.log(Level.INFO, "Starting JME multiplayer server.");
     }
 }

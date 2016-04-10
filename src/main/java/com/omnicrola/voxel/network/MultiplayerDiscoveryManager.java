@@ -16,6 +16,7 @@ import java.util.logging.Logger;
  */
 public class MultiplayerDiscoveryManager extends Thread {
     private static final Logger LOGGER = Logger.getLogger(MultiplayerDiscoveryManager.class.getName());
+
     private static final int SOCKET_TIMEOUT = 5000;
     public List<VoxelGameServer> activeServers = new ArrayList<>();
     private final Object LIST_MUTEX = new Object();
@@ -39,8 +40,7 @@ public class MultiplayerDiscoveryManager extends Thread {
 
     @Override
     public void run() {
-        // Find the server using UDP broadcast
-
+        LOGGER.log(Level.INFO, "Starting client multiplayer discovery.");
         while (this.isRunning) {
             try {
                 final DatagramSocket socket = new DatagramSocket();
@@ -68,6 +68,7 @@ public class MultiplayerDiscoveryManager extends Thread {
                 LOGGER.log(Level.SEVERE, null, ex);
             }
         }
+        LOGGER.log(Level.INFO, "Stopped client multiplayer discovery.");
     }
 
     private void waitForResponse(DatagramSocket socket) throws IOException {

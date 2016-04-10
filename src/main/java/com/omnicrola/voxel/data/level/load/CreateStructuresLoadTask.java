@@ -22,6 +22,11 @@ public class CreateStructuresLoadTask extends AbstractLoadTask {
     }
 
     @Override
+    protected String getTaskName() {
+        return "Create Structures";
+    }
+
+    @Override
     protected void performLoading() {
         List<Structure> structures = levelData.levelDefinition
                 .getStructures()
