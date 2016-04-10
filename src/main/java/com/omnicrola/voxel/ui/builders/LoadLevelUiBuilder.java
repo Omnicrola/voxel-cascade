@@ -8,6 +8,7 @@ import de.lessvoid.nifty.builder.ImageBuilder;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.tools.Color;
 
 /**
  * Created by Eric on 4/10/2016.
@@ -32,10 +33,11 @@ public class LoadLevelUiBuilder extends AbstractGuiBuilder {
             });
             layer(new LayerBuilder("background") {
                 {
-                    childLayoutHorizontal();
+                    childLayoutVertical();
                     panel(spacerH(33));
                     panel(new PanelBuilder() {{
                         childLayoutVertical();
+                        backgroundColor(Color.BLACK);
                         panel(spacerV(33));
                         panel(addLoadingStatusPanel());
                         panel(spacerV(33));
