@@ -48,7 +48,6 @@ public class VoxelTerrainGenerator {
 
         if (Math.random() < 0.125) {
             voxelChunkHandler.setHalf(location, true);
-            voxelChunkHandler.set(location, VoxelType.WHITE.uniqueId());
         }
     }
 }

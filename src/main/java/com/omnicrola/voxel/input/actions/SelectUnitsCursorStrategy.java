@@ -77,12 +77,12 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
 
     private List<Spatial> selectUnitsOrBuilding(ScreenRectangle screenRectangle) {
         List<Spatial> spatials = this.worldCursor.selectAllUnitsIn(screenRectangle);
-        List<Spatial> structures = findStructures(spatials);
-        if (structures.size() > 0) {
-            return structures;
-        } else {
-            List<Spatial> units = findUnits(spatials);
+        List<Spatial> units = findUnits(spatials);
+        if (units.size() > 0) {
             return units;
+        } else {
+            List<Spatial> structures = findStructures(spatials);
+            return structures;
         }
     }
 
