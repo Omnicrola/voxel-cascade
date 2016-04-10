@@ -1,7 +1,7 @@
-package com.omnicrola.voxel.terrain;
+package com.omnicrola.voxel.terrain.build;
 
 import com.omnicrola.voxel.debug.DebugTimer;
-import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
+import com.omnicrola.voxel.terrain.IChunkRebuildStrategy;
 import com.omnicrola.voxel.terrain.data.VoxelChunk;
 
 import java.util.List;

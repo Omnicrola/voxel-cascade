@@ -6,6 +6,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.debug.DebugTimer;
 import com.omnicrola.voxel.settings.GameConstants;
 import com.omnicrola.voxel.terrain.build.FaceBuilder;
+import com.omnicrola.voxel.terrain.build.SingleThreadedRebuildStrategy;
 import com.omnicrola.voxel.terrain.build.VoxelChunkRebuilder;
 import com.omnicrola.voxel.terrain.build.occlusion.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.data.*;
@@ -16,7 +17,6 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 

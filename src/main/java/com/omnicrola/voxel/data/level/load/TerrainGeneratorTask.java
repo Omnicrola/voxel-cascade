@@ -4,7 +4,7 @@ import com.omnicrola.voxel.data.level.LevelData;
 import com.omnicrola.voxel.data.level.TerrainDefinition;
 import com.omnicrola.voxel.terrain.VoxelChunkHandler;
 import com.omnicrola.voxel.terrain.VoxelChunkHandlerFactory;
-import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
+import com.omnicrola.voxel.terrain.build.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
 import com.omnicrola.voxel.terrain.build.MultithreadedChunkRebuildStrategy;
 import com.omnicrola.voxel.terrain.data.VoxelType;
