@@ -6,6 +6,7 @@ import com.omnicrola.voxel.terrain.VoxelChunkHandler;
 import com.omnicrola.voxel.terrain.VoxelChunkHandlerFactory;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.VoxelTypeLibrary;
+import com.omnicrola.voxel.terrain.build.MultithreadedChunkRebuildStrategy;
 import com.omnicrola.voxel.terrain.data.VoxelType;
 
 import java.util.Arrays;
@@ -16,6 +17,7 @@ import java.util.Arrays;
 public class TerrainGeneratorTask extends AbstractLoadTask {
     private VoxelTerrainGenerator voxelTerrainGenerator;
     private VoxelChunkHandlerFactory voxelChunkHandlerFactory;
+    private float progress;
 
     public TerrainGeneratorTask(LevelData levelData,
                                 VoxelTerrainGenerator voxelTerrainGenerator,
@@ -37,9 +39,16 @@ public class TerrainGeneratorTask extends AbstractLoadTask {
 
         TerrainDefinition terrainDefinition = this.levelData.levelDefinition.getTerrain();
         VoxelChunkHandler voxelChunkHandler = voxelChunkHandlerFactory.build(voxelTypeLibrary);
+
         this.voxelTerrainGenerator.generate(terrainDefinition, voxelChunkHandler);
-        voxelChunkHandler.update();
+        this.progress = 0.5f;
+        voxelChunkHandler.update(MultithreadedChunkRebuildStrategy.INSTANCE);
 
         levelData.terrain = voxelChunkHandler;
+    }
+
+    @Override
+    public double percentDone() {
+        return (this.progress + MultithreadedChunkRebuildStrategy.INSTANCE.percentComplete()) / 2f;
     }
 }

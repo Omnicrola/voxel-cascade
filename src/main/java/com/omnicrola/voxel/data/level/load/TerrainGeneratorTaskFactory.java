@@ -6,8 +6,6 @@ import com.omnicrola.voxel.terrain.VoxelChunkHandlerFactory;
 import com.omnicrola.voxel.terrain.VoxelTerrainGenerator;
 import com.omnicrola.voxel.terrain.build.PerlinNoiseGenerator;
 
-import java.util.concurrent.Callable;
-
 /**
  * Created by Eric on 4/8/2016.
  */
@@ -20,7 +18,7 @@ public class TerrainGeneratorTaskFactory implements ILoadingTaskFactory {
     }
 
     @Override
-    public Callable<LevelData> build(LevelData levelData) {
+    public AbstractLoadTask build(LevelData levelData) {
         VoxelChunkHandlerFactory voxelChunkHandlerFactory = new VoxelChunkHandlerFactory(assetManager);
         VoxelTerrainGenerator voxelTerrainGenerator = new VoxelTerrainGenerator(new PerlinNoiseGenerator());
         TerrainGeneratorTask terrainGeneratorTask = new TerrainGeneratorTask(levelData, voxelTerrainGenerator, voxelChunkHandlerFactory);

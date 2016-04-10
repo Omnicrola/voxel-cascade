@@ -11,12 +11,14 @@ import com.omnicrola.voxel.terrain.build.occlusion.OcclusionCalculatorBuilder;
 import com.omnicrola.voxel.terrain.data.*;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.stream.Collectors;
 
 /**
  * Created by omnic on 1/31/2016.
@@ -75,20 +77,16 @@ public class VoxelChunkHandler extends Node {
         return this.chunks.get(chunkId);
     }
 
-    public void update() {
-        this.chunks.values()
+    public void update(){
+        update(SingleThreadedRebuildStrategy.INSTANCE);
+    }
+    public void update(IChunkRebuildStrategy rebuildStrategy) {
+        List<VoxelChunk> chunksToRebuild = this.chunks.values()
                 .stream()
                 .filter(c -> c.needsRebuilt())
-                .forEach(c -> {
-                    this.debugTimer.reset();
-                    this.voxelChunkRebuilder.rebuild(c);
-                    logRebuildTime(c);
-                });
-    }
+                .collect(Collectors.toList());
 
-    private void logRebuildTime(VoxelChunk chunk) {
-        float elapsed = this.debugTimer.mark();
-        LOGGER.log(Level.FINE, "Rebuilt chunk " + chunk.toString() + " in " + elapsed + "ms");
+        rebuildStrategy.rebuild(chunksToRebuild, this.voxelChunkRebuilder);
     }
 
     public void flagAllChunksForRebuild() {

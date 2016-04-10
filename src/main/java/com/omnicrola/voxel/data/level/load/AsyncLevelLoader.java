@@ -7,10 +7,10 @@ import com.omnicrola.voxel.data.level.LevelSettings;
 import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 
 import java.util.List;
+import java.util.OptionalDouble;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -30,8 +30,8 @@ public class AsyncLevelLoader {
     private LevelDefinitionRepository levelDefinitionRepository;
     private UnitDefinitionRepository unitDefinitionRepository;
     private LevelData levelData;
-    private List<Future<LevelData>> taskFutures;
-    private List<Callable<LevelData>> finalTasks;
+    private List<AbstractLoadTask> finalTasks;
+    private List<AbstractLoadTask> tasksInProgress;
 
     public AsyncLevelLoader(List<ILoadingTaskFactory> parallelTaskFactories,
                             List<ILoadingTaskFactory> finalTaskFactories,
@@ -56,10 +56,12 @@ public class AsyncLevelLoader {
     }
 
     private void createLoadingTasks() {
-        this.taskFutures = this.parallelTaskFactories.stream()
+        this.tasksInProgress = this.parallelTaskFactories
+                .stream()
                 .map(f -> f.build(levelData))
-                .map(t -> threadPool.submit(t))
                 .collect(Collectors.toList());
+
+        this.tasksInProgress.forEach(t -> threadPool.submit(t));
     }
 
     private void createFinalTasks() {
@@ -76,7 +78,7 @@ public class AsyncLevelLoader {
     }
 
     public boolean isFinished() {
-        return this.taskFutures.stream().allMatch(f -> f.isDone());
+        return this.tasksInProgress.stream().allMatch(f -> f.isDone());
     }
 
     public LevelData getLevelData() {
@@ -84,12 +86,14 @@ public class AsyncLevelLoader {
     }
 
     public float updateLoadStatus() {
-        float total = this.taskFutures.size();
-        float finished = this.taskFutures.stream().filter(f -> f.isDone()).count();
-        if (finished == total) {
-            runFinalTasks();
+        OptionalDouble finished = this.tasksInProgress.stream().mapToDouble(f -> f.percentDone()).average();
+        if (finished.isPresent()) {
+            if (finished.getAsDouble() > 100) {
+                runFinalTasks();
+            }
+            return (float) finished.getAsDouble();
         }
-        return finished / total;
+        return 0.0f;
     }
 
     private void runFinalTasks() {

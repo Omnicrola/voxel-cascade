@@ -11,6 +11,8 @@ import java.util.Optional;
  * Created by omnic on 4/9/2016.
  */
 public class AdjustUnitPlacementLoadTask extends AbstractLoadTask {
+    private double percentDone;
+
     public AdjustUnitPlacementLoadTask(LevelData levelData) {
         super(levelData);
     }
@@ -24,6 +26,12 @@ public class AdjustUnitPlacementLoadTask extends AbstractLoadTask {
     protected void performLoading() {
         levelData.structures.forEach(s -> adjust(s.getSpatial()));
         levelData.units.forEach(u -> adjust(u.getSpatial()));
+        percentDone = 1;
+    }
+
+    @Override
+    public double percentDone() {
+        return this.percentDone;
     }
 
     private void adjust(Spatial spatial) {

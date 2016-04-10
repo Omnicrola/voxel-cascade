@@ -8,6 +8,8 @@ import com.omnicrola.voxel.data.units.EntityAudioDefinition;
 import com.omnicrola.voxel.data.units.UnitDefinition;
 
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -16,6 +18,8 @@ import java.util.stream.Stream;
 public class PreloadAudioTask extends AbstractLoadTask {
 
     private final AudioRepository audioRepository;
+    private float totalSounds;
+    private float soundsLoaded;
 
     public PreloadAudioTask(AudioRepository audioRepository,
                             LevelData levelData) {
@@ -30,17 +34,26 @@ public class PreloadAudioTask extends AbstractLoadTask {
 
     @Override
     protected void performLoading() {
-        this.levelData.levelDefinition.getUnitPlacements().stream()
+        List<AudioDefinition> soundsToLoad = this.levelData.levelDefinition.getUnitPlacements().stream()
                 .map(placement -> getUnit(placement))
                 .map(unit -> unit.getAudioDefinition())
                 .flatMap(audioDefinition -> getSounds(audioDefinition))
                 .filter(audioDefinition -> audioDefinition != null)
                 .distinct()
-                .forEach(audioDefinition -> load(audioDefinition));
+                .collect(Collectors.toList());
+
+        this.totalSounds = soundsToLoad.size();
+        soundsToLoad.forEach(audioDefinition -> load(audioDefinition));
+    }
+
+    @Override
+    public double percentDone() {
+        return soundsLoaded / totalSounds;
     }
 
     private void load(AudioDefinition audioDefinition) {
         this.audioRepository.preload(audioDefinition);
+        this.soundsLoaded++;
     }
 
     private Stream<AudioDefinition> getSounds(EntityAudioDefinition audioDefinition) {

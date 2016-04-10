@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
 public class CreateUnitsLoadTask extends AbstractLoadTask {
     private final UnitBuilder unitBuilder;
     private int unitInstanceId = 1;
+    private float totalUnits;
+    private float unitsBuilt;
 
     public CreateUnitsLoadTask(LevelData levelData, UnitBuilder unitBuilder) {
         super(levelData);
@@ -27,7 +29,14 @@ public class CreateUnitsLoadTask extends AbstractLoadTask {
     }
 
     @Override
+    public double percentDone() {
+        return unitsBuilt / totalUnits;
+    }
+
+    @Override
     protected void performLoading() {
+        this.totalUnits = levelData.levelDefinition.getUnitPlacements().size();
+
         List<Unit> structures = levelData.levelDefinition
                 .getUnitPlacements()
                 .stream()
@@ -39,7 +48,9 @@ public class CreateUnitsLoadTask extends AbstractLoadTask {
     private Unit build(UnitPlacement unitPlacement) {
         unitPlacement.setInstanceId(unitInstanceId++);
         UnitDefinition unitDefinition = getUnit(unitPlacement);
-        return this.unitBuilder.build(unitPlacement, unitDefinition);
+        Unit unit = this.unitBuilder.build(unitPlacement, unitDefinition);
+        this.unitsBuilt++;
+        return unit;
     }
 
     private UnitDefinition getUnit(UnitPlacement structurePlacement) {
