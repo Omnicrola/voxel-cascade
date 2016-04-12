@@ -8,7 +8,6 @@ import com.omnicrola.voxel.data.units.UnitDefinitionRepository;
 
 import java.util.List;
 import java.util.OptionalDouble;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -32,6 +31,7 @@ public class AsyncLevelLoader {
     private LevelData levelData;
     private List<AbstractLoadTask> finalTasks;
     private List<AbstractLoadTask> tasksInProgress;
+    private boolean isFinished;
 
     public AsyncLevelLoader(List<ILoadingTaskFactory> parallelTaskFactories,
                             List<ILoadingTaskFactory> finalTaskFactories,
@@ -78,7 +78,7 @@ public class AsyncLevelLoader {
     }
 
     public boolean isFinished() {
-        return this.tasksInProgress.stream().allMatch(f -> f.isDone());
+        return this.isFinished;
     }
 
     public LevelData getLevelData() {
@@ -86,20 +86,26 @@ public class AsyncLevelLoader {
     }
 
     public float updateLoadStatus() {
-        OptionalDouble finished = this.tasksInProgress.stream().mapToDouble(f -> f.percentDone()).average();
-        if (finished.isPresent()) {
-            if (finished.getAsDouble() > 100) {
-                runFinalTasks();
-            }
-            return (float) finished.getAsDouble();
+        if (allTasksAreComplete()) {
+            this.isFinished = true;
+            runFinalTasks();
         }
-        return 0.0f;
+        return getTaskProgress();
+    }
+
+    private boolean allTasksAreComplete() {
+        return this.tasksInProgress.stream().allMatch(t -> t.isDone());
+    }
+
+    private float getTaskProgress() {
+        OptionalDouble average = this.tasksInProgress.stream().mapToDouble(f -> f.percentDone()).average();
+        return (float) (average.isPresent() ? average.getAsDouble() : 0.0);
     }
 
     private void runFinalTasks() {
-        for (Callable callable : this.finalTasks) {
+        for (AbstractLoadTask loadTask : this.finalTasks) {
             try {
-                callable.call();
+                loadTask.call();
             } catch (Exception e) {
                 LOGGER.log(Level.SEVERE, null, e);
             }
