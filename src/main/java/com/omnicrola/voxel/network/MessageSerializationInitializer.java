@@ -22,6 +22,7 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(SpawnStructureMessage.class);
         Serializer.registerClass(StartMultiplayerGameCommand.class);
         Serializer.registerClass(SelectMultiplayerLevelCommand.class);
+        Serializer.registerClass(SelectTeamCommand.class);
 
         Serializer.registerClass(OrderMoveToLocationCommand.class);
         Serializer.registerClass(OrderAttackTargetCommand.class);

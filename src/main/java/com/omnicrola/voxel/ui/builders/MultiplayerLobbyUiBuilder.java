@@ -8,7 +8,6 @@ import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
 import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
-import de.lessvoid.nifty.controls.radiobutton.builder.RadioGroupBuilder;
 import de.lessvoid.nifty.tools.Color;
 
 /**
@@ -47,8 +46,8 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
                     childLayoutHorizontal();
                     panel(serverInformationPanel());
                     panel(chooseLevelPanel());
+                    panel(chooseTeamPanel());
                 }});
-                panel(chooseTeamPanel());
                 panel(buttonPanel());
             }});
             panel(spacerV(10));
@@ -58,6 +57,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
     private PanelBuilder chooseLevelPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
+            width(pixels(300));
             text(createText("Levels", 100));
             control(new ListBoxBuilder(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX) {{
                 width("*");
@@ -72,10 +72,16 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
     private PanelBuilder chooseTeamPanel() {
         return new PanelBuilder() {{
             childLayoutVertical();
-            width(percentage(66));
+            width(pixels(200));
+
             text(createText("Teams", 100));
-            control(new RadioGroupBuilder(UiToken.Multiplayer.Lobby.CHOOSE_TEAM_RADIO_GROUP));
-            panel(new PanelBuilder(UiToken.Multiplayer.Lobby.TEAM_LIST_PANEL));
+            control(new ListBoxBuilder(UiToken.Multiplayer.Lobby.TEAM_SELECTION_LISTBOX) {{
+                width("*");
+                displayItems(5);
+                selectionModeSingle();
+                optionalVerticalScrollbar();
+                hideHorizontalScrollbar();
+            }});
         }};
     }
 

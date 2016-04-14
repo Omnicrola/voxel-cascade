@@ -18,4 +18,5 @@ public interface INetworkManager {
 
     VoxelGameServer getCurrentServer();
 
+    void setPlayerServerId(int playerId);
 }

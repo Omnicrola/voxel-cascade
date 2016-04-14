@@ -19,9 +19,9 @@ public class ClientListenerBuilder {
         this.actionQueue = actionQueue;
     }
 
-    public void attach(Client networkClient, ICommandProcessor commandProcessor) {
+    public void attach(Client networkClient, ICommandProcessor commandProcessor, INetworkManager networkManager) {
         networkClient.addMessageListener(new ClientHandshakeListener(), HandshakeMessage.class);
-        networkClient.addMessageListener(new ClientLobbyJoinMessageListener(commandProcessor), JoinLobbyMessage.class);
+        networkClient.addMessageListener(new ClientLobbyJoinMessageListener(networkManager), JoinLobbyMessage.class);
         networkClient.addMessageListener(new ClientCommandListener(this.actionQueue, commandProcessor));
     }
 }

@@ -11,4 +11,5 @@ public interface IUiPanel {
     void addElement(ElementBuilder elementBuilder);
 
     void setVisible(boolean isVisible);
+
 }

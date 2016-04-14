@@ -3,6 +3,7 @@ package com.omnicrola.voxel.ui.controllers;
 import com.google.common.eventbus.Subscribe;
 import com.omnicrola.voxel.commands.ChangeScreenCommand;
 import com.omnicrola.voxel.commands.SelectMultiplayerLevelCommand;
+import com.omnicrola.voxel.commands.SelectTeamCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
@@ -16,15 +17,11 @@ import com.omnicrola.voxel.ui.UiScreen;
 import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.data.LevelWrapper;
-import com.omnicrola.voxel.ui.nifty.IUiPanel;
+import com.omnicrola.voxel.ui.data.TeamDisplayWrapper;
 import de.lessvoid.nifty.NiftyEventSubscriber;
-import de.lessvoid.nifty.builder.ControlBuilder;
-import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
+import de.lessvoid.nifty.controls.ListBox;
 import de.lessvoid.nifty.controls.ListBoxSelectionChangedEvent;
-import de.lessvoid.nifty.controls.RadioButtonGroupStateChangedEvent;
-import de.lessvoid.nifty.controls.label.builder.LabelBuilder;
-import de.lessvoid.nifty.controls.radiobutton.builder.RadioButtonBuilder;
 
 import java.util.List;
 
@@ -50,16 +47,21 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
         this.uiAdapter.sendCommand(startGameCommand);
     }
 
-    @NiftyEventSubscriber(id = "lobby-choose-team-radio-group")
-    public void teamSelected(final String id, final RadioButtonGroupStateChangedEvent event) {
-        System.out.println("RadioButton [" + event.getSelectedId() + "] is now selected. The old selection was [" + event.getPreviousSelectedId() + "]");
+    @NiftyEventSubscriber(id = "team-select-listbox")
+    public void teamSelected(final String id, final ListBoxSelectionChangedEvent event) {
+        List<TeamDisplayWrapper> selection = event.getSelection();
+        if (selection.size() > 0) {
+            TeamDefinition team = selection.get(0).getTeam();
+            uiAdapter.sendCommand(new SelectTeamCommand(team.getId()));
+        }
     }
 
-    @NiftyEventSubscriber(id = "level-chooser-box")
+    @NiftyEventSubscriber(id = "level-select-listbox")
     public void selectedServerChanged(String id, ListBoxSelectionChangedEvent event) {
         List<LevelWrapper> selection = event.getSelection();
         if (selection.size() >= 1) {
             LevelDefinition levelDefinition = selection.get(0).getLevelDefinition();
+            System.out.println("Selected : " + levelDefinition.getName());
             this.uiAdapter.sendCommand(new SelectMultiplayerLevelCommand(levelDefinition.getUuid()));
         }
     }
@@ -73,26 +75,12 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
     @Subscribe
     void setCurrentMap(MultiplayerLobbyMapEvent event) {
         LevelDefinition levelDefinition = event.getLevel();
-        IUiPanel teamPanel = ui().getPanel(UiToken.Multiplayer.Lobby.TEAM_LIST_PANEL);
-        teamPanel.removeAllChildren();
-
-        levelDefinition.getTeams().forEach(t -> addTeam(t, teamPanel));
-    }
-
-    private void addTeam(TeamDefinition team, IUiPanel teamPanel) {
-        teamPanel.addElement(new PanelBuilder() {{
-            childLayoutHorizontal();
-            control(createLabel(team.getName(), "60px"));
-            control(new RadioButtonBuilder("team-" + team.getId()) {{
-                group(UiToken.Multiplayer.Lobby.CHOOSE_TEAM_RADIO_GROUP);
-            }});
-        }});
-    }
-
-    private ControlBuilder createLabel(String name, String width) {
-        return new LabelBuilder("", name) {{
-            width(width);
-        }};
+        ListBox<TeamDisplayWrapper> teamListbox = ui().getListBox(UiToken.Multiplayer.Lobby.TEAM_SELECTION_LISTBOX);
+        teamListbox.removeAllItems(teamListbox.getItems());
+        levelDefinition.getTeams().forEach(team -> {
+            TeamDisplayWrapper teamDisplayWrapper = new TeamDisplayWrapper(team);
+            teamListbox.addItem(teamDisplayWrapper);
+        });
     }
 
     protected void updateLobbyInformation() {
@@ -111,5 +99,4 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
     protected void screenClose() {
         VoxelEventBus.INSTANCE().unregister(this);
     }
-
 }

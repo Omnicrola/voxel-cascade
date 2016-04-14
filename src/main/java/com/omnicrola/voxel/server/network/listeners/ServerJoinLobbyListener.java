@@ -34,6 +34,7 @@ public class ServerJoinLobbyListener extends AbstractMessageListener<JoinLobbyMe
             }
             this.serverLobbyManager.addPlayer(networkPlayer);
             message.joinWasSuccessful = true;
+            message.setPlayerId(networkPlayer.getId());
             connection.send(message);
         } else {
             LOGGER.log(Level.INFO, "Player from " + connection.getAddress() + " could not join, server is full.");

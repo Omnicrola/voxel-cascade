@@ -3,22 +3,17 @@ package com.omnicrola.voxel.server.network;
 import com.jme3.network.HostedConnection;
 import com.jme3.network.MessageListener;
 import com.omnicrola.voxel.commands.SelectMultiplayerLevelCommand;
+import com.omnicrola.voxel.commands.SelectTeamCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
 import com.omnicrola.voxel.server.main.ActiveMultiplayerGame;
 import com.omnicrola.voxel.server.main.ServerLobbyState;
-import com.omnicrola.voxel.server.network.listeners.ServerHandshakeListener;
-import com.omnicrola.voxel.server.network.listeners.ServerJoinLobbyListener;
-import com.omnicrola.voxel.server.network.listeners.ServerSelectLevelListener;
-import com.omnicrola.voxel.server.network.listeners.ServerStartGameListener;
+import com.omnicrola.voxel.server.network.listeners.*;
 import com.sun.istack.internal.NotNull;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by omnic on 3/25/2016.
@@ -56,13 +51,15 @@ public class ServerLobbyManager {
         ServerJoinLobbyListener joinLobbyListener = new ServerJoinLobbyListener(this);
         ServerSelectLevelListener serverSelectLevelListener = new ServerSelectLevelListener();
         ServerStartGameListener startGameListener = new ServerStartGameListener(this, serverLobbyState, actionQueue);
+        ServerSelectTeamListener selectTeamListener = new ServerSelectTeamListener(this);
 
         server.addMessageListener(handshakeListener, HandshakeMessage.class);
         server.addMessageListener(joinLobbyListener, JoinLobbyMessage.class);
         server.addMessageListener(startGameListener, StartMultiplayerGameCommand.class);
         server.addMessageListener(serverSelectLevelListener, SelectMultiplayerLevelCommand.class);
+        server.addMessageListener(selectTeamListener, SelectTeamCommand.class);
 
-        this.lobbyListeners = Arrays.asList(handshakeListener, joinLobbyListener, startGameListener, serverSelectLevelListener);
+        this.lobbyListeners = Arrays.asList(handshakeListener, joinLobbyListener, startGameListener, serverSelectLevelListener, selectTeamListener);
     }
 
     private void removeMessageListeners() {
@@ -92,5 +89,13 @@ public class ServerLobbyManager {
 
     public List<NetworkPlayer> getPlayers() {
         return this.players;
+    }
+
+    public Optional<NetworkPlayer> getPlayer(HostedConnection connection) {
+        Optional<NetworkPlayer> first = this.players
+                .stream()
+                .filter(p -> p.getConnection().equals(connection))
+                .findFirst();
+        return first;
     }
 }

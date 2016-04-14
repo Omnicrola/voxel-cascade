@@ -53,11 +53,9 @@ public class ServerStartGameListener extends AbstractMessageListener<StartMultip
             message.setIsLocal(true);
             List<NetworkPlayer> players = serverLobbyManager.getPlayers();
 
-            List<TeamId> allPlayers = players.stream().map(p -> p.getConnection().getId()).map(i -> TeamId.create(i)).collect(Collectors.toList());
+            List<TeamId> allTeams = players.stream().map(p -> p.getTeamId()).collect(Collectors.toList());
             players.forEach(player -> {
-                int playerId = player.getConnection().getId();
-                System.out.println("Create team: " + playerId);
-                StartMultiplayerGameCommand command = new StartMultiplayerGameCommand(message, TeamId.create(playerId), allPlayers);
+                StartMultiplayerGameCommand command = new StartMultiplayerGameCommand(message, player.getTeamId(), allTeams);
                 player.getConnection().send(command);
             });
             return null;

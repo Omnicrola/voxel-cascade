@@ -1,10 +1,10 @@
 package com.omnicrola.voxel.network.listeners;
 
 import com.jme3.network.Client;
-import com.omnicrola.voxel.commands.ICommandProcessor;
 import com.omnicrola.voxel.eventBus.VoxelEventBus;
 import com.omnicrola.voxel.eventBus.events.JoinLobbyEvent;
 import com.omnicrola.voxel.network.AbstractMessageListener;
+import com.omnicrola.voxel.network.INetworkManager;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
 
 import java.util.logging.Logger;
@@ -15,10 +15,10 @@ import java.util.logging.Logger;
 public class ClientLobbyJoinMessageListener extends AbstractMessageListener<JoinLobbyMessage, Client> {
 
     private static final Logger LOGGER = Logger.getLogger(ClientLobbyJoinMessageListener.class.getName());
-    private ICommandProcessor commandProcessor;
+    private INetworkManager networkManager;
 
-    public ClientLobbyJoinMessageListener(ICommandProcessor commandProcessor) {
-        this.commandProcessor = commandProcessor;
+    public ClientLobbyJoinMessageListener(INetworkManager networkManager) {
+        this.networkManager = networkManager;
     }
 
     @Override
@@ -26,7 +26,8 @@ public class ClientLobbyJoinMessageListener extends AbstractMessageListener<Join
         if (message.joinWasSuccessful) {
             VoxelEventBus.INSTANCE().post(JoinLobbyEvent.fail());
         } else {
-            VoxelEventBus.INSTANCE().post(JoinLobbyEvent.success());
+            VoxelEventBus.INSTANCE().post(JoinLobbyEvent.success(message.getPlayerId()));
+            networkManager.setPlayerServerId(message.getPlayerId());
         }
     }
 }

@@ -37,6 +37,7 @@ public class NetworkManager implements INetworkManager {
     private MultiplayerDiscovery multiplayerDiscovery;
     private WorldCommandProcessor commandProcessor;
     private VoxelGameServer currentGame;
+    private int playerId;
 
     public NetworkManager(ClientListenerBuilder clientListenerBuilder,
                           NetworkCommandQueue networkCommandQueue,
@@ -77,7 +78,7 @@ public class NetworkManager implements INetworkManager {
             LOGGER.log(Level.INFO, "Connecting to server : " + serverAddress + ":" + GameConstants.SERVER_PORT);
             this.networkClient = Network.connectToServer(GameConstants.GAME_NAME, GameConstants.GAME_VERSION, serverAddress, GameConstants.SERVER_PORT);
             LOGGER.log(Level.FINE, "Loading network listeners..");
-            this.clientListenerBuilder.attach(networkClient, this.commandProcessor);
+            this.clientListenerBuilder.attach(networkClient, this.commandProcessor, this);
             LOGGER.log(Level.FINE, "Starting network client...");
             this.networkClient.start();
             LOGGER.log(Level.FINE, "Sending handshake message...");
@@ -165,4 +166,12 @@ public class NetworkManager implements INetworkManager {
         this.multiplayerDiscovery.stopSearching();
     }
 
+    @Override
+    public void setPlayerServerId(int playerId) {
+        this.playerId = playerId;
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
 }

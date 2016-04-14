@@ -13,6 +13,7 @@ public class JoinLobbyMessage extends AbstractMessage {
 
     private String lobbyKey;
     public boolean joinWasSuccessful;
+    private int playerId;
 
     public JoinLobbyMessage() {
     }
@@ -26,5 +27,13 @@ public class JoinLobbyMessage extends AbstractMessage {
             return null;
         }
         return UUID.fromString(this.lobbyKey);
+    }
+
+    public int getPlayerId() {
+        return playerId;
+    }
+
+    public void setPlayerId(int playerId) {
+        this.playerId = playerId;
     }
 }

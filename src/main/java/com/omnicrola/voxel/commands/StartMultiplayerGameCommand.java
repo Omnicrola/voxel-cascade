@@ -19,18 +19,20 @@ public class StartMultiplayerGameCommand extends AbstractWorldCommand {
     private TeamId playerId;
     private String levelUuid;
     private List<TeamId> allPlayers = new ArrayList<>();
+    private int selectedTeam;
 
     public StartMultiplayerGameCommand() {
     }
 
-    public StartMultiplayerGameCommand(UUID levelUuid) {
+    public StartMultiplayerGameCommand(UUID levelUuid ) {
+        this.selectedTeam = selectedTeam;
         this.levelUuid = levelUuid.toString();
     }
 
-    public StartMultiplayerGameCommand(StartMultiplayerGameCommand command, TeamId playerId, List<TeamId> allPlayers) {
-        this.allPlayers = allPlayers;
+    public StartMultiplayerGameCommand(StartMultiplayerGameCommand command, TeamId playerTeam, List<TeamId> allTeams) {
+        this.allPlayers = allTeams;
         this.levelUuid = command.levelUuid;
-        this.playerId = playerId;
+        this.playerId = playerTeam;
     }
 
     @Override

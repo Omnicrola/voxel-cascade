@@ -48,9 +48,8 @@ public class UiToken {
         }
 
         public class Lobby {
-            public static final String CHOOSE_TEAM_RADIO_GROUP = "lobby-choose-team-radio-group";
-            public static final String TEAM_LIST_PANEL = "team-list-panel";
-            public static final String LEVEL_LISTBOX = "level-chooser-box";
+            public static final String TEAM_SELECTION_LISTBOX = "team-select-listbox";
+            public static final String LEVEL_LISTBOX = "level-select-listbox";
         }
     }
 

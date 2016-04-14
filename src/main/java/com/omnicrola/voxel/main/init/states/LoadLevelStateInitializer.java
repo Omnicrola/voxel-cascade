@@ -63,6 +63,7 @@ public class LoadLevelStateInitializer implements IStateInitializer {
     private ArrayList<ILoadingTaskFactory> createFinalTaskFactories() {
         ArrayList<ILoadingTaskFactory> taskFactories = new ArrayList<>();
         taskFactories.add(new AdjustUnitPlacementTaskFactory());
+        taskFactories.add(new SetPlayerTeamTaskFactory());
         return taskFactories;
     }
 }
