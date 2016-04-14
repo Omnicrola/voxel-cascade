@@ -19,4 +19,6 @@ public interface IUi {
     CheckBox getCheckbox(String checkboxFullscreen);
 
     IUiPanel getPanel(String token);
+
+    IUiChatbox getChatbox(String token);
 }

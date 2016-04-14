@@ -25,6 +25,6 @@ public class ClientListenerBuilder {
         networkClient.addMessageListener(new ClientHandshakeListener(), HandshakeMessage.class);
         networkClient.addMessageListener(new ClientLobbyJoinMessageListener(networkManager), JoinLobbyMessage.class);
         networkClient.addMessageListener(new ClientCommandListener(this.actionQueue, commandProcessor));
-        networkClient.addMessageListener(new ClientChatMessageListener(commandProcessor));
+        networkClient.addMessageListener(new ClientChatMessageListener(commandProcessor), ChatMessage.class);
     }
 }

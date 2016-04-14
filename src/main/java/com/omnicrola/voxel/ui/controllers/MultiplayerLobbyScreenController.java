@@ -9,6 +9,7 @@ import com.omnicrola.voxel.data.level.LevelDefinition;
 import com.omnicrola.voxel.data.level.LevelGeneratorTool;
 import com.omnicrola.voxel.data.level.TeamDefinition;
 import com.omnicrola.voxel.eventBus.VoxelEventBus;
+import com.omnicrola.voxel.eventBus.events.ChatMessageEvent;
 import com.omnicrola.voxel.eventBus.events.MultiplayerLobbyMapEvent;
 import com.omnicrola.voxel.network.VoxelGameServer;
 import com.omnicrola.voxel.network.events.MultiplayerLobbyJoinEvent;
@@ -18,6 +19,7 @@ import com.omnicrola.voxel.ui.UiToken;
 import com.omnicrola.voxel.ui.builders.AbstractScreenController;
 import com.omnicrola.voxel.ui.data.LevelWrapper;
 import com.omnicrola.voxel.ui.data.TeamDisplayWrapper;
+import com.omnicrola.voxel.ui.nifty.IUiChatbox;
 import de.lessvoid.nifty.NiftyEventSubscriber;
 import de.lessvoid.nifty.controls.ButtonClickedEvent;
 import de.lessvoid.nifty.controls.ListBox;
@@ -64,6 +66,12 @@ public class MultiplayerLobbyScreenController extends AbstractScreenController {
             System.out.println("Selected : " + levelDefinition.getName());
             this.uiAdapter.sendCommand(new SelectMultiplayerLevelCommand(levelDefinition.getUuid()));
         }
+    }
+
+    @Subscribe
+    public void recievedChatMessage(ChatMessageEvent event) {
+        IUiChatbox chatbox = ui().getChatbox(UiToken.Play.CHAT);
+        chatbox.addMessage(event.getMessage());
     }
 
     @Subscribe

@@ -12,7 +12,6 @@ import com.omnicrola.voxel.input.*;
 import com.omnicrola.voxel.settings.EntityDataKeys;
 import com.omnicrola.voxel.util.VoxelUtil;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -102,21 +101,21 @@ public class SelectUnitsCursorStrategy extends MoveSelectedUnitsStrategy {
     }
 
     private List<Spatial> findUnits(List<Spatial> spatials) {
-        ArrayList<Spatial> found = new ArrayList<>();
-        System.out.println("player team : " + this.playerTeam);
-        for (Spatial spatial : spatials) {
-            boolean isUnit = VoxelUtil.booleanData(spatial, EntityDataKeys.IS_UNIT);
-            boolean belongsToPlayer = VoxelUtil.belongsToTeam(spatial, playerTeam);
-            System.out.println("Team: " + spatial.getUserData(EntityDataKeys.TEAM_ID));
-            if (isUnit && belongsToPlayer) {
-                found.add(spatial);
-            }
-        }
-        return found;
-//        return spatials.stream()
-//                .filter(s -> VoxelUtil.booleanData(s, EntityDataKeys.IS_UNIT))
-//                .filter(s -> VoxelUtil.belongsToTeam(s, playerTeam))
-//                .collect(Collectors.toList());
+//        ArrayList<Spatial> found = new ArrayList<>();
+//        System.out.println("player team : " + this.playerTeam);
+//        for (Spatial spatial : spatials) {
+//            boolean isUnit = VoxelUtil.booleanData(spatial, EntityDataKeys.IS_UNIT);
+//            boolean belongsToPlayer = VoxelUtil.belongsToTeam(spatial, playerTeam);
+//            System.out.println("Team: " + spatial.getUserData(EntityDataKeys.TEAM_ID));
+//            if (isUnit && belongsToPlayer) {
+//                found.add(spatial);
+//            }
+//        }
+//        return found;
+        return spatials.stream()
+                .filter(s -> VoxelUtil.booleanData(s, EntityDataKeys.IS_UNIT))
+                .filter(s -> VoxelUtil.belongsToTeam(s, playerTeam))
+                .collect(Collectors.toList());
     }
 
     private List<Spatial> findStructures(List<Spatial> spatials) {
