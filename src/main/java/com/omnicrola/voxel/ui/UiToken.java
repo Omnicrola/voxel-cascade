@@ -25,6 +25,7 @@ public class UiToken {
         public static final String ACTION_8 = "unit-action-8";
         public static final String ACTION_9 = "unit-action-9";
         public static final String LABEL_RESOURCE_AMOUNT = "label-resource-amount";
+        public static final String CHAT = "chat-window";
     }
 
     public static class GameOver {

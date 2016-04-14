@@ -7,6 +7,7 @@ import com.omnicrola.voxel.ui.controllers.MultiplayerLobbyScreenController;
 import de.lessvoid.nifty.builder.LayerBuilder;
 import de.lessvoid.nifty.builder.PanelBuilder;
 import de.lessvoid.nifty.builder.ScreenBuilder;
+import de.lessvoid.nifty.controls.chatcontrol.builder.ChatBuilder;
 import de.lessvoid.nifty.controls.listbox.builder.ListBoxBuilder;
 import de.lessvoid.nifty.tools.Color;
 
@@ -48,9 +49,20 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
                     panel(chooseLevelPanel());
                     panel(chooseTeamPanel());
                 }});
+                panel(chatPanel());
                 panel(buttonPanel());
             }});
             panel(spacerV(10));
+        }};
+    }
+
+    private PanelBuilder chatPanel() {
+        return new PanelBuilder() {{
+            childLayoutHorizontal();
+            set("padding", "10px");
+            control(new ChatBuilder(UiToken.Play.CHAT, 10) {{
+                sendLabel("Send");
+            }});
         }};
     }
 
@@ -58,6 +70,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
         return new PanelBuilder() {{
             childLayoutVertical();
             width(pixels(300));
+            set("padding", "10px");
             text(createText("Levels", 100));
             control(new ListBoxBuilder(UiToken.Multiplayer.Lobby.LEVEL_LISTBOX) {{
                 width("*");
@@ -73,6 +86,7 @@ public class MultiplayerLobbyUiBuilder extends AbstractGuiBuilder {
         return new PanelBuilder() {{
             childLayoutVertical();
             width(pixels(200));
+            set("padding", "10px");
 
             text(createText("Teams", 100));
             control(new ListBoxBuilder(UiToken.Multiplayer.Lobby.TEAM_SELECTION_LISTBOX) {{
