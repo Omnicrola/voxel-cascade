@@ -5,6 +5,7 @@ import com.jme3.network.MessageListener;
 import com.omnicrola.voxel.commands.SelectMultiplayerLevelCommand;
 import com.omnicrola.voxel.commands.SelectTeamCommand;
 import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
+import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.network.messages.HandshakeMessage;
 import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
@@ -97,5 +98,25 @@ public class ServerLobbyManager {
                 .filter(p -> p.getConnection().equals(connection))
                 .findFirst();
         return first;
+    }
+
+    public boolean allPlayersHaveTeams() {
+        boolean allPlayersHaveTeams = this.players.stream()
+                .map(p -> p.getTeamId())
+                .anyMatch(t -> !t.equals(TeamId.NEUTRAL));
+        return allPlayersHaveTeams;
+    }
+
+    public boolean allPlayersHaveDifferentTeams() {
+        HashSet<TeamId> teamIds = new HashSet<>();
+
+        for (NetworkPlayer player : this.players) {
+            TeamId teamId = player.getTeamId();
+            boolean success = teamIds.add(teamId);
+            if (!success) {
+                return false;
+            }
+        }
+        return true;
     }
 }

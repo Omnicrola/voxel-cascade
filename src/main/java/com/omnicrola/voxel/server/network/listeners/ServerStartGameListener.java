@@ -5,6 +5,7 @@ import com.omnicrola.voxel.commands.StartMultiplayerGameCommand;
 import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.engine.IActionQueue;
 import com.omnicrola.voxel.network.AbstractMessageListener;
+import com.omnicrola.voxel.network.messages.ChatMessage;
 import com.omnicrola.voxel.server.main.ServerLobbyState;
 import com.omnicrola.voxel.server.network.NetworkPlayer;
 import com.omnicrola.voxel.server.network.ServerLobbyManager;
@@ -36,11 +37,32 @@ public class ServerStartGameListener extends AbstractMessageListener<StartMultip
 
     @Override
     protected void processMessage(HostedConnection connection, StartMultiplayerGameCommand message) {
-        if (this.serverLobbyManager.isHost(connection)) {
-            startGame(connection, message);
+        if (playerIsHost(connection)) {
+            if (allPlayersHaveChosenATeam()) {
+                startGame(connection, message);
+            } else {
+                sendChatMessage(connection, "Not all players have chosen a team!");
+                LOGGER.log(Level.FINE, "Cannot start game, not all players are ready.");
+            }
         } else {
+            sendChatMessage(connection, "You are not the host");
             LOGGER.log(Level.FINE, "Player from " + connection.getAddress() + " tried to start game, but is not the host.");
         }
+    }
+
+    private void sendChatMessage(HostedConnection connection, String chatContent) {
+        String time = String.valueOf(System.currentTimeMillis());
+        String sender = "Server";
+        connection.send(new ChatMessage(time, sender, chatContent));
+    }
+
+    private boolean allPlayersHaveChosenATeam() {
+        return this.serverLobbyManager.allPlayersHaveTeams() &&
+                this.serverLobbyManager.allPlayersHaveDifferentTeams();
+    }
+
+    private boolean playerIsHost(HostedConnection connection) {
+        return this.serverLobbyManager.isHost(connection);
     }
 
     private void startGame(HostedConnection connection, StartMultiplayerGameCommand message) {

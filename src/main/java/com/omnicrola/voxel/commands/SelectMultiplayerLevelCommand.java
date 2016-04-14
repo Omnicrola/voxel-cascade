@@ -27,4 +27,8 @@ public class SelectMultiplayerLevelCommand extends AbstractWorldCommand {
         LevelDefinition levelDefinition = commandPackage.getLevelManager().getLevel(UUID.fromString(this.uuid));
         VoxelEventBus.INSTANCE().post(new MultiplayerLobbyMapEvent(levelDefinition));
     }
+
+    public String getLevelId() {
+        return uuid;
+    }
 }

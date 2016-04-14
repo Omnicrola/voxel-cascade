@@ -5,10 +5,7 @@ import com.omnicrola.util.Vec3i;
 import com.omnicrola.voxel.commands.*;
 import com.omnicrola.voxel.data.TeamId;
 import com.omnicrola.voxel.data.level.UnitPlacement;
-import com.omnicrola.voxel.network.messages.HandshakeMessage;
-import com.omnicrola.voxel.network.messages.JoinLobbyMessage;
-import com.omnicrola.voxel.network.messages.SpawnStructureMessage;
-import com.omnicrola.voxel.network.messages.SpawnUnitCommand;
+import com.omnicrola.voxel.network.messages.*;
 
 /**
  * Created by Eric on 2/21/2016.
@@ -33,6 +30,7 @@ public class MessageSerializationInitializer {
         Serializer.registerClass(OrderBuildVoxelsCommand.class);
         Serializer.registerClass(OrderStopWorldCommand.class);
 
+        Serializer.registerClass(ChatMessage.class);
         Serializer.registerClass(UnitPlacement.class);
         Serializer.registerClass(Vec3i.class);
         Serializer.registerClass(TeamId.class);
